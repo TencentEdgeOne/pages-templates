@@ -1,0 +1,118 @@
+{
+  "name": "John Doe",
+  "title": "Senior Software Engineer",
+  "email": "john.doe@example.com",
+  "phone": "+1 (555) 123-4567",
+  "location": "San Francisco, CA",
+  "website": "https://johndoe.com",
+  "linkedin": "https://linkedin.com/in/johndoe",
+  "github": "https://github.com/johndoe",
+  "summary": "Experienced software engineer with a passion for creating efficient and scalable web applications. Skilled in React, Node.js, and cloud technologies.",
+  "skills": [
+    {
+      "category": "Programming Languages",
+      "items": [
+        "JavaScript",
+        "TypeScript",
+        "Python",
+        "Go"
+      ]
+    },
+    {
+      "category": "Frontend",
+      "items": [
+        "React",
+        "Vue.js",
+        "HTML5",
+        "CSS3",
+        "Tailwind CSS"
+      ]
+    },
+    {
+      "category": "Backend",
+      "items": [
+        "Node.js",
+        "Express",
+        "Django",
+        "GraphQL"
+      ]
+    },
+    {
+      "category": "Databases",
+      "items": [
+        "MongoDB",
+        "PostgreSQL",
+        "Redis"
+      ]
+    },
+    {
+      "category": "DevOps",
+      "items": [
+        "Docker",
+        "Kubernetes",
+        "AWS",
+        "CI/CD"
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "title": "Senior Software Engineer",
+      "company": "Tech Innovators Inc.",
+      "location": "San Francisco, CA",
+      "date": "Jan 2020 - Present",
+      "achievements": [
+        "Led the development of a microservices architecture, improving system scalability by 200%",
+        "Implemented a new CI/CD pipeline, reducing deployment time by 50%",
+        "Mentored junior developers, increasing team productivity by 30%"
+      ]
+    },
+    {
+      "title": "Software Engineer",
+      "company": "StartUp Solutions",
+      "location": "New York, NY",
+      "date": "Jun 2017 - Dec 2019",
+      "achievements": [
+        "Developed a real-time analytics dashboard using React and D3.js",
+        "Optimized database queries, improving application response time by 40%",
+        "Contributed to open-source projects, gaining recognition in the developer community"
+      ]
+    }
+  ],
+  "education": [
+    {
+      "degree": "Master of Science in Computer Science",
+      "school": "Stanford University",
+      "location": "Stanford, CA",
+      "date": "2015 - 2017"
+    },
+    {
+      "degree": "Bachelor of Science in Software Engineering",
+      "school": "Massachusetts Institute of Technology",
+      "location": "Cambridge, MA",
+      "date": "2011 - 2015"
+    }
+  ],
+  "certifications": [
+    {
+      "name": "AWS Certified Solutions Architect",
+      "issuer": "Amazon Web Services",
+      "date": "2022"
+    },
+    {
+      "name": "Google Cloud Professional Developer",
+      "issuer": "Google Cloud",
+      "date": "2021"
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "proficiency": "Native"
+    },
+    {
+      "language": "Spanish",
+      "proficiency": "Intermediate"
+    }
+  ]
+}
