@@ -2,6 +2,12 @@
 
 - 📖 [Remix docs](https://remix.run/docs)
 
+## Deploy
+
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=remix-boilerplate)
+
+More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
+
 ## Development
 
 Run the dev server:

@@ -1,8 +1,8 @@
 export default function Header() {
   return (
-    <div className="col-span-full flex items-start justify-between gap-1">
-      <div className="flex min-w-0 flex-col gap-1">
-        <h1 className="font-cal text-3xl">
+    <div className="flex items-start justify-between gap-1 col-span-full">
+      <div className="flex flex-col min-w-0 gap-1">
+        <h1 className="text-3xl font-cal">
           Device Model: Chrome AI Gemini Nano
         </h1>
         <p className="text-muted-foreground">
@@ -10,16 +10,16 @@ export default function Header() {
           <a
             href="https://edgeone.ai"
             target="_blank"
-            className="font-medium text-primary underline underline-offset-4"
+            className="font-medium underline text-primary underline-offset-4"
           >
             edgeone.ai
           </a>
           {'. '}
           Open source on{' '}
           <a
-            href="https://github.com/TencentEdgeOne/templates"
+            href="https://github.com/TencentEdgeOne/templates/tree/main/statics/chrome-ai"
             target="_blank"
-            className="font-medium text-primary underline underline-offset-4"
+            className="font-medium underline text-primary underline-offset-4"
           >
             GitHub
           </a>

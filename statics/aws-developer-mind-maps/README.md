@@ -1,8 +1,10 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# AWS Developer Mind Maps
+
+This project is the source code for the AWS Developer Mind Map, built with Next.js. It showcases the skills and knowledge needed to become a proficient AWS developer.
 
 ## Deploy
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=angular-boilerplate)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=aws-developer-mind-maps)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 

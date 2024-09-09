@@ -29,3 +29,9 @@ Credits:
 	Other:
 		jQuery (jquery.com)
 		Responsive Tools (github.com/ajlkn/responsive-tools)
+
+## Deploy
+
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=html5up-paradigm-shift)
+
+More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)

@@ -2,6 +2,12 @@
 
 Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
 
+## Deploy
+
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=svelte-boilerplate)
+
+More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
+
 ## Creating a project
 
 If you're seeing this, you've probably already done this step. Congrats!

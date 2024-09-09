@@ -1,4 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Excalidraw Online
+
+This is a simple project to host Excalidraw online. It is based on Next.js and uses the Excalidraw library.
+
+All data is stored locally in the browser and will not be uploaded to the server. It will still retain the last edited data after the browser is refreshed.
+
+## Deploy
+
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=excalidraw)
+
+More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
 ## Getting Started
 

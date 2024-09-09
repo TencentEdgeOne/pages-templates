@@ -1,4 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Free web developer resume templates
+
+Premium web developer resume templates, built with Next.js.
+
+## Deploy
+
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=resume-template)
+
+More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
 ## Getting Started
 
