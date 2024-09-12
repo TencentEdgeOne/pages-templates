@@ -24,7 +24,7 @@ export default function Faq() {
           , a free global acceleration static website hosting service. Open
           source on{' '}
           <a
-            href="https://github.com/TencentEdgeOne/templates/tree/main/statics/aws-developer-mind-maps"
+            href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/aws-developer-mind-maps"
             target="_blank"
             className="font-medium underline text-primary underline-offset-4"
           >

@@ -17,7 +17,7 @@ export default function Header() {
           {'. '}
           Open source on{' '}
           <a
-            href="https://github.com/TencentEdgeOne/templates/tree/main/statics/chrome-ai"
+            href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/chrome-ai"
             target="_blank"
             className="font-medium underline text-primary underline-offset-4"
           >
