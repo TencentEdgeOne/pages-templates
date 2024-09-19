@@ -8,7 +8,7 @@ npm create astro@latest -- --template basics
 
 ## Deploy
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=astro-boilerplate)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=astro-template)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 

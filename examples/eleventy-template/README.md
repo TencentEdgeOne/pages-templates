@@ -4,7 +4,7 @@ A starter repository showing how to build a blog with the [Eleventy](https://www
 
 ## Deploy
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=eleventy-boilerplate)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=eleventy-template)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 

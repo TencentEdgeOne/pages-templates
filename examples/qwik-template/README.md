@@ -10,7 +10,7 @@
 
 ## Deploy
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=qwik-boilerplate)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=qwik-template)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 

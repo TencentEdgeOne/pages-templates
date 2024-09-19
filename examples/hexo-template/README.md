@@ -18,6 +18,6 @@ See the [Hexo documentation](https://hexo.io/docs/) for more information.
 
 ## Deploy
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=hexo-boilerplate)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=hexo-template)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)

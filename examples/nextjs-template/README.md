@@ -3,7 +3,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with
 
 ## Deploy
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=nextjs-boilerplate)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=nextjs-template)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 

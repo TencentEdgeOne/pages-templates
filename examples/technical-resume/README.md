@@ -4,7 +4,7 @@ Premium web developer resume templates, built with Next.js.
 
 ## Deploy
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=resume-template)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=technical-resume)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 

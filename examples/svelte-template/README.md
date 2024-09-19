@@ -4,7 +4,7 @@ Everything you need to build a Svelte project, powered by [`create-svelte`](http
 
 ## Deploy
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=svelte-boilerplate)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=svelte-template)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 

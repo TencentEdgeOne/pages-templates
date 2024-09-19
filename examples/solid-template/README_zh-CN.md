@@ -10,7 +10,7 @@ $ npm install # 或 pnpm install 或 yarn install
 
 ## 部署
 
-[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?from=github&template=solid-boilerplate)
+[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?from=github&template=solid-template)
 
 ### 在 [Solid 官网](https://solidjs.com) 上了解更多，并在我们的 [Discord](https://discord.com/invite/solidjs) 上与我们聊天
 

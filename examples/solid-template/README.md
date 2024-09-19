@@ -10,7 +10,7 @@ $ npm install # or pnpm install or yarn install
 
 ## Deploy
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=solid-boilerplate)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=solid-template)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
