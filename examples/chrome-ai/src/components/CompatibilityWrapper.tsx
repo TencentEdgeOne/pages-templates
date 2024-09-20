@@ -12,7 +12,7 @@ declare global {
 
 const checkAI = async () => {
   if ('ai' in window) {
-    if ((await window.ai.canCreateTextSession()) === 'readily') {
+    if (((await window.ai.assistant.capabilities()).available) === 'readily') {
       return true;
     }
   }
@@ -50,7 +50,7 @@ export default function CompatibilityWrapper() {
                   <span className="px-1 font-mono bg-gray-100 rounded">
                     chrome://settings/help
                   </span>{' '}
-                  to ensure the version is above 128.
+                  to ensure the version is above 129.
                 </li>
                 <li className="text-base">
                   Enable Prompt API: Open

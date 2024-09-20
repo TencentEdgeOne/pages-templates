@@ -5,7 +5,7 @@ export default function CodeBoxes() {
     {
       title: 'Startup',
       code: `
-const model = await window.ai.createTextSession();
+const model = await window.ai.assistant.create();
 const res = await model.prompt("Who are you?");
 return res;
       `,
@@ -13,7 +13,7 @@ return res;
     {
       title: 'Translate',
       code: `
-const model = await window.ai.createTextSession();
+const model = await window.ai.assistant.create();
 const res = await model.prompt("Translate this sentence into French:'hello?'");
 return res;
       `,

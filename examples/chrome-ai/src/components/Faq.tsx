@@ -37,12 +37,6 @@ export default function Faq() {
       content:
         'To learn more about Chrome AI and free AI assistants in Chrome, you can read the official documentation at https://developer.chrome.com/docs/ai/built-in. For additional insights, check out this comprehensive document: https://docs.google.com/document/d/1VG8HIyz361zGduWgNG7R_R8Xkv0OOJ8b5C9QKeCjU0c/edit',
     },
-    {
-      id: 'Where is this webpage deployed?',
-      trigger: 'Where is this webpage deployed?',
-      content:
-        'This webpage is hosted on Edgeone Pages, a free global acceleration static website hosting service.',
-    },
   ];
 
   return (

@@ -6,13 +6,15 @@ export default function Header() {
           Device Model: Chrome AI Gemini Nano
         </h1>
         <p className="text-muted-foreground">
-          Running large language models locally in the browser. Made by{' '}
+          Running large language models locally in the browser.
+          <br />
+          Deploy on{' '}
           <a
-            href="https://edgeone.ai"
+            href="https://edgeone.ai/products/pages"
             target="_blank"
             className="font-medium underline text-primary underline-offset-4"
           >
-            edgeone.ai
+            EdgeOne Pages
           </a>
           {'. '}
           Open source on{' '}
