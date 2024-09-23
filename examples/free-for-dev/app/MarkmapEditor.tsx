@@ -68,12 +68,12 @@ const MarkmapEditor = () => {
 
   return (
     <div className="flex h-[75vh] bg-gray-100">
-      <div className="w-2/3 p-4 bg-white shadow-md">
+      <div className="w-2/3 p-4 bg-white">
         <svg ref={svgRef} className="w-full h-full"></svg>
       </div>
       <div className="w-1/3 p-4">
         <textarea
-          className="w-full h-full p-4 border border-gray-300 rounded-lg shadow-inner resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full h-full p-4 border border-gray-300 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
           value={markdown}
           onChange={(e) => setMarkdown(e.target.value)}
           placeholder="Write your markdown here..."

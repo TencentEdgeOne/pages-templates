@@ -49,7 +49,7 @@ const datas: StatementItem[] = [
 
 const Statement: React.FC = () => {
   return (
-    <section className="w-full p-8 mx-auto rounded-lg shadow-md">
+    <section className="w-full p-8 mx-auto">
       <div className="space-y-6">
         {datas.map((item, index) => (
           <div key={index}>
