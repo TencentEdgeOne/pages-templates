@@ -17,13 +17,12 @@
   <a href="#license">License</a>
 </p>
 <p align="center">
-  <a href="https://edgeone.ai/pages/templates">📄More Templates</a>
+  <a href="https://edgeone.ai/pages/templates">📄 More Templates</a>
 </p>
-<p align="center" style="margin-top: -80px;">
+<p align="center">
   <img src="https://test.edgeone.ai/_next/static/media/images-wall.edb0c9d9.png" alt="EdgeOne Edge Functions Mockup" title="EdgeOne Edge Functions"/>
 </p>
 
----
 
 
 ## Features
@@ -66,9 +65,9 @@ Launch product showcase pages quickly, improving user shopping experiences and s
 
 ## How It Works
 
-1️⃣ **Connect Git Repo**: Choose your GitHub, GitLab, or Bitbucket repository.
-2️⃣ **Customize Build**: Configure your build command and output directory.
-3️⃣ **Deploy Globally**: Auto-deploy to our edge services globally.
+1. **Connect Git Repo**: Choose your GitHub, GitLab, or Bitbucket repository.
+2. **Customize Build**: Configure your build command and output directory.
+3. **Deploy Globally**: Auto-deploy to our edge services globally.
 
 
 ## License
