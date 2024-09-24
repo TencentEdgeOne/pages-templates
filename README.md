@@ -3,7 +3,7 @@
 <h1 align="center">Tencent EdgeOne | <a href="https://edgeone.ai/products/pages" rel="nofollow">Pages</a></h1></h1>
 
 <p align="center">
-  <b> Launch Your Web App in No Time</b>
+  <b>💥 Launch Your Web App in No Time</b>
 </p>
 <p align="center">
   EdgeOne Pages enables you to create and launch stunning websites quickly, leveraging edge technology for optimal performance.
@@ -17,7 +17,7 @@
   <a href="#license">License</a>
 </p>
 <p align="center">
-  <a href="https://edgeone.ai/pages/templates">📄 More Templates</a>
+  <a href="https://edgeone.ai/pages/templates">📂 More Templates</a>
 </p>
 <p align="center">
   <img src="https://test.edgeone.ai/_next/static/media/images-wall.edb0c9d9.png" alt="EdgeOne Edge Functions Mockup" title="EdgeOne Edge Functions"/>
