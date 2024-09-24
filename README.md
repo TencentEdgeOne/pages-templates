@@ -1,7 +1,6 @@
 <a id="readme"></a>
 
-<h1 align="center">Tencent EdgeOne | <a href="https://edgeone.ai/products/pages" rel="nofollow">Pages</a></h1></h1>
-
+<h1 align="center">Tencent EdgeOne | <a href="https://edgeone.ai/products/pages" target="_blank" rel="noopener noreferrer">Pages</a></h1>
 <p align="center">
   <b>💥 Launch Your Web App in No Time</b>
 </p>
@@ -17,10 +16,10 @@
   <a href="#license">License</a>
 </p>
 <p align="center">
-  <a href="https://edgeone.ai/pages/templates">📂 More Templates</a>
+  <a href="https://edgeone.ai/pages/templates" target="_blank" rel="noopener noreferrer">📂 More Templates</a>
 </p>
 <p align="center">
-  <img src="https://test.edgeone.ai/_next/static/media/images-wall.edb0c9d9.png" alt="EdgeOne Edge Functions Mockup" title="EdgeOne Edge Functions"/>
+  <img src="https://edgeone.ai/_next/static/media/images-wall.edb0c9d9.png" alt="EdgeOne Edge Functions Mockup" title="EdgeOne Edge Functions"/>
 </p>
 
 
@@ -72,5 +71,5 @@ Launch product showcase pages quickly, improving user shopping experiences and s
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](https://opensource.org/licenses/MIT) file for details.
+This project is licensed under the MIT License - see the <a href="https://opensource.org/licenses/MIT" target="_blank">LICENSE</a> file for details.
 
