@@ -1,0 +1,36 @@
+{
+  "name": "gatsby",
+  "version": "1.0.0",
+  "private": true,
+  "description": "gatsby",
+  "author": "sagacheng",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@mdx-js/react": "^2.3.0",
+    "autoprefixer": "^10.4.19",
+    "gatsby": "^5.13.5",
+    "gatsby-plugin-mdx": "^5.13.1",
+    "gatsby-plugin-postcss": "^6.13.1",
+    "gatsby-source-filesystem": "^5.13.1",
+    "postcss": "^8.4.40",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.4.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.19",
+    "@types/react": "^18.2.55",
+    "@types/react-dom": "^18.2.19",
+    "typescript": "^5.3.3"
+  }
+}
