@@ -12,7 +12,6 @@
   <a href="#benefits">Benefits</a> •
   <a href="#use-cases">Use Cases</a> •
   <a href="#how-it-works">How It Works</a> •
-  <a href="#get-started">Get Started</a> •
   <a href="#license">License</a>
 </p>
 <p align="center">
@@ -68,7 +67,7 @@ Launch product showcase pages quickly, improving user shopping experiences and s
 2. **Customize Build**: Configure your build command and output directory.
 3. **Deploy Globally**: Auto-deploy to our edge services globally.
 
-
+<a href="https://edgeone.ai/pages/templates/nextjs-template">👉 Get Started to try our demo</a>
 ## License
 
 This project is licensed under the MIT License - see the <a href="https://opensource.org/licenses/MIT" target="_blank">LICENSE</a> file for details.
