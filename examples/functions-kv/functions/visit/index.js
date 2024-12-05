@@ -19,8 +19,7 @@ export async function onRequest({ request, params, env }) {
     console.error(err);
     return new Response(
       JSON.stringify({
-        error:
-          'KV storage is not configured. Please set up KV in your EdgeOne Pages Project.',
+        error: "KV storage hasn't been set up for your EdgeOne Pages Project.",
       }),
       {
         headers: {

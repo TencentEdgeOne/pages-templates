@@ -23,6 +23,27 @@ export default function Kv() {
     fetchVisitCount();
   }, []);
 
+  const renderKVDocumentationLink = () => {
+    const isCloudDomain = location.href.includes('.site');
+    const docUrl = isCloudDomain
+      ? 'https://edgeone.cloud.tencent.com/document/162936897742577664'
+      : 'https://edgeone.ai/document/162227803822321664';
+
+    return (
+      <p className="text-white">
+        For additional details, check out our{' '}
+        <a
+          href={docUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-medium text-yellow-300 transition duration-300 ease-in-out hover:underline"
+        >
+          KV documentation
+        </a>
+      </p>
+    );
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-black">
       <div className="w-full max-w-md p-8 bg-gray-900 rounded-lg shadow-xl">
@@ -39,7 +60,9 @@ export default function Kv() {
           <p className="mb-4 text-gray-300">Thank you for visiting!</p>
           {error ? (
             <div className="p-4 mb-4 bg-red-500 rounded-md">
-              <span className="text-white">{error}</span>
+              <span className="text-white">
+                {error} {renderKVDocumentationLink()}
+              </span>
             </div>
           ) : (
             <div className="p-4 bg-gray-800 rounded-md">
