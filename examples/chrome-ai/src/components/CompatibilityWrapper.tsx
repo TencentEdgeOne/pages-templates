@@ -12,7 +12,7 @@ declare global {
 
 const checkAI = async () => {
   if ('ai' in window) {
-    if (((await window.ai.assistant.capabilities()).available) === 'readily') {
+    if (((await window.ai.languageModel.capabilities()).available) === 'readily') {
       return true;
     }
   }
