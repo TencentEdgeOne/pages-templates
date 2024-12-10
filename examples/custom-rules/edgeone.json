@@ -1,0 +1,167 @@
+{
+  "headers": [
+    {
+      "source": "/invalid-input-error",
+      "headers": [
+        {
+          "key": "X-Error-Message",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "source": "/missing-headers-error"
+    },
+    {
+      "source": "/empty-headers-error",
+      "headers": []
+    },
+    {
+      "source": "/%E6%A0%87%E5%A4%B4*",
+      "headers": [
+        {
+          "key": "X-URL-Encoding-With-Splat",
+          "value": "/%E6%A0%87%E5%A4%B4*, :splat"
+        }
+      ]
+    },
+    {
+      "source": "/man/sim",
+      "headers": [
+        {
+          "key": "X-Full-URL-Match-1",
+          "value": "/man/sim 1"
+        },
+        {
+          "key": "X-Full-URL-Match-2",
+          "value": "/man/sim 2"
+        }
+      ]
+    },
+    {
+      "source": "/user/:name",
+      "headers": [
+        {
+          "key": "X-Route-Parameters",
+          "value": "/user/:name"
+        }
+      ]
+    },
+    {
+      "source": "/customer/:sex/:name",
+      "headers": [
+        {
+          "key": "X-Multiple-Route-Parameters",
+          "value": "/man/:sex/:name"
+        }
+      ]
+    },
+    {
+      "source": "/name/*",
+      "headers": [
+        {
+          "key": "X-URL-With-Wildcard",
+          "value": "/name/*, :splat"
+        }
+      ]
+    },
+    {
+      "source": "/assets/*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "max-age=31536000"
+        }
+      ]
+    },
+    {
+      "source": "*.jpg",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "max-age=31536001"
+        }
+      ]
+    },
+    {
+      "source": "/avatar/*.jpg",
+      "headers": [
+        {
+          "key": "X-Match-Files-With-Specific-Extensions",
+          "value": "/avatar/*.jpg :splat"
+        }
+      ]
+    },
+    {
+      "source": "/assets/*/party.jpg",
+      "headers": [
+        {
+          "key": "X-Match-Files-With-Wildcard",
+          "value": "/assets/*/party.jpg :splat"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/redirect-a/*.jpg",
+      "destination": "/redirect-a2/:splat.jpg",
+      "statusCode": 301
+    },
+    {
+      "source": "/redirect-b/:id",
+      "destination": "/redirect-b2/:id",
+      "statusCode": 301
+    },
+    {
+      "source": "/redirect-c/:id/:name",
+      "destination": "/redirect-c2/:id/name",
+      "statusCode": 301
+    },
+    {
+      "source": "/redirect-d/hello",
+      "destination": "/redirect-d2/hello",
+      "statusCode": 302
+    },
+    {
+      "source": "/redirect-e/*",
+      "destination": "/redirect-e2/:splat",
+      "statusCode": 302
+    },
+    {
+      "source": "/redirect-f/*/:name",
+      "destination": "/redirect-f2/:splat/:name",
+      "statusCode": 302
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/rewrite-a/*.jpg",
+      "destination": "/rewrite-a2/:splat.jpg"
+    },
+    {
+      "source": "/rewrite-b/:id",
+      "destination": "/rewrite-b2/:id.jpg"
+    },
+    {
+      "source": "/rewrite-c/:id/:name",
+      "destination": "/rewrite-c2/:id/name"
+    },
+    {
+      "source": "/rewrite-d/hello",
+      "destination": "/rewrite-d2/hello"
+    },
+    {
+      "source": "/rewrite-e/*",
+      "destination": "/rewrite-e2/:splat"
+    },
+    {
+      "source": "/rewrite-f/*/:name",
+      "destination": "/rewrite-f2/:splat/:name"
+    },
+    {
+      "source": "/rewrites-4/*/world/:id",
+      "destination": "/a/:splat-:id.js"
+    }
+  ]
+}
