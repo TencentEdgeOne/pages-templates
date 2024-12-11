@@ -16,8 +16,8 @@ const ruleTests = [
       },
       {
         title: 'Multiple Route Parameters',
-        description: '/man/:sex/:name',
-        path: '/user/male/sim',
+        description: '/customer/:sex/:name',
+        path: '/customer/male/sim',
       },
       {
         title: 'Match files with specific extensions',
@@ -110,7 +110,7 @@ export function CustomRules() {
                   <a
                     key={test.title}
                     href={test.path}
-                    target="_blank"
+                    // target="_blank"
                     className="block p-6 transition-all duration-200 bg-gray-900 border border-gray-800 rounded-lg hover:border-gray-700 hover:transform hover:-translate-y-1"
                   >
                     <h3 className="mb-2 text-lg font-medium">{test.title}</h3>

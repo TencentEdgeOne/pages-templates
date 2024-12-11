@@ -52,7 +52,7 @@
       "headers": [
         {
           "key": "X-Multiple-Route-Parameters",
-          "value": "/man/:sex/:name"
+          "value": "/customer/:sex/:name"
         }
       ]
     },
