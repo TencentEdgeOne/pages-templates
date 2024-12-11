@@ -26,7 +26,7 @@ export default function Kv() {
   const renderKVDocumentationLink = () => {
     const isCloudDomain = location.href.includes('.site');
     const docUrl = isCloudDomain
-      ? 'https://edgeone.cloud.tencent.com/document/162936897742577664'
+      ? 'https://edgeone.cloud.tencent.com/pages/document/162936897742577664'
       : 'https://edgeone.ai/document/162227803822321664';
 
     return (
