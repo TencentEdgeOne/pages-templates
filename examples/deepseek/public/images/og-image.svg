@@ -1,0 +1,28 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="1200" height="630" fill="#000000"/>
+  
+  <!-- 渐变背景 -->
+  <rect width="1200" height="630" fill="url(#gradient)"/>
+  
+  <!-- Logo -->
+  <g transform="translate(150, 165) scale(2)">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M16 2C8.268 2 2 8.268 2 16C2 23.732 8.268 30 16 30C23.732 30 30 23.732 30 16C30 8.268 23.732 2 16 2ZM13.5 11.5L10 15L13.5 18.5L12 20L7 15L12 10L13.5 11.5ZM18.5 11.5L22 15L18.5 18.5L20 20L25 15L20 10L18.5 11.5ZM14 20L18 10H19L15 20H14Z" fill="white"/>
+  </g>
+  
+  <!-- 文字 -->
+  <text x="400" y="220" fill="white" font-family="Inter, system-ui" font-weight="700" font-size="72">
+    Deepseek Coder
+  </text>
+  <text x="400" y="320" fill="#9CA3AF" font-family="Inter, system-ui" font-weight="400" font-size="32">
+    Generate your next app with Deepseek
+  </text>
+  
+  <!-- 渐变定义 -->
+  <defs>
+    <linearGradient id="gradient" x1="0" y1="0" x2="1200" y2="630" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" style="stop-color:#1E40AF"/>
+      <stop offset="100%" style="stop-color:#000000"/>
+    </linearGradient>
+  </defs>
+</svg> 
