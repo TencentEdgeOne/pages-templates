@@ -6,6 +6,8 @@ This example demonstrates how to deploy a WordPress site to EdgeOne Pages to enh
 
 [![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=wordpress-gatsby)
 
+Complete the following preparations, fill in your WordPress site address as an environment variable, and you can deploy, for example: https://xxx.com/graphql
+
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
 ## Preparations
