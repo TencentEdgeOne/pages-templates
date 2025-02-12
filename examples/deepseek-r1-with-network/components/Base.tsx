@@ -150,6 +150,14 @@ Try asking me something like:
         </h1>
         <div className="flex-grow" />
         <a
+          href="https://edgeone.ai/pages/templates/deepseek-r1-with-network"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mr-4 px-3 py-1.5 text-sm font-medium text-gray-100 bg-[#238636] hover:bg-[#2EA043] rounded-md transition-colors"
+        >
+          Free Deploy
+        </a>
+        <a
           href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/deepseek-r1-with-network"
           target="_blank"
           rel="noopener noreferrer"
