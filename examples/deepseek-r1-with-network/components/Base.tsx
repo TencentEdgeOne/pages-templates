@@ -205,9 +205,9 @@ Try asking me something like:
                     <ReactMarkdown
                       remarkPlugins={[remarkGfm]}
                       components={{
-                        code({ node, inline, className, children, ...props }) {
+                        code({ node, className, children, ...props }) {
                           const match = /language-(\w+)/.exec(className || '');
-                          return !inline ? (
+                          return true ? (
                             <pre className="p-4 overflow-auto rounded-lg">
                               <code className={className} {...props}>
                                 {children}
