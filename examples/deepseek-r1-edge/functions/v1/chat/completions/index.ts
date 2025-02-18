@@ -108,9 +108,14 @@ export async function onRequest({ request, params, env }: any) {
   }
 
   const { messages, network } = result.data;
-  const currentInput = messages[0]?.content;
+  const currentInput = messages[messages.length - 1]?.content;
 
   const content = await getContent(currentInput, !!network);
+
+  messages[messages.length - 1] = {
+    role: 'user',
+    content,
+  };
 
   try {
     // @ts-ignore-next-line
@@ -119,12 +124,7 @@ export async function onRequest({ request, params, env }: any) {
       JSON.stringify({
         model: 'deepseek-r1-distill-qwen-32b',
         stream: true,
-        messages: [
-          {
-            role: 'user',
-            content,
-          },
-        ],
+        messages: messages,
       })
     );
 
