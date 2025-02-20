@@ -27,7 +27,13 @@ export async function searxngSearch(
   return data?.results || [];
 }
 
-export async function getContent(input: string, withNetwork: boolean) {
+export async function getContent(
+  input: string,
+  withNetwork: boolean
+): Promise<{
+  content: string;
+  searchResults?: { title: string; url: string; content: string }[];
+}> {
   if (withNetwork) {
     let searchResults;
 
@@ -35,7 +41,9 @@ export async function getContent(input: string, withNetwork: boolean) {
       searchResults = await searxngSearch(input);
     } catch (err: any) {
       console.error('Search Web failed: ', err);
-      return input;
+      return {
+        content: input,
+      };
     }
 
     const context = formatSearchResults(searchResults);
@@ -48,10 +56,15 @@ export async function getContent(input: string, withNetwork: boolean) {
       
       Please respond in the same language as the question (e.g., if asked in English, respond in English; if asked in another language, respond in that language).`;
 
-    return contentWithNetworkSearch;
+    return {
+      content: contentWithNetworkSearch,
+      searchResults,
+    };
   }
 
-  return input;
+  return {
+    content: input,
+  };
 }
 
 function formatSearchResults(
@@ -98,10 +111,10 @@ export async function onRequest({ request, params, env }: any) {
     .safeParse(json);
 
   if (!result.success) {
-    return new Response(result.error.message, {
+    return new Response(JSON.stringify({ error: result.error.message }), {
       status: 200,
       headers: {
-        'Content-Type': 'text/plain',
+        'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
     });
@@ -110,7 +123,10 @@ export async function onRequest({ request, params, env }: any) {
   const { messages, network } = result.data;
   const currentInput = messages[messages.length - 1]?.content;
 
-  const content = await getContent(currentInput, !!network);
+  const { content, searchResults = [] } = await getContent(
+    currentInput,
+    !!network
+  );
 
   messages[messages.length - 1] = {
     role: 'user',
@@ -130,7 +146,15 @@ export async function onRequest({ request, params, env }: any) {
 
     return new Response(res, {
       headers: {
-        'Content-Type': 'text/event-stream',
+        results: JSON.stringify(
+          searchResults.map((item) => {
+            return {
+              url: item.url,
+              title: encodeURIComponent(item.title),
+            };
+          })
+        ),
+        'Content-Type': 'text/event-stream; charset=utf-8',
         'Cache-Control': 'no-cache',
         Connection: 'keep-alive',
         'Access-Control-Allow-Origin': '*',
@@ -139,11 +163,10 @@ export async function onRequest({ request, params, env }: any) {
       },
     });
   } catch (error: any) {
-    console.error('LLM error: ', error.message);
-    return new Response('error: ' + error.message, {
+    return new Response(JSON.stringify({ error: error.message }), {
       status: 200,
       headers: {
-        'Content-Type': 'text/plain',
+        'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
       },
     });
