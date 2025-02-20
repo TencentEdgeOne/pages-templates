@@ -1,0 +1,32 @@
+.root {
+    margin-top: 32px;
+}
+
+.inputContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.actionContainers {
+    max-width: 200px;
+    display: flex;
+    gap: 16px;
+}
+
+@media (max-width: 800px) {
+    .inputContainer {
+        grid-template-columns: 1fr;
+    }
+
+    /* .actionContainers {
+        max-width: unset;
+    } */
+}
+
+@media (max-width: 500px) {
+    .actionContainers {
+        max-width: unset;
+        flex-direction: column;
+    }
+}

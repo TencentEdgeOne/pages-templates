@@ -1,0 +1,145 @@
+# Global settings
+theme_color: '#5e72e4' # Theme color
+show_customize_theme_color_picker: true # Allow users to customize theme color
+darkmode_autoswitch: false # Auto dark mode options: false (day), alwayson (night), system (OS), time (schedule)
+enable_amoled_dark: false # Dark mode style: false (gray-black), true (pure black)
+card_radius: 4 # Card corner radius
+card_shadow: # Card shadow size (small/big)
+font: sans-serif # Font family: sans-serif/serif
+enable_headroom: false # Auto-collapse toolbar on scroll
+
+# Top toolbar settings
+toolbar_icon: '' # Toolbar icon image URL
+toolbar_icon_link: '' # Toolbar icon link
+toolbar_title: '' # Toolbar title (default: blog title)
+toolbar_menu: # Toolbar menu (supports submenus)
+  Home: /
+  Demo:
+    Archives: /archives
+
+# Banner settings
+banner_title: '' # Banner title (default: blog title)
+enable_banner_title_typing_effect: false # Enable typing animation
+theme.banner_typing_effect_interval: 100 # Typing speed (ms/character)
+banner_subtitle: '' # Banner subtitle
+banner_background_url: '/assets/img/banner.jpg' # Banner background image
+banner_background_hide_shapes: false # Hide background shapes
+banner_background_color_type: 'shape-primary' # Background style: shape-primary, shape-default, shape-dark, bg-gradient-*
+
+# Sidebar settings
+sidebar_banner_title: '' # Sidebar title
+sidebar_banner_subtitle: '' # Sidebar subtitle (--hitokoto-- for quotes)
+sidebar_announcement: '' # Sidebar announcement
+leftbar_menu: # Sidebar menu (supports nesting)
+  Home: /
+  Archives: /archives
+  Secondary:
+    Third:
+      Other: /
+sidebar_auther_image: '/assets/img/auther.jpg' # Author avatar
+sidebar_auther_name: '' # Author name (default: blog name)
+# leftbar_author_links: # Author links
+#   Youtube: /
+#   Instagram: /
+#   Twitter: /
+leftbar_friend_links: # Friend links
+  Youtube: /
+  Instagram: /
+  Twitter: /
+show_headindex_number: false # Show section numbers in TOC
+
+# Article settings
+excerpt: true # Show excerpt instead of full content
+first_image_as_thumbnail: false # Use first image as thumbnail
+article_meta: time|categories|read|words|readingtime # Meta info: time, edittime, categories, read, words, readingtime
+reading_speed_cn: 300 # Chinese words per minute
+reading_speed_en: 160 # English words per minute
+donate_qrcode_url: '' # Donation QR code URL
+additional_content_after_post: '' # HTML content after posts
+article_header_style: default # Header style: default, 1, 2
+
+# Background settings
+page_background_url: '/assets/img/banner.jpg' # Page background image
+page_background_dark_url: '/assets/img/banner.jpg' # Dark mode background
+page_background_opacity: 1 # Background opacity (0-1)
+transparent_banner: true # Transparent banner
+show_toolbar_mask: false # Toolbar overlay
+
+# FAB settings
+fab_show_darkmode_button: false # Dark mode toggle FAB
+fab_show_settings_button: true # Settings FAB
+fab_show_gotocomment_button: false # Jump to comments FAB
+
+# Smooth scroll
+smoothscroll: 1 # Options: disabled, 1, 1-pulse, 2, 3
+
+# Zoomify settings
+enable_zoomify: true # Enable image zoom
+zoomify_duration: 200 # Zoom animation duration
+zoomify_easing: cubic-bezier(0.4,0,0,1) # Animation curve
+zoomify_scale: 0.9 # Max zoom scale (0-1)
+
+# Lazyload settings
+enable_lazyload: true # Enable lazy loading
+lazyload_threshold: 800 # Loading threshold (pixels from bottom)
+lazyload_effect: fadeIn # Loading effect
+lazyload_loading_style: 1 # Loading animation style (1-11/none)
+
+# Pangu.js
+enable_pangu: false # Auto-space between CJK and Latin
+
+# Miscellaneous
+pjax_disabled: false # Disable Pjax
+enable_into_article_animation: false # Article entry animation
+enable_mobile_scale: false # Allow mobile zoom
+
+# Footer
+footer_html: '' # Footer HTML
+
+# Math rendering
+math_render: '' # Options: mathjax3, mathjax2, katex
+mathjax_cdn_url: //cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js
+argon_mathjax_v2_cdn_url: //cdn.jsdelivr.net/npm/mathjax@2.7.5/MathJax.js?config=TeX-AMS_HTML
+katex_cdn_url: //cdn.jsdelivr.net/npm/katex@0.11.1/dist/
+
+# Code highlighting
+enable_code_highlight: false # Enable code highlight
+code_theme: vs2015 # Highlight theme
+
+# Custom scripts
+custom_html_head: '' # Head HTML
+custom_html_foot: '' # Footer HTML
+
+# Comment systems
+gitalk:
+  enable: false # Enable Gitalk
+  owner: ''
+  repo: ''
+  admin: ''
+  clientID: ''
+  clientSecret: ''
+giscus:
+  enable: false # Enable Giscus
+  repo: ''
+  repo_id: ''
+  category: ''
+  category_id: ''
+  mapping: 'pathname'
+  input_position: 'top'
+  theme: 'light'
+  lang: 'zh-CN'
+waline:
+  enable: false # Enable Waline
+  server_url: ''
+twikoo:
+  enable: false # Enable Twikoo
+  envID: ' '
+  lang: 'zh-CN'
+
+# Analytics
+baidu_analytics:
+  enable: false # Baidu Analytics
+  id: '' # Tracking ID
+gtag:
+  enable: false # Google Analytics
+  id: '' # G-/UA- ID

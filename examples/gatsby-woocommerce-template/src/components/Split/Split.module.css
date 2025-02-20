@@ -1,0 +1,64 @@
+.root {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.contentContainer {
+    padding: 122px 172px 122px 63px;
+}
+
+.detailContainer {
+    max-width: 500px;
+}
+
+.contentContainer h4 {
+    font-weight: normal;
+    font-size: 42px;
+    line-height: 50px;
+    margin-bottom: 32px;
+}
+
+.contentContainer p {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    margin-bottom: 32px;
+}
+
+.button {
+    width: 174px;
+}
+
+.imageContainer {
+    width: 100%;
+}
+
+.imageContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 800px) {
+    .root {
+        grid-template-columns: 1fr;
+    }
+
+    .imageContainer {
+        height: 40vh;
+    }
+
+    .contentContainer {
+        padding: 56px 16px;
+    }
+
+    .contentContainer h4 {
+        font-size: 32px;
+        line-height: 38px;
+    }
+
+    .contentContainer p {
+        font-size: 15px;
+        line-height: 24px;
+    }
+}

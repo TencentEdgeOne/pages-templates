@@ -1,0 +1,167 @@
+.root {
+    width: 400px;
+}
+
+.detailsContainer {
+    margin-top: 16px;
+}
+
+.imageContainer {
+    position: relative;
+    cursor: pointer;
+}
+
+.root img {
+    display: block;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 1px;
+}
+
+.productName {
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--standard-black);
+}
+
+.prices {
+    margin-top: 8px;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.prices span {
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+}
+
+.salePrice {
+    color: var(--sale);
+}
+
+.originalPrice {
+    text-decoration: line-through;
+    color: var(--grey-placeholder);
+}
+
+.meta {
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--grey-placeholder);
+}
+
+.prices > span:first-child {
+    margin-right: 16px;
+}
+
+.bagContainer {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+
+    width: 70px;
+    height: 70px;
+    background-color: var(--standard-white);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.imageContainer:hover .bagContainer {
+    opacity: 1;
+    visibility: visible;
+}
+
+.heartContainer {
+    position: absolute;
+    top: 32px;
+    right: 32px;
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.root:hover .heartContainer {
+    opacity: 1;
+    visibility: visible;
+}
+
+.heartFillContainer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    color: var(--bg-indigo);
+
+    transition: opacity 0.3s ease-in-out;
+}
+
+.heartFillContainer svg{
+    width: 20px;
+    height: 20px;
+}
+
+.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.hide {
+    visibility: hidden;
+    opacity: 0;
+}
+
+@media (max-width: 800px) {
+    .root {
+        width: 400px;
+    }
+    .bagContainer {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .heartContainer {
+        opacity: 1;
+        visibility: visible;
+    }
+}
+
+@media (max-width: 600px) {
+    .productName {
+        font-weight: normal;
+        font-size: 13px;
+        line-height: 16px;
+    }
+
+    .prices span {
+        font-size: 13px;
+        line-height: 16px;
+    }
+}
+
+@media (max-width: 400px) {
+    .imageContainer img{
+        height: 220px !important;
+    }
+
+    .bagContainer {
+        width: 40px;
+        height: 40px;
+    }
+
+    .bagContainer svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .heartContainer {
+        top: 32px;
+        right: 16px;
+    }
+}

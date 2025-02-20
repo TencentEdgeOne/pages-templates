@@ -1,0 +1,49 @@
+.root {
+
+}
+
+.cardGrid {
+    width: 100%;
+    margin: 0 auto;
+    display: grid;
+    gap: 56px 32px;
+}
+
+.mobileSlider {
+    display: none;
+}
+
+.show {
+    display: grid !important;
+}
+
+@media (max-width: 800px) {
+    .mobileSlider {
+        display: block;
+    }
+
+    .cardGrid {
+        display: none;
+    }
+
+    .show {
+        grid-template-columns: 1fr 1fr !important;
+        gap: 24px 12px;
+    }
+}
+
+@media (max-width: 600px) {
+    .mobileSlider {
+        display: block;
+    }
+
+    .cardGrid {
+        display: none;
+    }
+
+    .show {
+        grid-template-columns: 1fr !important;
+        gap: 24px 12px;
+    }
+}
+

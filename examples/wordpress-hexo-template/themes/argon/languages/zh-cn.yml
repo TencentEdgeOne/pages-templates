@@ -1,0 +1,44 @@
+header:
+  search: 搜索
+  placeholder: 搜索什么...
+setting:
+  primaryColor: 主题色
+  borderRadius: 圆角半径
+  shadow: 阴影效果
+  lightShadow: 浅色阴影
+  darkShadow: 深色阴影
+  fontFamily: 字体设置
+  filter: 滤镜
+  filterNone: 无滤镜
+  filterSunset: 日落滤镜
+  filterDarken: 暗化滤镜
+  filterGrey: 灰度滤镜
+  moveToLeft: 左移
+  moveToRight: 右移
+  backToTop: 返回顶部
+  toNightMode: 切换夜间模式
+  nightMode: 夜间模式
+  toDarkMode: 切换深色模式
+  darkMode: 深色模式
+  setting: 设置面板
+  dayMode: 日间模式
+  progress: 阅读进度
+  menu: 菜单
+  reset: 重置设置
+common:
+  articles: 文章
+  tags: 标签
+  tag: 标签
+  categories: 分类
+  category: 分类
+  visitors: 总访问量
+  read: 阅读
+  words: 字
+  minutes: 分钟
+  donate: 赞助
+  next: 下一篇
+  pre: 上一篇
+  archives: 归档
+  archive: 归档
+  content: 文章目录
+  site: 站点概览

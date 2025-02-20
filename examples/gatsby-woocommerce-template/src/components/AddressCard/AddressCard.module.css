@@ -1,0 +1,52 @@
+.root {
+    background-color: var(--bg-grey);
+    padding: 30px 40px 50px 40px;
+    min-height: 180px;
+    position: relative;
+    transition: all ease-in-out 0.3s;
+}
+
+.root > span {
+    font-size: 14px;
+    line-height: 28px;
+    display: block;
+}
+
+.root .name {
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.actionContainer {
+    position: absolute;
+    bottom: -10px;
+    transition: all ease-in-out 0.3s;
+    visibility: hidden;
+    opacity: 0;
+    color: var(--standard-white);
+}
+
+.root:hover, .active {
+    background-color: var(--bg-indigo);
+    color: var(--standard-white);
+}
+
+.root:hover .actionContainer {
+    visibility: visible;
+    opacity: 1;
+    bottom: 30px;
+}
+
+.actionContainer span {
+    border-bottom: 1px solid var(--standard-white);
+    margin-right: 24px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.actionContainer span:last-child {
+    margin-right: 0px;
+}

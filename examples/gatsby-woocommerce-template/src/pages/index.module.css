@@ -1,0 +1,115 @@
+.root {
+
+}
+
+.collectionContainer {
+    margin-top: 38px;
+}
+
+.promotionContainer {
+    position: relative;
+}
+
+.promotionContainer h2 {
+    font-size: 52px;
+    line-height: 62px;
+}
+
+
+.messageContainer {
+    text-align: center;
+    padding: 60px 0px;
+    margin: 0px 30px;
+}
+
+.messageContainer p {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+}
+
+.gold {
+    color: var(--bg-indigo);
+}
+
+.contentTitle{
+    text-align: center;
+    font-weight: normal;
+    font-size: 42px;
+    line-height: 50px;
+    margin-bottom: 16px;
+}
+
+.newArrivalsContainer {
+    margin-top: 64px;
+}
+
+.highlightContainer {
+    margin: 88px 0px;
+}
+
+.linkContainers {
+    display: flex;
+    position: absolute;
+    transform: translate(-50%, 0%);
+    bottom: 64px;
+    left: 50%;
+    gap: 72px;
+}
+
+.ctaCustomButton {
+    margin-top: 50px;
+}
+
+.linkContainers a {
+    color: var(--standard-white);
+    border-bottom: 1px solid var(--standard-white);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-transform: uppercase;
+    transition: all 0.3s ease-in-out;
+}
+
+.linkContainers a:hover {
+    color: var(--bg-indigo);
+    border-bottom: 1px solid var(--bg-indigo);
+}
+
+.blogsContainer {
+    margin-top: 96px;
+}
+
+.sustainableContainer {
+    margin: 96px 40px 0px 40px;
+}
+
+.socialContainer {
+    margin-top: 64px;
+}
+
+.socialContentGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.socialContentGrid img {
+    width: 100%;
+    object-fit: cover;
+}
+
+@media (max-width: 800px) {
+    .sustainableContainer {
+        margin: 96px 0px 0px 0px;
+    }
+
+    .socialContentGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .highlightContainer {
+        margin: 88px 0px 40px 0px;
+    }
+}

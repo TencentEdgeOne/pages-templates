@@ -1,0 +1,46 @@
+header:
+  search: Search
+  placeholder: Search...
+setting:
+  primaryColor: Primary Color
+  borderRadius: Border Radius
+  shadow: Shadow
+  lightShadow: Light Shadow
+  darkShadow: Dark Shadow
+  fontFamily: Font Family
+  filter: Filter
+  filterNone: None
+  filterSunset: Sunset
+  filterDarken: Darken
+  filterGrey: Grey
+  moveToLeft: Move To Left
+  moveToRight: Move To Right
+  backToTop: Back To Top
+  toNightMode: Switch To Night Mode
+  nightMode: Night Mode
+  toDarkMode: Switch To Dark Mode
+  darkMode: Dark Mode
+  setting: Setting
+  dayMode: Day Mode
+  progress: Progress
+  menu: Menu
+  reset: Reset
+common:
+  articles: Articles
+  tags: Tags
+  tag: Tag
+  categories: Categories
+  category: Category
+  visitors: Total Visitors
+  read: Read
+  words: Words
+  minutes: Minutes
+  donate: Donate
+  next: Next
+  pre: Previous
+  archives: Archives
+  archive: Archive
+  content: Content
+  site: Site
+
+

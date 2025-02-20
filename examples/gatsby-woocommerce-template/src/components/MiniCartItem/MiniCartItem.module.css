@@ -1,0 +1,87 @@
+.root {
+    display: flex;
+    gap: 16px;
+}
+
+.imageContainer {
+    width: 155px;
+    height: 200px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.imageContainer img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.detailsContainer {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.metaContainer > span {
+    display: block;
+}
+
+.closeContainer {
+    flex-shrink: 0;
+}
+
+.name {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.priceContainer {
+    margin-top: 4px;
+    margin-bottom: 16px;
+}
+
+.priceContainer span {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.meta {
+    margin-bottom: 8px;
+    color: var(--grey-crumb);
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.size {
+    margin-left: 2px;
+    text-transform: uppercase;
+}
+
+.meta:last-child {
+    margin-bottom: 0px;
+}
+
+@media (max-width: 500px) {
+    .imageContainer {
+        width: 80px;
+        height: 110px;
+    }
+
+    .adjustItemContainer {
+        margin-top: 16px;
+    }
+
+    .name, .price, .meta {
+        font-size: 13px;
+        line-height: 16px;
+    }
+
+    .priceContainer span {
+        font-size: 13px;
+        line-height: 16px;
+    }
+}

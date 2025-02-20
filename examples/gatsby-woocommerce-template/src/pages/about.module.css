@@ -1,0 +1,161 @@
+.root {
+    width: 100%;
+}
+
+/* special case with the image */
+.root > div {
+    background-position: right;
+}
+
+.navContainer {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--bg-light-gray);
+    position: sticky;
+    gap: 48px;
+    top: 120px;
+    background-color: var(--standard-white);
+    overflow-x: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+    z-index: 10000;
+}
+
+.navContainer > div:first-child {
+    margin-left: auto;
+}
+
+.navContainer > div:last-child {
+    margin-right: auto;
+}
+
+.detailContainer {
+    margin-left: auto;
+    max-width: 800px;
+    margin-top: 164px;
+}
+
+.detailContainer p{
+    font-family: var(--standard-header);
+    font-weight: normal;
+    font-size: 42px;
+    line-height: 50px;
+}
+
+.imageContainer {
+    padding-bottom: 130px;
+    margin: 80px 48px 0px 48px;
+    min-height: 600px;
+}
+
+.imageContainer img {
+    width: 100%;
+    object-fit: cover;
+}
+
+.content {
+    display: grid;
+    margin-bottom: 30px;
+    gap: 80px 0px;
+}
+
+
+.content h3{
+    font-weight: normal;
+    font-size: 52px;
+    line-height: 62px;
+    margin-right: 40px;
+}
+
+.content p {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+    margin-bottom: 40px;
+}
+
+.content img {
+    object-fit: cover;
+    width: 630px;
+    height: 750px;
+}
+
+.content ol {
+    padding-left: 32px;
+    margin-bottom: 32px;
+}
+
+.content ol li {
+    font-family: var(--standard-header);
+    font-weight: normal;
+    font-size: 32px;
+    line-height: 52px;
+}
+
+.content ul {
+    margin-bottom: 32px;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.navContainer::-webkit-scrollbar {
+    display: none;
+}
+
+@media (max-width:1050px) {
+    .content img {
+        width: 100%;
+    }
+
+    .content h3{
+        margin-right: 24px;
+    }
+}
+
+@media (max-width: 900px) {
+    .content {
+        grid-template-columns: 1fr;
+        gap: 24px 0px;
+    }
+
+    .content h3{ 
+        font-size: 32px;
+        line-height: 38px;
+    }
+
+    .content ol li {
+        font-size: 22px;
+        line-height: 42px;
+    }
+
+    .detailContainer p{
+        font-size: 22px;
+        line-height: 28px;
+    }
+
+    .imageContainer {
+        min-height: unset;
+        margin: 24px 16px;
+        height: 240px;
+    }
+
+    .imageContainer img {
+        height: 100%;
+    }
+
+    .detailContainer {
+        margin-top: 32px;
+    }
+}
+
+@media (max-width: 800px) {
+    .navContainer {
+        top: 90px;
+    }
+
+    .imageContainer {
+        padding-bottom: 100px;
+    }
+}

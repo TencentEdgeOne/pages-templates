@@ -1,0 +1,106 @@
+.loginFormContainer {
+    max-width: 420px;
+    margin: 40px auto 128px auto;
+}
+
+.loginTitle {
+    font-weight: normal;
+    font-size: 52px;
+    line-height: 62px;
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.subtitle {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    display: block;
+}
+
+.loginForm {
+    margin-top: 72px;
+}
+
+.loginForm > div:first-child {
+    margin-bottom: 40px;
+}
+
+.loginForm > div:nth-child(2) {
+    margin-bottom: 8px;
+}
+
+.forgotLink {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-transform: uppercase;
+    
+    border-bottom: 1px solid var(--standard-black);
+    padding-bottom: 1px;
+}
+
+.forgotPasswordContainer {
+    margin-bottom: 40px;
+}
+
+.createLink {
+    display: block;
+    margin: 48px 0px 16px 0px;
+    text-align: center;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.forgotLink:hover {
+    color: var(--bg-indigo);
+    border-bottom: 1px solid var(--bg-indigo);
+}
+
+.errorContainer {
+    background-color: var(--error);
+    padding: 0px;
+
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    max-height: 0px;
+}
+
+.errorMessage {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    color: var(--standard-white);
+    text-align: center;
+    display: block;
+}
+
+.show {
+    visibility: visible;
+    opacity: 1;
+    max-height: unset;
+    padding: 20px 0px;
+}
+
+@media (max-width: 800px) {
+    .root {
+        padding: 0px 16px;
+    }
+
+    .loginTitle {
+        font-size: 32px;
+        line-height: 38px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        line-height: 17px;
+    }
+
+    .attributeGridContainer {
+        display: none;
+    }
+}

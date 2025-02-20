@@ -1,0 +1,61 @@
+.root {
+    display: block;
+}
+
+.sizeLabelContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.sizeSelection {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.sizeSelection > div {
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.guide {
+    cursor: pointer;
+    border-bottom: 1px solid var(--standard-black);
+    font-weight: 500;
+}
+
+.label {
+    
+    font-size: 14px;
+    line-height: 17px;
+}
+
+@media (max-width: 1000px) {
+    .sizeSelection {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 800px) {
+    .sizeSelection {
+        display: flex;
+    }
+}
+
+@media (max-width: 500px) {
+    .sizeSelection {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 400px) {
+    .sizeSelection {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}

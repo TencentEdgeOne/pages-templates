@@ -1,0 +1,68 @@
+.root {
+    min-height: 50vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 40px;
+}
+
+.root h1 {
+    font-size: 72px;
+    font-weight: normal;
+}
+
+.root h2 {
+    font-size: 32px;
+    font-weight: normal;
+}
+
+.root p {
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.searchContainer {
+    display: flex;
+    gap: 16px;
+}
+
+.searchContainer > div {
+    width: 100%;
+}
+
+.searchContainer input {
+    height: 52px;
+}
+
+.searchContainer > button {
+    align-self: flex-start;
+    width: 350px;
+}
+
+@media (max-width: 600px) {
+
+    .root {
+        padding: 40px 0px;
+        min-height: unset;
+        gap: 16px;
+    }
+
+    .root h1 {
+        font-size: 42px;
+    }
+
+    .root h2 {
+        font-size: 24px;
+    }
+
+    .searchContainer {
+        flex-direction: column;
+        gap: 0px;
+    }
+
+    .searchContainer > button {
+        width: 100%;
+    }
+    
+}

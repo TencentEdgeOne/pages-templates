@@ -1,0 +1,39 @@
+.root {
+    display: block;
+    width: 100%;
+}
+
+.selectContainer {
+    position: relative;
+    margin-top: 12px;
+}
+
+.label {
+    font-size: 12px;
+    line-height: 15px;
+    color: var(--standard-white);
+}
+
+.selectContainer select {
+    width: 100%;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 12px 38px 12px 20px;
+    background-color: transparent;
+    border: 1px solid var(--standard-dark-grey);
+    color: var(--standard-white);
+    font-size: 12px;
+    line-height: 14px;
+}
+
+.selectContainer select:focus {
+    outline: 0;
+}
+
+.caretContainer {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translate(0%, -50%);
+    color: var(--standard-white);
+}

@@ -1,0 +1,41 @@
+.accordionRoot {
+    width: 100%;
+}
+
+.accordionHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+    cursor: pointer;
+}
+
+.accordionContent {
+    transition: all ease-in-out 0.3s;
+}
+
+.uppercase {
+    text-transform: uppercase;
+}
+
+.show {
+    opacity: 1;
+    visibility: visible;
+    max-height: 800px;
+    margin-top: 32px;
+}
+
+.hide {
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0px;
+    margin-top: 0px;
+}
+
+.iconContainer {
+    transition: all ease-in-out 0.3s;
+}
+
+.rotate {
+    transform: rotate(-180deg);
+}

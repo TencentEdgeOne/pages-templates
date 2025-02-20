@@ -1,0 +1,66 @@
+.signupFormContainer {
+    max-width: 420px;
+    margin: 40px auto 128px auto;
+}
+
+.title {
+    font-weight: normal;
+    font-size: 52px;
+    line-height: 62px;
+    text-align: center;
+    margin-bottom: 36px;
+}
+
+.subtitle {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 19px;
+    text-align: center;
+    display: block;
+}
+
+.signupForm {
+    margin-top: 72px;
+}
+
+.signupForm > div {
+    margin-bottom: 24px;
+}
+
+.signupForm div:last-of-type {
+    margin-bottom: 40px;
+}
+
+.reminder {
+    display: block;
+    margin: 48px 0px 16px 0px;
+    text-align: center;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.forgotLink:hover {
+    color: var(--bg-indigo);
+    border-bottom: 1px solid var(--bg-indigo);
+}
+
+@media (max-width: 800px) {
+    .root {
+        padding: 0px 16px;
+    }
+
+    .title {
+        font-size: 32px;
+        line-height: 38px;
+    }
+
+    .subtitle {
+        font-size: 14px;
+        line-height: 17px;
+    }
+
+    .attributeGridContainer {
+        display: none;
+    }
+}

@@ -1,0 +1,12 @@
+.root {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 100px 32px;
+}
+
+@media (max-width: 800px) {
+    .root {
+        grid-template-columns: 1fr;
+        gap: 32px;
+    }
+}

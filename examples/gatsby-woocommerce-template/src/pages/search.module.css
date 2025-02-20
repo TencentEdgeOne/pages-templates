@@ -1,0 +1,20 @@
+.root {
+    margin-top: 24px;
+}
+
+.searchLabels {
+    text-align: center;
+    margin-bottom: 56px;
+}
+
+.searchLabels h4{
+    font-size: 32px;
+    line-height: 38px;
+    margin-bottom: 56px;
+}
+
+.searchLabels span {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+}

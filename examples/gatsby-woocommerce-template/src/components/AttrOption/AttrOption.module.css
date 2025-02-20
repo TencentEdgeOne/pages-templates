@@ -1,0 +1,23 @@
+.root {
+    padding: 8px 28px;
+    border: 1px solid var(--bg-light-gray);
+    cursor: pointer;
+    transition: all ease-in-out 0.3s;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2px;
+}
+
+.option {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-transform: uppercase;
+}
+
+.root:hover, .isActive {
+    color: var(--standard-white);
+    background-color: var(--bg-indigo);
+}

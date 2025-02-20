@@ -1,0 +1,74 @@
+.root {
+    
+}
+
+.navContainer {
+    display: flex;
+    align-items: center;
+
+    border-bottom: 1px solid var(--bg-light-gray);
+    position: sticky;
+    top: 120px;
+    background-color: var(--standard-white);
+
+    /* offset banner margin */
+    margin-top: -64px;
+    margin-bottom: 80px;
+    z-index: 1;
+    gap: 48px;
+
+    overflow-x: auto;
+}
+
+.navContainer > div:first-child {
+    margin-left: auto;
+}
+
+.navContainer > div:last-child {
+    margin-right: auto;
+}
+
+.content {
+    transition: all ease-in-out 0.3s;
+    overflow: auto;
+    margin: 0px 8px;
+}
+
+.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hide {
+    opacity: 0;
+    visibility: hidden;
+    max-height: 0px;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.navContainer::-webkit-scrollbar {
+    display: none;
+}
+  
+  /* Hide scrollbar for IE, Edge and Firefox */
+.navContainer {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.pageContainer {
+    padding-bottom: 150px;
+}
+
+@media (max-width: 800px) {
+    .navContainer {
+        padding-left: 32px;
+        padding-right: 32px;
+        top: 99px;
+        margin-bottom: 48px;
+    }
+
+    .navContainer > a {
+        margin-right: 32px;
+    }
+}

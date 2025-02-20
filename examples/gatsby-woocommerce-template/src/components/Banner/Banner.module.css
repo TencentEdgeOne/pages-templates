@@ -1,0 +1,45 @@
+.root {
+    padding: 50px 0px;
+    margin-bottom: 64px;
+    background-size: cover;
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+
+    display: flex;
+    align-items: center;
+}
+
+.content {
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.content h2 {
+    font-size: 52px;
+    line-height: 62px;
+    font-weight: normal;
+}
+
+.subtitle {
+    font-size: 14px;
+    line-height: 17px;
+}
+
+@media (max-width: 800px) {
+    .root {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .hideSubtitleOnMobile {
+        display: none;
+    }
+
+    .content h2 {
+        font-size: 32px;
+        line-height: 38px;
+    }
+}

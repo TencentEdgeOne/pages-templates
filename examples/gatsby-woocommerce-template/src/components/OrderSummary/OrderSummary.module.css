@@ -1,0 +1,108 @@
+.root {
+    width: 100%;
+}
+
+.orderSummary {
+    border: 1px solid var(--bg-indigo);
+    background-color: var(--standard-white);
+    padding: 30px;
+}
+
+.actionContainer {
+    margin-top: 24px;
+}
+
+.calculationContainer {
+    padding: 44px 0px 0px 0px;
+    border-top: 1px solid var(--bg-light-gray);
+    margin-top: 32px;
+}
+
+.labelContainer {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 32px;
+}
+
+.labelContainer span {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+}
+
+.title {
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    text-transform: uppercase;
+}
+
+.couponContainer {
+    padding-top: 40px;
+    border-top: 1px solid var(--bg-light-gray);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 16px 16px;
+}
+
+.couponContainer > div {
+    margin-bottom: 0px;
+    border: 1px solid var(--bg-light-gray);
+}
+
+.couponContainer > span {
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    display:block;
+    flex-shrink: 0;
+}
+
+.totalContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid var(--bg-light-gray);
+    padding-top: 32px;
+    margin-top: 48px;
+}
+
+.totalContainer span:first-child {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.totalContainer span:nth-child(2) span {
+    font-weight: normal;
+    font-size: 24px;
+    line-height: 29px;
+}
+
+.linkContainer {
+    margin-top: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.linkContainer a{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    transition: all ease-in-out 0.3s;
+    color: var(--standard-black);
+    border-bottom: 1px solid var(--standard-black);
+}
+
+.linkContainer a:hover {
+    color: var(--bg-indigo);
+    border-bottom: 1px solid var(--bg-indigo);
+}
+
+/* @media (max-width: 900px) {
+    .couponContainer {
+        grid-template-columns: 1fr 1fr;
+    }
+} */

@@ -1,0 +1,33 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 32px;
+}
+
+.root span {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 40px;
+}
+
+.root p {
+    font-family: var(--standard-header);
+    font-weight: normal;
+    font-size: 42px;
+    line-height: 52px;
+    text-align: center;
+    max-width: 720px;
+}
+
+@media (max-width: 600px) {
+
+    .root p {
+        font-size: 22px;
+        line-height: 32px;
+    }
+}

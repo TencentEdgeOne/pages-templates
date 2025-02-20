@@ -1,0 +1,58 @@
+.root {
+}
+
+.navContainer {
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    border-bottom: 1px solid var(--bg-light-gray);
+    position: sticky;
+    gap: 48px;
+    top: 120px;
+    background-color: var(--standard-white);
+    z-index: 1;
+    overflow-x: auto;
+    padding-left: 32px;
+    padding-right: 32px;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* special case with the image */
+.root > div {
+    background-position: center;
+}
+
+.navContainer > div:first-child {
+    margin-left: auto;
+}
+
+.navContainer > div:last-child {
+    margin-right: auto;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.navContainer::-webkit-scrollbar {
+    display: none;
+}
+
+.blogsContainer {
+    margin-top: 72px;
+    margin-bottom: 100px;
+}
+
+.loadMoreContainer {
+    width: 160px;
+    margin: 100px auto 150px auto;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+@media (max-width: 800px) {
+    .navContainer {
+        top: 90px;
+    }
+}

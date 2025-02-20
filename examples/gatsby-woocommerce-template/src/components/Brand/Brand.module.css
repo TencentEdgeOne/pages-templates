@@ -1,0 +1,12 @@
+.root {
+    display: flex;
+    justify-content: center;
+    cursor: pointer;
+}
+
+@media (max-width: 800px) {
+    .root svg {
+        width: 90px;
+        height: 16.67px;
+    }
+}

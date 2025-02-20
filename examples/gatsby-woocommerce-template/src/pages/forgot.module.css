@@ -1,0 +1,77 @@
+.root {
+    max-width: 750px;
+    margin: 40px auto 140px;
+}
+
+.title {
+    font-weight: normal;
+    font-size: 52px;
+    line-height: 62px;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.message {
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 26px;
+}
+
+.formContainer {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 40px;
+    margin-bottom: 30px;
+}
+
+.formContainer > div:first-child {
+    min-width: 480px;
+    margin-right: 8px;
+    min-height: 101px;
+}
+
+.formContainer input {
+    height: 52px;
+}
+
+/* fieldinput has a possibility of having an error state */
+.buttonContainer {
+    margin-top: 25px; 
+    flex-grow: 1;
+}
+
+@media (max-width: 800px) {
+    .gridContainer {
+        display: none;
+    }
+
+    .root {
+        padding: 0px 16px;
+    }
+
+    .title {
+        font-size: 32px;
+        line-height: 38px;
+    }
+
+    .message {
+        font-size: 14px;
+        line-height: 17px;
+        text-align: center;
+        padding: 0px 24px;
+    }
+
+    .formContainer {
+        flex-direction: column;
+    }
+
+    .formContainer > div:first-child {
+        min-width: unset;
+        min-height: unset;
+        margin-bottom: 16px;
+    }
+
+    .buttonContainer {
+        margin-top: 0px;
+    }
+}

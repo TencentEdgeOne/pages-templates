@@ -1,0 +1,41 @@
+.root {
+
+}
+
+.section {
+    margin-top: 48px;
+}
+
+.subSection {
+    margin-top: 32px;
+}
+
+.section span {
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: 500;
+}
+
+.section h3 {
+    font-size: 32px;
+    line-height: 40px;
+    font-weight: normal;
+    margin-top: 24px;
+}
+
+.section p {
+    margin-top: 32px;
+    font-size: 16px;
+    line-height: 26px;
+}
+
+@media (max-width: 800px) {
+    .section h3 {
+        font-size: 22px;
+        line-height: 26px;
+    }
+
+    .section span, .section p {
+        font-size: 14px;
+    }
+}

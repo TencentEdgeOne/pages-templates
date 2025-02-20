@@ -1,0 +1,61 @@
+.root {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 1px solid var(--bg-light-gray);
+    width: 99px;
+    padding: 12px;
+    background-color: var(--standard-white);
+    border-radius: 2px;
+}
+
+.iconContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.root > span {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    text-align: center;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.inputContainer input::-webkit-outer-spin-button,
+.inputContainer input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.inputContainer input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.inputContainer {
+    width: 30px;
+    height: 18px;
+}
+
+.inputContainer input {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    text-align: center;
+
+    font-weight: 500;
+    font-size: 14px;
+    text-align: center;
+}
+
+.transparent {
+    border: 1px solid transparent;
+    background-color: transparent;
+}
+
+.transparentInput {
+    background-color: transparent;
+}

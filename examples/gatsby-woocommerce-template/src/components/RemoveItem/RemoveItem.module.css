@@ -1,0 +1,21 @@
+.root {
+    width: 22px;
+    height: 22px;
+    background-color: var(--bg-close-icon);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all ease-in-out 0.3s;
+}
+
+.root svg {
+    width: 8px;
+    height: 8px;
+    color: var(--grey-crumb);
+}
+
+.root:hover {
+    background-color: var(--grey-chip);
+}

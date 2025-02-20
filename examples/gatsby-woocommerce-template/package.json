@@ -1,0 +1,47 @@
+{
+  "name": "gatsby-wordpress-ecommerce-template",
+  "version": "1.0.0",
+  "private": true,
+  "description": "",
+  "author": "Matter Design",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop -p 5000",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "format": "prettier --write \"{gatsby-*.js,src/**/*.js}\"",
+    "plop": "plop"
+  },
+  "dependencies": {
+    "@pasdo501/gatsby-source-woocommerce": "^0.17.3",
+    "@woocommerce/woocommerce-rest-api": "^1.0.1",
+    "crypto": "^1.0.1",
+    "gatsby": "^5.13.3",
+    "gatsby-image": "^3.11.0",
+    "gatsby-plugin-image": "^3.14.0",
+    "gatsby-plugin-sharp": "^5.14.0",
+    "gatsby-source-filesystem": "^5.14.0",
+    "gatsby-source-graphql": "^5.14.0",
+    "gatsby-source-wordpress": "^7.14.0",
+    "gatsby-transformer-sharp": "^5.14.0",
+    "graphql": "^16.10.0",
+    "graphql-request": "^7.1.2",
+    "install": "^0.13.0",
+    "js-search": "^2.0.1",
+    "moment": "^2.30.1",
+    "npm": "^11.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "react-slick": "^0.30.2",
+    "stream": "^0.0.3"
+  },
+  "devDependencies": {
+    "plop": "^3.0.5",
+    "prettier": "^3.2.5"
+  }
+}

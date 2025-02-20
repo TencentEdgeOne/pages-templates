@@ -1,0 +1,35 @@
+.root {
+    min-width: 220px;
+}
+
+.webRoot {
+    display: flex;
+    flex-direction: column;
+}
+
+.webLink {
+    padding: 12px;
+    margin-bottom: 8px;
+    font-size: 16px;
+    font-weight: normal;
+    cursor: pointer;
+}
+
+.webLink:hover {
+    background-color: var(--standard-light-grey);
+}
+
+.activeLink {
+    background-color: var(--standard-light-grey);
+    font-weight: 500;
+}
+
+@media (max-width: 800px) {
+    .root {
+        min-width: 0px;
+    }
+
+    .webRoot {
+        display: none;
+    }
+}

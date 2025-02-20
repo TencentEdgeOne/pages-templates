@@ -1,0 +1,131 @@
+.root {
+
+}
+
+.headerAuth {
+    background-color: var(--standard-light-grey);
+    padding: 16px 24px;
+    margin-bottom: 8px;
+}
+
+.authLinkContainer a {
+    color: var(--bg-indigo);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.welcomeContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.welcomeContainer svg {
+    transform: rotate(-90deg);
+    width: 12px;
+    height: 12px;
+    color: var(--bg-indigo);
+}
+
+.welcomeMessage {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+    color: var(--bg-indigo);
+} 
+
+.authLinkContainer a:first-child{
+    margin-right: 24px;
+    padding-right: 24px;
+    border-right: 1px solid var(--bg-indigo);
+}
+
+.previousLinkContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+.previousLinkContainer span {
+    color: var(--bg-indigo);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    text-transform: uppercase;
+}
+
+.previousIcon {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    transform: translate(0%, -50%);
+}
+
+.previousLinkContainer svg {
+    transform: rotate(90deg);
+    color: var(--bg-indigo);
+    width: 12px;
+    height: 12px;
+}
+
+.mobileNavContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.mobileLink {
+    padding: 12px 24px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    text-transform: uppercase;
+    color: var(--standard-black);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.mobileLink svg {
+    transform: rotate(-90deg);
+    width: 12px;
+    height: 12px;
+}
+
+.edgeLink {
+    text-transform: capitalize;
+    padding: 12px 24px;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    color: var(--standard-black);
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.navFooter {
+    border-top: 1px solid var(--bg-light-gray);
+    padding-top: 16px;
+    margin: 16px 16px 0px 16px;
+}
+
+.navFooter a, .logoutContainer {
+    display: flex;
+    align-items: center;
+    color: var(--standard-black);
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+}
+
+.navFooter svg, .logoutContainer svg {
+    margin-right: 24px;
+    width: 20px;
+    height: 20px;
+}
+

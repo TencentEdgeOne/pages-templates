@@ -1,0 +1,34 @@
+.gridStyle {
+    display: grid;
+    gap: 8px;
+    align-items: flex-start;
+    grid-template-columns:
+    minmax(0, 0.9fr) 
+    minmax(0, 0.3fr) 
+    minmax(0, 0.3fr)
+    minmax(0, 0.4fr)
+    minmax(0, 0.05fr);
+    padding: 24px 42px;
+}
+
+.tableHeader {
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 25px;
+    text-transform: uppercase;
+}
+
+@media (max-width: 800px) {
+    .tableHeaderContainer {
+        display: none;
+    }
+
+    .gridStyle {
+        gap: 16px;
+        padding: 24px 16px;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-areas:
+          'oid oid oid toggle'
+          'od od od st';
+    }
+}

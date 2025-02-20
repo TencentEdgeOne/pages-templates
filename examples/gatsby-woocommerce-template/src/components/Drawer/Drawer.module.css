@@ -1,0 +1,102 @@
+.root {
+    display: flex;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 60;
+    width: 100%;
+    transition: all ease-in-out 0.3s;
+    height: 100vh;
+}
+
+.overlay {
+    width: calc(100% - 540px);
+    background-color: var(--standard-black);
+    transition: all ease-in-out 0.3s;
+    position: relative;
+    cursor: pointer;
+}
+
+.content {
+    position: relative;
+    background-color: var(--standard-white);
+    width: 540px;
+    transition: all ease-in-out 0.3s;
+    overflow-y: auto;
+}
+
+.iconContainer {
+    z-index: 61;
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    cursor: pointer;
+    color: var(--standard-white);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    padding: 8px;
+    transition: background-color ease-in-out 0.3s;
+}
+
+.iconContainer svg {
+    width: 14px;
+    height: 14px;
+}
+
+.iconContainer:hover {
+    background-color: var(--bg-dark);
+}
+
+.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.hide {
+    visibility: hidden;
+    opacity: 0;
+}
+
+.showOverlay {
+    opacity: 0.7;
+    visibility: visible;
+}
+
+.showContent {
+    right: 0px;
+}
+
+.hideContent {
+    right: -540px;
+}
+
+.showReverse {
+    left: 0px;
+}
+
+.hideReverse {
+    left: -540px;
+}
+
+.isReverse {
+    flex-direction: row-reverse;
+}
+
+@media (max-width: 800px) {
+    .content {
+        width: 100%;
+    }
+
+    .overlay {
+        width: 10%;
+    }
+
+    .iconContainer {
+        top: 16px;
+        right: 50%;
+        transform: translate(50%, 0%);
+    }
+}

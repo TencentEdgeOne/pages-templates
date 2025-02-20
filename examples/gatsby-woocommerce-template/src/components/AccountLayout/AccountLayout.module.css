@@ -1,0 +1,31 @@
+.root {
+    margin-top: 8px;
+}
+
+.layout {
+    display: flex;
+}
+
+.root h1 {
+    font-weight: normal;
+    font-size: 52px;
+    line-height: 62px;
+}
+
+.childrenContainer {
+    flex-grow: 1;
+    margin-left: 16px;
+}
+
+@media (max-width: 800px) {
+    .root h1 {
+        font-size: 32px;
+        line-height: 38px;
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+    .childrenContainer {
+        margin-left: 0px;
+    }
+}

@@ -1,0 +1,30 @@
+.breadcrumbs {
+    margin-bottom: 30px;
+}
+
+.spacer {
+    margin-left: 16px;
+    margin-right: 16px;
+    display: inline-block;
+    transform: rotate(-90deg);
+    vertical-align: center;
+    color: var(--grey-crumb);
+}
+
+.spacer svg {
+    height: 8px;
+    width: 8px;
+}
+
+.crumb {
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 15px;
+    color: var(--grey-crumb);
+    display: inline-block;
+    transition: color 0.3s ease-in-out;
+}
+
+a.crumb:hover {
+    color: var(--bg-indigo);
+}

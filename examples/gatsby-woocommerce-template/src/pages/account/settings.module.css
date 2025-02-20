@@ -1,0 +1,44 @@
+.form {
+
+}
+
+.nameSection {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+}
+
+.passwordSection {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 40px; 
+}
+
+.passwordContainer {
+    margin-top: 100px;
+}
+
+.passwordContainer h2 {
+    font-size: 32px;
+    line-height: 38px;
+    font-weight: normal;
+    margin-bottom: 40px;
+}
+
+@media (max-width: 800px) {
+    .nameSection, .passwordSection {
+        grid-template-columns: 1fr;
+        gap: 0px;
+    }
+
+    .passwordContainer h2 {
+        font-size: 22px;
+        line-height: 26px;
+        margin-bottom: 24px;
+    }
+
+    .passwordContainer {
+        margin-top: 24px;
+    }
+}

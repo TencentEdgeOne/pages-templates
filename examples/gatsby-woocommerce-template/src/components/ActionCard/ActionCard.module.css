@@ -1,0 +1,44 @@
+.root {
+    background-color: var(--standard-light-grey);
+    cursor: pointer;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    text-align: start;
+    gap: 16px;
+    transition: all ease-in-out 0.3s;
+}
+
+.iconContainer, .iconContainer svg {
+    width: 32px;
+    height: 32px;
+}
+
+.root .lg, .root .lg svg {
+    width: 40px;
+    height: 40px;
+}
+
+.actionName {
+    font-weight: 500;
+}
+
+.root span {
+    font-size: 14px;
+}
+
+.link svg {
+    width: 12px;
+    height: 12px;
+    margin-left: 8px;
+    transform: rotate(-90deg);
+}
+
+.root:hover {
+    background-color: var(--bg-indigo);
+    color: var(--standard-white);
+}
+
+.root:hover a {
+    color: var(--standard-white);
+}

@@ -1,0 +1,271 @@
+.root {
+    background-color: var(--bg-grey);
+    margin-bottom: 16px;
+}
+
+.paddingBottom {
+    padding-bottom: 20px;
+}
+
+.orderId {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+    display: block;
+}
+
+.orderTotalMeta {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.total {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.orderDate {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 25px;
+}
+
+.lastUpdate {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 25px;
+}
+
+.status {
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 25px;
+    text-transform: capitalize;
+}
+
+.detailsContainer {
+    margin-left: 24px;
+    margin-right: 24px;
+    background-color: var(--standard-white);
+    transition: opacity ease-in-out 0.3s;
+}
+
+.show {
+    padding: 32px 56px;
+    visibility: visible;
+    opacity: 1;
+    max-height: unset;
+}
+
+.hide {
+    padding: 0px;
+    visibility: hidden;
+    opacity: 0;
+    max-height: 0px;
+}
+
+.orderHeader {
+    cursor: pointer;
+}
+
+.addressDetailContainer {
+    display: flex;
+}
+
+.addressContainer {
+    margin-right: 100px;
+}
+
+.addressMeta {
+    display: block;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.address {
+    display: block;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.itemList {
+    margin-top: 40px;
+}
+
+.itemContainer {
+    display: grid;
+    grid-template-columns: 64px 0.8fr 0.2fr;
+    gap: 24px;
+    padding: 12px 0px;
+    border-top: 1px solid var(--bg-light-gray);
+    align-items: center;
+}
+
+.itemContainer:last-child {
+    border-bottom: 1px solid var(--bg-light-gray);
+}
+
+.imageContainer {
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+}
+
+.imageContainer img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.itemName {
+    font-weight: 500;
+    font-size: 16px;
+    display: block;
+}
+
+.itemQuantity {
+    font-weight: normal;
+    font-size: 13px;
+    display: block;
+    color: var(--grey-crumb);
+}
+
+.itemTotal {
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+.transactionDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-top: 24px;
+}
+
+.transactionalGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 24px;
+}
+
+.transactionalGrid > span{
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 32px;
+}
+
+.transactionalGrid .bold {
+    font-weight: 500;
+}
+
+.transactionalGrid .grandTotal {
+    font-size: 24px;
+}
+
+.toggleContainer svg {
+    width: 12px;
+    height: 12px;
+    transition: all ease-in-out 0.3s;
+}
+
+.mobileLabel {
+    display: none;
+    font-weight: 500;
+    font-size: 11px;
+    line-height: 25px;
+    text-transform: uppercase;
+}
+
+.rotate svg {
+    transform: rotate(-180deg);
+}
+
+.itemTotalMobile {
+    display: none;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 17px;
+}
+
+@media (max-width: 800px) {
+    .lastUpdate {
+        display: none;
+    }
+
+    .orderMeta {
+        grid-area: oid;
+    }
+
+    .od {
+        grid-area: od;
+    }
+
+    .st {
+        grid-area: st;
+    }
+
+    .toggleContainer {
+        grid-area: toggle;
+    }
+
+    .mobileLabel {
+        display: block;
+    }
+
+    .show {
+        padding: 0px 12px 24px 12px;
+    }
+
+    .addressDetailContainer {
+        flex-direction: column;
+    }
+
+    .addressContainer {
+        margin-right: 0px;
+        margin-top: 24px;
+    }
+
+    .detailsContainer {
+        margin-left: 16px;
+        margin-right: 16px;
+    }
+
+    .itemName {
+        font-size: 14px;
+    }
+
+    .itemContainer {
+        grid-template-columns: 64px 1fr;
+        gap: 16px;
+    }
+
+    .itemTotal {
+        display: none;
+    }
+
+    .orderItemMeta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .itemTotalMobile {
+        display: block;
+    }
+}
+
+@media (max-width: 500px) {
+    .transactionDetails {
+        align-items: flex-start;
+    }
+    
+    .transactionalGrid {
+        width: 100%;
+    }
+}
+
