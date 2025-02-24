@@ -10,6 +10,8 @@
 
 [![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?from=github&template=deepseek-r1-edge)
 
+在线体验: [https://deepseek-r1-edge.edgeone.site](https://deepseek-r1-edge.edgeone.site)
+
 ## 入门
 
 首先，运行开发服务器：
