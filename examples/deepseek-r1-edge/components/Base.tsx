@@ -1,8 +1,16 @@
 'use client';
 
-import React, { useState, useRef, useLayoutEffect, useEffect } from 'react';
+import React, {
+  useState,
+  useRef,
+  useLayoutEffect,
+  useEffect,
+  useCallback,
+} from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import debounce from 'lodash/debounce'
+
 interface MessageContent {
   content: string;
   think?: string;
@@ -22,7 +30,7 @@ interface KeywordButton {
 
 export const Base = () => {
   const [userInput, setUserInput] = useState('Hi');
-  const [useNetwork, setUseNetwork] = useState(false);
+  const [useNetwork, setUseNetwork] = useState(true);
   const [showKeywords, setShowKeywords] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -165,6 +173,13 @@ export const Base = () => {
     });
   };
 
+  const debouncedUpdateMessage = useCallback(
+    debounce((updateFn: (prev: Message[]) => Message[]) => {
+      setMessages(updateFn);
+    }, 50),
+    []
+  );
+
   const processStreamResponse = async (
     response: Response,
     updateMessage: (content: MessageContent) => void
@@ -182,9 +197,11 @@ export const Base = () => {
     const decoder = new TextDecoder();
     let buffer = '';
 
+    let accumulatedContent = '';
+    let accumulatedThink = '';
     let thinking = false;
+
     while (true) {
-      let currentMessage: MessageContent = { content: '', think: '' };
       const { value, done } = await reader.read();
       if (done) break;
 
@@ -206,7 +223,6 @@ export const Base = () => {
             token.includes('\u003cthink\u003e')
           ) {
             thinking = true;
-            currentMessage.think = '';
             continue;
           }
           if (
@@ -214,17 +230,19 @@ export const Base = () => {
             token.includes('\u003c/think\u003e')
           ) {
             thinking = false;
-            currentMessage.think = '';
             continue;
           }
 
           if (thinking || reasoningToken) {
-            currentMessage.think = token || reasoningToken || '';
+            accumulatedThink += token || reasoningToken || '';
           } else {
-            currentMessage.content = token || '';
+            accumulatedContent += token || '';
           }
 
-          updateMessage(currentMessage);
+          updateMessage({
+            content: accumulatedContent,
+            think: accumulatedThink,
+          });
         } catch (e) {
           console.error('Failed to parse chunk:', e);
         }
@@ -312,16 +330,17 @@ export const Base = () => {
       });
 
       await processStreamResponse(res, (_content: MessageContent) => {
-        setMessages((prev) => {
+        debouncedUpdateMessage((prev) => {
           const newMessages = structuredClone(prev);
-          const content = structuredClone(_content);
           const lastMessage = newMessages[newMessages.length - 1];
-          if (content.think) {
-            lastMessage.think = (lastMessage.think ?? '') + content.think;
+
+          if (_content.think) {
+            lastMessage.think = _content.think;
           }
-          if (content.content) {
-            lastMessage.content += content.content;
+          if (_content.content) {
+            lastMessage.content = _content.content;
           }
+
           return newMessages;
         });
       });

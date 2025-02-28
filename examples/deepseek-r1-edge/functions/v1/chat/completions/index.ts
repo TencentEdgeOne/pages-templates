@@ -48,13 +48,23 @@ export async function getContent(
 
     const context = formatSearchResults(searchResults);
 
-    const contentWithNetworkSearch = `Based on the following search results, please answer the question:
-  
-      ${context}
-      
-      Question: "${input}"
-      
-      Please respond in the same language as the question (e.g., if asked in English, respond in English; if asked in another language, respond in that language).`;
+    const contentWithNetworkSearch = `
+# The following content is search results based on the user's message:
+${context}
+In the search results I provided, each result is in the format of [webpage X begin]...[webpage X end], where X represents the numerical index of each article.
+When answering, please note the following points:
+- Today is ${new Date().toLocaleDateString('zh-CN')}.
+- Not all content in the search results is closely related to the user's question. You need to evaluate and filter the search results based on the question.
+- For listing-type questions (such as listing all flight information), try to limit your answer to no more than 10 points, and tell the user they can check the search sources for complete information. Prioritize providing complete and most relevant list items; unless necessary, don't proactively mention content not provided in search results.
+- For creative questions (such as writing essays), you need to interpret and summarize the user's requirements, choose an appropriate format, fully utilize the search results and extract important information to generate an answer that meets user requirements with intellectual depth, creativity and professionalism. Your creative content should be as lengthy as possible, providing multiple perspectives for each point based on your interpretation of user intent, ensuring information-rich and detailed explanations.
+- If the answer is lengthy, please structure it and summarize by paragraphs. If point-by-point answers are needed, try to limit it to 5 points and merge related content.
+- For objective Q&A, if the answer is very brief, you may add one or two sentences of related information to enrich the content.
+- You need to choose an appropriate and aesthetically pleasing format for your answer based on user requirements and answer content, ensuring strong readability.
+- Your answer should synthesize information from multiple relevant webpages, not repeatedly referencing a single webpage.
+- Unless requested by the user, your response language should match the language of the user's question.
+# User message:
+${input}
+    `;
 
     return {
       content: contentWithNetworkSearch,
@@ -71,13 +81,19 @@ function formatSearchResults(
   results: { title: string; url: string; content: string }[]
 ) {
   const formatted = [];
-  for (const result of results) {
+  for (let i = 0; i < results.length; i++) {
+    const result = results[i];
+    const index = i + 1;
     const title = result.title || 'No title';
     const url = result.url || 'No URL';
     const snippet = result.content || 'No snippet';
-    formatted.push(`Title: ${title}
+    formatted.push(`
+[webpage ${index} begin]
+Title: ${title}
 Url: ${url}
-Snippet: ${snippet}`);
+Snippet: ${snippet}
+[webpage ${index} end]
+`);
   }
   return formatted.join('\n\n');
 }
@@ -135,14 +151,11 @@ export async function onRequest({ request, params, env }: any) {
 
   try {
     // @ts-ignore-next-line
-    const res = await AI.run(
-      '@tx/deepseek-ai/deepseek-r1-distill-qwen-32b/v1/chat/completions',
-      JSON.stringify({
-        model: 'deepseek-r1-distill-qwen-32b',
-        stream: true,
-        messages: messages,
-      })
-    );
+    const res = await AI.chatCompletions({
+      model: '@tx/deepseek-ai/deepseek-r1-distill-qwen-32b',
+      messages: messages,
+      stream: true,
+    });
 
     return new Response(res, {
       headers: {
