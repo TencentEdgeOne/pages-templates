@@ -1,5 +1,9 @@
 # The Anime List - ReactJS
 
+## Deploy
+
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/anime-list)
+
 ## 📷 Screenshot
 
 <p>
