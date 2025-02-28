@@ -167,12 +167,15 @@ function AnimeDetail() {
         <div className="trailer-section">
           <h1 className="title">Trailer</h1>
           <div align="center">
-            <iframe
+          <iframe
               id="inlineFrameExample"
-              title="Inline Frame Example"
+              title={`${anime?.title_english || anime?.title} Trailer`}
               width="1000"
               height="500"
               src={anime?.trailer?.embed_url}
+              allowFullScreen
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             ></iframe>
           </div>
         </div>
