@@ -1,0 +1,23 @@
+@import '../../styles/config';
+
+.tagsContainer {
+
+    display: flex;
+    flex-wrap: wrap;
+
+    .tagsIcon {
+        color: $color-text-light;
+        font-size: 20px;
+        margin-right: 8px;
+    }
+}
+
+.tag {
+    margin-right: 8px;
+    margin-bottom: 6px;
+}
+
+.clearTag {
+    cursor: pointer;
+    background-color: $color-text-light !important;
+}

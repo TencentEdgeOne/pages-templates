@@ -1,0 +1,12 @@
+@import '../../../styles/config';
+
+.titleContainer {
+    margin-top: 48px;
+    margin-bottom: 16px;
+
+    .title {
+        letter-spacing: 1px;
+        color: $color-text-bold;
+        font-size: $fs-md;
+    }
+}

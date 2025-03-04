@@ -1,0 +1,120 @@
+@import '../../../styles/config';
+
+
+
+@mixin defaultText {
+    color: $color-text-md;
+    font-size: 13px;
+    display: inline-block;
+    font-weight: 500;
+}
+
+
+.card {
+    border-radius: 3px;
+    height: 265px;
+    background-color: $color-white;
+    transition: all 0.3s linear;
+    overflow: hidden;
+    box-shadow: 0 14px 30px rgba($color-box-shadow,.15),0 4px 4px rgba($color-box-shadow,.05);
+}
+
+.coverImageContainer {
+    width: 188px;
+    display: flex;
+    position: relative;
+}
+
+.coverImage {
+    width: 188px;
+    height: 100%;
+    animation: opacity 0.3s linear;
+}
+
+.titleContainer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    padding: 12px;
+    background-color: rgba($color-overlay, 0.9);
+    &:hover {
+        .title {
+            color: $color-pr-4;
+        }
+    }
+
+    .title {
+        color: $color-white;
+        transition: all 0.2s;
+    }
+}
+
+.cardContainer {
+    width: 100%;
+}
+
+
+.ratingContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 4px;
+
+    .score {
+        @include defaultText();
+        margin-left: 4px;
+        font-size: 14px;
+    }
+}
+
+.format,
+.episode,
+.divider {
+    @include defaultText();
+    font-weight: 400;
+    color: $color-text-md;
+    margin-right: 4px;
+}
+
+.season {
+    @include defaultText();
+
+    color: $color-text-md;
+    font-weight: 600;
+    font-size: $fs-sm;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.descriptionContainer {
+    @include defaultText();
+    color: $color-text-super-light;
+    font-weight: 400;
+    height: 100%;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    transition: all .5s;
+    -webkit-box-orient: vertical;
+    padding: 0 16px;
+    &:hover {
+        overflow: scroll;   
+        color: $color-text-light;
+    }
+}
+
+.chipContainer {
+    padding: 16px;
+    background-color: #eef0f1;
+
+    .genresContainer {
+        height: 20px;
+        overflow-y: hidden;
+    }
+
+    .chip {
+        margin-right: 8px;
+    }
+}
+

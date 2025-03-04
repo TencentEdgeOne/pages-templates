@@ -1,0 +1,92 @@
+@import '../../styles/config';
+
+.mainTitleContainer {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+    @include breakpoint(md) {
+        height: 300px;
+        flex-direction: row;
+    }
+    
+    
+}
+
+.coverImage {
+    width: 210px;
+    height: 315px;
+    background-repeat: no-repeat;
+    animation: opacity 0.3s;
+    background-size: cover;
+    @include breakpoint(md) {
+        flex: 3;
+        width: 100%;
+        height: -webkit-fill-available;
+        background-size: contain;
+
+    }
+}
+
+
+.subContainer {
+    padding: 18px;
+    border-radius: 3px;
+    @include breakpoint(md) {
+        flex: 9;
+
+    }
+
+    .personName {
+        margin-bottom: 12px;
+        color: $color-text-bold;
+        font-size: $fs-lg;
+        letter-spacing: 2px;
+        font-weight: 600;
+        text-align: center;
+        @include breakpoint(md) {
+            text-align: left;
+        }
+    }
+
+    .personInfo {
+        color: $color-text-bold;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .personInfoValue {
+        color: $color-text-md;
+        font-weight: 400;
+    }
+
+}
+
+.descContainer {
+    @include breakpoint(md) {
+        height: 144px;
+        overflow-y: scroll;
+    }
+}
+
+.description {
+    font-size: $fs-xs-sm;
+    color: $color-text-md;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    height: 100%;
+    transition: all .5s;
+    -webkit-box-orient: vertical;
+}
+
+.section {
+    margin-top: 16px !important;
+    margin-bottom: -16px !important;
+}
+
+.sectionTitle {
+    color: $color-text-bold;
+    font-size: $fs-sm;
+}

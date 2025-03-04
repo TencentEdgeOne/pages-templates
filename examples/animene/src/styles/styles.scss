@@ -1,0 +1,45 @@
+@import './config';
+
+@for $i from 10 through 200 {
+  .space-top-#{$i} {
+      margin-top: #{$i}px;
+      width: 100%;
+  }
+}
+
+
+.MuiPaginationItem-root.Mui-selected {
+  color: $color-white !important;
+  background-color: $color-pr-1 !important;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: $color-pr-1;
+    border-radius: 5px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: $color-pr-3;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  a {
+    color: inherit;
+  }
+  a:hover {
+    text-decoration: none;
+  }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  body {
+    height: 100% !important;
+    background-color: $color-bg-light;
+  }

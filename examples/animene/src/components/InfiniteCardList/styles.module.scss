@@ -1,0 +1,47 @@
+@import "../../styles/config";
+
+.infiniteScrollContainer {
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  overflow: unset !important;
+  flex-direction: row;
+  margin-top: -12px;
+  width: calc(100% + 12px);
+  margin-left: -12px;
+
+  @include breakpoint(sm) {
+    margin-top: -16px;
+    width: calc(100% + 16px);
+    margin-left: -16px;
+  }
+  @include breakpoint(md) {
+    margin-top: -24px;
+    width: calc(100% + 24px);
+    margin-left: -24px;
+  }
+  @include breakpoint(lg) {
+    margin-top: -36px;
+    width: calc(100% + 36px);
+    margin-left: -36px;
+  }
+
+  .infiniteScrollItem {
+    padding-top: 12px;
+    padding-left: 12px;
+
+    @include breakpoint(sm) {
+      padding-top: 16px;
+      padding-left: 16px;
+    }
+    @include breakpoint(md) {
+      padding-top: 24px;
+      padding-left: 24px;
+    }
+    @include breakpoint(lg) {
+      padding-top: 36px;
+      padding-left: 36px;
+    }
+  }
+}

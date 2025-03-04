@@ -1,0 +1,21 @@
+@import '../../styles/config';
+
+.link {
+    text-decoration: none !important;
+}
+
+.item {
+    opacity: 0.8;
+    transition: all 0.3s;
+    margin: 0 2px;
+    &:hover,
+    &.active {
+        color: $color-pr-1;
+        opacity: 1;
+    }
+    .label {
+        font-size: $fs-sm;
+        font-weight: 600;
+        margin-left: 2px;
+    }
+}

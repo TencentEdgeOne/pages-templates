@@ -1,0 +1,12 @@
+@import '../../../styles/config';
+
+.tag {
+    display: inline-block;
+    font-size: 12px;
+    color: $color-white;
+    background-color: $color-pr-1;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}

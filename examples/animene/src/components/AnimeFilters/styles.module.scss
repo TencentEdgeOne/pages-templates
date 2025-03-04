@@ -1,0 +1,44 @@
+@import '../../styles/config';
+
+.separator {
+    width: 100%;
+}
+
+.filterTitle {
+    color: $color-text-bold;
+    text-transform: capitalize;
+    margin-bottom: 8px;
+    font-size: $fs-md-sm;
+}
+
+.filterIconContainer {
+    margin-top: 27px;
+    height: 32px;
+    min-height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+
+    .filterIcon {
+        box-sizing: content-box;
+        background-color: $color-white;
+        padding: 8px;
+        border-radius: 3px;
+        cursor: pointer;
+        color: $color-text-super-light;
+        transition: all 0.15s linear;
+        box-shadow: 0 14px 30px rgba($color-box-shadow,.1),0 4px 4px rgba($color-box-shadow,.04);
+        &:hover {
+            color: $color-pr-1;
+        }
+        &.active {
+            color: $color-pr-1;
+        }
+
+    }
+}
+
+.filter {
+    animation: slideFromTop 0.15s;
+}

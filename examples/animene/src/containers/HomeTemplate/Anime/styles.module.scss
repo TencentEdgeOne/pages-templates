@@ -1,0 +1,28 @@
+@import '../../../styles/config';
+
+
+.bannerSpacer {
+    width: 100%;
+    height: 210px;
+
+    @include breakpoint(md) {
+        height: 400px;
+    }
+}
+
+.banner {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: -1;
+    background-position: 50% 35%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100vw !important;
+    height: 210px;
+    margin-top: calc($height-header - 8px);
+
+    @include breakpoint(md) {
+        height: 400px;
+    }
+}

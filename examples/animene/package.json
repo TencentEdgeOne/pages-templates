@@ -1,0 +1,75 @@
+{
+  "name": "animene",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.8.2",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.5.0",
+    "@mui/material": "^5.5.0",
+    "@mui/styles": "^5.5.3",
+    "@reduxjs/toolkit": "^1.8.0",
+    "@testing-library/jest-dom": "^5.16.2",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^0.26.1",
+    "clsx": "^1.1.1",
+    "formik": "^2.2.9",
+    "moment": "^2.29.1",
+    "react": "^17.0.2",
+    "react-back-to-top": "^1.0.3",
+    "react-dom": "^17.0.2",
+    "react-infinite-scroll-component": "^6.1.0",
+    "react-lazyload": "^3.2.0",
+    "react-markdown": "^8.0.1",
+    "react-redux": "^7.2.6",
+    "react-router-dom": "5.3",
+    "react-scripts": "5.0.0",
+    "react-scroll-to-top": "^1.0.8",
+    "react-select": "^5.2.2",
+    "sass": "^1.49.9",
+    "swiper": "^6.8.4",
+    "typewriter-effect": "^2.18.2",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build && rm -rf ./dist && mv ./build ./dist",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "husky": "^4.3.8",
+    "lint-staged": "^12.3.5",
+    "prettier": "^2.5.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "prettier --write",
+      "git add"
+    ]
+  }
+}

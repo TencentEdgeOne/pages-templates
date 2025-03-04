@@ -1,0 +1,39 @@
+@import '../../../styles/config';
+
+.btn {
+    background-color: $color-pr-1;
+    color: $color-white;
+    border: 1px solid;
+    border-color: $color-pr-1;
+    border-radius: 3px;
+    box-shadow: none;
+    padding: 10px 18px;
+    min-width: 82px;
+    width: max-content;
+    font-weight: 600;
+    font-size: $fs-sm;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.15s ease-in;
+
+    &.secondary {
+        background-color: $color-pr-2;
+        border-color: $color-pr-2;
+    }
+
+    &-outline {
+        background-color: transparent !important;
+        color: $color-pr-1;
+        border-color: $color-pr-1;
+
+        &.secondary {
+            color: $color-pr-2;
+        }
+    }
+
+    &:hover {
+        opacity: 0.9;
+        
+    }
+}

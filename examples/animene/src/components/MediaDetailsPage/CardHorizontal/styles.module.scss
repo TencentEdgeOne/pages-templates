@@ -1,0 +1,81 @@
+@import '../../../styles/config';
+
+
+
+@mixin defaultText {
+    color: $color-text-md;
+    font-size: 13px;
+    display: inline-block;
+    font-weight: 500;
+}
+
+.card {
+    border-radius: 3px;
+    display: flex;
+    min-height: 72px;
+    justify-content: space-between;
+    background-color: $color-white;
+    transition: all 0.3s linear;
+    box-shadow: 0 14px 30px rgba($color-box-shadow,.15),0 4px 4px rgba($color-box-shadow,.05);
+}
+
+
+.cardContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @include breakpoint(md) {
+        justify-content: space-between;
+        flex-direction: row;
+    }
+}
+
+.imageContainer {
+    display: flex;
+    margin-right: 16px;
+}
+
+.image {
+    width: 54px;
+    height: 100%;
+    vertical-align: middle;
+    
+    animation: opacity 0.3s;
+
+    @include breakpoint(md) {
+       width: 48px;
+    }
+}
+
+.infoContainer {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    margin-bottom: 8px;
+
+    @include breakpoint(md) {
+        flex: 5;
+        margin-bottom: 0;
+    }
+
+    .name {
+        color: $color-text-bold;
+        font-weight: 500;
+        margin-bottom: 8px;
+        font-size: $fs-sm;
+
+        text-decoration: none;
+        display: block;
+
+        &:hover {
+            color: $color-pr-5;
+        }
+    }
+    .role {
+        color: $color-text-light;
+        text-transform: capitalize;
+        font-size: $fs-xs-sm;
+    }
+}

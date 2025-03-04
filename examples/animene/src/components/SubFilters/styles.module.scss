@@ -1,0 +1,17 @@
+@import '../../styles/config';
+
+.icon {
+    color: $color-text-super-light;
+    font-size: 28px;
+    transition: all 0.15s linear;
+    cursor: pointer;
+
+
+    &:hover {
+        color: $color-text-md;
+    }
+
+    &.active {
+        color: $color-text-md;
+    }
+}

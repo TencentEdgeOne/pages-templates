@@ -1,0 +1,14 @@
+@import '../../styles/config';
+
+.swiper {
+}
+
+.landingWallpaper {
+    width: 100% !important;
+    max-height: calc(100vh - 64px);
+    filter: brightness(70%);
+}
+
+.slider {
+    // background: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5));
+}

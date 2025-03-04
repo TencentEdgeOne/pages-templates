@@ -1,0 +1,27 @@
+@import '../../../styles/config';
+
+.titleContainer {
+    margin-top: 48px;
+    margin-bottom: 16px;
+
+    .title {
+        letter-spacing: 1px;
+        color: $color-text-bold;
+        font-size: $fs-md;
+    }
+}
+
+.mainTitle {
+    letter-spacing: 1px;
+    color: $color-text-bold;
+    text-transform: capitalize;
+    margin-bottom: 40px;
+    font-size: $fs-lg;
+}
+
+.filterTitle {
+    color: $color-text-bold;
+    text-transform: capitalize;
+    margin-bottom: 8px;
+    font-size: $fs-md-sm;
+}

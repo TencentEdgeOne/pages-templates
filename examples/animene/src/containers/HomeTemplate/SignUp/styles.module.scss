@@ -1,0 +1,40 @@
+@import '../../../styles/config';
+
+.formTitle {
+    font-size: $fs-lg;
+    color: $color-text-bold;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+}
+
+.form {
+    .formGroup {
+        width: 100%;
+        height: 80px;
+        margin-bottom: 12px;
+    }
+}
+
+.button {
+    margin-bottom: 16px;
+}
+
+.forgotPassword {
+    width: 100%;
+    margin-top: -8px;
+    color: $color-text-light;
+    font-size: $fs-sm;
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.otherOptionContainer {
+    color: $color-text-bold;
+}
+
+.otherOption {
+    margin-left: 4px;
+    color: $color-pr-1;
+    font-weight: 600;
+    text-decoration: none;
+}

@@ -1,0 +1,51 @@
+@import '../../../styles/config';
+
+.cardContainer {
+    position: relative;
+    
+}
+
+.card {
+    background-color: transparent !important;
+    height: 100%;
+    box-shadow: none !important;
+    transition: 0.2s ease;
+    cursor: pointer;
+    &:hover {
+        .cardTitle {
+            color: $color-pr-5;
+        }
+    }
+
+    .cardImage {
+        height: 196px;
+        animation: opacity 0.3s;
+        box-shadow: 0 14px 30px rgba($color-box-shadow,.15),0 4px 4px rgba($color-box-shadow,.05);
+        @include breakpoint(md) {
+            height: 265px;
+        }
+    }
+
+    .cardTitle {
+        margin-top: 8px;
+        text-align: left !important;
+        font-size: $fs-xs-sm;
+        font-weight: 500;
+        color: $color-text-md;
+        transition: 0.1s ease-in;
+        display: block; /* Fallback for non-webkit */
+        display: -webkit-box;
+        -webkit-line-clamp: 2; /* if you change this, make sure to change the fallback line-height and height */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-decoration: none;
+
+        &:link {
+            text-decoration: none;
+        }
+    }
+}
+
+
+

@@ -1,0 +1,195 @@
+@import '../../styles/config';
+
+.banner {
+    height: 210px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    animation: opacity 0.3s;
+    filter: brightness(80%);
+    
+    
+    @include breakpoint(md) {
+        height: 400px;
+    }
+}
+
+.mainTitleContainer {
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+    
+    @include breakpoint(md) {
+        height: 300px;
+        flex-direction: row;
+    }
+    background-color: $color-white;
+}
+
+.coverImage {
+    width: 210px;
+    height: 315px;
+    background-repeat: no-repeat;
+    animation: opacity 0.3s;
+    background-size: cover;
+    @include breakpoint(md) {
+        flex: 3;
+        width: 100%;
+        height: -webkit-fill-available;
+        background-size: contain;
+
+    }
+}
+
+.section {
+    margin-top: 28px !important;
+    margin-bottom: 8px !important;
+}
+
+.sectionTitle {
+    color: $color-text-bold;
+    font-size: $fs-sm;
+}
+
+
+.subContainer {
+    height: 100%;
+    padding: 18px;
+    border-radius: 3px;
+    @include breakpoint(md) {
+        flex: 9;
+    }
+
+    .mediaTitle {
+        margin-bottom: 12px;
+        color: $color-text-bold;
+        font-size: $fs-md-lg;
+        font-weight: 400;
+        text-align: center;
+        @include breakpoint(md) {
+            text-align: left;
+        }
+    }
+
+    .descContainer {
+        @include breakpoint(md) {
+            height: 85%;
+        }
+        
+    }
+
+    .description {
+        font-size: $fs-xs-sm;
+        color: $color-text-md;
+        display: -webkit-box;
+        text-overflow: ellipsis;
+        overflow: scroll;
+        height: 100%;
+        transition: all .5s;
+        -webkit-box-orient: vertical;
+    }
+}
+.space {
+    margin-bottom: 190px;
+    @include breakpoint(md) {
+        margin-bottom: 370px;
+    }
+}
+
+
+
+
+.subInfoContainer {
+    background-color: $color-white;
+    padding: 18px;
+    border-radius: 3px;
+    margin-bottom: 24px;
+    display: flex;
+    overflow-x: scroll;
+
+    @include breakpoint(md) {
+        overflow-x: unset;
+        display: block;
+    }
+
+    .subInfoItem {
+        margin-bottom: 12px;
+        margin-right: 16px;
+    
+        .subInfoType {
+            color: $color-text-md;
+            font-size: $fs-xs-sm;
+            font-weight: 600;
+            margin-bottom: 4px;
+            width: max-content;
+        }
+    
+        .subInfoValue {
+            color: $color-text-light;
+            font-size: 13px;
+            width: max-content;
+
+            @include breakpoint(md) {
+                margin-right: 0;
+                width: fit-content;
+            }
+        }
+    }
+}
+
+.tagsContainer {
+    margin-bottom: 24px;
+    .tag {
+    align-items: center;
+    background: $color-white;
+    justify-content: space-between;
+    border-radius: 3px;
+    display: flex;
+    font-size: $fs-xs-sm;
+    padding: 8px 10px;
+    position: relative;
+    margin-bottom: 8px;
+    }
+
+    .tagName {
+        color: $color-text-bold;
+    }
+    .tagRank {
+        color: $color-text-light;
+    }
+}
+
+
+.externalLinks {
+    align-items: center;
+    background: $color-white;
+    justify-content: space-between;
+    border-radius: 3px;
+    display: flex;
+    font-size: $fs-xs-sm;
+    padding: 8px 10px;
+    position: relative;
+    margin-bottom: 8px;
+
+    a {
+        text-decoration: none;
+        color: $color-text-md;
+        font-weight: 600;
+        &:hover {
+            color: $color-pr-1;
+        }
+    }
+}
+
+
+.trailer{
+    height: auto;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+}

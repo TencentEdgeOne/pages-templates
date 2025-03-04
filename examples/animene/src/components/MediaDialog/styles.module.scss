@@ -1,0 +1,71 @@
+@import '../../styles/config';
+
+.dialogInfo{
+    padding: 16px;
+    position: absolute;
+    min-height: 140px;
+    width: 300px;
+    left: calc(100% + 16px);
+    top: 10px;
+    z-index: 10;
+    color: $color-text-bold !important;
+    font-size: $fs-md-sm;
+    font-weight: 500;
+    animation: popup 0.15s;
+    box-shadow: 0 14px 30px rgba($color-box-shadow,.15),0 4px 4px rgba($color-box-shadow,.05) !important;
+
+    .infoContainer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 12px;
+
+        .studio {
+            font-size: $fs-xs-sm;
+            color: $color-pr-5;
+        }
+    }
+
+    .infoContainer.first {
+        font-size: 16px;
+    }
+
+
+    .ratingContainer {
+        display: flex;
+        align-items: center;
+        span {
+            margin-left: 4px;
+        }
+    }
+
+    .chipContainer {
+        height: 20px;
+        overflow-y: hidden;
+    }
+
+    .chip {
+        margin-right: 4px;
+    }
+
+    
+}
+
+.dialogInfo.left {
+    right: calc(100% + 16px) !important;
+    left: unset;
+}
+
+.formatEpisodeContainer {
+    margin-bottom: 12px;
+
+    .format {
+        margin-right: 8px;
+    }
+
+    .format,
+    .episode {
+        font-size: 13px;
+        color: $color-text-md;
+    }
+}

@@ -1,0 +1,24 @@
+@import "../../../styles/config";
+
+.container {
+  margin-top: 89px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title {
+  letter-spacing: 10px;
+  font-size: 56px;
+  color: $color-text-bold;
+}
+
+.typewriterContainer {
+  margin: 40px 0;
+}
+
+.typewriter {
+  font-size: 20px;
+  color: $color-text-md;
+}
+
