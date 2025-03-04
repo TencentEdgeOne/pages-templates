@@ -1,12 +1,19 @@
-# Animene
+# Anime & Manga list
 
-A website for anime enthusiasts to search and explore information on anime, manga, characters, and more.
+Welcome to the anime and manga website templates created by EdgeOne Pages! Here, the charm of both anime and manga will be presented to you in the most convenient and personalized way.
 
 ## Deploy
 
 [![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=animene)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
+
+## Powerful Feature Highlights
+
+- One-click Deployment, Instant Ownership
+- Ad-free and Pure Enjoyment
+- Highly Customizable Interface
+- Relying on AniList's Abundant Data
 
 ## Technologies used
 
