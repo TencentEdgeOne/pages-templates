@@ -37,7 +37,7 @@ const NEXT_PUBLIC_BASE_URL =
 const NEXT_PUBLIC_SEARCH_URL =
   process.env.NODE_ENV === 'development'
     ? process.env.NEXT_PUBLIC_SEARCH_URL!
-    : 'https://proxy.edgeone.app/search';
+    : '/search';
 
 const BaseContent = () => {
   const [userInput, setUserInput] = useState('');
