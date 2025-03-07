@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 export async function searxngSearch(
   query: string,
-  SEARXNG_URL = 'https://searxng.edgeone.app/search'
+  SEARXNG_URL = 'https://proxy.edgeone.app/search'
 ) {
   const params = new URLSearchParams({
     q: query,
