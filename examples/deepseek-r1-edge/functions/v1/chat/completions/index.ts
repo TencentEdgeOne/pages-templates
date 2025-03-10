@@ -13,6 +13,7 @@ export async function searxngSearch(
   const headers = {
     'User-Agent':
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
+    Origin: 'https://proxy.edgeone.app',
   };
 
   const response = await fetch(`${SEARXNG_URL}?${params}`, { headers });
