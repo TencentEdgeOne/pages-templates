@@ -23,7 +23,7 @@ export async function onRequestPost(context) {
     let result = {};
     const headers = { ...CommonResponseHeaders };
     await dispatchGraphql(params.func, data, authDataJSON, env, headers).then(({ res, auth }) => {
-      headers['Set-Cookie'] = `auth-data=${JSON.stringify(auth)}; HttpOnly; Secure: false, Samesite=Lax; Path=/; Max-Age=31536000`;
+      headers['Set-Cookie'] = `auth-data=${JSON.stringify(auth)}; HttpOnly;  Path=/; Max-Age=31536000`;
 
       result = {
         code: 0,
@@ -75,7 +75,7 @@ export async function onRequestGet(context) {
 
     let result = {};
     await dispatchGraphql(params.func, null, authDataJSON, env, headers).then(({ res, auth }) => {
-      headers['Set-Cookie'] = `auth-data=${JSON.stringify(auth)}; HttpOnly; Secure: false, Samesite=Lax; Path=/; Max-Age=31536000`;
+      headers['Set-Cookie'] = `auth-data=${JSON.stringify(auth)}; HttpOnly;  Path=/; Max-Age=31536000`;
 
       result = {
         code: 0,

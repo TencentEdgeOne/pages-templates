@@ -15,7 +15,7 @@ export async function onRequestPost(context) {
   });
 
   if (loginRes) {
-    headers['Set-Cookie'] = `auth-data=${JSON.stringify(loginRes)}; HttpOnly; Secure: false, Samesite=Lax; Path=/; Max-Age=31536000`;
+    headers['Set-Cookie'] = `auth-data=${JSON.stringify(loginRes)}; HttpOnly;  Path=/; Max-Age=31536000`;
     const response =  new Response(JSON.stringify({
       code: 0,
       message: 'Login success',
