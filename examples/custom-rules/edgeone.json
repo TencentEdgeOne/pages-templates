@@ -163,5 +163,31 @@
       "source": "/rewrites-4/*/world/:id",
       "destination": "/a/:splat-:id.js"
     }
+  ],
+  "caches": [
+    {
+      "source": "/error",
+      "cacheTtl": -1
+    },
+    {
+      "source": "/error/**",
+      "cacheTtl": -1
+    },
+    {
+      "source": "/error/:11",
+      "cacheTtl": -1
+    },
+    {
+      "source": "/sitemap.xml",
+      "cacheTtl": 0
+    },
+    {
+      "source": "/cache-a/*.jpg",
+      "cacheTtl": 10
+    },
+    {
+      "source": "/cache-b/1.json",
+      "cacheTtl": 30
+    }
   ]
 }
