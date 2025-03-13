@@ -17,7 +17,7 @@ export async function onRequestPost(context) {
   
   // 生产环境下 Secure 应该是 true
   if (registerRes) {
-    headers['Set-Cookie'] = `auth-data=${JSON.stringify(registerRes)}; HttpOnly; Secure: false, Samesite=Lax; Path=/; Max-Age=31536000`;
+    headers['Set-Cookie'] = `auth-data=${JSON.stringify(registerRes)}; HttpOnly;  Path=/; Max-Age=31536000`;
     const response = new Response(JSON.stringify({
       code: 0,
       message: 'Register success',
