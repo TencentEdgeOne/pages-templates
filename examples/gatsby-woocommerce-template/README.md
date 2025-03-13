@@ -1,3 +1,5 @@
+# Gatsby Ecommerce for WordPress Headless CMS
+
 Building an e-commerce website from scratch can be complex. This template implements a Jamstack architecture e-commerce solution powered by WordPress + WooCommerce backend, the frontend framework is GatsbyJS..
 
 ## WordPress Setup
