@@ -1,4 +1,4 @@
-## Excalidraw Online
+# Excalidraw Online
 
 This is a simple project to host Excalidraw online. It is based on Next.js and uses the Excalidraw library.
 

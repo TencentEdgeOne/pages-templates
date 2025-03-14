@@ -1,4 +1,4 @@
-## Deepseek Playground
+# Deepseek Playground
 
 Generate small apps with one prompt. Powered by the DeepSeek API.
 

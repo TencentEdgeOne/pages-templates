@@ -1,4 +1,4 @@
-## Free web developer resume templates
+# Free web developer resume templates
 
 Premium web developer resume templates, built with Next.js.
 
