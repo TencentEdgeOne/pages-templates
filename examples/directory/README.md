@@ -11,7 +11,7 @@ This is a Directory site template built with EdgeOne Pages and the Raindrop.io A
 - ⚡ High-performance architecture based on Next.js
 - 🔄 Real-time data synchronization (via Raindrop.io)
 
-## One-Click Deployment
+## Deploy
 
 [![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=directory)
 
