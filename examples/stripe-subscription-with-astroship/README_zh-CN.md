@@ -58,7 +58,7 @@ WebHooks 的 events 配置中，选择以下事件:
 ## 2. 创建应用
 ### 选择模板
 点击进入[部署页面](https://console.cloud.tencent.com/edgeone/pages/new?template=stripe-subscription-with-astroship&from=open_templates)，填入前面准备好的所有环境变量。
-![](https://cloudcache.tencent-cloud.com/qcloud/ui/static/static_source_business/289588c1-96d5-4259-b09a-793f80df927b.png)。
+![](https://cloudcache.tencent-cloud.com/qcloud/ui/static/static_source_business/9128f2fd-5a93-4f07-bcad-6075f8d4d721.png)。
 点击开始部署。
 
 ### 创建项目并等待部署完成

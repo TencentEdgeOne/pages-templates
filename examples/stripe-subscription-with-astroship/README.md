@@ -57,7 +57,7 @@ After creating webhook, copy `Signing secret`:
 ## 2. Create Application
 ### Select Template
 Go to [deployment page](https://console.tencentcloud.com/edgeone/pages/new?template=stripe-subscription-with-astroship&from=open_templates), fill in all prepared environment variables.
-![](https://cloudcache.tencent-cloud.com/qcloud/ui/static/static_source_business/289588c1-96d5-4259-b09a-793f80df927b.png)
+![](https://cloudcache.tencent-cloud.com/qcloud/ui/static/static_source_business/225e2860-d58f-4515-8a77-40147cc1a0d9.png)
 Click "Start Deployment".
 
 ### Create Project & Wait for Deployment
