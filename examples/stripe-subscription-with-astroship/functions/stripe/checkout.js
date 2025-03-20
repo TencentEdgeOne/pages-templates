@@ -19,7 +19,7 @@ export async function onRequestGet(context) {
 
   if (!sbId) {
     const redirectUrl = getURL(env, `stripe/checkout?plan=${plan}&price=${priceId}`);
-    return Response.redirect(getURL(env,`login?redirectUrl=${encodeURIComponent(redirectUrl)}`), 302);
+    return Response.redirect(getURL(env, `login?redirectUrl=${encodeURIComponent(redirectUrl)}`), 302);
   }
   try {
     const supabase = createSupabaseAdminClient(env);
@@ -30,8 +30,8 @@ export async function onRequestGet(context) {
 
     const params = {
       customer: stripe_customer_id,
-      success_url: getURL(env, `/account`),
-      cancel_url: getURL(env, '/pricing'),
+      success_url: `${env.STRIPE_CALLBACK_URL}/account`,
+      cancel_url: `${env.STRIPE_CALLBACK_URL}/pricing`,
       mode: 'subscription',
       line_items: [
         {
