@@ -19,5 +19,9 @@ pnpm-debug.log*
 
 # macOS-specific files
 .DS_Store
+
+# Tencent Cloud EdgeOne
+.env
 .edgeone
-.vscode
+.edgeone/*
+.tef_dist/*

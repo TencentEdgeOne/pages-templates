@@ -1,0 +1,17 @@
+---
+import Layout from "@layouts/Layout.astro";
+import Container from "@components/container.astro";
+import SubscriptionTable from "@components/SubscriptionTable";
+import Sectionhead from "@components/sectionhead.astro";
+---
+
+<Layout title="Account">
+  <Container>
+    <Sectionhead>
+      <Fragment slot="title">Subscriptions</Fragment>
+      <Fragment slot="desc">All your subscriptions listed below.</Fragment>
+    </Sectionhead>
+    <SubscriptionTable client:only />
+    
+  </Container>
+</Layout>

@@ -3,65 +3,30 @@ import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
 import PricingCard from "@components/pricing.astro";
+import { supabase } from "../utils/supabase";
 
-const pricing = [
-  {
-    name: "Personal",
-    price: "Free",
-    popular: false,
-    features: [
-      "Lifetime free",
-      "Up to 3 users",
-      "Unlimited Pages",
-      "Astro Sub domain",
-      "Basic Integrations",
-      "Community Support",
-    ],
-    button: {
-      text: "Get Started",
-      link: "/",
-    },
-  },
-  {
-    name: "Startup",
-    price: {
-      monthly: "$19",
-      annual: "$16",
-      discount: "10%",
-      original: "$24",
-    },
-    popular: true,
-    features: [
-      "All Free Features",
-      "Up to 20 users",
-      "20 Custom domains",
-      "Unlimited Collaborators",
-      "Advanced Integrations",
-      "Priority Support",
-    ],
-    button: {
-      text: "Get Started",
-      link: "#",
-    },
-  },
-  {
-    name: "Enterprise",
-    price: "Custom",
-    popular: false,
-    features: [
-      "All Pro Features",
-      "Unlimited Custom domains",
-      "99.99% Uptime SLA",
-      "SAML & SSO Integration",
-      "Dedicated Account Manager",
-      "24/7 Phone Support",
-    ],
-    button: {
-      text: "Contact us",
-      link: "/contact",
-    },
-  },
-];
+// 从 Supabase 查询数据（示例：获取 "todos" 表的所有数据）
+const { data, error } = await supabase
+  .from("products")
+  .select("*, prices(*)")
+  .eq("active", true)
+  .eq("prices.active", true);
+
+if (error) {
+  console.error("获取数据失败:", error);
+}
+console.log("data", JSON.stringify(data));
+
+const pricing =
+  data
+    ?.map((item) => {
+      return {
+        ...item,
+        price: item.prices[0],
+        features: item.marketing_features.map((item) => item.name),
+      };
+    })
+    .sort((a, b) => a.price.unit_amount - b.price.unit_amount) ?? [];
 ---
 
 <Layout title="Pricing">
@@ -74,10 +39,10 @@ const pricing = [
       </Fragment>
     </Sectionhead>
     <div class="mt-20">
-      <stripe-pricing-table 
-          pricing-table-id="prctbl_1Qx5v5JyeD1MaKGT3JJJobvR"
-          publishable-key="pk_test_51QZUgrJyeD1MaKGTRIQ8YMnYKq4z944VucwKbTfeN0GSbw0c5KDj3Nmo4yltt5bb4r1tQGP0OBO6Ktijr2zcudvt00zGFbE3MB">
-      </stripe-pricing-table>
+      <div
+        class="grid md:grid-cols-3 gap-10 mx-auto max-w-(--breakpoint-lg) mt-12">
+        {pricing.map((item) => <PricingCard plan={item} />)}
+      </div>
     </div>
   </Container>
 </Layout>

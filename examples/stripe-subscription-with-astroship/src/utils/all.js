@@ -7,3 +7,13 @@ export const getFormattedDate = (date) =>
         day: "numeric",
       })
     : "";
+
+export function getURL(path) {
+  let base = import.meta.env.DEV ? import.meta.env.PUBLIC_API_URL_DEV : '/';
+  if (base.endsWith('/')) {
+    base = base.split("");
+    base.pop();
+    base = base.join("");
+  }
+  return `${base}${path}`
+}

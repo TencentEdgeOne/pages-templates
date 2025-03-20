@@ -4,6 +4,8 @@ import { Picture } from "astro:assets";
 import Layout from "@layouts/Layout.astro";
 import Container from "@components/container.astro";
 import Sectionhead from "@components/sectionhead.astro";
+import { contentfulClient } from "../utils/contentful";
+import type { Blog } from "../utils/contentful";
 
 // Filter blog entries with 'draft: false' & date before current date
 const publishedBlogEntries = await getCollection("blog", ({ data }) => {
@@ -14,6 +16,27 @@ const publishedBlogEntries = await getCollection("blog", ({ data }) => {
 publishedBlogEntries.sort(function (a, b) {
   return b.data.publishDate.valueOf() - a.data.publishDate.valueOf();
 });
+
+const entries = await contentfulClient.getEntries<Blog>({
+  content_type: "blog",
+});
+const posts = entries.items.map((item) => {
+  const { title, date, description, slug, featuredImage, category, author } =
+    item.fields;
+  return {
+    title,
+    slug,
+    description,
+    date: new Date(date).toLocaleDateString(),
+    featuredImage: {
+      src: featuredImage.fields.file.url,
+      alt: featuredImage.fields.file.description || "alt",
+    },
+    category,
+    author,
+  };
+});
+console.log("entries", entries.items[0].metadata.tags);
 ---
 
 <Layout title="Blog">
@@ -27,13 +50,13 @@ publishedBlogEntries.sort(function (a, b) {
     <main class="mt-16">
       <ul class="grid gap-16 max-w-4xl mx-auto">
         {
-          publishedBlogEntries.map((blogPostEntry, index) => (
+          posts.map((blogPostEntry, index) => (
             <li>
               <a href={`/blog/${blogPostEntry.slug}`}>
                 <div class="grid md:grid-cols-2 gap-5 md:gap-10 items-center">
                   <Picture
-                    src={blogPostEntry.data.image.src}
-                    alt={blogPostEntry.data.image.alt}
+                    src={blogPostEntry.featuredImage.src}
+                    alt={blogPostEntry.featuredImage.alt}
                     sizes="(max-width: 800px) 100vw, 800px"
                     width={800}
                     height={600}
@@ -43,22 +66,18 @@ publishedBlogEntries.sort(function (a, b) {
                   />
                   <div>
                     <span class="text-blue-400 uppercase tracking-wider text-sm font-medium">
-                      {blogPostEntry.data.category}
+                      {blogPostEntry.category}
                     </span>
 
                     <h2 class="text-3xl font-semibold leading-snug tracking-tight mt-1 ">
-                      {blogPostEntry.data.title}
+                      {blogPostEntry.title}
                     </h2>
 
                     <div class="flex gap-2 mt-3">
-                      <span class="text-gray-400">
-                        {blogPostEntry.data.author}
-                      </span>
+                      <span class="text-gray-400">{blogPostEntry.author}</span>
                       <span class="text-gray-400">• </span>
-                      <time
-                        class="text-gray-400"
-                        datetime={blogPostEntry.data.publishDate.toISOString()}>
-                        {blogPostEntry.data.publishDate.toDateString()}
+                      <time class="text-gray-400" datetime={blogPostEntry.date}>
+                        {blogPostEntry.date}
                       </time>
                     </div>
                   </div>
