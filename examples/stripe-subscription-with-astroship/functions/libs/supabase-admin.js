@@ -111,7 +111,6 @@ export const createOrRetrieveCustomer = async ({
   email,
   uuid
 }) => {
-  console.log('createOrRetrieveCustomer', uuid, email, supabaseAdmin);
   // Check if the customer already exists in Supabase
   const { data: existingSupabaseCustomer, error: queryError } =
     await supabaseAdmin
@@ -119,12 +118,12 @@ export const createOrRetrieveCustomer = async ({
       .select('*')
       .eq('id', uuid)
       .maybeSingle();
-  console.log('createOrRetrieveCustomer2', queryError);
+  // console.log('createOrRetrieveCustomer2', queryError);
 
   if (queryError) {
     throw new Error(`Supabase customer lookup failed: ${queryError.message}`);
   }
-
+  console.log('prepare stripe id');
   // Retrieve the Stripe customer ID using the Supabase customer ID, with email fallback
   let stripeCustomerId;
   if (existingSupabaseCustomer?.stripe_customer_id) {
@@ -138,12 +137,12 @@ export const createOrRetrieveCustomer = async ({
     stripeCustomerId =
       stripeCustomers.data.length > 0 ? stripeCustomers.data[0].id : undefined;
   }
-  console.log('stripeCustomerId', stripeCustomerId);
   // If still no stripeCustomerId, create a new customer in Stripe
   const stripeIdToInsert = stripeCustomerId
     ? stripeCustomerId
     : await createStripeCustomer(email, uuid);
   if (!stripeIdToInsert) throw new Error('Stripe customer creation failed.');
+  console.log('prepare stripe id finished', stripeIdToInsert);
 
   if (existingSupabaseCustomer && stripeCustomerId) {
     // If Supabase has a record but doesn't match Stripe, update Supabase record

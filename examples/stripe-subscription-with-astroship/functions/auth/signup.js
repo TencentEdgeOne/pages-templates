@@ -1,3 +1,4 @@
+import { createStripe } from "../libs/stripe";
 import { createSupabaseClient } from "../libs/supabase";
 import {
   createOrRetrieveCustomer,
@@ -25,17 +26,19 @@ export async function onRequestPost(context) {
   let customer;
   try {
     createSupabaseAdminClient(env);
+    createStripe(env);
+
     customer = await createOrRetrieveCustomer({
       uuid: error ? "" : data.user.id,
       email: email,
       env,
     }).catch((err) => {
-      return new Response(JSON.stringify(err), { status: 500 });
+      throw err;
     });
   } catch (err) {
     console.error(err);
-    return new Response(JSON.stringify(err), { status: 500 });
+    return new Response(err.message, { status: 500 });
   }
-
+  console.log('customer', customer);
   return new Response(null, { status: 200 });
 }

@@ -19,7 +19,7 @@ export async function onRequestGet(context) {
 
   if (!sbId) {
     const redirectUrl = getURL(env, `stripe/checkout?plan=${plan}&price=${priceId}`);
-    return Response.redirect(getURL(env, `login?redirectUrl=${encodeURIComponent(redirectUrl)}`), 302);
+    return Response.redirect(getURL(env,`login?redirectUrl=${encodeURIComponent(redirectUrl)}`), 302);
   }
   try {
     const supabase = createSupabaseAdminClient(env);
@@ -46,7 +46,7 @@ export async function onRequestGet(context) {
 
     return Response.redirect(url, 302);
   } catch (err) {
-    return new Response(JSON.stringify(err), { status: 500 });
+    return new Response(err.message, { status: 500 });
   }
 
 }

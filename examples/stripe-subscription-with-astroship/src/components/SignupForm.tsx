@@ -15,6 +15,7 @@ export default function SignupForm() {
       body: formdata,
     }).then(async (resp) => {
       if (resp.status === 200) {
+        alert('Sign Up Successfully, jumping to log in...')
         return window.location.href = "/login"
       }
       alert(await resp.text());
