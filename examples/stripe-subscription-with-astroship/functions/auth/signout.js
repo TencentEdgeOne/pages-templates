@@ -14,7 +14,12 @@ export async function onRequestGet(context) {
   const { error } = await supabase.auth.signOut();
 
   if (error) {
-    return new Response(error.message, {status: 500})
+    return new Response(error.message, { status: 500 })
   }
-  return new Response(null, {status: 200});
+  const headers = new Headers();
+
+  headers.append("Set-Cookie", "sb-access-token=; ; Path=/; HttpOnly;");
+  headers.append("Set-Cookie", "sb-refresh-token=; ; Path=/; HttpOnly;");
+  headers.append("Set-Cookie", "sb-user-id=; ; Path=/; HttpOnly;");
+  return new Response(null, { status: 200, headers });
 }
