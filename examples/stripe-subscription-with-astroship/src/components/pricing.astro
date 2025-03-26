@@ -1,6 +1,7 @@
 ---
 import { Tick } from "@components/ui/icons";
 import Link from "@components/ui/link.astro";
+import { getURL } from "@utils/all";
 
 const { plan } = Astro.props;
 ---
@@ -12,9 +13,11 @@ const { plan } = Astro.props;
       <h4 class="text-lg font-medium text-gray-400">{plan.name}</h4><p
         class="mt-3 text-4xl font-bold text-black md:text-4xl">
         {
-          plan.price && typeof plan.price === "object"
-            ? plan.price.monthly
-            : plan.price
+          plan.price &&
+            typeof plan.price === "object" &&
+            plan.price.unit_amount / 100 +
+              " " +
+              plan.price.currency.toUpperCase()
         }
       </p>
     </div><ul class="grid mt-8 text-left gap-y-4">
@@ -28,10 +31,10 @@ const { plan } = Astro.props;
       }
     </ul><div class="flex mt-8">
       <Link
-        href={plan.button.link || "#"}
+        href={getURL(`/stripe/checkout?plan=${plan.id}&price=${plan.price.id}`)}
         block
         style={plan.popular ? "primary" : "outline"}>
-        {plan.button.text || "Get Started"}
+        {plan?.button?.text || "Get Started"}
       </Link>
     </div>
   </div>

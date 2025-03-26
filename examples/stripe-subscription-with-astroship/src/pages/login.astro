@@ -1,0 +1,15 @@
+---
+import LoginForm from "@components/LoginForm.tsx";
+import Layout from "@layouts/Layout.astro";
+---
+
+<Layout title="Login">
+  <!-- <Container> -->
+
+  <div class="grid md:grid-cols-1 gap-10 mx-auto max-w-2xl mt-16">
+    <div>
+      <LoginForm client:only />
+    </div>
+  </div>
+  <!-- </Container> -->
+</Layout>

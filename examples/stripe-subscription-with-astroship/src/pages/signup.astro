@@ -1,0 +1,15 @@
+---
+import SignupForm from "@components/SignupForm";
+import Layout from "@layouts/Layout.astro";
+---
+
+<Layout title="Login">
+  <!-- <Container> -->
+
+  <div class="grid md:grid-cols-1 gap-10 mx-auto max-w-2xl mt-16">
+    <div>
+      <SignupForm client:load/>
+    </div>
+  </div>
+  <!-- </Container> -->
+</Layout>
