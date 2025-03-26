@@ -46,5 +46,6 @@ MCP 服务器组件为大型语言模型提供了访问地理位置数据的接�
 
 ## 了解更多
 
+* [EdgeOne Pages](https://edgeone.ai/products/pages)
 * [EdgeOne Pages 函数文档](https://edgeone.ai/document/162227908259442688)
 * [模型上下文协议 (MCP)](https://modelcontextprotocol.github.io) - 了解如何将 AI 模型与外部工具和服务集成

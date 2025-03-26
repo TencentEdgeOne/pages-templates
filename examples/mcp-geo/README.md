@@ -48,5 +48,6 @@ To use the MCP server with large language models, add the following configuratio
 
 ## Learn More
 
+* [EdgeOne Pages](https://edgeone.ai/products/pages)
 * [EdgeOne Pages Functions documentation](https://edgeone.ai/document/162227908259442688)
 * [Model Context Protocol (MCP)](https://modelcontextprotocol.github.io) - Learn about integrating AI models with external tools and services
