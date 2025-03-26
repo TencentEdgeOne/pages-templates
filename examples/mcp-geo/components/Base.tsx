@@ -9,8 +9,9 @@ export const Base = () => {
             EdgeOne Pages MCP: Geo Location Service
           </h1>
           <p className="text-xl text-gray-600 mb-8">
-            A geolocation service example demonstrating how to obtain user location information in EdgeOne Pages
-            and interact with AI models through the MCP protocol.
+            A geolocation service example demonstrating how to obtain user
+            location information in EdgeOne Pages and interact with AI models
+            through the MCP protocol.
           </p>
         </div>
 
@@ -20,11 +21,16 @@ export const Base = () => {
             Project Overview
           </h2>
           <p className="text-gray-600 mb-4">
-            In modern web applications, obtaining user geolocation information is a common requirement. This project demonstrates how to:
+            In modern web applications, obtaining user geolocation information
+            is a common requirement. This project demonstrates how to:
           </p>
           <ul className="list-disc list-inside text-gray-600 space-y-2 mb-4">
-            <li>Securely obtain user geolocation using EdgeOne Pages Functions</li>
-            <li>Enable AI models to access location data through the MCP protocol</li>
+            <li>
+              Securely obtain user geolocation using EdgeOne Pages Functions
+            </li>
+            <li>
+              Enable AI models to access location data through the MCP protocol
+            </li>
             <li>Elegantly display location information in the frontend</li>
           </ul>
         </div>
@@ -40,9 +46,15 @@ export const Base = () => {
                 EdgeOne Pages Functions
               </h3>
               <ul className="text-gray-600 space-y-2">
-                <li>• Automatically retrieve visitor's geolocation information</li>
-                <li>• Includes detailed data about country, region, city, etc.</li>
-                <li>• Precise positioning through EdgeOne's global node network</li>
+                <li>
+                  • Automatically retrieve visitor&apos;s geolocation information
+                </li>
+                <li>
+                  • Includes detailed data about country, region, city, etc.
+                </li>
+                <li>
+                  • Precise positioning through EdgeOne&apos;s global node network
+                </li>
                 <li>• Returns standardized JSON format data</li>
               </ul>
             </div>
@@ -53,7 +65,9 @@ export const Base = () => {
               <ul className="text-gray-600 space-y-2">
                 <li>• Implements Model Context Protocol standard</li>
                 <li>• Provides get_geolocation tool interface</li>
-                <li>• Supports real-time AI model calls to geolocation service</li>
+                <li>
+                  • Supports real-time AI model calls to geolocation service
+                </li>
                 <li>• Convenient server-side integration solution</li>
               </ul>
             </div>
@@ -66,6 +80,7 @@ export const Base = () => {
             href="https://edgeone.ai/pages/new?template=mcp-geo"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="Deploy your own instance of the MCP Geo Location Service"
             className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 mr-4"
           >
             Deploy Now
@@ -74,6 +89,7 @@ export const Base = () => {
             href="https://edgeone.ai/pages/templates"
             target="_blank"
             rel="noopener noreferrer"
+            aria-label="View more EdgeOne Pages templates"
             className="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
           >
             View More Templates
