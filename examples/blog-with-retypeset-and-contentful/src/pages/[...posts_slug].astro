@@ -1,0 +1,157 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import Comments from '@/components/Comments/index.astro'
+import PostDate from '@/components/PostDate.astro'
+import GoBack from '@/components/Widgets/GoBack.astro'
+import { allLocales, defaultLocale, moreLocales } from '@/config'
+import { getTagPath } from '@/i18n/path'
+import Layout from '@/layouts/Layout.astro'
+import { checkPostSlugDuplication } from '@/utils/content'
+import { generateDescription } from '@/utils/description'
+import { getPostsFromContentful } from '@/utils/content'
+
+export async function getStaticPaths() {
+  const posts = await getPostsFromContentful()
+
+  // Check if there are duplicate post slugs
+  const duplicates = await checkPostSlugDuplication(posts)
+  if (duplicates.length > 0) {
+    throw new Error(`Duplicate post slugs:\n${duplicates.join('\n')}`)
+  }
+
+  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  // Use a Map to store the relationship between post slugs and their supported languages
+  // Set is used to store the supported languages for each post
+  const slugToLangsMap = posts.reduce((map, post) => {
+    const slug = post.data.abbrlink || post.slug
+    const lang = post.data.lang
+
+    if (!map.has(slug)) {
+      map.set(slug, new Set(lang ? [lang] : allLocales))
+    }
+ else if (lang) {
+      map.get(slug)?.add(lang)
+    }
+
+    return map
+  }, new Map<string, Set<string>>())
+
+  // Convert Map<slug, Set<langs>> to Record<slug, langs[]> structure
+  // Sort languages according to the order defined in allLocales
+  const slugToLangs = Object.fromEntries(
+    Array.from(slugToLangsMap.entries()).map(([slug, langs]) => [
+      slug,
+      [...langs].sort((a, b) => allLocales.indexOf(a) - allLocales.indexOf(b)),
+    ]),
+  )
+
+  // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+  type PathItem = {
+    params: { posts_slug: string }
+    props: { post: any, lang: string, supportedLangs: string[] }
+  }
+  const paths: PathItem[] = []
+
+  // Default locale
+  posts.forEach((post: CollectionEntry<'posts'>) => {
+    // Show drafts in dev mode only
+    if (import.meta.env.DEV || !post.data.draft) {
+      const slug = post.data.abbrlink || post.slug
+      const lang = post.data.lang
+
+      if (lang === defaultLocale || lang === '') {
+        paths.push({
+          params: { posts_slug: `posts/${slug}/` },
+          props: {
+            post,
+            lang: defaultLocale,
+            supportedLangs: slugToLangs[slug] || [],
+          },
+        })
+      }
+    }
+  })
+
+  // More locales
+  moreLocales.forEach((lang: string) => {
+    posts.forEach((post: CollectionEntry<'posts'>) => {
+      console.warn('test', post.data.lang, post.slug, lang);
+
+      // Process posts with matching language or no language specified
+      if ((import.meta.env.DEV || !post.data.draft) && (post.data.lang === lang || post.data.lang === '')) {
+        const slug = post.data.abbrlink || post.slug
+        paths.push({
+          params: { posts_slug: `${lang}/posts/${slug}/` },
+          props: {
+            post,
+            lang,
+            supportedLangs: slugToLangs[slug] || [],
+          },
+        })
+      }
+    })
+  })
+  console.warn('paths', paths); 
+  return paths
+}
+
+const { post, lang, supportedLangs } = Astro.props
+const description = generateDescription(post, 'meta')
+const { remarkPluginFrontmatter } = await post.render()
+---
+
+<Layout
+  postTitle={post.data.title}
+  postDescription={description}
+  postSlug={post.slug}
+  supportedLangs={supportedLangs}
+>
+  <article class="heti mb-12.6">
+    <div class="relative">
+      <!-- Go Back Button On Desktop -->
+      <GoBack />
+      <!-- Title -->
+      <h1 class="post-title">
+        <span
+          transition:name={`post-${post.data.abbrlink || post.slug}-${lang}`}
+          data-disable-transition-on-theme
+        >
+          {post.data.title}
+        </span>
+      </h1>
+    </div>
+
+    <!-- Date -->
+    <div
+      class="mb-16.3 block c-primary font-time"
+      transition:name={`time-${post.data.abbrlink || post.slug}-${lang}`}
+      data-disable-transition-on-theme
+    >
+      <PostDate
+        date={post.data.published}
+        updatedDate={post.data.updated}
+        minutes={remarkPluginFrontmatter.minutes}
+      />
+    </div>
+    <!-- Content -->
+    <!--<Content />-->
+    <article set:html={post.body} />
+  </article>
+
+  <!-- Tags -->
+  {post.data.tags && post.data.tags.length > 0 && (
+    <div class="uno-decorative-line"></div>
+    <div class="uno-tags-wrapper">
+      {post.data.tags.map((tag: string) => (
+        <a
+          href={getTagPath(tag, lang)}
+          class="uno-tags-style"
+        >
+          {tag}
+        </a>
+      ))}
+    </div>
+  )}
+  <!-- Comments -->
+  <Comments />
+</Layout>

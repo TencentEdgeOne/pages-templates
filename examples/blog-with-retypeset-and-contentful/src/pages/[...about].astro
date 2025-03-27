@@ -1,0 +1,47 @@
+---
+import { defaultLocale, moreLocales } from '@/config'
+import Layout from '@/layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+
+export async function getStaticPaths() {
+  type PathItem = {
+    params: { about: string }
+    props: { lang: string }
+  }
+
+  const paths: PathItem[] = []
+
+  // Default locale
+  paths.push({
+    params: { about: 'about/' },
+    props: { lang: defaultLocale },
+  })
+
+  // More locales
+  moreLocales.forEach((lang: string) => {
+    paths.push({
+      params: { about: `${lang}/about/` },
+      props: { lang },
+    })
+  })
+
+  return paths
+}
+
+const { lang } = Astro.props
+
+// Get about page content with different language
+const allAboutEntries = await getCollection('about')
+const aboutEntry = allAboutEntries.find(entry => entry.data.lang === lang)
+  || allAboutEntries.find(entry => entry.data.lang === '')
+const { Content } = aboutEntry ? await aboutEntry.render() : { Content: null }
+---
+
+<Layout>
+  <!-- Decorative Line -->
+  <div class="uno-decorative-line"></div>
+  <!-- About Page Content -->
+  <div class="heti">
+    {Content && <Content />}
+  </div>
+</Layout>

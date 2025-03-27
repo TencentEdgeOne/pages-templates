@@ -1,0 +1,52 @@
+---
+import Button from '@/components/Button.astro'
+import Footer from '@/components/Footer.astro'
+import Header from '@/components/Header.astro'
+import Navbar from '@/components/Navbar.astro'
+import Scrollbar from '@/components/Widgets/Scrollbar.astro'
+import themeConfig from '@/config'
+import Head from '@/layouts/Head.astro'
+import { getPageInfo } from '@/utils/page'
+import '@/styles/font.css'
+import '@/styles/global.css'
+import '@/styles/heti.css'
+
+interface Props {
+  postTitle?: string
+  postDescription?: string
+  postSlug?: string
+  supportedLangs?: string[]
+}
+
+const { postTitle, postDescription, postSlug, supportedLangs = [] } = Astro.props
+const { isPost } = getPageInfo(Astro.url.pathname)
+const fontStyle = themeConfig.global.fontStyle === 'serif' ? 'font-serif' : 'font-sans'
+const MarginBottom = isPost && themeConfig.comment?.enabled
+  ? 'mb-10' // Post page with comment system
+  : 'mb-12' // Other pages
+---
+
+<html
+  lang={Astro.currentLocale}
+  class={fontStyle}
+  data-overlayscrollbars-initialize
+>
+  <Head {postTitle} {postDescription} {postSlug} />
+  <body data-overlayscrollbars-initialize>
+
+    <div
+      class="mx-auto max-w-205.848 min-h-vh w-full min-h-dvh"
+      p="x-[min(7.25vw,3.731rem)] y-9"
+      lg="p-0 max-w-[min(calc(75vw-16rem),44rem)] mx-[max(5.625rem,calc(50vw-34.375rem))] my-20"
+    >
+      <Header />
+      <Navbar />
+      <main class={MarginBottom}>
+        <slot />
+      </main>
+      <Footer />
+    </div>
+    <Scrollbar />
+    <Button supportedLangs={supportedLangs} />
+  </body>
+</html>

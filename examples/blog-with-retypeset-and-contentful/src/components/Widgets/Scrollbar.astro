@@ -1,0 +1,88 @@
+<script>
+import { OverlayScrollbars } from 'overlayscrollbars'
+
+function setupScrollbar() {
+  const bodyElement = document.body
+  if (!bodyElement.hasAttribute('data-scrollbar-initialized')) {
+    OverlayScrollbars({
+      target: bodyElement,
+      cancel: {
+        nativeScrollbarsOverlaid: true,
+      },
+    }, {
+      scrollbars: {
+        theme: 'scrollbar-body',
+        autoHide: 'scroll',
+        autoHideDelay: 800,
+      },
+    })
+
+    bodyElement.setAttribute('data-scrollbar-initialized', 'true')
+  }
+
+  const preElements = document.querySelectorAll('pre')
+  preElements.forEach((pre) => {
+    if (!pre.hasAttribute('data-scrollbar-initialized')) {
+      OverlayScrollbars({
+        target: pre,
+        cancel: {
+          nativeScrollbarsOverlaid: true,
+        },
+      }, {
+        scrollbars: {
+          theme: 'scrollbar-code',
+          autoHide: 'leave',
+          autoHideDelay: 500,
+        },
+      })
+
+      pre.setAttribute('data-scrollbar-initialized', 'true')
+    }
+  })
+}
+
+setupScrollbar()
+document.addEventListener('astro:after-swap', setupScrollbar)
+</script>
+
+<style is:global>
+@import 'overlayscrollbars/overlayscrollbars.css';
+
+.scrollbar-body {
+  --os-size: 0.9rem;
+  --os-padding-perpendicular: 0.2rem;
+  --os-padding-axis: 0.4rem;
+  --os-handle-border-radius: 99rem;
+  --os-handle-perpendicular-size: 75%;
+  --os-handle-perpendicular-size-hover: 100%;
+  --os-handle-perpendicular-size-active: 100%;
+  --os-handle-interactive-area-offset: 0.2rem;
+  --os-handle-bg: oklch(var(--un-preset-theme-colors-secondary) / 0.25);
+  --os-handle-bg-hover: oklch(var(--un-preset-theme-colors-secondary) / 0.40);
+  --os-handle-bg-active: oklch(var(--un-preset-theme-colors-secondary) / 0.40);
+  --os-handle-max-size: 60%;
+  --os-handle-min-size: 12%;
+}
+
+.scrollbar-code {
+  --os-size: 0.6rem;
+  --os-padding-perpendicular: 0.1rem;
+  --os-padding-axis: 0.2rem;
+  --os-handle-border-radius: 99rem;
+  --os-handle-perpendicular-size: 75%;
+  --os-handle-perpendicular-size-hover: 100%;
+  --os-handle-perpendicular-size-active: 100%;
+  --os-handle-interactive-area-offset: 0.1rem;
+  --os-handle-bg: oklch(var(--un-preset-theme-colors-secondary) / 0.20);
+  --os-handle-bg-hover: oklch(var(--un-preset-theme-colors-secondary) / 0.35);
+  --os-handle-bg-active: oklch(var(--un-preset-theme-colors-secondary) / 0.35);
+  --os-handle-max-size: 60%;
+  --os-handle-min-size: 12%;
+}
+
+@media (max-width: 1023px) {
+  .os-scrollbar {
+    display: none !important;
+  }
+}
+</style>

@@ -1,0 +1,48 @@
+---
+import { defaultLocale, themeConfig } from '@/config'
+import { getLangFromPath } from '@/i18n/lang'
+
+const { author } = themeConfig.site
+const { links: socialLinks, startYear } = themeConfig.footer
+
+const currentYear = new Date().getFullYear()
+const year = Number(startYear) === currentYear
+  ? startYear
+  : `${startYear}-${currentYear}`
+
+// i18n RSS Path
+const currentLang = getLangFromPath(Astro.url.pathname)
+const links = socialLinks.map((link) => {
+  if (link.name === 'RSS') {
+    return {
+      ...link,
+      url: currentLang === defaultLocale ? link.url : `/${currentLang}${link.url}`,
+    }
+  }
+  return link
+})
+---
+
+<footer
+  class="text-3 leading-4.75 font-navbar lg:text-3.5"
+  lg="uno-desktop-column bottom-20"
+>
+  <p>
+    {links.map((link, index) => (
+      <>
+        <a class="transition-colors hover:c-primary" href={link.url}>
+          {link.name}
+        </a>
+        {index < links.length - 1 && ' / '}
+      </>
+    ))}
+  </p>
+
+  <p>
+    Powered by <a class="transition-colors hover:c-primary" href="https://astro.build/">Astro</a> and <a class="transition-colors hover:c-primary" href="https://github.com/radishzzz/astro-theme-retypeset">Retypeset</a>
+  </p>
+
+  <p>
+    © {year} {author}
+  </p>
+</footer>

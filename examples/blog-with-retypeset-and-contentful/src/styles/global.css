@@ -1,0 +1,100 @@
+:root {
+  --uno-colors-primary: theme('colors.primary');
+  --uno-colors-secondary: theme('colors.secondary');
+  --uno-colors-background: theme('colors.background');
+}
+
+html {
+  --at-apply: 'bg-background c-secondary antialiased scrollbar-hidden';
+}
+
+html::-webkit-scrollbar {
+  --at-apply: 'hidden';
+}
+
+body {
+  --at-apply: 'ios-flash-fix';
+}
+
+/* article img {
+  --at-apply: 'cursor-zoom-in force-gpu';
+} */
+
+/* View Transition with Theme Toggle >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+::view-transition-new(theme-transition) {
+  animation: reveal 1s cubic-bezier(0.4, 0, 0.2, 1);
+  clip-path: inset(0 0 0 0);
+  z-index: 99;
+}
+
+::view-transition-old(theme-transition) {
+  animation: none;
+  z-index: -1;
+}
+
+@keyframes reveal {
+  from {
+    clip-path: inset(var(--from));
+  }
+}
+
+html.dark {
+  --from: 0 0 100% 0;
+}
+
+html:not(.dark) {
+  --from: 100% 0 0 0;
+}
+
+/* Disable animations for other elements during theme switching */
+html[data-theme-transition] [data-disable-transition-on-theme] {
+  view-transition-name: none !important;
+}
+
+/* Fallback animation when view-transition-name is not supported */
+@supports not (view-transition-name: none) {
+  html:not([data-restore-theme]) {
+    --at-apply: 'transition-colors duration-300 ease-out';
+  }
+}
+
+/* Import Custom Fonts >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+/* Snell Roundhand Static Font */
+@font-face {
+  font-family: "Snell-Bold";
+  src: url("/font/Snell-Bold.woff2") format("woff2");
+  font-display: swap;
+  unicode-range: U+0030-0039,U+0041-005A,U+0061-007A,U+00C1,U+00C9,U+00CD,U+00D3,U+00DA,U+00DC,U+00D1,U+00E1,U+00E9,U+00ED,U+00F3,U+00FA,U+00FC,U+00F1,U+0410-044F,U+0401,U+0451,U+0021-002F,U+003A-0040,U+00A9;
+}
+
+@font-face {
+  font-family: "Snell-Black";
+  src: url("/font/Snell-Black.woff2") format("woff2");
+  font-display: swap;
+  unicode-range: U+0030-0039,U+0041-005A,U+0061-007A,U+00C1,U+00C9,U+00CD,U+00D3,U+00DA,U+00DC,U+00D1,U+00E1,U+00E9,U+00ED,U+00F3,U+00FA,U+00FC,U+00F1,U+0410-044F,U+0401,U+0451,U+0021-002F,U+003A-0040,U+00A9;
+}
+
+/* STIXTwoText Variable Font */
+@font-face {
+  font-family: "STIX";
+  src: url("/font/STIX.woff2") format("woff2-variations");
+  font-display: swap;
+  font-weight: 400 700;
+  unicode-range: U+0030-0039,U+0041-005A,U+0061-007A,U+00C1,U+00C9,U+00CD,U+00D3,U+00DA,U+00DC,U+00D1,U+00E1,U+00E9,U+00ED,U+00F3,U+00FA,U+00FC,U+00F1,U+0410-044F,U+0401,U+0451,U+0021-002F,U+003A-0040,U+00A9;
+}
+
+@font-face {
+  font-family: "STIX-Italic";
+  src: url("/font/STIX-Italic.woff2") format("woff2-variations");
+  font-display: swap;
+  font-weight: 400 700;
+  unicode-range: U+0030-0039,U+0041-005A,U+0061-007A,U+00C1,U+00C9,U+00CD,U+00D3,U+00DA,U+00DC,U+00D1,U+00E1,U+00E9,U+00ED,U+00F3,U+00FA,U+00FC,U+00F1,U+0410-044F,U+0401,U+0451,U+0021-002F,U+003A-0040,U+00A9;
+}
+
+/* Minimal Subset of EarlySummerSerif Variable Font */
+@font-face {
+  font-family: "EarlySummer-Subset";
+  src: url("/font/EarlySummer-Subset.woff2") format("woff2-variations");
+  font-display: swap;
+  font-weight: 400 700;
+}

@@ -1,0 +1,53 @@
+---
+import PostList from '@/components/PostList.astro'
+import { defaultLocale, moreLocales } from '@/config'
+import Layout from '@/layouts/Layout.astro'
+import { getPinnedPosts, getPostsByYear } from '@/utils/content'
+
+export async function getStaticPaths() {
+  type PathItem = {
+    params: { index: string | undefined }
+    props: { lang: string }
+  }
+
+  const paths: PathItem[] = []
+
+  // Default locale
+  paths.push({
+    params: { index: undefined },
+    props: { lang: defaultLocale },
+  })
+
+  // More locales
+  moreLocales.forEach((lang: string) => {
+    paths.push({
+      params: { index: `${lang}/` },
+      props: { lang },
+    })
+  })
+
+  return paths
+}
+
+const { lang } = Astro.props
+
+const pinnedPosts = await getPinnedPosts(lang)
+const postsByYear = await getPostsByYear(lang)
+---
+<Layout>
+  <!-- Pinned Posts -->
+  {pinnedPosts.length > 0 && (
+    <section class="mb-7.5">
+      <div class="uno-decorative-line"></div>
+      <PostList posts={pinnedPosts} lang={lang} />
+    </section>
+  )}
+
+  <!-- Regular Posts -->
+  {[...postsByYear.entries()].map(([_year, posts]) => (
+    <section class="mb-7.5">
+      <div class="uno-decorative-line"></div>
+      <PostList posts={posts} lang={lang} />
+    </section>
+  ))}
+</Layout>
