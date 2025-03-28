@@ -1,4 +1,4 @@
-# EdgeOne Pages MCP: Geo Location Service
+# MCP with Pages Functions ：Geo Location Demo 
 
 This project demonstrates how to use EdgeOne Pages Functions to retrieve user geolocation information and integrate it with large language models through MCP (Model Context Protocol).
 
