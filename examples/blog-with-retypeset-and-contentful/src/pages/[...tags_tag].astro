@@ -1,0 +1,78 @@
+---
+import PostList from '@/components/PostList.astro'
+import { allLocales, defaultLocale, moreLocales } from '@/config'
+import { getTagPath } from '@/i18n/path'
+import Layout from '@/layouts/Layout.astro'
+import { getAllTags, getPostsByTag } from '@/utils/content'
+
+export async function getStaticPaths() {
+  type PathItem = {
+    params: { tags_tag: string }
+    props: { tag: string, lang: string }
+  }
+
+  const paths: PathItem[] = []
+
+  // Default locale
+  const defaultTags = await getAllTags(defaultLocale)
+  defaultTags.forEach((tag: string) => {
+    paths.push({
+      params: { tags_tag: `tags/${tag}/` },
+      props: { tag, lang: defaultLocale },
+    })
+  })
+
+  // More locales
+  for (const lang of moreLocales) {
+    const langTags = await getAllTags(lang)
+    langTags.forEach((tag: string) => {
+      paths.push({
+        params: { tags_tag: `${lang}/tags/${tag}/` },
+        props: { tag, lang },
+      })
+    })
+  }
+
+  return paths
+}
+
+const { tag, lang } = Astro.props
+const posts = await getPostsByTag(tag, lang)
+const allTags = await getAllTags(lang)
+
+// Check if tag has posts in each language, return language code if exists, null if not
+const tagSupportedLangs = await Promise.all(
+  allLocales.map(async (locale) => {
+    const postsInLang = await getPostsByTag(tag, locale)
+    return postsInLang.length > 0 ? locale : null
+  }),
+)
+
+// Filter to get supported languages
+const supportedLangs = tagSupportedLangs.filter(Boolean) as string[]
+---
+
+<Layout supportedLangs={supportedLangs}>
+  <!-- Decorative Line -->
+  <div class="uno-decorative-line"></div>
+  <!-- Tags List -->
+  <div class="uno-tags-wrapper">
+    {allTags.map(tagName => (
+      <a
+        href={getTagPath(tagName, lang)}
+        class={`uno-tags-style ${
+          tag === tagName
+            ? 'border-secondary/75 text-primary'
+            : ''
+        }`}
+      >
+        {tagName}
+      </a>
+    ))}
+  </div>
+
+  <!-- Posts List -->
+  <div class="mt-10.5">
+    <PostList posts={posts} lang={lang} />
+  </div>
+</Layout>

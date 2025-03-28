@@ -1,0 +1,50 @@
+---
+import { defaultLocale, moreLocales } from '@/config'
+import { getTagPath } from '@/i18n/path'
+import Layout from '@/layouts/Layout.astro'
+import { getAllTags } from '@/utils/content'
+
+export async function getStaticPaths() {
+  type PathItem = {
+    params: { tags: string }
+    props: { lang: string }
+  }
+
+  const paths: PathItem[] = []
+
+  // Default locale
+  paths.push({
+    params: { tags: 'tags/' },
+    props: { lang: defaultLocale },
+  })
+
+  // More locales
+  moreLocales.forEach((lang: string) => {
+    paths.push({
+      params: { tags: `${lang}/tags/` },
+      props: { lang },
+    })
+  })
+
+  return paths
+}
+
+const { lang } = Astro.props
+const allTags = await getAllTags(lang)
+---
+
+<Layout>
+  <!-- Decorative Line -->
+  <div class="uno-decorative-line"></div>
+  <!-- Tags List -->
+  <div class="uno-tags-wrapper">
+    {allTags.map(tag => (
+      <a
+        href={getTagPath(tag, lang)}
+        class="uno-tags-style"
+      >
+        {tag}
+      </a>
+    ))}
+  </div>
+</Layout>

@@ -1,0 +1,77 @@
+<!-- Sentinel element for scroll detection -->
+<div
+  id="top-sentinel"
+  aria-hidden="true"
+  class="pointer-events-none absolute left-0 top-0 h-px w-full"
+/>
+
+<button
+  id="back-to-top-button"
+  aria-label="Back to top"
+  class="fixed bottom-8 right-8 h-10 w-10 rounded-full bg-background transition-all duration-300 ease-out"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    class="m-auto h-60% w-60%"
+  >
+    <path d="M18 15l-6-6-6 6" />
+  </svg>
+</button>
+
+<script>
+let observer: IntersectionObserver | null = null
+let backToTopButton: HTMLButtonElement | null = null
+
+function initBackToTop() {
+  // Get elements
+  const sentinel = document.getElementById('top-sentinel')
+  backToTopButton = document.getElementById('back-to-top-button') as HTMLButtonElement
+
+  if (!sentinel || !backToTopButton)
+    return
+
+  // Initialize IntersectionObserver
+  observer = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting) {
+        backToTopButton?.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4')
+      }
+      else {
+        backToTopButton?.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4')
+      }
+    },
+    {
+      threshold: 0,
+      rootMargin: '30% 0% 0% 0%',
+    },
+  )
+
+  // Observe sentinel
+  observer.observe(sentinel)
+
+  // Add click handler
+  backToTopButton.addEventListener('click', () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  })
+}
+
+function cleanup() {
+  // Cleanup observer
+  if (observer) {
+    observer.disconnect()
+    observer = null
+  }
+
+  // Remove event listeners
+  backToTopButton = null
+}
+
+// Handle page transitions
+document.addEventListener('astro:page-load', initBackToTop)
+document.addEventListener('astro:before-swap', cleanup)
+</script>

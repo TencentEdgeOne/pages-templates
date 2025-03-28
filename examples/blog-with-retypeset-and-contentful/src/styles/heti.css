@@ -1,0 +1,303 @@
+/*!
+ * Project: Heti
+ * URL: https://github.com/sivan/heti
+ * Author: Sivan [sun.sivan@gmail.com]
+ */
+
+ /* Global Styles */
+.heti {
+  --at-apply: 'leading-1.5em break-words hyphens-auto tracking-0.02em';
+}
+.heti:not(:lang(zh)):not(:lang(ja)):not(:lang(ko)) {
+  --at-apply: 'tracking-0';
+}
+
+/* Article Title */
+.heti .post-title {
+  --at-apply: 'c-primary mb-2 font-bold text-9 leading-12 text-balance mbs-0';
+}
+
+/* Links */
+.heti a {
+  --at-apply: 'underline decoration-secondary/40 underline-0.075em underline-offset-0.2em lg:underline-0.1em';
+  --at-apply: 'font-medium transition-colors tracking-0 hover:(c-primary decoration-secondary/80) ';
+}
+
+/* Paragraphs */
+.heti p {
+  --at-apply: 'mt-3 mb-4 text-justify';
+}
+.heti p:not(:lang(zh)):not(:lang(ja)):not(:lang(ko)) {
+  --at-apply: 'text-start';
+}
+
+/* Headings */
+.heti h1,
+.heti h2,
+.heti h3,
+.heti h4,
+.heti h5,
+.heti h6 {
+  --at-apply: 'mt-6 mb-3 font-semibold';
+}
+.heti h1 {
+  --at-apply: 'text-8 leading-12';
+}
+.heti h2 {
+  --at-apply: 'text-6 leading-9';
+}
+.heti h3 {
+  --at-apply: 'text-5 leading-9';
+}
+.heti h4 {
+  --at-apply: 'text-4.5 leading-6';
+}
+.heti h5 {
+  --at-apply: 'text-4 leading-6';
+}
+.heti h6 {
+  --at-apply: 'text-3.5 leading-6';
+}
+.heti h1,
+.heti h2,
+.heti h3 {
+  --at-apply: 'tracking-0.05em';
+}
+.heti h1:not(:lang(zh)):not(:lang(ja)):not(:lang(ko)),
+.heti h2:not(:lang(zh)):not(:lang(ja)):not(:lang(ko)),
+.heti h3:not(:lang(zh)):not(:lang(ja)):not(:lang(ko)) {
+  --at-apply: 'tracking-0';
+}
+.heti h1 + h2,
+.heti h2 + h3,
+.heti h3 + h4,
+.heti h4 + h5,
+.heti h5 + h6 {
+  --at-apply: 'mt-3';
+}
+
+/* Blockquotes */
+.heti blockquote {
+  --at-apply: 'mt-3 mb-6 px-4 py-3 rounded';
+  --at-apply: 'border-l-4 border-solid border-secondary/25 bg-secondary/5';
+}
+.heti blockquote blockquote {
+  --at-apply: 'my-3';
+}
+.heti blockquote p {
+  --at-apply: 'my-2';
+}
+
+/* Code Blocks */
+.heti pre {
+  --at-apply: 'mt-3 mb-4 px-4 py-3 rounded bg-secondary/5! border border-solid border-secondary/7';
+  --at-apply: 'overflow-auto whitespace-pre scrollbar-hidden';
+}
+.heti pre code {
+  --at-apply: 'p-0 bg-secondary/0 tracking-0 border-none';
+}
+html.dark .heti pre span {
+  --at-apply: 'text-[var(--shiki-dark)]!';
+}
+
+/* Inline Code */
+.heti code {
+  --at-apply: 'p-0.5 bg-secondary/5 rounded text-0.85em border border-solid border-secondary/7';
+}
+
+/* Horizontal Rules */
+.heti hr {
+  --at-apply: 'border-secondary/25';
+}
+
+/* Lists */
+.heti ul,
+.heti ol,
+.heti dl {
+  --at-apply: 'mt-3 mb-6';
+}
+.heti ul,
+.heti ol {
+  --at-apply: 'pl-8';
+}
+.heti ul ul,
+.heti ul ol,
+.heti ol ul,
+.heti ol ol {
+  --at-apply: 'my-0';
+}
+.heti ul {
+  --at-apply: 'list-disc';
+}
+.heti ol {
+  --at-apply: 'list-decimal';
+}
+.heti ul ul,
+.heti ol ul {
+  --at-apply: 'list-circle';
+}
+.heti ul ul ul,
+.heti ul ol ul,
+.heti ol ul ul,
+.heti ol ol ul {
+  --at-apply: 'list-square';
+}
+.heti li {
+  --at-apply: 'list-unset';
+}
+
+/* Tables */
+.heti table {
+  --at-apply: 'box-border table-fixed mt-3 mb-6 rounded-md break-words';
+  --at-apply: 'border border-solid border-secondary/25 border-collapse';
+}
+.heti th,
+.heti td {
+  --at-apply: 'px-3 py-1.5 border border-solid border-secondary/40';
+}
+
+/* Abbreviations */
+.heti abbr {
+  --at-apply: 'tracking-0';
+}
+.heti abbr[title] {
+  --at-apply: 'mx-0.25 pb-0.25 border-dotted border-secondary border-b-1 no-underline cursor-help';
+}
+
+/* Superscript and Subscript */
+.heti sub,
+.heti sup {
+  --at-apply: 'mx-0.15em relative text-0.75em leading-1 align-baseline';
+}
+.heti sub {
+  --at-apply: 'bottom--0.25em';
+}
+.heti sup {
+  --at-apply: 'top--0.5em';
+}
+.heti sub a,
+.heti sup a {
+  --at-apply: 'no-underline';
+}
+.heti sup:target,
+.heti sup a:target {
+  --at-apply: 'bg-#ff0';
+}
+html.dark .heti sup:target,
+html.dark .heti sup a:target {
+  --at-apply: 'bg-#4d4a00e0';
+}
+
+/* Keyboard Input */
+.heti kbd {
+  --at-apply: 'rounded border border-solid border-secondary/40 text-secondary';
+  --at-apply: 'inline-block text-0.85em font-bold leading-none px-1 py-0.75 whitespace-nowrap';
+}
+
+/* Highlighted Text */
+.heti mark {
+  --at-apply: 'mx-0.25 px-0.25 py-0.5 text-inherit bg-#ff0';
+}
+html.dark .heti mark {
+  --at-apply: 'bg-#4d4a00e0';
+}
+
+/* Footnotes */
+.footnotes > h2,
+.footnotes > h3 {
+  display: none;
+}
+.footnotes:lang(zh-CN)::before {
+  content: "脚注";
+  --at-apply: 'block text-5 font-semibold mt-6 mb-3';
+}
+.footnotes:lang(zh-TW)::before {
+  content: "腳註";
+  --at-apply: 'block text-5 font-semibold mt-6 mb-3';
+}
+.footnotes:lang(ja)::before {
+  content: "脚注";
+  --at-apply: 'block text-5 font-semibold mt-6 mb-3';
+}
+.footnotes:lang(en)::before {
+  content: "Footnotes";
+  --at-apply: 'block text-5 font-semibold mt-6 mb-3';
+}
+.footnotes:lang(es)::before {
+  content: "Notas al pie";
+  --at-apply: 'block text-5 font-semibold mt-6 mb-3';
+}
+.footnotes:lang(ru)::before {
+  content: "Сноски";
+  --at-apply: 'block text-5 font-semibold mt-6 mb-3';
+}
+.heti .data-footnote-backref {
+  --at-apply: 'no-underline';
+}
+
+/* Bold */
+.heti b,
+.heti strong {
+  --at-apply: 'font-semibold';
+}
+
+/* Italic */
+.heti i {
+  --at-apply: 'font-italic';
+}
+
+/* Emphasized */
+.heti em {
+  --at-apply: 'italic';
+}
+
+/* Quotes */
+.heti q {
+  quotes: "「" "」" "『" "』";
+}
+.heti q:not(:lang(zh)):not(:lang(ja)):not(:lang(ko)) {
+  quotes: initial;
+  quotes: auto;
+}
+
+/* Wavy Underline */
+.heti u {
+  --at-apply: 'mx-0.25 underline decoration-wavy decoration-red underline-offset-4';
+}
+html.dark .heti u {
+  --at-apply: 'decoration-#A14F50';
+}
+
+/* Strikethrough */
+.heti del,
+.heti s {
+  --at-apply: 'mx-0.25';
+}
+
+/* Images */
+.heti figure {
+  --at-apply: 'my-6';
+}
+.heti figure > figcaption {
+  --at-apply: 'text-center text-sm mt-3 text-secondary/75';
+}
+
+/* Markdown Extensions Style >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> */
+.heti details {
+  --at-apply: 'my-4 px-4 py-3 border border-solid border-secondary/25 rounded cursor-pointer';
+}
+.heti details summary {
+  --at-apply: 'cursor-pointer';
+}
+.heti details[open] summary {
+  --at-apply: 'border-b border-solid border-secondary/25 mb-3 pb-3';
+}
+/* .heti details summary {
+  list-style: none;
+}
+.heti details summary::-webkit-details-marker {
+  display: none;
+}
+.heti details summary::marker {
+  content: '';
+} */

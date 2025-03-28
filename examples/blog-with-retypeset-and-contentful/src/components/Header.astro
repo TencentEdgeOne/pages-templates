@@ -1,0 +1,72 @@
+---
+import themeConfig from '@/config'
+import { ui } from '@/i18n/ui'
+import { getPageInfo } from '@/utils/page'
+
+const { currentLang, getLocalizedPath, isPost } = getPageInfo(Astro.url.pathname)
+const { title, subtitle, i18nTitle } = themeConfig.site
+const { titleGap } = themeConfig.global
+
+const currentUI = ui[currentLang as keyof typeof ui]
+const headerTitle = i18nTitle ? currentUI.title : title
+const headerSubtitle = i18nTitle ? currentUI.subtitle : subtitle
+
+const marginBottom = {
+    1: 'mb-0.9',
+    2: 'mb-1.8',
+    3: 'mb-2.7',
+  }[titleGap] || 'mb-1.8 '
+
+const postMarginBottom = {
+  1: 'mb-1.9 lg:mb-0.9',
+  2: 'mb-2.8 lg:mb-1.8',
+  3: 'mb-3.7 lg:mb-2.7',
+}[titleGap] || 'mb-2.8 lg:mb-1.8'
+
+const TitleTag = isPost ? 'h2' : 'h1'
+const SubtitleTag = isPost ? 'div' : 'h2'
+---
+
+<header
+  class:list={[
+    isPost ? 'mb-10.8' : 'mb-10.5',
+    'lg:(uno-desktop-column top-20)',
+  ]}
+>
+  <TitleTag
+    class:list={[
+      isPost
+        ? `${postMarginBottom} mt-3.2 text-5.375 c-secondary lg:(mt-0 text-9 c-primary)`
+        : `${marginBottom} text-8 w-75% c-primary lg:(text-9 w-full)`,
+      'font-bold font-title',
+    ]}
+  >
+    <!-- Fix text cropping issues during view transition on iOS by adding a div tag -->
+    <div
+      class="box-content inline-block pr-1"
+      transition:name={`site-title-${currentLang}`}
+      data-disable-transition-on-theme
+    >
+      <a
+        id="site-title-link"
+        href={getLocalizedPath('/')}
+      >
+          {headerTitle}
+      </a>
+    </div>
+  </TitleTag>
+
+  {headerSubtitle && (
+    <SubtitleTag
+      class:list={[
+        isPost
+          ? `opacity-0 lg:opacity-100`
+          : 'w-75% text-balance lg:w-full',
+        'c-secondary font-navbar text-3.5 lg:text-4',
+      ]}
+      aria-hidden={isPost}
+    >
+      {headerSubtitle}
+    </SubtitleTag>
+  )}
+</header>

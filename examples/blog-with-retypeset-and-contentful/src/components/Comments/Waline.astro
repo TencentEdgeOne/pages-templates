@@ -1,0 +1,205 @@
+---
+import { defaultLocale, themeConfig } from '@/config'
+import { walineLocaleMap } from '@/i18n/config'
+
+const {
+  serverURL = '',
+  emoji = [],
+  search = false,
+  imageUploader = false,
+} = themeConfig.comment?.waline ?? {}
+
+// Get the language code of Waline
+function getWalineLang(currentPath: string, defaultLocale: string): string {
+  // Extract language code from path
+  const pathLang = Object.keys(walineLocaleMap).find(code =>
+    currentPath.startsWith(`/${code}/`),
+  )
+  // Return found path language or default language
+  const lang = pathLang || defaultLocale
+  return walineLocaleMap[lang as keyof typeof walineLocaleMap]
+}
+
+// Get Waline language and generate configuration json
+const walineLang = getWalineLang(Astro.url.pathname, defaultLocale)
+const walineConfigJson = JSON.stringify({
+  serverURL,
+  lang: walineLang,
+  emoji,
+  search,
+  imageUploader,
+})
+---
+
+<div
+  id="waline"
+  class="mt-16"
+  data-config={walineConfigJson}
+>
+</div>
+
+<!-- Not use is:inline or define:vars >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<script>
+import { init } from '@waline/client'
+import '@waline/client/style'
+
+function initWaline() {
+  const walineEl = document.getElementById('waline')
+  const walineConfig = JSON.parse(walineEl?.dataset.config || '{}')
+
+  init({
+    el: '#waline',
+    path: window.location.pathname.replace(/^\/([a-z]{2}(-[a-z]{2})?)\//, '/'),
+    dark: 'html.dark',
+    requiredMeta: ['nick', 'mail'],
+    highlighter: false,
+    texRenderer: false,
+    noCopyright: true,
+    reaction: [],
+    ...walineConfig,
+  })
+}
+
+initWaline()
+document.addEventListener('astro:after-swap', initWaline)
+</script>
+
+<!-- Custom CSS Styles >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<style is:global>
+#waline .wl-login-info {
+  --at-apply: 'mt-0 mr-3'
+}
+
+#waline .wl-login-nick:not(:has(img)) {
+  --at-apply: 'leading-3.6 mt-1.4';
+}
+
+#waline .wl-panel {
+  --at-apply: 'm-0 rounded-lg border-secondary/25'
+}
+
+#waline .wl-header {
+  --at-apply: 'p-0';
+}
+
+#waline .wl-header-item {
+  border-bottom: 1px solid var(--waline-border-color);
+}
+
+#waline .wl-header label {
+  --at-apply: 'text-3';
+}
+
+#waline .wl-header input {
+  --at-apply: 'text-2.8';
+}
+
+#waline .wl-card,
+#waline .wl-header.item3 {
+  --at-apply: 'border-b-0';
+}
+
+#waline .wl-editor {
+  --at-apply: 'min-h-24';
+}
+
+#waline .wl-editor::placeholder {
+  color: var(--waline-light-grey);
+}
+
+#waline .wl-footer {
+  --at-apply: 'm-2';
+}
+
+#waline .wl-text-number,
+#waline .wl-action[title="Markdown Guide"],
+#waline .wl-sort,
+#waline .wl-emoji-popup .wl-tab-wrapper::-webkit-scrollbar,
+#waline .wl-gallery::-webkit-scrollbar {
+  --at-apply: 'hidden';
+}
+
+#waline .wl-emoji-popup {
+  --at-apply: 'start-0 border-secondary/25';
+}
+
+#waline .wl-emoji-popup .wl-tab-wrapper,
+#waline .wl-gallery {
+  --at-apply: 'scrollbar-hidden';
+}
+
+#waline .wl-gif-popup {
+  --at-apply: 'border-secondary/25';
+}
+
+#waline .wl-gif-popup input {
+  --at-apply: 'bg-background border-secondary/25';
+}
+
+#waline .wl-gif-popup input::placeholder {
+  --at-apply: 'c-secondary/30 text-3.5';
+}
+
+#waline .wl-meta-head {
+  --at-apply: 'pt-3 pb-2 px-0';
+}
+
+#waline .wl-card-item {
+  --at-apply: 'px-0';
+}
+
+#waline .wl-user-avatar {
+  --at-apply: 'mt-1';
+}
+
+#waline .wl-content p {
+  --at-apply: 'leading-6 text-3.5';
+}
+
+#waline .wl-time {
+  color: oklch(var(--un-preset-theme-colors-primary) / 0.75);
+}
+
+#waline .wl-edit,
+#waline .wl-delete {
+  --at-apply: 'mr-0.4';
+}
+
+#waline .wl-like {
+  --at-apply: 'mr-1.2';
+}
+</style>
+
+<!-- Official CSS Variables >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<!-- https://waline.js.org/reference/client/style.html -->
+<style>
+  #waline {
+    /* Regular Colors */
+    --waline-white: var(--uno-colors-background);
+    --waline-light-grey: oklch(var(--un-preset-theme-colors-primary) / 0.25);
+    --waline-dark-grey: var(--uno-colors-secondary);
+
+    /* Theme Colors */
+    --waline-theme-color: var(--uno-colors-primary);
+    --waline-active-color: var(--uno-colors-primary);
+
+    /* Layout Colors */
+    --waline-color: var(--uno-colors-secondary);
+    --waline-bg-color: var(--uno-colors-background);
+    --waline-bg-color-light: var(--uno-colors-background);
+    --waline-bg-color-hover: var(--uno-colors-background);
+    --waline-border-color: oklch(var(--un-preset-theme-colors-primary) / 0.25);
+    --waline-disable-bg-color: oklch(var(--un-preset-theme-colors-secondary) / 0.05);
+    --waline-disable-color: var(--uno-colors-primary);
+
+    /* Special Colors */
+    --waline-bq-color: oklch(var(--un-preset-theme-colors-primary) / 0.25);
+
+    /* Information */
+    --waline-info-bg-color: var(--uno-colors-background);
+    --waline-info-color: oklch(var(--un-preset-theme-colors-primary) / 0.25);
+
+    /* Rendering Options */
+    --waline-avatar-radius: 0.5rem;
+  }
+  </style>

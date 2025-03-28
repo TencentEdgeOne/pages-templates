@@ -1,0 +1,30 @@
+---
+// import Disqus from '@/components/Comments/Disqus.astro'
+// import Giscus from '@/components/Comments/Giscus.astro'
+// import Twikoo from '@/components/Comments/Twikoo.astro'
+import Waline from '@/components/Comments/Waline.astro'
+import { themeConfig } from '@/config'
+
+const enableComments = themeConfig.comment?.enabled ?? false
+
+// Disqus
+// const disqusShortname = themeConfig.comment?.disqus?.shortname || ''
+// const showDisqus = enableComments && disqusShortname.trim() !== ''
+
+// Giscus
+// const giscusRepo = themeConfig.comment?.giscus?.repo || ''
+// const showGiscus = enableComments && giscusRepo.trim() !== ''
+
+// Twikoo
+// const twikooEnvId = themeConfig.comment?.twikoo?.envId || ''
+// const showTwikoo = enableComments && twikooEnvId.trim() !== ''
+
+// Waline
+const walineURL = themeConfig.comment?.waline?.serverURL || ''
+const showWaline = enableComments && walineURL.trim() !== ''
+---
+
+<!-- {showDisqus && <Disqus />} -->
+<!-- {showGiscus && <Giscus />} -->
+<!-- {showTwikoo && <Twikoo />} -->
+{showWaline && <Waline />}

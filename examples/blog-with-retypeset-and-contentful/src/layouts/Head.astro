@@ -1,0 +1,185 @@
+---
+import { allLocales, defaultLocale, themeConfig } from '@/config'
+import { ui } from '@/i18n/ui'
+import { getPageInfo } from '@/utils/page'
+import { ClientRouter } from 'astro:transitions'
+
+interface Props {
+  postTitle?: string
+  postDescription?: string
+  postSlug?: string
+}
+
+const { postTitle, postDescription, postSlug } = Astro.props
+const { currentLang } = getPageInfo(Astro.url.pathname)
+const currentUI = ui[currentLang as keyof typeof ui]
+const langCode = currentLang === defaultLocale ? '' : `/${currentLang}`
+
+const { title, subtitle, description, author, url, favicon, i18nTitle } = themeConfig.site
+const { mode, light: { background: lightMode }, dark: { background: darkMode } } = themeConfig.color
+const { verification = {}, twitterID = '', googleAnalyticsID = '', umamiAnalyticsID = '', apiflashKey = '' } = themeConfig.seo ?? {}
+const { google = '', bing = '', yandex = '', baidu = '' } = verification
+const { commentURL = '', imageHostURL = '', customGoogleAnalyticsJS = '', customUmamiAnalyticsJS = '' } = themeConfig.preload
+
+const initMetaTheme = mode === 'dark' ? darkMode : lightMode
+const siteTitle = i18nTitle ? currentUI.title : title
+const siteSubtitle = i18nTitle ? currentUI.subtitle : subtitle
+const siteDescription = i18nTitle ? currentUI.description : description
+
+const pageTitle = postTitle ? `${postTitle} | ${siteTitle}` : `${siteTitle} - ${siteSubtitle}`
+const pageDescription = postDescription || siteDescription
+const pageImage = postSlug
+  ? `${url}/og/${postSlug}.png`
+  : apiflashKey
+    ? `https://api.apiflash.com/v1/urltoimage?access_key=${apiflashKey}&url=${url}${langCode}&format=png&width=1500&height=788&ttl=86400&wait_until=network_idle&no_tracking=true`
+    : `https://api.apiflash.com/v1/urltoimage?access_key=02a837b6188f4ba0a7fd9fbeff03a83e&url=https://retypeset.radishzz.cc${langCode}&format=png&width=1500&height=788&ttl=604800&wait_until=network_idle&no_tracking=true`
+---
+
+<head>
+<!-- Basic info -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+{favicon.toLowerCase().endsWith('.svg') && <link rel="icon" type="image/svg+xml" href={favicon} />}
+{favicon.toLowerCase().endsWith('.png') && <link rel="icon" type="image/png" href={favicon} />}
+{favicon.toLowerCase().endsWith('.ico') && <link rel="icon" type="image/x-icon" href={favicon} />}
+<title>{pageTitle}</title>
+<meta name="description" content={pageDescription} />
+<meta name="author" content={author} />
+<meta name="generator" content={Astro.generator} />
+<meta name="theme-color" content={initMetaTheme} />
+
+<!-- Preload -->
+<link rel="preload" href="/font/Snell-Black.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/font/EarlySummer-Subset.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/font/Snell-Bold.woff2" as="font" type="font/woff2" crossorigin />
+{commentURL && <link rel="preconnect" href={commentURL} crossorigin />}
+{commentURL && <link rel="dns-prefetch" href={commentURL} />}
+{imageHostURL && <link rel="preconnect" href={imageHostURL} crossorigin />}
+{imageHostURL && <link rel="dns-prefetch" href={imageHostURL} />}
+<link rel="alternate" href="/rss.xml" type="application/rss+xml" title="RSS Feed" />
+<link rel="alternate" href="/atom.xml" type="application/atom+xml" title="Atom Feed" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link rel="canonical" href={Astro.url} />
+
+<!-- i18n hreflang generate -->
+{allLocales.map(lang => (
+  <link
+    rel="alternate"
+    href={`${url}${lang === defaultLocale ? '' : `/${lang}/`}`}
+    hreflang={lang === 'zh-tw' ? 'zh-TW' : lang}
+  />
+))}
+
+<!-- Facebook Open Graph -->
+<meta property="og:type" content={postTitle ? 'article' : 'website'} />
+<meta property="og:site_name" content={title} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={pageDescription} />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:image" content={pageImage} />
+<meta property="og:logo" content={favicon} />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+{twitterID && <meta name="twitter:site" content={twitterID} />}
+{twitterID && <meta name="twitter:creator" content={twitterID} />}
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={pageDescription} />
+<meta name="twitter:image" content={pageImage} />
+
+<!-- Site Verification -->
+{google && <meta name="google-site-verification" content={google} />}
+{bing && <meta name="msvalidate.01" content={bing} />}
+{yandex && <meta name="yandex-verification" content={yandex} />}
+{baidu && <meta name="baidu-site-verification" content={baidu} />}
+
+<!-- Global View Transition -->
+<ClientRouter fallback="none" />
+
+<!-- Theme Toggle -->
+<script
+  is:inline
+  define:vars={{ defaultMode: themeConfig.color.mode, lightMode, darkMode }}
+>
+// Check if current theme is dark mode
+// Priority: Local storage theme > Default theme > System preference
+function isCurrentDark() {
+  const currentTheme = localStorage.getItem('theme')
+  if (currentTheme)
+    return currentTheme === 'dark'
+  if (defaultMode)
+    return defaultMode === 'dark'
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+}
+
+// Initialize theme
+function initTheme(doc = document) {
+  const isDark = isCurrentDark()
+  doc.documentElement.classList.toggle('dark', isDark)
+  const metaTheme = doc.querySelector('meta[name="theme-color"]')
+  if (metaTheme) {
+    metaTheme.setAttribute('content', isDark ? darkMode : lightMode)
+  }
+}
+
+// Function 1: Initialize theme on first load
+initTheme()
+
+// Function 2: Update theme before page transition to prevent flashing
+document.addEventListener('astro:before-swap', ({ newDocument }) => {
+  initTheme(newDocument)
+})
+
+// Function 3: listen to system theme changes in real-time
+window
+  .matchMedia('(prefers-color-scheme: dark)')
+  .addEventListener('change', ({ matches: isDark }) => {
+    localStorage.setItem('theme', isDark ? 'dark' : 'light')
+    initTheme()
+    document.dispatchEvent(new Event('theme-changed'))
+  })
+</script>
+
+<!-- Google Analytics -->
+{googleAnalyticsID && (
+  <>
+    <script
+      is:inline
+      type="text/partytown"
+      src={customGoogleAnalyticsJS || `https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsID}`}
+    />
+    <script
+      is:inline
+      type="text/partytown"
+      define:vars={{ googleAnalyticsID, customGoogleAnalyticsJS }}
+    >
+      window.dataLayer = window.dataLayer || []
+      function gtag(...args) {
+        dataLayer.push(args)
+      }
+      gtag('js', new Date())
+
+      if (customGoogleAnalyticsJS) {
+        gtag('config', googleAnalyticsID, {
+          transport_url: new URL(customGoogleAnalyticsJS).origin,
+        })
+      }
+      else {
+        gtag('config', googleAnalyticsID)
+      }
+    </script>
+  </>
+)}
+
+<!-- Umami Analytics -->
+{umamiAnalyticsID && (
+  <script
+    is:inline
+    type="text/partytown"
+    crossorigin="anonymous"
+    data-website-id={umamiAnalyticsID}
+    src={customUmamiAnalyticsJS || 'https://cloud.umami.is/script.js'}
+    data-cache="true"
+  />
+)}
+</head>

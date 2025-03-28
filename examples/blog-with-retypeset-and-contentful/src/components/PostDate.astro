@@ -1,0 +1,79 @@
+---
+import { themeConfig } from '@/config'
+import { isPostPage } from '@/utils/page'
+
+interface Props {
+  date: Date
+  updatedDate?: Date
+  minutes?: number
+}
+
+const { date, updatedDate, minutes } = Astro.props
+const format = themeConfig.global.dateFormat
+const isPost = isPostPage(Astro.url.pathname)
+const timeSpacingClass = isPost ? 'ml-1.75' : 'ml-1.5'
+
+function formatDate(date: Date, format: 'YYYY-MM-DD' | 'MM-DD-YYYY' | 'DD-MM-YYYY' | 'MONTH DAY YYYY' | 'DAY MONTH YYYY') {
+  const options: Intl.DateTimeFormatOptions = {
+    year: 'numeric',
+    month: format === 'MONTH DAY YYYY' || format === 'DAY MONTH YYYY' ? 'short' : '2-digit',
+    day: format === 'MONTH DAY YYYY' || format === 'DAY MONTH YYYY' ? 'numeric' : '2-digit',
+  }
+
+  switch (format) {
+    // ISO format: 2024-03-04
+    case 'YYYY-MM-DD':
+      return date.toISOString().split('T')[0]
+
+    // US date format: 03-04-2024
+    case 'MM-DD-YYYY':
+      return date.toLocaleDateString('en-US', options).replace(/\//g, '-')
+
+    // European date format: 04-03-2024
+    case 'DD-MM-YYYY':
+      return date.toLocaleDateString('en-GB', options).replace(/\//g, '-')
+
+    // US month text format: Mar 4 2024
+    case 'MONTH DAY YYYY':
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      }).replace(',', '')
+
+    // British month text format: 4 Mar 2024
+    case 'DAY MONTH YYYY':
+      return date.toLocaleDateString('en-GB', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+      }).replace(',', '')
+
+    // Default to ISO format
+    default:
+      return date.toISOString().split('T')[0]
+  }
+}
+---
+
+<!-- published date -->
+<time datetime={date.toISOString().split('T')[0]}>
+  {formatDate(date, format)}
+</time>
+
+<!-- updated date -->
+{updatedDate && (
+  <time
+    datetime={updatedDate.toISOString().split('T')[0]}
+    class={timeSpacingClass}
+  >
+    updated {formatDate(updatedDate, format)}
+  </time>
+)}
+
+<!-- reading time -->
+{minutes !== undefined && (
+  <span class={timeSpacingClass}>
+    {minutes} min
+  </span>
+)}

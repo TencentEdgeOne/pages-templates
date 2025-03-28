@@ -1,0 +1,36 @@
+<button
+  id="back-button"
+  class="hidden"
+  lg="block absolute c-secondary/50 left--10 top-1/2 aspect-square w-4.5 translate-y--1/2 c-secondary active:scale-90 hover:c-primary"
+  aria-label="Back to home"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+    fill="currentColor"
+  >
+    <path d="M16.6 1.9 4.3 12l12.3 10.1.3 1.6h.8l-.5-5.5h-.8l.1 2.5L6.6 12l9.9-8.7-.1 2.5h.8l.5-5.5h-.8z"></path>
+  </svg>
+</button>
+
+<!-- Go Back Script >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> -->
+<script>
+function setupBackButton() {
+  document.getElementById('back-button')?.addEventListener('click', () => {
+    if (window.history.length > 1) {
+      window.history.back()
+    }
+    else {
+      // Click site title link to trigger view transition when no history
+      const titleLink = document.getElementById('site-title-link') as HTMLAnchorElement
+      if (titleLink) {
+        titleLink.click()
+      }
+    }
+  })
+}
+
+setupBackButton()
+document.addEventListener('astro:after-swap', setupBackButton)
+</script>
