@@ -1,0 +1,120 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 30 100% 99%;
+    --foreground: 30 10% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 30 10% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 30 10% 10%;
+
+    --primary: 24 95% 53%;
+    --primary-foreground: 30 10% 99%;
+
+    --secondary: 30 10% 97%;
+    --secondary-foreground: 30 10% 30%;
+
+    --muted: 30 10% 96%;
+    --muted-foreground: 30 10% 40%;
+
+    --accent: 24 95% 97%;
+    --accent-foreground: 24 95% 40%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 30 10% 99%;
+
+    --border: 30 10% 90%;
+    --input: 30 10% 90%;
+    --ring: 24 95% 53%;
+
+    --radius: 0.75rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: 'Inter', sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-white/60 backdrop-blur-md border border-white/20 shadow-lg;
+  }
+  
+  .orange-gradient {
+    @apply bg-gradient-to-r from-orange-500 to-orange-400;
+  }
+  
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20;
+  }
+  
+  .section-title {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-4 tracking-tight;
+  }
+  
+  .section-subtitle {
+    @apply text-lg text-muted-foreground max-w-3xl mx-auto mb-12;
+  }
+
+  .nav-item {
+    @apply relative px-4 py-2 text-sm font-medium text-foreground hover:text-orange-500 transition-colors duration-200;
+  }
+
+  .nav-item::after {
+    @apply content-[''] absolute bottom-0 left-0 w-0 h-0.5 bg-orange-500 transition-all duration-300 ease-in-out;
+  }
+
+  .nav-item:hover::after {
+    @apply w-full;
+  }
+
+  .feature-card {
+    @apply p-6 rounded-xl glass transition-all duration-300 hover:shadow-xl hover:-translate-y-1;
+  }
+
+  .stagger-animation > * {
+    @apply opacity-0;
+  }
+
+  .stagger-animation > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-animation > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-animation > *:nth-child(3) { animation-delay: 0.3s; }
+  .stagger-animation > *:nth-child(4) { animation-delay: 0.4s; }
+  .stagger-animation > *:nth-child(5) { animation-delay: 0.5s; }
+  .stagger-animation > *:nth-child(6) { animation-delay: 0.6s; }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: theme('colors.background');
+}
+
+::-webkit-scrollbar-thumb {
+  background: theme('colors.orange.300');
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: theme('colors.orange.400');
+}
