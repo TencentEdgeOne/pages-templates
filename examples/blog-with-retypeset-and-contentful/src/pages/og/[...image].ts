@@ -1,10 +1,10 @@
-import type { CollectionEntry } from 'astro:content';
-import { getPostsFromContentful } from '@/utils/content';
-import { generateDescription } from '@/utils/description';
-import { OGImageRoute } from 'astro-og-canvas';
+import type { CollectionEntry } from 'astro:content'
+import { getPostsFromContentful } from '@/utils/content'
+import { generateDescription } from '@/utils/description'
+import { OGImageRoute } from 'astro-og-canvas'
 
 // eslint-disable-next-line antfu/no-top-level-await
-const blogEntries = await getPostsFromContentful();
+const blogEntries = await getPostsFromContentful()
 
 // Convert blog entries into a lookup object with slug as key and title/description as value
 const pages = Object.fromEntries(
@@ -15,7 +15,7 @@ const pages = Object.fromEntries(
       description: post.data.description || generateDescription(post, 'og'),
     },
   ]),
-);
+)
 
 // Configure Open Graph image generation route
 export const { getStaticPaths, GET } = OGImageRoute({
@@ -53,4 +53,4 @@ export const { getStaticPaths, GET } = OGImageRoute({
     ],
     bgGradient: [[242, 241, 245]],
   }),
-});
+})

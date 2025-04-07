@@ -1,86 +1,82 @@
 ---
-import type { CollectionEntry } from 'astro:content'
-import PostDate from '@/components/PostDate.astro'
-import { defaultLocale } from '@/config'
-import { generateDescription } from '@/utils/description'
-import { isTagPage } from '@/utils/page'
+import type { CollectionEntry } from 'astro:content';
+import PostDate from '@/components/PostDate.astro';
+import { defaultLocale } from '@/config';
+import { generateDescription } from '@/utils/description';
+import { isTagPage } from '@/utils/page';
 
 type Post = CollectionEntry<'posts'> & {
   remarkPluginFrontmatter: {
-    minutes: number
-  }
-}
+    minutes: number;
+  };
+};
 
-const { posts, lang } = Astro.props
-const isTag = isTagPage(Astro.url.pathname)
+const { posts, lang } = Astro.props;
+const isTag = isTagPage(Astro.url.pathname);
 
 export interface Props {
-  posts: Post[]
-  lang?: string
+  posts: Post[];
+  lang?: string;
 }
 
 function getPostPath(post: Post) {
   // Prioritize abbrlink over slug
-  const postPath = post.data.abbrlink || post.slug
+  const postPath = post.data.abbrlink || post.slug;
   // Add language prefix to URL if current page is in a language subdirectory and not the default language
-  return lang && lang !== defaultLocale ? `/${lang}/posts/${postPath}/` : `/posts/${postPath}/`
+  return lang && lang !== defaultLocale
+    ? `/${lang}/posts/${postPath}/`
+    : `/posts/${postPath}/`;
 }
 ---
 
 <ul>
-  {posts.map(post => (
-    <li
-      class="mb-5.5"
-      lg={isTag ? '' : 'mb-10'}
-    >
+  {
+    posts.map((post) => (
+      <li class="mb-5.5" lg={isTag ? '' : 'mb-10'}>
+        {/* post title */}
+        <h3 class="inline">
+          <a
+            class="hover:c-primary"
+            lg={isTag ? '' : 'font-medium text-4.5'}
+            href={getPostPath(post)}
+            transition:name={`post-${post.data.abbrlink || post.slug}-${lang}`}
+            data-disable-transition-on-theme
+          >
+            {post.data.title}
+          </a>
+        </h3>
 
-      {/* post title */}
-      <h3 class="inline">
-        <a
-          class="hover:c-primary"
-          lg={isTag ? '' : 'font-medium text-4.5'}
-          href={getPostPath(post)}
-          transition:name={`post-${post.data.abbrlink || post.slug}-${lang}`}
+        {/* mobile post time */}
+        <div
+          class="text-3.5 leading-6.875 font-time lg:hidden"
+          transition:name={`time-${post.data.abbrlink || post.slug}-${lang}`}
           data-disable-transition-on-theme
         >
-          {post.data.title}
-        </a>
-      </h3>
-
-      {/* mobile post time */}
-      <div
-        class="text-3.5 leading-6.875 font-time lg:hidden"
-        transition:name={`time-${post.data.abbrlink || post.slug}-${lang}`}
-        data-disable-transition-on-theme
-      >
-        <PostDate
-          date={post.data.published}
-          minutes={post.remarkPluginFrontmatter.minutes}
-        />
-      </div>
-
-      {/* desktop post time */}
-      <div
-        class="hidden text-3.65 leading-6.875 font-time lg:(ml-2.5 inline)"
-        transition:name={`time-${post.data.abbrlink || post.slug}`}
-        data-disable-transition-on-theme
-      >
-        <PostDate
-          date={post.data.published}
-          minutes={post.remarkPluginFrontmatter.minutes}
-        />
-      </div>
-
-      {/* desktop post description */}
-      {!isTag && (
-        <div
-          class="heti hidden"
-          lg="mt-2 block"
-        >
-          <p>{generateDescription(post, 'list')}</p>
+          <PostDate
+            date={post.data.published}
+            minutes={post.remarkPluginFrontmatter.minutes}
+          />
         </div>
-      )}
 
-    </li>
-  ))}
+        {/* desktop post time */}
+        <div
+          class="hidden text-3.65 leading-6.875 font-time lg:(ml-2.5 inline)"
+          transition:name={`time-${post.data.abbrlink || post.slug}`}
+          data-disable-transition-on-theme
+        >
+          <PostDate
+            date={post.data.published}
+            minutes={post.remarkPluginFrontmatter.minutes}
+          />
+        </div>
+
+        {/* desktop post description */}
+        {!isTag && (
+          <div class="heti hidden" lg="mt-2 block">
+            <p set:html={generateDescription(post, 'list')} />
+          </div>
+        )}
+      </li>
+    ))
+  }
 </ul>
