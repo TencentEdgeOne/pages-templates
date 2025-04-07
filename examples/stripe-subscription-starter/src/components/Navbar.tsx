@@ -63,7 +63,7 @@ const Navbar = () => {
             <span className="text-white font-bold text-sm">OS</span>
           </div>
           <span className="text-xl font-bold bg-gradient-to-r from-orange-500 to-orange-600 bg-clip-text text-transparent">
-            Supabase Subscription Starter
+            Stripe Subscription Starter
           </span>
         </a>
 
