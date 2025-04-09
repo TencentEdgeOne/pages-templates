@@ -6,8 +6,8 @@
 ### Contentful 配置
 * Step1 注册[Contentful](https://www.contentful.com/)账号，并创建一个属于你自己的空间
 * Step2 安装 Contentful Cli 并执行 Contentful login 登录
-* Step3 下载[数据配置文件](https://cdnstatic.tencentcs.com/edgeone/pages/docs/contentful-export.json)
-* Step4 执行导入命令：`contentful space import --content-file contentful-model.json --space-id ${你的 Contentful space id}`
+* Step3 获取[数据配置文件 contentful-blog-model.json](https://github.com/TencentEdgeOne/pages-templates/blob/main/examples/blog-with-retypeset-and-contentful/contentful-blog-model.json)。
+* Step4 执行导入命令：`contentful space import --content-file contentful-blog-model.json --space-id ${你的 Contentful space id}`
 * Step5 复制 Contentful Space Id 和 Contentful Delivery API token 备用
 
 ### 使用本模板

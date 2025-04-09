@@ -6,8 +6,8 @@ Contentful CMS integration has been added on top of the original template.
 ### Contentful Configuration
 * Step1 Register a [Contentful](https://www.contentful.com/) account and create your own space
 * Step2 Install Contentful CLI and execute Contentful login to log in
-* Step3 Download the [data configuration file](https://cdnstatic.tencentcs.com/edgeone/pages/docs/contentful-export.json)
-* Step4 Execute the import command: `contentful space import --content-file contentful-model.json --space-id ${your Contentful space id}`
+* Step3 Download the [data configuration file](https://github.com/TencentEdgeOne/pages-templates/blob/main/examples/blog-with-retypeset-and-contentful/contentful-blog-model.json)
+* Step4 Execute the import command: `contentful space import --content-file contentful-blog-model.json --space-id  ${your Contentful space id}`
 * Step5 Copy the Contentful Space Id and Contentful Delivery API token for later use
 
 ### Using This Template
