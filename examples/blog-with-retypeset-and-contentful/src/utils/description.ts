@@ -13,7 +13,7 @@ const EXCERPT_LENGTHS: Record<ExcerptScene, {
   other: number
 }> = {
   list: {
-    cjk: 120,
+    cjk: 240,
     other: 240,
   },
   meta: {
