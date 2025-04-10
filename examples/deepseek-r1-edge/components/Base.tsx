@@ -54,7 +54,7 @@ export const Base = () => {
         '帮助优化快速排序算法的Python代码并分析时间复杂度',
       'Create a comparison table of marketing strategies between TikTok and Instagram Reels':
         '创建抖音和Instagram Reels营销策略的对比表',
-      'DeepSeek R1 on the Edge': 'DeepSeek R1 边缘计算',
+      'DeepSeek R1 on the Edge': '吴瑞云-DeepSeek R1 ',
       'EdgeOne AI is transforming user experience and operational efficiency by performing AI computations closer to end-users, ensuring ultra-low latency and consistently high performance.':
         'EdgeOne AI 通过在靠近终端用户的地方执行 AI 计算，提升用户体验和运营效率，确保超低延迟和稳定的高性能。',
       'Available for free on ': '免费使用 ',
