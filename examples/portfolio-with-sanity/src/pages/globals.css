@@ -1,0 +1,324 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+  
+  /* Red-Black Theme Colors */
+  --theme-red: #e53e3e;
+  --theme-dark-red: #9b2c2c;
+  --theme-black: #121212;
+  --theme-gray: #2d2d2d;
+  --theme-light-gray: #a0a0a0;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: 'Inter', var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  
+  /* Theme Variables */
+  --color-primary: var(--theme-red);
+  --color-primary-dark: var(--theme-dark-red);
+  --color-secondary: var(--theme-gray);
+  --color-accent: var(--theme-red);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--theme-black);
+    --foreground: #ededed;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.animate-fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Theme Utility Classes */
+.theme-primary {
+  color: var(--color-primary);
+}
+
+.theme-primary-bg {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+.theme-accent-border {
+  border-color: var(--color-accent);
+}
+
+.theme-hover:hover {
+  color: var(--color-primary);
+  transition: color 0.3s ease;
+}
+
+/* Glass Effect */
+.glass-effect {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Animation Effects */
+@keyframes float {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+}
+
+@keyframes float-reverse {
+  0% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(20px) translateX(-10px);
+  }
+  100% {
+    transform: translateY(0px) translateX(0px);
+  }
+}
+
+@keyframes pulse-opacity {
+  0% {
+    opacity: 0.1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float 8s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+.animate-float-reverse {
+  animation: float-reverse 10s ease-in-out infinite;
+}
+
+.animate-pulse-opacity {
+  animation: pulse-opacity 5s ease-in-out infinite;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 1s ease-out forwards;
+}
+
+.animate-fadeInDelayed {
+  opacity: 0;
+  animation: fadeIn 1s ease-out 0.3s forwards;
+}
+
+.animate-fadeInDelayed2 {
+  opacity: 0;
+  animation: fadeIn 1s ease-out 0.6s forwards;
+}
+
+/* Button Styles */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+.bg-theme-red {
+  background-color: var(--theme-red);
+}
+.text-theme-red {
+  color: var(--theme-red);
+}
+.border-theme-red {
+  border-color: var(--theme-red);
+}
+.bg-theme-gray {
+  background-color: var(--theme-gray);
+}
+.text-theme-gray {
+  color: var(--theme-gray);
+}
+.border-theme-gray {
+  border-color: var(--theme-gray);
+}
+.bg-theme-black {
+  background-color: var(--theme-black);
+}
+.bg-main-background {
+  background-image: url('/hero-background.jpg'), linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 1) 20%);
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-blend-mode: overlay;
+}
+.text-theme-black {
+  color: var(--theme-black);
+}
+.border-theme-black {
+  border-color: var(--theme-black);
+}
+.bg-theme-light-gray {
+  background-color: var(--theme-light-gray);
+}
+.text-theme-light-gray {
+  color: var(--theme-light-gray);
+}
+.border-theme-light-gray {
+  border-color: var(--theme-light-gray);
+}
+.bg-theme-dark-red {
+  background-color: var(--theme-dark-red);
+}
+.text-theme-dark-red {
+  color: var(--theme-dark-red);
+}
+.border-theme-dark-red {
+  border-color: var(--theme-dark-red);
+}
+.bg-theme-white {
+  background-color: var(--theme-white);
+}
+.text-theme-white {
+  color: var(--theme-white);
+}
+.border-theme-white {
+  border-color: var(--theme-white);
+}
+.bg-theme-light-gray {
+  background-color: var(--theme-light-gray);
+}
+.text-theme-light-gray {
+  color: var(--theme-light-gray);
+}
+.border-theme-light-gray {
+  border-color: var(--theme-light-gray);
+}
+.bg-theme-dark-gray {
+  background-color: var(--theme-dark-gray);
+}
+.text-theme-dark-gray {
+  color: var(--theme-dark-gray);
+}
+.border-theme-dark-gray {
+  border-color: var(--theme-dark-gray);
+}
+
+
+
+.btn-primary {
+  background-color: var(--theme-red);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--theme-dark-red);
+}
+
+/* Card Styles */
+.card {
+  background-color: rgba(45, 45, 45, 0.5);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+/* Masonry Layout Styles */
+.masonry-item {
+  break-inside: avoid;
+  transform: translateZ(0); /* Fix for Safari flicker */
+  backface-visibility: hidden; /* Prevent flickering on hover */
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.masonry-item:hover {
+  transform: translateY(-5px);
+}
+
+.columns-1,
+.columns-2,
+.columns-3 {
+  column-gap: 2rem;
+}
+
+.columns-1 {
+  column-count: 1;
+}
+
+@media (min-width: 768px) {
+  .md\:columns-2 {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .lg\:columns-3 {
+    column-count: 3;
+  }
+}
+
+.break-inside-avoid {
+  break-inside: avoid;
+  page-break-inside: avoid; /* For older browsers */
+  -webkit-column-break-inside: avoid; /* For Safari */
+  margin-bottom: 2rem;
+}
+
+/* Image hover effects */
+.transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+.translate-y-4 {
+  transform: translateY(1rem);
+}
+
+.group:hover .group-hover\:translate-y-0 {
+  transform: translateY(0);
+}
