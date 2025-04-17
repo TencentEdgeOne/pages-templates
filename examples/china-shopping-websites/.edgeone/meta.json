@@ -1,0 +1,9 @@
+{
+  "conf": {
+    "headers": [],
+    "redirects": [],
+    "rewrites": [],
+    "caches": []
+  },
+  "routes": []
+}
