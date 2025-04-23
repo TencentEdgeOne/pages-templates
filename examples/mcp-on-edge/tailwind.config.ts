@@ -22,6 +22,23 @@ const config: Config = {
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--foreground))',
+          100: '#E1EBFF',
+          200: '#B8D1FF',
+          300: '#85ABFF',
+          400: '#5285FF',
+          500: '#1C66E5', // 主要蓝色
+          600: '#1652B9',
+          700: '#0F3D8C',
+          800: '#0A295F',
+          900: '#051533',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
@@ -29,14 +46,6 @@ const config: Config = {
         popover: {
           DEFAULT: 'hsl(var(--popover))',
           foreground: 'hsl(var(--popover-foreground))',
-        },
-        primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
-        },
-        secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
         },
         muted: {
           DEFAULT: 'hsl(var(--muted))',
@@ -53,6 +62,14 @@ const config: Config = {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
+        zinc: {
+          700: '#3f3f46',
+          750: '#323238',
+          800: '#27272a',
+          850: '#1f1f23',
+          900: '#18181b',
+          950: '#101014',
+        },
         chart: {
           '1': 'hsl(var(--chart-1))',
           '2': 'hsl(var(--chart-2))',
@@ -78,26 +95,52 @@ const config: Config = {
             height: '0',
           },
         },
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(10px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'fade-in': 'fadeIn 0.3s ease-out forwards',
       },
       typography: {
         DEFAULT: {
           css: {
             maxWidth: 'none',
+            color: 'hsl(var(--foreground))',
             code: {
-              backgroundColor: '#161B22',
+              backgroundColor: '#27272a',
               borderRadius: '0.25rem',
               padding: '0.2em 0.4em',
               fontSize: '85%',
+              color: '#93c5fd',
             },
             'code::before': {
               content: '""',
             },
             'code::after': {
               content: '""',
+            },
+            a: {
+              color: '#60a5fa',
+              textDecoration: 'none',
+              '&:hover': {
+                textDecoration: 'underline',
+              },
+            },
+            h1: {
+              color: 'hsl(var(--foreground))',
+            },
+            h2: {
+              color: 'hsl(var(--foreground))',
+            },
+            h3: {
+              color: 'hsl(var(--foreground))',
+            },
+            h4: {
+              color: 'hsl(var(--foreground))',
             },
           },
         },

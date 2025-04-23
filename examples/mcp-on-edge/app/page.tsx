@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, {
   useState,
@@ -6,6 +6,7 @@ import React, {
   useLayoutEffect,
   useEffect,
   useCallback,
+  useMemo,
 } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -38,12 +39,15 @@ interface Message {
 }
 
 export default function Home() {
-  const [userInput, setUserInput] = useState('生成一个表白网页，并部署');
+  const [userInput, setUserInput] = useState('');
   const [showKeywords, setShowKeywords] = useState(true);
   const [isClient, setIsClient] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const messageRef = useRef<HTMLDivElement>(null);
-
+  const placeholderIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const placeholderRef = useRef<string>('帮我生成一个表白网页');
+  const showCursorRef = useRef<boolean>(true);
+  
   useLayoutEffect(() => {
     setIsClient(true);
   }, []);
@@ -51,6 +55,204 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // 快捷提示数组
+  const promptSuggestions = [
+    { title: '表白网页', prompt: '生成一个表白网页，并部署' },
+    { title: '个人简历', prompt: '生成一个漂亮的个人简历，并部署' },
+    { title: '博客站点', prompt: '生成一个简约风格的博客站点，并部署' },
+    { title: '作品集', prompt: '生成一个展示作品的网站，并部署' },
+  ];
+
+  // 使用useMemo包装占位符数组，避免每次渲染重新创建
+  const placeholderVariants = useMemo(() => [
+    '表白网页',
+    '个人简历',
+    '博客站点',
+    '商城应用',
+    '作品集',
+    '电子相册',
+    '在线简历',
+    '婚礼邀请函',
+    '落地页',
+    '产品展示页',
+    '个人主页',
+    '旅行博客',
+  ], []);
+
+  // 先定义setupCursorBlinking函数，再在useEffect中使用它
+  // 提取光标闪烁逻辑为单独函数，方便重用
+  const setupCursorBlinking = useCallback(() => {
+    const cursorInterval = setInterval(() => {
+      showCursorRef.current = !showCursorRef.current;
+      // 只在textarea没有焦点时更新placeholder光标
+      if (textareaRef.current && document.activeElement !== textareaRef.current && showKeywords) {
+        const currentPlaceholder = textareaRef.current.getAttribute('placeholder') || '';
+        if (currentPlaceholder.endsWith('|')) {
+          textareaRef.current.setAttribute('placeholder', currentPlaceholder.slice(0, -1));
+        } else if (!currentPlaceholder.endsWith('|')) {
+          textareaRef.current.setAttribute('placeholder', currentPlaceholder + '|');
+        }
+      }
+    }, 600); // 光标闪烁间隔
+    
+    placeholderIntervalRef.current = cursorInterval;
+    return cursorInterval;
+  }, [showKeywords]);
+
+  // 移除自动聚焦到输入框的效果，简化focus/blur处理
+  useEffect(() => {
+    // 页面加载后不再自动聚焦到输入框
+    if (!textareaRef.current) return;
+    
+    const textarea = textareaRef.current;
+    
+    // 聚焦时完全清除placeholder
+    const handleFocus = () => {
+      textarea.setAttribute('data-placeholder', textarea.getAttribute('placeholder') || '');
+      textarea.setAttribute('placeholder', '');
+      // 停止所有placeholder相关的动画
+      if (placeholderIntervalRef.current) {
+        clearInterval(placeholderIntervalRef.current);
+        placeholderIntervalRef.current = null;
+      }
+    };
+    
+    // 失焦时恢复placeholder，但只在没有输入内容且聊天未开始时
+    const handleBlur = () => {
+      if (!textarea.value.trim() && showKeywords) {
+        const savedPlaceholder = textarea.getAttribute('data-placeholder');
+        if (savedPlaceholder) {
+          // 先恢复原始placeholder
+          textarea.setAttribute('placeholder', savedPlaceholder.endsWith('|') 
+            ? savedPlaceholder.slice(0, -1) // 移除末尾可能存在的光标
+            : savedPlaceholder);
+            
+          // 重新启动光标闪烁动画和placeholder动画
+          if (!placeholderIntervalRef.current) {
+            setupCursorBlinking();
+          }
+        }
+      }
+    };
+    
+    textarea.addEventListener('focus', handleFocus);
+    textarea.addEventListener('blur', handleBlur);
+    
+    return () => {
+      textarea.removeEventListener('focus', handleFocus);
+      textarea.removeEventListener('blur', handleBlur);
+    };
+  }, [isClient, showKeywords, setupCursorBlinking]);
+
+  // 优化光标闪烁效果 - 使用ref而不是state
+  useEffect(() => {
+    const cursorInterval = setupCursorBlinking();
+    
+    return () => {
+      if (cursorInterval) {
+        clearInterval(cursorInterval);
+      }
+    };
+  }, [isClient, showKeywords, setupCursorBlinking]);
+
+  // 优化后的动态placeholder实现
+  useEffect(() => {
+    if (!isClient || !textareaRef.current) return;
+    
+    // 聊天开始后不再显示placeholder动画
+    if (!showKeywords) return;
+    
+    // 移除前缀，直接显示变化部分
+    let variantIndex = 0;
+    let charIndex = 0;
+    let direction: 'typing' | 'deleting' = 'typing';
+    let currentVariant = placeholderVariants[variantIndex];
+    let pauseCounter = 0;
+    const typingPause = 60; // 打字完成后的停顿帧数增加
+    const deletingPause = 30; // 删除完成后的停顿帧数
+    const completeShowPause = 150; // 完整显示后的停顿帧数，大约5秒
+    
+    const updatePlaceholder = () => {
+      if (!textareaRef.current) return;
+      
+      // 只在textarea没有焦点且聊天未开始时更新placeholder内容
+      if (document.activeElement === textareaRef.current || !showKeywords) {
+        return;
+      }
+      
+      if (direction === 'typing') {
+        if (charIndex < currentVariant.length) {
+          if (pauseCounter > 0) {
+            pauseCounter--;
+          } else {
+            charIndex++;
+            // 增加随机停顿，模拟真实打字效果
+            if (Math.random() < 0.2 && charIndex < currentVariant.length) {
+              pauseCounter = Math.floor(Math.random() * 5) + 1;
+            }
+          }
+          const variantText = currentVariant.substring(0, charIndex);
+          // 直接修改DOM属性，不触发重新渲染
+          const cursorChar = showCursorRef.current ? '|' : '';
+          textareaRef.current.setAttribute('placeholder', `帮我生成一个${variantText}${cursorChar}`);
+        } else {
+          // 完整显示后长时间停顿，增强可读性
+          if (pauseCounter < completeShowPause) {
+            pauseCounter++;
+            // 在等待期间仍然更新光标
+            const variantText = currentVariant.substring(0, charIndex);
+            const cursorChar = showCursorRef.current ? '|' : '';
+            textareaRef.current.setAttribute('placeholder', `帮我生成一个${variantText}${cursorChar}`);
+          } else {
+            pauseCounter = 0;
+            direction = 'deleting';
+          }
+        }
+      } else {
+        if (charIndex > 0) {
+          if (pauseCounter > 0) {
+            pauseCounter--;
+          } else {
+            charIndex--;
+            // 删除时偶尔停顿，看起来更自然
+            if (Math.random() < 0.1) {
+              pauseCounter = Math.floor(Math.random() * 3) + 1;
+            }
+          }
+          const variantText = currentVariant.substring(0, charIndex);
+          // 直接修改DOM属性，不触发重新渲染
+          const cursorChar = showCursorRef.current ? '|' : '';
+          textareaRef.current.setAttribute('placeholder', `帮我生成一个${variantText}${cursorChar}`);
+        } else {
+          // 完成删除后短暂停顿再切换到下一个占位符
+          if (pauseCounter < deletingPause) {
+            pauseCounter++;
+            // 在等待期间仍然更新光标
+            const variantText = currentVariant.substring(0, charIndex);
+            const cursorChar = showCursorRef.current ? '|' : '';
+            textareaRef.current.setAttribute('placeholder', `帮我生成一个${variantText}${cursorChar}`);
+          } else {
+            pauseCounter = 0;
+            direction = 'typing';
+            // 随机选择下一个占位符，避免重复
+            const prevIndex = variantIndex;
+            while (variantIndex === prevIndex) {
+              variantIndex = Math.floor(Math.random() * placeholderVariants.length);
+            }
+            currentVariant = placeholderVariants[variantIndex];
+          }
+        }
+      }
+    };
+    
+    // 使用较短的时间间隔使动画更流畅
+    const timeoutId = setInterval(() => {
+      updatePlaceholder();
+    }, 30); // 使用固定的较短间隔，通过内部逻辑控制速度变化
+    
+    return () => clearInterval(timeoutId);
+  }, [isClient, placeholderVariants, showKeywords]);
 
   const debouncedUpdateMessage = useCallback(
     debounce((updateFn: (prev: Message[]) => Message[]) => {
@@ -63,131 +265,80 @@ export default function Home() {
     response: Response,
     updateMessage: (content: MessageContent) => void
   ) => {
-    const contentType = response.headers.get('content-type');
-
-    // If we get here with a JSON response, we already tried parsing it in handleSubmit
-    // So we'll treat it as an error case or try to extract any relevant error message
-    if (contentType && contentType.includes('application/json')) {
-      setIsSearching(false);
-      try {
-        const responseClone = response.clone();
-        const errorData = await responseClone.json();
-        return updateMessage({
-          content:
-            errorData?.error ||
-            errorData?.message ||
-            errorData?.content ||
-            JSON.stringify(errorData) ||
-            '抱歉，出现了错误。请重试。',
-        });
-      } catch (jsonError) {
-        console.error('解析JSON错误响应失败:', jsonError);
-        return updateMessage({
-          content: '无法解析错误响应。请重试。',
-        });
-      }
+    if (!response.ok || !response.body) {
+      throw new Error(`HTTP错误：${response.status}`);
     }
 
-    // Check if the body exists and is readable
-    if (!response.body) {
-      setIsSearching(false);
-      console.error('响应没有可读取的主体');
-      return updateMessage({
-        content: '响应没有可读取的主体。请重试。',
-      });
-    }
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let content = '';
+    let thinking = '';
 
     try {
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let buffer = '';
-
-      let accumulatedContent = '';
-      let accumulatedThink = '';
-      let thinking = false;
-      let hasReceivedContent = false;
-
       while (true) {
-        const { value, done } = await reader.read();
+        const { done, value } = await reader.read();
         if (done) break;
 
         buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop() || '';
-
-        for (const line of lines) {
-          if (
-            !line.trim() ||
-            line.includes('[DONE]') ||
-            !line.includes('data: ')
-          )
-            continue;
-          try {
-            const json = JSON.parse(line.replace(/^data: /, ''));
-            const token = json.choices[0]?.delta?.content || '';
-            const reasoningToken =
-              json.choices[0]?.delta?.reasoning_content || '';
-
-            // Turn off searching indicator when first token arrives
-            if (isSearching) {
-              setIsSearching(false);
+        
+        // 尝试解析完整的JSON对象
+        let boundary = buffer.indexOf('\n');
+        while (boundary !== -1) {
+          const line = buffer.substring(0, boundary).trim();
+          buffer = buffer.substring(boundary + 1);
+          
+          if (line) {
+            try {
+              const data = JSON.parse(line);
+              
+              if (data.content !== undefined) {
+                content = data.content;
+              }
+              
+              if (data.thinking !== undefined) {
+                thinking = data.thinking;
+              }
+              
+              // 更新消息内容
+              updateMessage({ 
+                content: content, 
+                think: thinking 
+              });
+            } catch (e) {
+              console.error('解析JSON出错:', e, line);
             }
-
-            // Mark that we've received some content
-            hasReceivedContent = true;
-
-            // Handle think content
-            if (
-              token.includes('<think>') ||
-              token.includes('\u003cthink\u003e')
-            ) {
-              thinking = true;
-              continue;
-            }
-            if (
-              token.includes('</think>') ||
-              token.includes('\u003c/think\u003e')
-            ) {
-              thinking = false;
-              continue;
-            }
-
-            if (thinking || reasoningToken) {
-              accumulatedThink += token || reasoningToken || '';
-            } else {
-              accumulatedContent += token || '';
-            }
-
-            updateMessage({
-              content: accumulatedContent,
-              think: accumulatedThink,
-            });
-          } catch (e) {
-            console.error('解析流数据块失败:', e, line);
           }
+          
+          boundary = buffer.indexOf('\n');
         }
       }
-
-      // If we didn't receive any content from the stream, try to parse the full body
-      if (!hasReceivedContent) {
-        const responseClone = response.clone();
+      
+      // 处理可能剩余在缓冲区的数据
+      if (buffer.trim()) {
         try {
-          const fullText = await responseClone.text();
-          if (fullText.trim()) {
-            updateMessage({
-              content: fullText,
-            });
-            return;
+          const data = JSON.parse(buffer.trim());
+          
+          if (data.content !== undefined) {
+            content = data.content;
           }
-        } catch (fullTextError) {
-          console.error('处理完整响应失败:', fullTextError);
+          
+          if (data.thinking !== undefined) {
+            thinking = data.thinking;
+          }
+          
+          // 更新最终消息内容
+          updateMessage({ 
+            content: content, 
+            think: thinking 
+          });
+        } catch (e) {
+          console.error('解析最终JSON出错:', e);
         }
       }
-    } catch (streamError) {
-      console.error('读取流响应失败:', streamError);
-      updateMessage({
-        content: '读取响应流失败。请重试。',
-      });
+    } catch (error) {
+      console.error('处理流响应出错:', error);
+      throw error;
     }
   };
 
@@ -195,7 +346,14 @@ export default function Home() {
     e.preventDefault();
     if (!userInput.trim() || isLoading) return;
 
+    // 聊天开始时立即设置showKeywords为false
     setShowKeywords(false);
+    
+    // 聊天开始后，清除placeholder并不再显示
+    if (textareaRef.current) {
+      textareaRef.current.setAttribute('placeholder', '');
+    }
+    
     setIsLoading(true);
     setIsSearching(true);
     const currentInput = textareaRef.current?.value || '';
@@ -228,169 +386,33 @@ export default function Home() {
       });
 
       if (!res.ok) {
-        console.error('API响应错误:', res.status, res.statusText);
-        let errorMessage = `服务器返回错误: ${res.status} ${res.statusText}`;
-
-        try {
-          // 尝试解析错误响应体
-          const responseText = await res.text();
-          console.error('错误响应体:', responseText);
-
-          // 尝试将响应解析为JSON
-          try {
-            const errorData = JSON.parse(responseText);
-            if (errorData?.error) {
-              errorMessage = errorData.error;
-            }
-          } catch (jsonError) {
-            // 如果不是有效的JSON，使用原始响应文本
-            if (responseText) {
-              errorMessage = `服务器错误: ${responseText}`;
-            }
-          }
-        } catch (textError) {
-          console.error('无法读取错误响应体:', textError);
-        }
-
-        // 设置错误消息到UI
-        setMessages([
-          { role: 'user', content: currentInput },
-          { role: 'assistant', content: errorMessage },
-        ]);
-        setIsSearching(false);
-        throw new Error(errorMessage);
+        throw new Error(`HTTP error: ${res.status}`);
       }
 
-      // First check if it's a simple JSON response without streaming
-      const contentType = res.headers.get('content-type');
-      if (contentType && contentType.includes('application/json')) {
-        try {
-          // Clone the response so we can use it for stream processing if needed
-          const clone = res.clone();
-          const jsonData = await res.json();
-
-          // If this has a message, content, or choices[0].message.content field, use it directly
-          if (
-            jsonData.message ||
-            jsonData.content ||
-            (jsonData.choices && jsonData.choices[0]?.message?.content)
-          ) {
-            const messageContent =
-              jsonData.message ||
-              jsonData.content ||
-              jsonData.choices[0]?.message?.content;
-            setMessages([
-              { role: 'user', content: currentInput },
-              { role: 'assistant', content: messageContent },
-            ]);
-            setIsLoading(false);
-            setIsSearching(false);
-            return;
-          }
-
-          // Otherwise, fall back to stream processing with the cloned response
-          await processStreamResponse(clone, (_content: MessageContent) => {
-            debouncedUpdateMessage((prev) => {
-              const newMessages = structuredClone(prev);
-              const lastMessage = newMessages[newMessages.length - 1];
-
-              if (_content.think) {
-                lastMessage.think = _content.think;
-              }
-              if (_content.content) {
-                lastMessage.content = _content.content;
-              }
-
-              return newMessages;
-            });
-          });
-          return;
-        } catch (jsonError) {
-          console.error('解析JSON响应失败，回退到流处理:', jsonError);
-          // Continue with normal stream processing
-        }
-      }
-
-      // Check if it's a plain text response
-      if (contentType && contentType.includes('text/plain')) {
-        try {
-          const textResponse = await res.text();
-          if (textResponse.trim()) {
-            setMessages([
-              { role: 'user', content: currentInput },
-              { role: 'assistant', content: textResponse },
-            ]);
-            setIsLoading(false);
-            setIsSearching(false);
-            return;
-          }
-        } catch (textError) {
-          console.error('解析文本响应失败:', textError);
-          // Continue with normal stream processing
-        }
-      }
-
-      let source: { url: string; title: string }[] = [];
-      res.headers.forEach((value, name) => {
-        if (name === 'results') {
-          const results = JSON.parse(value);
-          source = results.map((result: { url: string; title: string }) => {
-            return {
-              url: result.url,
-              title: decodeURIComponent(result.title),
-            };
-          });
-        }
-      });
-
-      // Check for direct message content in headers
-      let directMessage = '';
-      res.headers.forEach((value, name) => {
-        if (
-          name.toLowerCase() === 'content' ||
-          name.toLowerCase() === 'message'
-        ) {
-          try {
-            directMessage = decodeURIComponent(value);
-          } catch (e) {
-            directMessage = value;
-          }
-        }
-      });
-
-      // If we have a direct message, update immediately
-      if (directMessage) {
-        setMessages([
-          { role: 'user', content: currentInput },
-          { role: 'assistant', content: directMessage, source },
-        ]);
-        setIsLoading(false);
-        setIsSearching(false);
-        return;
-      }
-
-      setMessages((prev) => {
-        const newMessages = structuredClone(prev);
-        const lastMessage = newMessages[newMessages.length - 1];
-        lastMessage.source = source;
-        return newMessages;
-      });
-
-      await processStreamResponse(res, (_content: MessageContent) => {
-        debouncedUpdateMessage((prev) => {
-          const newMessages = structuredClone(prev);
-          const lastMessage = newMessages[newMessages.length - 1];
-
-          if (_content.think) {
-            lastMessage.think = _content.think;
-          }
-          if (_content.content) {
-            lastMessage.content = _content.content;
-          }
-
-          return newMessages;
+      // 处理流式响应
+      if (res.headers.get('content-type')?.includes('text/event-stream')) {
+        await processStreamResponse(res, (messageContent) => {
+          debouncedUpdateMessage((prevMessages) => [
+            prevMessages[0],
+            {
+              role: 'assistant',
+              content: messageContent.content || '',
+              think: messageContent.think || '',
+            },
+          ]);
         });
-      });
+      } else {
+        // 处理常规JSON响应
+        const data = await res.json();
+        setMessages([
+          { role: 'user', content: currentInput },
+          {
+            role: 'assistant',
+            content: data.content || data.choices?.[0]?.message?.content || '',
+            think: data.thinking || '',
+          },
+        ]);
+      }
     } catch (error) {
       console.error('请求错误:', error);
       // 如果已经设置了错误消息，就不再重复设置
@@ -424,33 +446,15 @@ export default function Home() {
     }
   };
 
-  const WelcomeMessage = ({ show }: { show: boolean }) => {
-    if (!show) return null;
-
-    return (
-      <div className="flex items-center justify-center min-h-[50vh]">
-        <div className="max-w-3xl px-4 mx-auto text-center">
-          <h2 className="mb-2 text-2xl font-semibold text-gray-800">
-            在边缘使用 MCP
-          </h2>
-          <p className="text-gray-600">
-            EdgeOne Pages 边缘 MCP Client & Server
-            示例，一句话生成一个全球加速站点。
-          </p>
-
-          <p className="mt-2 text-sm text-gray-500">
-            免费使用{' '}
-            <a
-              href="https://edgeone.ai/zh/products/pages"
-              target="_blank"
-              className="mt-4 text-blue-600 hover:text-blue-800 hover:underline focus:outline-none"
-            >
-              EdgeOne Pages
-            </a>
-          </p>
-        </div>
-      </div>
-    );
+  // 处理快捷提示的点击
+  const handleSuggestionClick = (prompt: string) => {
+    setUserInput(prompt);
+    if (textareaRef.current) {
+      textareaRef.current.focus();
+      // 自动调整高度
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
   };
 
   const ThinkDrawer = ({ content }: { content: string }) => {
@@ -459,13 +463,13 @@ export default function Home() {
     if (!content.trim()) return null;
 
     return (
-      <div className="mb-2">
+      <div className="mb-4">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="flex items-center w-full px-3 py-2 text-sm text-gray-600 bg-white rounded-t-lg hover:bg-gray-100"
+          className="flex items-center w-full px-4 py-2 text-sm font-medium text-zinc-300 bg-zinc-800 rounded-t-lg hover:bg-zinc-700 transition-colors"
         >
           <svg
-            className={`w-4 h-4 mr-2 transition-transform ${
+            className={`w-4 h-4 mr-2 transition-transform duration-300 ${
               isOpen ? 'transform rotate-90' : ''
             }`}
             fill="currentColor"
@@ -480,7 +484,7 @@ export default function Home() {
           思考过程
         </button>
         {isOpen && (
-          <div className="p-3 text-sm text-gray-400 bg-white rounded-b-lg">
+          <div className="p-4 text-sm text-zinc-400 bg-zinc-800 border border-t-0 border-zinc-700 rounded-b-lg shadow-sm">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
               {escapeUnderscoresInLinks(content)}
             </ReactMarkdown>
@@ -494,54 +498,61 @@ export default function Home() {
     if (!isSearching) return null;
 
     return (
-      <div className="mb-2">
-        <div className="flex items-center justify-center w-full px-3 py-2 text-sm text-gray-600 bg-white rounded-lg shadow-sm border border-gray-100">
-          <svg
-            className="w-4 h-4 mr-2 animate-spin"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-          >
-            <circle
-              className="opacity-25"
-              cx="12"
-              cy="12"
-              r="10"
-              stroke="currentColor"
-              strokeWidth="4"
-            ></circle>
-            <path
-              className="opacity-75"
-              fill="currentColor"
-              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-            ></path>
-          </svg>
-          边缘函数运行中，请稍后...
-        </div>
+      <div className="flex items-center justify-center py-3 animate-pulse">
+        <svg
+          className="w-5 h-5 mr-3 animate-spin text-blue-500"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+        <span className="text-zinc-300">边缘函数运行中，请稍后...</span>
       </div>
     );
   };
 
   return (
     isClient && (
-      <div className="flex flex-col h-screen bg-white">
-        {/* Header */}
-        <header className="sticky top-0 z-50 flex items-center px-6 py-3 bg-white">
-          <h1 className="text-base font-semibold text-gray-800">
-            EdgeOne Pages
-          </h1>
+      <div className="flex flex-col h-screen bg-deep-gradient">
+        {/* Header - 与背景融为一体 */}
+        <header className="sticky top-0 z-50 flex items-center px-6 py-3">
+          <div className="flex items-center">
+            <a 
+              href="https://edgeone.ai/zh/products/pages" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-slate-100 transition-colors"
+            >
+              <h1 className="text-base font-semibold">
+                EdgeOne Pages
+              </h1>
+            </a>
+          </div>
           <div className="flex-grow" />
           <a
             href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/mcp-on-edge/README_zh-CN.md"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-gray-600 hover:text-gray-900"
+            className="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-800"
             aria-label="GitHub repository"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="currentColor"
             >
@@ -550,158 +561,338 @@ export default function Home() {
           </a>
         </header>
 
-        <WelcomeMessage show={showKeywords} />
-
-        {/* Messages section */}
-        <div
-          ref={messageRef}
-          className="flex-1 px-4 py-4 overflow-y-auto md:px-6"
-        >
-          <div className="max-w-3xl mx-auto space-y-6">
-            {messages.map((message, index) => (
+        {/* 主内容区 */}
+        <div className="flex-1 flex flex-col min-h-0">
+          {showKeywords ? (
+            <WelcomeMessage 
+              show={showKeywords} 
+              userInput={userInput} 
+              setUserInput={setUserInput}
+              handleSubmit={handleSubmit}
+              handleTextareaChange={handleTextareaChange}
+              handleSuggestionClick={handleSuggestionClick}
+              textareaRef={textareaRef}
+              isLoading={isLoading}
+              promptSuggestions={promptSuggestions}
+            />
+          ) : (
+            <>
+              {/* Messages section */}
               <div
-                key={index}
-                className={`flex items-start ${
-                  message.role === 'user' ? 'justify-end' : 'justify-start'
-                }`}
+                ref={messageRef}
+                className="flex-1 px-4 py-6 overflow-y-auto md:px-6 scrollbar-thin"
               >
-                <div
-                  className={`relative max-w-[100%] px-4 py-3 rounded-md ${
-                    message.role === 'user'
-                      ? 'bg-gray-200 text-black'
-                      : 'bg-white text-gray-800'
-                  }`}
-                >
-                  {message.role === 'user' && (
-                    <p className="whitespace-pre-wrap">{message.content}</p>
-                  )}
-
-                  {message.role === 'assistant' && (
+                <div className="max-w-3xl mx-auto space-y-6">
+                  {messages.map((message, index) => (
                     <div
-                      className="prose max-w-none prose-p:leading-relaxed prose-pre:bg-white prose-pre:border 
-                  prose-pre:border-gray-200 prose-code:text-blue-600 prose-code:bg-white prose-code:px-1 prose-code:py-0.5
-                  prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-strong:text-gray-900
-                  prose-a:text-blue-600 prose-a:no-underline hover:prose-a:no-underline prose-headings:text-gray-900
-                  prose-ul:my-4 prose-li:my-0.5"
+                      key={index}
+                      className={`flex items-start ${
+                        message.role === 'user' ? 'justify-end' : 'justify-start'
+                      } animate-fade-in`}
                     >
-                      {message.think && <ThinkDrawer content={message.think} />}
-                      {message.role === 'assistant' &&
-                        index === messages.length - 1 &&
-                        isSearching &&
-                        !message.content &&
-                        !message.think && <SearchingIndicator />}
-                      <ReactMarkdown
-                        remarkPlugins={[remarkGfm]}
-                        components={{
-                          code({ node, className, children, ...props }: any) {
-                            const match = /language-(\w+)/.exec(
-                              className || ''
-                            );
-                            return match ? (
-                              <pre className="p-4 overflow-auto bg-white rounded-lg">
-                                <code className={className} {...props}>
-                                  {children}
-                                </code>
-                              </pre>
-                            ) : (
-                              <code className={className} {...props}>
-                                {children}
-                              </code>
-                            );
-                          },
-                          a: (
-                            props: React.AnchorHTMLAttributes<HTMLAnchorElement>
-                          ) => (
-                            <a
-                              {...props}
-                              target="_blank"
-                              className="text-blue-600 hover:text-blue-800"
-                            />
-                          ),
-                        }}
+                      <div
+                        className={`relative max-w-[90%] shadow-md ${
+                          message.role === 'user'
+                            ? 'bg-blue-600 text-white px-5 py-3 chat-bubble-user'
+                            : 'bg-slate-800/70 text-slate-100 border border-zinc-700 px-5 py-4 chat-bubble-assistant'
+                        }`}
                       >
-                        {escapeUnderscoresInLinks(message.content)}
-                      </ReactMarkdown>
+                        {message.role === 'user' && (
+                          <p className="whitespace-pre-wrap">{message.content}</p>
+                        )}
+
+                        {message.role === 'assistant' && (
+                          <div
+                            className="prose prose-invert max-w-none prose-p:leading-relaxed prose-pre:bg-zinc-900 prose-pre:border 
+                        prose-pre:border-zinc-700 prose-code:text-blue-400 prose-code:bg-zinc-800 prose-code:px-1.5 prose-code:py-0.5
+                        prose-code:rounded prose-code:before:content-none prose-code:after:content-none prose-strong:text-slate-200
+                        prose-a:text-blue-500 hover:prose-a:underline prose-headings:text-slate-200
+                        prose-ul:my-4 prose-li:my-0.5"
+                          >
+                            {message.think && <ThinkDrawer content={message.think} />}
+                            {message.role === 'assistant' &&
+                              index === messages.length - 1 &&
+                              isSearching &&
+                              !message.content &&
+                              !message.think && <SearchingIndicator />}
+                            <ReactMarkdown
+                              remarkPlugins={[remarkGfm]}
+                              components={{
+                                code({ node, className, children, ...props }: any) {
+                                  const match = /language-(\w+)/.exec(
+                                    className || ''
+                                  );
+                                  return match ? (
+                                    <pre className="p-4 overflow-auto bg-zinc-900 rounded-lg">
+                                      <code className={className} {...props}>
+                                        {children}
+                                      </code>
+                                    </pre>
+                                  ) : (
+                                    <code className={className} {...props}>
+                                      {children}
+                                    </code>
+                                  );
+                                },
+                                a: (
+                                  props: React.AnchorHTMLAttributes<HTMLAnchorElement>
+                                ) => (
+                                  <a
+                                    {...props}
+                                    target="_blank"
+                                    className="text-blue-500 hover:text-blue-400 transition-colors"
+                                  />
+                                ),
+                              }}
+                            >
+                              {escapeUnderscoresInLinks(message.content)}
+                            </ReactMarkdown>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                  )}
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Input section */}
-        <div className="px-4 bg-white">
-          <form onSubmit={handleSubmit} className="max-w-3xl py-4 mx-auto">
-            <div className="flex flex-col overflow-hidden border border-gray-200 rounded-xl">
-              <textarea
-                ref={textareaRef}
-                value={userInput}
-                onChange={handleTextareaChange}
-                placeholder="输入消息..."
-                disabled={isLoading}
-                className={`w-full bg-white text-gray-900 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500/50 resize-none min-h-[52px] max-h-[200px] placeholder:text-gray-400 border-none ${
-                  isLoading ? 'cursor-not-allowed opacity-50' : ''
-                }`}
-                onCompositionStart={(e) => {
-                  (e.target as HTMLTextAreaElement).dataset.composing = 'true';
-                }}
-                onCompositionEnd={(e) => {
-                  (e.target as HTMLTextAreaElement).dataset.composing = 'false';
-                }}
-                onKeyDown={(e) => {
-                  const target = e.target as HTMLTextAreaElement;
-                  const isComposing = target.dataset.composing === 'true';
-                  if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
-                    e.preventDefault();
-                    handleSubmit(e);
-                  }
-                }}
-              />
-              <div className="flex items-center justify-end gap-2 px-4 py-2 bg-gray-50">
-                <a
-                  href="https://edgeone.ai/zh/document/173173997276819456"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`flex items-center px-2 py-1.5 rounded-lg text-sm bg-blue-50 text-blue-600 hover:bg-blue-100 transition-colors`}
-                >
-                  <svg
-                    className="w-4 h-4 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M21.71 8.29l-5-5a1 1 0 0 0-1.42 0l-3 3c-.68.68-.68 1.71 0 2.38l.92.92-1.3 1.29a1 1 0 0 0 0 1.42l1 1a1 1 0 0 0 1.42 0l1.29-1.3.92.92a1.69 1.69 0 0 0 2.38 0l3-3a1 1 0 0 0 0-1.42l-.21-.21zM10.41 14l-7.7 7.71a1 1 0 0 1-1.42-1.42L9 12.59l.92.92L10.41 14z" />
-                  </svg>
-                  {'MCP 服务：edgeone-pages-mcp-server'}
-                </a>
-                <button
-                  type="submit"
-                  disabled={isLoading || !userInput.trim()}
-                  className={`flex items-center justify-center w-8 h-8 rounded-lg transition-all duration-200 ${
-                    isLoading || !userInput.trim()
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-blue-500 text-white hover:bg-blue-600 hover:shadow-md active:transform active:scale-95'
-                  }`}
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M5 12h14m-4 4l4-4-4-4"
-                    />
-                  </svg>
-                </button>
+              {/* Input section - 简化的输入框 */}
+              <div className="py-4 px-4 z-10">
+                <div className="max-w-3xl mx-auto">
+                  <form onSubmit={handleSubmit}>
+                    <div className="input-gradient-border">
+                      <div className="flex relative overflow-hidden minimal-input rounded-xl">
+                        <textarea
+                          ref={textareaRef}
+                          value={userInput}
+                          onChange={handleTextareaChange}
+                          placeholder="帮我生成一个表白网页"
+                          disabled={isLoading}
+                          className={`w-full bg-transparent text-slate-200 px-5 py-4 focus:outline-none resize-none min-h-[120px] placeholder:text-zinc-500 border-none ${
+                            isLoading ? 'cursor-not-allowed opacity-50' : ''
+                          }`}
+                          onCompositionStart={(e) => {
+                            (e.target as HTMLTextAreaElement).dataset.composing = 'true';
+                          }}
+                          onCompositionEnd={(e) => {
+                            (e.target as HTMLTextAreaElement).dataset.composing = 'false';
+                          }}
+                          onKeyDown={(e) => {
+                            const target = e.target as HTMLTextAreaElement;
+                            const isComposing = target.dataset.composing === 'true';
+                            if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
+                              e.preventDefault();
+                              handleSubmit(e);
+                            }
+                          }}
+                        />
+                        <button
+                          type="submit"
+                          disabled={isLoading || !userInput.trim()}
+                          className={`absolute right-3 bottom-3 flex items-center justify-center rounded-full h-10 w-10 transition-all duration-200 ${
+                            isLoading || !userInput.trim()
+                              ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50'
+                              : 'bg-blue-600 text-white hover:shadow-md hover:shadow-blue-600/25'
+                          }`}
+                          aria-label="发送"
+                        >
+                          {isLoading ? (
+                            <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                              <circle
+                                className="opacity-25"
+                                cx="12"
+                                cy="12"
+                                r="10"
+                                stroke="currentColor"
+                                strokeWidth="4"
+                              ></circle>
+                              <path
+                                className="opacity-75"
+                                fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                              ></path>
+                            </svg>
+                          ) : (
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M5 12h14m-4 4l4-4-4-4"
+                              />
+                            </svg>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  
+                  {/* 快捷提示标签 - 更加精致的样式 */}
+                  <div className="mt-5 flex flex-wrap gap-3 justify-center">
+                    {promptSuggestions.map((suggestion, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleSuggestionClick(suggestion.prompt)}
+                        disabled={isLoading}
+                        className="px-4 py-2 bg-transparent text-zinc-300 hover:text-blue-400 rounded-full text-sm transition-all border border-zinc-700/60 hover:border-blue-500 shadow-sm backdrop-blur-sm flex items-center group"
+                      >
+                        <span>{suggestion.title}</span>
+                        <svg className="w-3.5 h-3.5 ml-1.5 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    ))}
+                  </div>
+                </div>
               </div>
-            </div>
-          </form>
+            </>
+          )}
         </div>
+            
+        {/* 页脚 - MCP服务信息，始终显示在底部 */}
+        <footer className="py-3 px-4 border-t border-zinc-800/50 w-full">
+          <div className="max-w-3xl mx-auto flex justify-center">
+            <a 
+              href="https://edgeone.cloud.tencent.com/pages/document/173172415568367616" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-zinc-400 text-sm transition-colors"
+            >
+              Powered by EdgeOne Pages MCP Server
+            </a>
+          </div>
+        </footer>
       </div>
     )
   );
 }
+
+// WelcomeMessage组件，从父组件接收props
+interface WelcomeMessageProps {
+  show: boolean;
+  userInput: string;
+  setUserInput: React.Dispatch<React.SetStateAction<string>>;
+  handleSubmit: (e: React.FormEvent) => Promise<void>;
+  handleTextareaChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+  handleSuggestionClick: (prompt: string) => void;
+  textareaRef: React.RefObject<HTMLTextAreaElement>;
+  isLoading: boolean;
+  promptSuggestions: { title: string; prompt: string }[];
+}
+
+const WelcomeMessage = ({ 
+  show, 
+  userInput, 
+  setUserInput, 
+  handleSubmit, 
+  handleTextareaChange, 
+  handleSuggestionClick, 
+  textareaRef, 
+  isLoading, 
+  promptSuggestions 
+}: WelcomeMessageProps) => {
+  if (!show) return null;
+
+  return (
+    <div className="flex flex-col items-center justify-center flex-grow animate-fade-in px-4">
+      <div className="relative max-w-3xl w-full flex flex-col items-center">
+        {/* 主标题和副标题 - 增加间距 */}
+        <h1 className="text-5xl font-bold text-center mb-5 gradient-text-blue-purple">
+          网页版 MCP
+        </h1>
+        <h2 className="text-2xl font-medium text-center mb-6 text-white">
+          一句话生成一个全球加速站点
+        </h2>
+        <p className="text-base text-zinc-300 text-center mb-16 w-full px-4">
+          基于 EdgeOne 边缘函数实现的 MCP Client 与 MCP Server
+        </p>
+
+        {/* 输入框部分 */}
+        <div className="w-full relative">
+          <form onSubmit={handleSubmit} className="w-full">
+            <div className="input-gradient-border">
+              <div className="flex relative overflow-hidden minimal-input rounded-xl">
+                <textarea
+                  ref={textareaRef}
+                  value={userInput}
+                  onChange={handleTextareaChange}
+                  placeholder="帮我生成一个表白网页"
+                  disabled={isLoading}
+                  rows={3}
+                  className="w-full bg-transparent text-slate-200 px-5 py-4 focus:outline-none resize-none min-h-[120px] placeholder:text-zinc-500 border-none"
+                  onCompositionStart={(e) => {
+                    (e.target as HTMLTextAreaElement).dataset.composing = 'true';
+                  }}
+                  onCompositionEnd={(e) => {
+                    (e.target as HTMLTextAreaElement).dataset.composing = 'false';
+                  }}
+                  onKeyDown={(e) => {
+                    const target = e.target as HTMLTextAreaElement;
+                    const isComposing = target.dataset.composing === 'true';
+                    if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
+                      e.preventDefault();
+                      handleSubmit(e);
+                    }
+                  }}
+                />
+                <button
+                  type="submit"
+                  disabled={isLoading || !userInput.trim()}
+                  className={`absolute right-3 bottom-3 flex items-center justify-center rounded-full h-10 w-10 transition-all duration-200 ${
+                    isLoading || !userInput.trim()
+                      ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50'
+                      : 'bg-blue-600 text-white hover:shadow-md hover:shadow-blue-600/25'
+                  }`}
+                  aria-label="发送"
+                >
+                  {isLoading ? (
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
+                    </svg>
+                  ) : (
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 12h14m-4 4l4-4-4-4"
+                      />
+                    </svg>
+                  )}
+                </button>
+              </div>
+            </div>
+          </form>
+          
+          {/* 添加快捷提示按钮在欢迎页面上 - 更加精致的样式 */}
+          <div className="mt-5 flex flex-wrap gap-3 justify-center">
+            {promptSuggestions.map((suggestion, index) => (
+              <button
+                key={index}
+                onClick={() => handleSuggestionClick(suggestion.prompt)}
+                disabled={isLoading}
+                className="px-4 py-2 bg-transparent text-zinc-300 hover:text-blue-400 rounded-full text-sm transition-all border border-zinc-700/60 hover:border-blue-500 shadow-sm backdrop-blur-sm flex items-center group"
+              >
+                <span>{suggestion.title}</span>
+                <svg className="w-3.5 h-3.5 ml-1.5 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
