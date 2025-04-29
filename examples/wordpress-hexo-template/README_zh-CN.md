@@ -2,6 +2,8 @@
 
 此示例演示如何把 WordPress 站点部署到 EdgeOne Pages 上，提升访问速度。
 
+此示例基于 [Hexo-Theme-Argon](https://github.com/solstice23/hexo-theme-argon) 开发，集成了 WordPress 作为CMS。
+
 ## 部署
 
 [![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?from=github&template=wordpress-hexo-template)

@@ -2,6 +2,8 @@
 
 This example demonstrates how to deploy a WordPress site to EdgeOne Pages to enhance access speed.
 
+This example is based on [Hexo-Theme-Argon](https://github.com/solstice23/hexo-theme-argon), uses WordPress as CMS.
+
 ## Deployment
 
 [![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=wordpress-gatsby)
