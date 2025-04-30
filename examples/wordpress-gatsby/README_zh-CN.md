@@ -21,7 +21,7 @@
 
 ```sh
 # 添加.env 文件，写入环境变量
-GATSBY_API_URL=http://xxx.com/graphql
+GATSBY_WORDPRESS_URL=http://xxx.com/graphql
 ```
 
 ```sh

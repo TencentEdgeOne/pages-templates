@@ -23,7 +23,7 @@ Install and enable the following plugins:
 
 ```sh
 # Add .env file and write environment variables
-GATSBY_API_URL=http://xxx.com/graphql
+GATSBY_WORDPRESS_URL=http://xxx.com/graphql
 
 # Install dependencies
 npm i
