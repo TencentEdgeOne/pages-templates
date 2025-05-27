@@ -6,6 +6,8 @@ This example demonstrates how to use EdgeOne Pages Functions to get the geolocat
 
 [![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=functions-geolocation)
 
+Live Demo: https://functions-geolocation.edgeone.app
+
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
 ## Getting Started
