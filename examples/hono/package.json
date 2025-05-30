@@ -1,0 +1,14 @@
+{
+  "name": "edgeone-pages-hono-app",
+  "scripts": {
+    "dev": "edgeone pages dev",
+    "deploy": "rm -rf ./node_modules && edgeone pages deploy ./ -n edgeone-hono-app -t "
+  },
+  "dependencies": {
+    "hono": "^4.7.10"
+  },
+  "devDependencies": {
+    "@edgeone/ef-types": "^1.0.5",
+    "edgeone": "^1.0.21"
+  }
+}
