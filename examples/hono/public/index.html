@@ -4,11 +4,183 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EdgeOne Pages Hono Application</title>
+    <style>
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+        line-height: 1.6;
+        color: #333;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f5f7fa;
+      }
+      
+      .container {
+        background: white;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      
+      h1 {
+        color: #2c3e50;
+        border-bottom: 3px solid #3498db;
+        padding-bottom: 10px;
+      }
+      
+      h2 {
+        color: #2980b9;
+        margin-top: 30px;
+      }
+      
+      h3 {
+        color: #27ae60;
+        margin-top: 20px;
+      }
+      
+      a {
+        color: #3498db;
+        text-decoration: none;
+      }
+      
+      a:hover {
+        text-decoration: underline;
+      }
+      
+      ul {
+        padding-left: 20px;
+      }
+      
+      li {
+        margin-bottom: 8px;
+      }
+      
+      .nav-links {
+        background: #ecf0f1;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+      }
+      
+      .highlight-box {
+        background: #e8f5e8;
+        border-left: 4px solid #27ae60;
+        padding: 20px;
+        margin: 20px 0;
+        border-radius: 4px;
+      }
+      
+      pre {
+        background: #2c3e50;
+        color: #ecf0f1;
+        padding: 15px;
+        border-radius: 8px;
+        overflow-x: auto;
+        font-family: 'Monaco', 'Consolas', monospace;
+      }
+      
+      code {
+        background: #ecf0f1;
+        padding: 2px 6px;
+        border-radius: 3px;
+        font-family: 'Monaco', 'Consolas', monospace;
+      }
+      
+      pre code {
+        background: none;
+        padding: 0;
+      }
+      
+      .emoji {
+        margin-right: 8px;
+      }
+    </style>
   </head>
   <body>
-    <p>
-      This is a modern Web application built on the [Hono](https://hono.dev/)
-      framework, deployed on the EdgeOne Functions platform.
-    </p>
+    <div class="container">
+      <h1>EdgeOne Pages Hono Application</h1>
+      
+      <p>This is a modern Web application built on the <a href="https://hono.dev/" target="_blank" rel="noopener">Hono</a> framework, deployed on the EdgeOne Functions platform.</p>
+      
+      <h2>🚀 Project Features</h2>
+      <ul>
+        <li><strong>Modular Route Design</strong> - Clear route organization structure</li>
+        <li><strong>Server-Side Rendering</strong> - Page rendering using JSX and HTML templates</li>
+        <li><strong>File Upload</strong> - File upload functionality support</li>
+        <li><strong>Book Management</strong> - Example CRUD operations</li>
+        <li><strong>Error Handling</strong> - Beautiful 404 and 500 error pages</li>
+        <li><strong>TypeScript Support</strong> - Complete type definitions</li>
+      </ul>
+
+      <h2>🛣️ Route Overview</h2>
+      <div class="nav-links">
+        <h3>Page Routes</h3>
+        <ul>
+          <li><a href="/">Home - Application introduction and navigation</a></li>
+          <li><a href="/demo">Dynamic page example (/demo)</a></li>
+        </ul>
+
+        <h3>Book Management</h3>
+        <ul>
+          <li><a href="/book">📚 Book list page</a></li>
+          <li><a href="/book/1">📖 Book details example</a></li>
+        </ul>
+
+        <h3>API Endpoints</h3>
+        <ul>
+          <li><strong>POST /book</strong> - Create new book</li>
+          <li><strong>POST /upload</strong> - File upload</li>
+        </ul>
+      </div>
+
+      <h2>📖 Quick API Usage</h2>
+      <h3>Create Book</h3>
+      <pre><code>curl -X POST /book \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "New Book Title",
+    "author": "Author Name"
+  }'</code></pre>
+
+      <h3>File Upload</h3>
+      <pre><code>curl -X POST /upload \
+  -F "file=@example.txt"</code></pre>
+
+      <h2>🔧 Technology Stack</h2>
+      <ul>
+        <li><strong>Hono</strong> - Lightweight Web framework</li>
+        <li><strong>EdgeOne Functions</strong> - Edge computing platform</li>
+        <li><strong>TypeScript</strong> - Type safety</li>
+        <li><strong>JSX</strong> - Server-side rendering</li>
+      </ul>
+
+      <h2>📦 Source Code</h2>
+      <p>
+        <strong>GitHub Repository:</strong>
+        <a 
+          href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/hono" 
+          target="_blank" 
+          rel="noopener noreferrer"
+        >
+          TencentEdgeOne/pages-templates - Hono Example
+        </a>
+      </p>
+      <p>This template is part of the official EdgeOne Pages templates collection, providing ready-to-use examples for various frameworks.</p>
+
+      <h2>🌐 Deployment Information</h2>
+      <p>This application is deployed on the EdgeOne Functions platform, supporting:</p>
+      <ul>
+        <li>Global edge node acceleration</li>
+        <li>Auto-scaling</li>
+        <li>CORS cross-origin support</li>
+        <li>KV storage persistence</li>
+      </ul>
+
+      <div class="highlight-box">
+        <h3>📝 Development Notes</h3>
+        <p>This is a complete example application demonstrating various features and best practices of the Hono framework on EdgeOne Functions.</p>
+        <p>The project structure is clear, code is well organized, and suitable as a starting template for other projects.</p>
+      </div>
+    </div>
   </body>
 </html>
