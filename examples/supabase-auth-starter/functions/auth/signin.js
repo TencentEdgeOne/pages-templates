@@ -43,7 +43,8 @@ export async function onRequestPost(context) {
   });
   
   if (error) {
-    return new Response(error.code, { status: 500 });
+    console.log("signin error", error, error.code);
+    return new Response(error.code, { status: error.status });
   }
   console.log("signin res",JSON.stringify(data));
   const { access_token, refresh_token } = data.session;

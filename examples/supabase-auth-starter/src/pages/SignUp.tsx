@@ -1,23 +1,42 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { NavBar } from "@/components/NavBar";
+import { getURL } from "../lib/utils";
 
 export function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
     
     try {
-      // Here we'll add Supabase registration logic in the future
-      console.log("Signing up...", { email, password });
-      // Simulate registration delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      const formData = new FormData();
+      formData.append("email", email);
+      formData.append("password", password);
+      
+      const response = await fetch(getURL("/auth/signup"), {
+        method: "POST",
+        body: formData,
+        credentials: "include",
+      });
+      
+      if (response.status === 200) {
+        // 注册成功，跳转到登录页
+        navigate("/signin");
+      } else {
+        const data = await response.text();
+        setError(data || "Sign up failed");
+      }
     } catch (error) {
       console.error("Sign up failed:", error);
+      setError("An unexpected error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -35,6 +54,12 @@ export function SignUp() {
           </div>
 
           <form onSubmit={handleSignUp} className="space-y-4">
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+                <p>{error}</p>
+              </div>
+            )}
+            
             <div className="space-y-2">
               <label htmlFor="email" className="text-sm font-medium">
                 Email
