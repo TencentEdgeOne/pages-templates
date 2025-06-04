@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
-import { NavBar } from "@/components/NavBar";
 import { getURL } from "../lib/utils";
 
 export function SignUp() {
