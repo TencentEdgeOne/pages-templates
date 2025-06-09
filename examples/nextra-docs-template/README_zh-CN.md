@@ -8,13 +8,13 @@
 
 ## 安装
 ```bash
-pnpm i
+npm i
 ```
 
 ## 本地开发
 
 ```bash
-pnpm dev
+npm dev
 ```
 
 此命令启动本地开发服务器并打开浏览器窗口。然后访问 localhost:3000。
@@ -22,5 +22,5 @@ pnpm dev
 ## 构建
 
 ```bash
-pnpm run build
+npm run build
 ```
