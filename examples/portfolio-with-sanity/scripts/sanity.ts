@@ -1,63 +1,75 @@
 import { createClient } from 'next-sanity'
+import { loadEnv } from './env'
+
+// 加载环境变量
+loadEnv()
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
 
-if (!projectId || !dataset) {
-  throw new Error('未设置 Sanity 环境变量。请确保设置了 NEXT_PUBLIC_SANITY_PROJECT_ID 和 NEXT_PUBLIC_SANITY_DATASET');
-}
-
-console.log('Sanity 配置:', {
+console.log('Sanity 环境变量:', {
   projectId,
   dataset,
-  apiVersion: '2024-03-01',
-  useCdn: false, // 本地开发时禁用 CDN
-  perspective: 'published'
+  NODE_ENV: process.env.NODE_ENV
 });
 
-export const client = createClient({
-  projectId,
-  dataset,
-  apiVersion: '2024-03-01',
-  useCdn: false, // 本地开发时禁用 CDN 
-})
+let client: ReturnType<typeof createClient> | null = null;
+
+if (projectId && dataset) {
+  console.log('Sanity 配置:', {
+    projectId,
+    dataset,
+    apiVersion: '2024-03-01',
+    useCdn: false, // 本地开发时禁用 CDN
+    perspective: 'published'
+  });
+
+  client = createClient({
+    projectId,
+    dataset,
+    apiVersion: '2024-03-01',
+    useCdn: false, // 本地开发时禁用 CDN 
+  });
+}
 
 // 定义项目类型
 export interface Project {
   _id: string;
   title: string;
   category: string;
-  year: string;
+  publishedAt: string;
   image: string;
   slug: string;
   height: string;
   description: string;
-  bgColor?: string;
-}
-
-export interface ProjectDetail extends Project {
-  publishedAt: string;
-  mainImage: string;
   client?: string;
   role?: string;
   technologies?: string[];
 }
 
+export interface ProjectDetail extends Project {
+  mainImage: string;
+}
+
 export async function getProjects(): Promise<Project[]> {
+  if (!client) {
+    console.log('未设置 Sanity 环境变量，返回空数据');
+    return [];
+  }
+
   try {
-    const query = `*[_type == "post"] | order(order asc) {
+    const query = `*[_type == "post"] | order(publishedAt desc) {
       _id,
       title,
       category,
-      "image": image.asset->url, 
+      publishedAt,
+      "image": image.asset->url,
       "slug": slug.current,
       height,
       description,
-      bgColor,
       client,
       role,
-      technologies,
-      publishedAt
+      technologies
     }`;
     
     const result = await client.fetch(query);
@@ -68,25 +80,32 @@ export async function getProjects(): Promise<Project[]> {
   }
 }
 
-export async function getProjectBySlug(slug: string): Promise<ProjectDetail> {
+export async function getProjectBySlug(slug: string): Promise<ProjectDetail | null> {
+  if (!client) {
+    console.log('未设置 Sanity 环境变量，返回空数据');
+    return null;
+  }
+
   try {
     const query = `*[_type == "post" && slug.current == $slug][0]{
       _id,
       title,
       category,
-      description,
       publishedAt,
+      description,
+      "image": image.asset->url,
       "mainImage": image.asset->url,
+      "slug": slug.current,
+      height,
       client,
       role,
-      technologies,
-      sections
+      technologies
     }`;
     
     const result = await client.fetch(query, { slug });
-    console.log("Sanity 查询结果:", result);
     if (!result) {
-      throw new Error(`未找到 slug 为 "${slug}" 的项目`);
+      console.log(`未找到 slug 为 "${slug}" 的项目`);
+      return null;
     }
     
     return result as ProjectDetail;

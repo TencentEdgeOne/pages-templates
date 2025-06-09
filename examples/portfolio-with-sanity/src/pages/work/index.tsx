@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import PageLayout from '@/components/PageLayout';
-import { getProjects, Project } from '@/lib/sanity';
+import { Project } from '@/lib/types';
+import { getAllProjects } from '@/lib/markdown';
 import { GetStaticProps } from 'next';
 
 // 定义页面 props 类型
@@ -11,7 +12,8 @@ interface WorkPageProps {
 // 使用 getStaticProps 进行静态数据获取
 export const getStaticProps: GetStaticProps<WorkPageProps> = async () => {
   try {
-    const projects = await getProjects();
+    const projects = await getAllProjects();
+    console.log('projects', typeof projects[0].publishedAt);
     return {
       props: {
         projects,
@@ -84,7 +86,7 @@ export default function Work({ projects }: WorkPageProps) {
                       <div className="flex items-center gap-4 text-white/90 opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-100">
                         <span>{project.category}</span>
                         <span>•</span>
-                        <span>{project.year}</span>
+                        <span>{new Date(project.publishedAt).getFullYear()}</span>
                       </div>
                       <span className="mt-6 px-4 py-2 border border-theme-red text-white text-sm opacity-0 group-hover:opacity-100 transform translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-200 hover:bg-theme-red/20 transition-colors">View</span>
                     </div>

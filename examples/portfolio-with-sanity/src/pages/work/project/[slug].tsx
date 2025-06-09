@@ -1,10 +1,10 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import PageLayout from '@/components/PageLayout';
-import { getProjectBySlug, getProjects, ProjectDetail } from '@/lib/sanity';
+import { ProjectDetail } from '@/lib/types';
+import { getAllProjects, getProjectBySlug } from '@/lib/markdown';
 import Link from 'next/link';
 import { GetStaticProps, GetStaticPaths } from 'next';
-
 
 interface ProjectPageProps {
   projectDetail: ProjectDetail;
@@ -13,7 +13,7 @@ interface ProjectPageProps {
 // 生成所有可能的路径
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
-    const projects = await getProjects();
+    const projects = await getAllProjects();
     const paths = projects.map((project) => ({
       params: { slug: project.slug },
     }));
@@ -41,6 +41,11 @@ export const getStaticProps: GetStaticProps<ProjectPageProps, { slug: string }> 
 
   try {
     const projectDetail = await getProjectBySlug(params.slug);
+    if (!projectDetail) {
+      return {
+        notFound: true,
+      };
+    }
     
     return {
       props: {
