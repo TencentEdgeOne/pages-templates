@@ -8,10 +8,10 @@ import { getTagPath } from '@/i18n/path'
 import Layout from '@/layouts/Layout.astro'
 import { checkPostSlugDuplication } from '@/utils/content'
 import { generateDescription } from '@/utils/description'
-import { getPostsFromContentful } from '@/utils/content'
+import { getAllPosts } from '@/utils/content'
 
 export async function getStaticPaths() {
-  const posts = await getPostsFromContentful()
+  const posts = await getAllPosts()
 
   // Check if there are duplicate post slugs
   const duplicates = await checkPostSlugDuplication(posts)
@@ -25,14 +25,12 @@ export async function getStaticPaths() {
   const slugToLangsMap = posts.reduce((map, post) => {
     const slug = post.data.abbrlink || post.slug
     const lang = post.data.lang
-
     if (!map.has(slug)) {
       map.set(slug, new Set(lang ? [lang] : allLocales))
     }
  else if (lang) {
       map.get(slug)?.add(lang)
     }
-
     return map
   }, new Map<string, Set<string>>())
 
@@ -75,7 +73,6 @@ export async function getStaticPaths() {
   // More locales
   moreLocales.forEach((lang: string) => {
     posts.forEach((post: CollectionEntry<'posts'>) => {
-      console.warn('test', post.data.lang, post.slug, lang);
 
       // Process posts with matching language or no language specified
       if ((import.meta.env.DEV || !post.data.draft) && (post.data.lang === lang || post.data.lang === '')) {
@@ -91,7 +88,6 @@ export async function getStaticPaths() {
       }
     })
   })
-  console.warn('paths', paths); 
   return paths
 }
 
