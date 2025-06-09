@@ -19,6 +19,7 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=${你的 sanity 空间 ID}
 NEXT_PUBLIC_SANITY_DATASET=${你的 sanity 数据集}
 ```
 ![](https://cloudcache.tencent-cloud.com/qcloud/ui/static/static_source_business/752893cb-caf0-4414-902a-8380c6ba243a.png)
+Sanity集成指南：https://edgeone.cloud.tencent.com/pages/document/178968125217869824
 
 ## 本地开发
 安装依赖： `npm i`

@@ -8,7 +8,7 @@ Tutorial: https://www.sanity.io/organizations/oa92uat9g/project/k6zvmj0j/getting
 Download[postType.ts](https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/portfolio-with-sanity/postType.ts) to your local sanity project to start quickly.
 
 ## Deploy template
-Open [portfolio-with-sanity template]() in the console。
+Open [portfolio-with-sanity template](https://console.tencentcloud.com/edgeone/pages/new?template=portfolio-with-sanity) in the console。
 
 > The latest version of the code supports direct deployment without filling in environment variables, and the project will directly read the markdown content stored in the repository code. If you don't need CMS for content management, you can directly modify the markdown content to maintain the content.
 
@@ -18,6 +18,7 @@ NEXT_PUBLIC_SANITY_PROJECT_ID=${your sanity space ID}
 NEXT_PUBLIC_SANITY_DATASET=${your sanity dataset}
 ```
 ![](https://cloudcache.tencent-cloud.com/qcloud/ui/static/static_source_business/98699d3e-dacd-4317-b087-e6e3b8265997.png)
+Sanity integration guide:https://edgeone.ai/document/178179132824436736?product=edgedeveloperplatform
 
 ## Getting Started
 Inatll dependencies: `npm i`
