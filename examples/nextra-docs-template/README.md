@@ -8,13 +8,13 @@ You can use it as a starting point for your own project
 
 ## Installation
 ```bash
-pnpm i
+npm i
 ```
 
 ## Local Development
 
 ```bash
-pnpm dev
+npm dev
 ```
 
 This command starts a local development server and opens up a browser window. Then visit localhost:3000.
@@ -22,7 +22,7 @@ This command starts a local development server and opens up a browser window. Th
 ## Build
 
 ```bash
-pnpm run build
+npm run build
 ```
 
 
