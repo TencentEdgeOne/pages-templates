@@ -9,10 +9,6 @@ const deliveryToken = process.env.CONTENTFUL_DELIVERY_TOKEN
 const previewToken = process.env.CONTENTFUL_PREVIEW_TOKEN
 const isDev = process.env.DEV === 'true'
 
-if (!spaceId || !(deliveryToken || previewToken)) {
-  throw new Error('Required environment variables are not set')
-}
-
 // console.log('import.meta.env.CONTENTFUL_SPACE_ID', import.meta.env.CONTENTFUL_SPACE_ID)
 // console.log('import.meta.env.CONTENTFUL_DELIVERY_TOKEN', import.meta.env.CONTENTFUL_DELIVERY_TOKEN)
 export const contentfulClient = contentful.createClient({
