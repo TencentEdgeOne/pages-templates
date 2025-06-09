@@ -3,6 +3,10 @@ import fs from 'node:fs'
 import path from 'node:path'
 
 export function loadEnv() {
+  if (process.env.NEXT_PUBLIC_SANITY_PROJECT_ID) {
+    return true
+  }
+
   const envFiles = ['.env', '.env.local']
   const cwd = process.cwd()
 
