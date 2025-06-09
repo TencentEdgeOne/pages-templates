@@ -9,6 +9,9 @@ Download[postType.ts](https://github.com/TencentEdgeOne/pages-templates/tree/mai
 
 ## Deploy template
 Open [portfolio-with-sanity template]() in the console。
+
+> The latest version of the code supports direct deployment without filling in environment variables, and the project will directly read the markdown content stored in the repository code. If you don't need CMS for content management, you can directly modify the markdown content to maintain the content.
+
 Fill in environment variables
 ```
 NEXT_PUBLIC_SANITY_PROJECT_ID=${your sanity space ID}

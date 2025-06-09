@@ -9,7 +9,10 @@
 ![](https://cloudcache.tencent-cloud.com/qcloud/ui/static/static_source_business/1f135100-a4b5-4311-8038-ef246602ae47.png)
 
 ## 部署模板
-在控制台选择 [portfolio-with-sanity模板]()。
+在控制台选择 [portfolio-with-sanity模板](https://console.cloud.tencent.com/edgeone/pages/new?template=portfolio-with-sanity)。
+
+> 最新版本的代码已经支持免填环境变量直接部署，项目会直接读取保存在仓库代码中的 markdown 内容，如果不需要 CM S进行内容管理您可以直接修改 markdown 内容以维护内容。
+
 填写环境变量：
 ```
 NEXT_PUBLIC_SANITY_PROJECT_ID=${你的 sanity 空间 ID}

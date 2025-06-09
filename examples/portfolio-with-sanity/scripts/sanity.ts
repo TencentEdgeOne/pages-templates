@@ -1,13 +1,13 @@
 import { createClient } from 'next-sanity'
 import { loadEnv } from './env'
 
-// 加载环境变量
+// Load environment variables
 loadEnv()
 
 const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
 
-console.log('Sanity 环境变量:', {
+console.log('Sanity environment variables:', {
   projectId,
   dataset,
   NODE_ENV: process.env.NODE_ENV
@@ -16,11 +16,11 @@ console.log('Sanity 环境变量:', {
 let client: ReturnType<typeof createClient> | null = null;
 
 if (projectId && dataset) {
-  console.log('Sanity 配置:', {
+  console.log('Sanity configuration:', {
     projectId,
     dataset,
     apiVersion: '2024-03-01',
-    useCdn: false, // 本地开发时禁用 CDN
+    useCdn: false, // Disable CDN for local development
     perspective: 'published'
   });
 
@@ -28,11 +28,11 @@ if (projectId && dataset) {
     projectId,
     dataset,
     apiVersion: '2024-03-01',
-    useCdn: false, // 本地开发时禁用 CDN 
+    useCdn: false, // Disable CDN for local development
   });
 }
 
-// 定义项目类型
+// Define project type
 export interface Project {
   _id: string;
   title: string;
@@ -53,7 +53,7 @@ export interface ProjectDetail extends Project {
 
 export async function getProjects(): Promise<Project[]> {
   if (!client) {
-    console.log('未设置 Sanity 环境变量，返回空数据');
+    console.log('Sanity environment variables not set, returning empty data');
     return [];
   }
 
@@ -75,14 +75,14 @@ export async function getProjects(): Promise<Project[]> {
     const result = await client.fetch(query);
     return result as Project[];
   } catch (error) {
-    console.error('从 Sanity 获取数据时出错:', error);
+    console.error('Error fetching data from Sanity:', error);
     throw error;
   }
 }
 
 export async function getProjectBySlug(slug: string): Promise<ProjectDetail | null> {
   if (!client) {
-    console.log('未设置 Sanity 环境变量，返回空数据');
+    console.log('Sanity environment variables not set, returning empty data');
     return null;
   }
 
@@ -104,13 +104,13 @@ export async function getProjectBySlug(slug: string): Promise<ProjectDetail | nu
     
     const result = await client.fetch(query, { slug });
     if (!result) {
-      console.log(`未找到 slug 为 "${slug}" 的项目`);
+      console.log(`Project with slug "${slug}" not found`);
       return null;
     }
     
     return result as ProjectDetail;
   } catch (error) {
-    console.error('从 Sanity 获取项目详情时出错:', (error as {message: string}).message);
+    console.error('Error fetching project details from Sanity:', (error as {message: string}).message);
     throw error;
   }
 } 
