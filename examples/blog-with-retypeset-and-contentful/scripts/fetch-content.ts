@@ -5,7 +5,7 @@ import fsSync from 'node:fs';
 import path from 'node:path';
 import process from 'node:process';
 import { loadEnv } from './env';
-import { contentfulClient } from './contentful';
+import { getContentfulClient } from './contentful';
 import { BLOCKS, MARKS } from '@contentful/rich-text-types';
 import https from 'node:https';
 
@@ -145,7 +145,7 @@ async function fetchAndSaveContent() {
 
   try {
     // Get all blog posts
-    const entries = await contentfulClient.getEntries<Blog>({
+    const entries = await getContentfulClient().getEntries<Blog>({
       content_type: 'blog',
     });
 
