@@ -3,13 +3,14 @@ import PageLayout from '@/components/PageLayout';
 import { Project } from '@/lib/types';
 import { getAllProjects } from '@/lib/markdown';
 import { GetStaticProps } from 'next';
+import React, { useState } from 'react';
 
-// 定义页面 props 类型
+// Define the page props type
 interface WorkPageProps {
   projects: Project[];
 }
 
-// 使用 getStaticProps 进行静态数据获取
+// Use getStaticProps for static data fetching
 export const getStaticProps: GetStaticProps<WorkPageProps> = async () => {
   try {
     const projects = await getAllProjects();
@@ -20,7 +21,7 @@ export const getStaticProps: GetStaticProps<WorkPageProps> = async () => {
       }
     };
   } catch (error) {
-    console.error('获取项目列表失败:', error);
+    console.error('Failed to get project list:', error);
     return {
       props: {
         projects: [],
@@ -29,12 +30,18 @@ export const getStaticProps: GetStaticProps<WorkPageProps> = async () => {
   }
 };
 
-// 页面组件接收 props
+// Page component receives props
 export default function Work({ projects }: WorkPageProps) {
-  // 获取唯一分类
+  // Get unique categories
   const allCategories = ["All", ...Array.from(new Set(projects.map((project: Project) => project.category)))];
   
-  // 函数获取宽高比类名
+  // New: for managing the currently selected category and filtered projects
+  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const filteredProjects = selectedCategory === 'All'
+    ? projects
+    : projects.filter((project) => project.category === selectedCategory);
+
+  // Function to get aspect ratio class name
   const getAspectRatio = (height: string) => {
     switch(height) {
       case 'sm': return 'aspect-[4/3]';
@@ -59,7 +66,8 @@ export default function Work({ projects }: WorkPageProps) {
             {allCategories.map((category: string) => (
               <button
                 key={category}
-                className={`px-4 py-2 text-sm transition-colors bg-theme-gray text-white/80 hover:bg-theme-gray/80`}
+                className={`px-4 py-2 text-sm transition-colors cursor-pointer hover:bg-theme-gray/80 ${selectedCategory === category ? 'bg-theme-red text-white' : 'bg-theme-gray text-white/80'}`}
+                onClick={() => setSelectedCategory(category)}
               >
                 {category === "All" ? "All" : category}
               </button>
@@ -68,7 +76,7 @@ export default function Work({ projects }: WorkPageProps) {
           
           {/* Projects Grid */}
           <div className="columns-1 md:columns-2 lg:columns-3 gap-8">
-            {projects.map((project: Project, index: number) => (
+            {filteredProjects.map((project: Project, index: number) => (
               <div key={index} className="mb-8 break-inside-avoid">
                 <a 
                   href={`/work/project/${project.slug}`}
