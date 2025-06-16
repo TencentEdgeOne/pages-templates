@@ -10,7 +10,7 @@ interface ProjectPageProps {
   projectDetail: ProjectDetail;
 }
 
-// 生成所有可能的路径
+// Generate all possible paths
 export const getStaticPaths: GetStaticPaths = async () => {
   try {
     const projects = await getAllProjects();
@@ -23,7 +23,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
       fallback: false
     };
   } catch (error) {
-    console.error('生成项目路径失败:', error);
+    console.error('Failed to generate project paths:', error);
     return {
       paths: [],
       fallback: false
@@ -31,7 +31,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 };
 
-// 获取每个页面的具体数据
+// Get specific data for each page
 export const getStaticProps: GetStaticProps<ProjectPageProps, { slug: string }> = async ({ params }) => {
   if (!params?.slug) {
     return {
@@ -53,7 +53,7 @@ export const getStaticProps: GetStaticProps<ProjectPageProps, { slug: string }> 
       }
     };
   } catch (error) {
-    console.error('获取项目详情失败:', error);
+    console.error('Failed to get project details:', error);
     return {
       notFound: true,
     };
@@ -79,7 +79,7 @@ export default function ProjectDetailPage({ projectDetail }: ProjectPageProps) {
           Back to Portfolio
         </Link>
         <div className="max-w-[1440px] mx-auto">
-          {/* 项目头部信息 */}
+          {/* Project header information */}
           <div className="max-w-3xl mb-12">
             <h1 className="text-4xl md:text-5xl font-medium mb-4 theme-primary">
               {projectDetail.title}
@@ -111,7 +111,7 @@ export default function ProjectDetailPage({ projectDetail }: ProjectPageProps) {
             </div>
           </div>
 
-          {/* 主图 */}
+          {/* Main image */}
           <div className="relative aspect-video w-full mb-20 overflow-hidden">
             <Image
               src={projectDetail.mainImage}
@@ -122,9 +122,9 @@ export default function ProjectDetailPage({ projectDetail }: ProjectPageProps) {
             />
           </div>
 
-          {/* 项目内容 */}
+          {/* Project content */}
           <div className="max-w-3xl">
-            {/* 技术栈 */}
+            {/* Technologies */}
             {projectDetail.technologies && projectDetail.technologies.length > 0 && (
               <div className="mb-12">
                 <h2 className="text-2xl font-medium mb-4 theme-primary">Technologies</h2>
