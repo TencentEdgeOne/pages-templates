@@ -98,7 +98,9 @@ app.notFound(async (c) => {
   }
 
   try {
-    const res = await fetch(url.toString());
+    const res = await fetch(url.toString(), {
+      headers: c.req.header()
+    });
 
     if (res.ok) {
       const contentType = res.headers.get('Content-Type')!;
