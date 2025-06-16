@@ -10,6 +10,11 @@ const config: DocsThemeConfig = {
     link: 'https://discord.com/channels/1289135101308829758/1310963802610733066',
   },
   docsRepositoryBase: 'https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/nextra-docs-template',
+  head: (
+    <>
+      <link rel="icon" href="/favicon.ico" />
+    </>
+  )
 }
 
 export default config
