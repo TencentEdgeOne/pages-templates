@@ -10,6 +10,7 @@ export async function onRequest({ request, params, env }) {
     <head>
       <meta charset="UTF-8">
       <title>React SSR with EdgeOne Pages</title>
+      <link rel="icon" href="/favicon.ico" type="image/x-icon">
       <style>
         html, body {
           margin: 0;
