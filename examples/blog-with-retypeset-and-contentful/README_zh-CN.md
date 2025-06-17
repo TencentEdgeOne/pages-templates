@@ -10,6 +10,9 @@
 * Step4 执行导入命令：`contentful space import --content-file contentful-blog-model.json --space-id ${你的 Contentful space id}`
 * Step5 复制 Contentful Space Id 和 Contentful Delivery API token 备用
 
+
+> 更多 Contentful 集成参考文档:https://edgeone.cloud.tencent.com/pages/document/178968240027983872
+
 ### 使用本模板
 在控制台选择本模板，填写 Contentful Space Id 和 Contentful Delivery API token 到环境变量，点击部署。
 
