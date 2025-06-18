@@ -1,0 +1,122 @@
+# Examples
+
+## Basic Examples
+
+### 1. Simple Documentation
+
+```jsx
+// pages/index.mdx
+# Welcome to My Docs
+
+This is a simple documentation page.
+```
+
+### 2. With Components
+
+```jsx
+// pages/components.mdx
+import { Button } from '../components/Button'
+
+# Using Components
+
+<Button>Click me!</Button>
+```
+
+### 3. With Code Blocks
+
+```jsx
+// pages/code.mdx
+# Code Examples
+
+```js
+function hello() {
+  console.log('Hello, world!')
+}
+```
+
+## Advanced Examples
+
+### 1. Custom Theme
+
+```jsx
+// theme.config.jsx
+export default {
+  logo: <span>My Project</span>,
+  project: {
+    link: 'https://github.com/your-repo'
+  },
+  useNextSeoProps() {
+    return {
+      titleTemplate: '%s – My Project'
+    }
+  }
+}
+```
+
+### 2. Internationalization
+
+```jsx
+// pages/_meta.js
+export default {
+  "index": {
+    "title": "Introduction",
+    "display": "hidden"
+  },
+  "en": "English",
+  "zh": "中文"
+}
+```
+
+### 3. Versioning
+
+```jsx
+// pages/_meta.js
+export default {
+  "index": {
+    "title": "Introduction",
+    "display": "hidden"
+  },
+  "v1": "v1.x",
+  "v2": "v2.x"
+}
+```
+
+## Interactive Examples
+
+### 1. Counter Component
+
+```jsx
+import { useState } from 'react'
+
+export function Counter() {
+  const [count, setCount] = useState(0)
+  return (
+    <button onClick={() => setCount(count + 1)}>
+      Count: {count}
+    </button>
+  )
+}
+
+<Counter />
+```
+
+### 2. Theme Switcher
+
+```jsx
+import { useTheme } from 'nextra-theme-docs'
+
+export function ThemeSwitcher() {
+  const { theme, setTheme } = useTheme()
+  return (
+    <button onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+      Toggle theme
+    </button>
+  )
+}
+
+<ThemeSwitcher />
+```
+
+## More Examples
+
+Check out our [GitHub repository](https://github.com/your-repo) for more examples and use cases. 

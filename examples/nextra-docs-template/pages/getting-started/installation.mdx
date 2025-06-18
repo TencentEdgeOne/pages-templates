@@ -1,0 +1,36 @@
+# Installation
+
+## Prerequisites
+
+Before you begin, make sure you have the following installed:
+- Node.js 16.8 or later
+- npm or yarn or pnpm
+
+## Installation Steps
+
+1. Create a new project:
+```bash
+npx create-next-app@latest my-docs
+```
+
+2. Install Nextra:
+```bash
+npm install nextra nextra-theme-docs
+```
+
+3. Configure your project by updating `next.config.js`:
+```js
+const withNextra = require('nextra')({
+  theme: 'nextra-theme-docs',
+  themeConfig: './theme.config.jsx'
+})
+
+module.exports = withNextra()
+```
+
+4. Start the development server:
+```bash
+npm run dev
+```
+
+Your documentation site should now be running at `http://localhost:3000`! 

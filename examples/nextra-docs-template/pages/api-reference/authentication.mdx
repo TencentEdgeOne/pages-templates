@@ -1,0 +1,232 @@
+# Authentication
+
+## Overview
+
+This page demonstrates how to implement authentication in your Nextra documentation site.
+
+## Basic Authentication
+
+### API Key Authentication
+
+```javascript
+// Example API key authentication
+const apiKey = 'your-api-key-here';
+
+const response = await fetch('/api/data', {
+  headers: {
+    'Authorization': `Bearer ${apiKey}`,
+    'Content-Type': 'application/json'
+  }
+});
+```
+
+### OAuth 2.0 Authentication
+
+```javascript
+// OAuth 2.0 flow example
+const oauthConfig = {
+  clientId: 'your-client-id',
+  clientSecret: 'your-client-secret',
+  redirectUri: 'http://localhost:3000/callback',
+  scope: 'read write'
+};
+
+// Step 1: Redirect to authorization server
+const authUrl = `https://auth.example.com/oauth/authorize?` +
+  `client_id=${oauthConfig.clientId}&` +
+  `redirect_uri=${encodeURIComponent(oauthConfig.redirectUri)}&` +
+  `scope=${encodeURIComponent(oauthConfig.scope)}&` +
+  `response_type=code`;
+
+window.location.href = authUrl;
+```
+
+## JWT Token Authentication
+
+### Creating JWT Tokens
+
+```javascript
+import jwt from 'jsonwebtoken';
+
+const payload = {
+  userId: 123,
+  email: 'user@example.com',
+  role: 'admin'
+};
+
+const token = jwt.sign(payload, 'your-secret-key', {
+  expiresIn: '24h'
+});
+```
+
+### Verifying JWT Tokens
+
+```javascript
+import jwt from 'jsonwebtoken';
+
+try {
+  const decoded = jwt.verify(token, 'your-secret-key');
+  console.log('Decoded token:', decoded);
+} catch (error) {
+  console.error('Invalid token:', error.message);
+}
+```
+
+## Session-based Authentication
+
+### Express.js Session Example
+
+```javascript
+import express from 'express';
+import session from 'express-session';
+
+const app = express();
+
+app.use(session({
+  secret: 'your-session-secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    maxAge: 24 * 60 * 60 * 1000 // 24 hours
+  }
+}));
+
+// Login route
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+  
+  // Verify credentials
+  if (username === 'admin' && password === 'password') {
+    req.session.userId = 123;
+    req.session.authenticated = true;
+    res.json({ success: true });
+  } else {
+    res.status(401).json({ error: 'Invalid credentials' });
+  }
+});
+
+// Protected route
+app.get('/protected', (req, res) => {
+  if (req.session.authenticated) {
+    res.json({ message: 'Access granted' });
+  } else {
+    res.status(401).json({ error: 'Authentication required' });
+  }
+});
+```
+
+## Best Practices
+
+### 1. Secure Token Storage
+
+```javascript
+// Good: Store tokens in httpOnly cookies
+app.use(cookieParser());
+
+app.post('/login', (req, res) => {
+  // ... authentication logic
+  res.cookie('token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
+    maxAge: 24 * 60 * 60 * 1000
+  });
+});
+
+// Bad: Don't store tokens in localStorage
+// localStorage.setItem('token', token); // Avoid this
+```
+
+### 2. Token Refresh
+
+```javascript
+// Implement token refresh logic
+async function refreshToken(refreshToken) {
+  try {
+    const response = await fetch('/api/refresh', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ refreshToken })
+    });
+    
+    const { accessToken } = await response.json();
+    return accessToken;
+  } catch (error) {
+    console.error('Token refresh failed:', error);
+    // Redirect to login
+    window.location.href = '/login';
+  }
+}
+```
+
+### 3. Error Handling
+
+```javascript
+// Centralized error handling for authentication
+class AuthError extends Error {
+  constructor(message, statusCode = 401) {
+    super(message);
+    this.name = 'AuthError';
+    this.statusCode = statusCode;
+  }
+}
+
+// Usage
+app.get('/api/protected', (req, res, next) => {
+  try {
+    if (!req.headers.authorization) {
+      throw new AuthError('No authorization header', 401);
+    }
+    
+    // ... authentication logic
+    
+  } catch (error) {
+    next(error);
+  }
+});
+
+// Error middleware
+app.use((error, req, res, next) => {
+  if (error instanceof AuthError) {
+    res.status(error.statusCode).json({
+      error: error.message
+    });
+  } else {
+    res.status(500).json({
+      error: 'Internal server error'
+    });
+  }
+});
+```
+
+## Testing Authentication
+
+### Unit Tests
+
+```javascript
+import { describe, it, expect, beforeEach } from 'vitest';
+import { authenticate } from '../auth';
+
+describe('Authentication', () => {
+  it('should authenticate valid credentials', async () => {
+    const result = await authenticate('admin', 'password');
+    expect(result.success).toBe(true);
+    expect(result.token).toBeDefined();
+  });
+  
+  it('should reject invalid credentials', async () => {
+    const result = await authenticate('admin', 'wrong-password');
+    expect(result.success).toBe(false);
+    expect(result.error).toBe('Invalid credentials');
+  });
+});
+```
+
+## Next Steps
+
+- Learn about [API Security](/api-reference/security)
+- Check out [Rate Limiting](/api-reference/rate-limiting)
+- Explore [CORS Configuration](/api-reference/cors) 
