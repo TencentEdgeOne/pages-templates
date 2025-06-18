@@ -1,0 +1,135 @@
+# Tutorials
+
+## Beginner Tutorials
+
+### 1. Creating Your First Documentation Site
+
+1. Install Nextra:
+```bash
+npm install nextra nextra-theme-docs
+```
+
+2. Create your first page:
+```mdx
+# Welcome to My Docs
+
+This is my first documentation page!
+```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+### 2. Adding Navigation
+
+1. Create a `_meta.js` file:
+```js
+export default {
+  "index": "Introduction",
+  "getting-started": "Getting Started"
+}
+```
+
+2. Add more pages to your navigation.
+
+### 3. Customizing the Theme
+
+1. Create a `theme.config.jsx` file:
+```jsx
+export default {
+  logo: <span>My Project</span>,
+  project: {
+    link: 'https://github.com/your-repo'
+  }
+}
+```
+
+2. Customize the theme to match your brand.
+
+## Intermediate Tutorials
+
+### 1. Adding Custom Components
+
+1. Create a components directory:
+```bash
+mkdir components
+```
+
+2. Create your first component:
+```jsx
+// components/Button.jsx
+export function Button({ children }) {
+  return <button className="custom-button">{children}</button>
+}
+```
+
+3. Use the component in your MDX:
+```mdx
+import { Button } from '../components/Button'
+
+<Button>Click me!</Button>
+```
+
+### 2. Implementing Search
+
+1. Enable search in your theme config:
+```jsx
+export default {
+  search: {
+    component: null
+  }
+}
+```
+
+2. Customize the search experience.
+
+### 3. Adding Internationalization
+
+1. Create language directories:
+```bash
+mkdir pages/en pages/zh
+```
+
+2. Configure language support in `_meta.js`.
+
+## Advanced Tutorials
+
+### 1. Creating Custom Themes
+
+1. Create a theme directory:
+```bash
+mkdir theme
+```
+
+2. Implement your custom theme components.
+
+### 2. Optimizing Performance
+
+1. Implement code splitting:
+```jsx
+import dynamic from 'next/dynamic'
+
+const DynamicComponent = dynamic(() => import('../components/Heavy'))
+```
+
+2. Optimize images and assets.
+
+### 3. Deploying Your Site
+
+1. Build your site:
+```bash
+npm run build
+```
+
+2. Deploy to your preferred platform:
+- Vercel
+- Netlify
+- GitHub Pages
+- AWS Amplify
+
+## Next Steps
+
+- Check out our [Examples](/examples) for more use cases
+- Read the [API Reference](/api) for detailed documentation
+- Join our [Community](https://discord.gg/nextra) for support 

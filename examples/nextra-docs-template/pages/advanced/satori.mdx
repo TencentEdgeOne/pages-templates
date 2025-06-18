@@ -1,3 +1,466 @@
 # Satori
 
-Satori (悟り) is a Japanese Buddhist term for awakening, "comprehension; understanding".
+Satori (悟り) is a Japanese Buddhist term for awakening, "comprehension; understanding". In the context of web development, Satori is a powerful library for generating SVG images from HTML and CSS.
+
+## Overview
+
+Satori is a library that converts HTML and CSS into SVG images. It's particularly useful for generating social media images, thumbnails, and other visual content programmatically.
+
+## Key Features
+
+### 1. HTML to SVG Conversion
+- Converts HTML markup to SVG images
+- Supports CSS styling and layout
+- Generates high-quality vector graphics
+
+### 2. Font Support
+- Built-in font rendering
+- Custom font loading
+- Multiple font weight support
+
+### 3. CSS Layout Engine
+- Flexbox support
+- CSS Grid support
+- Responsive design capabilities
+
+### 4. Performance
+- Fast rendering
+- Memory efficient
+- Optimized for server-side generation
+
+## Installation
+
+```bash
+npm install satori
+```
+
+## Basic Usage
+
+### Simple Example
+
+```javascript
+import satori from 'satori'
+import { join } from 'path'
+import { readFileSync } from 'fs'
+
+// Load a font
+const fontPath = join(process.cwd(), 'fonts', 'Inter-Regular.ttf')
+const fontData = readFileSync(fontPath)
+
+// Define your HTML
+const html = `
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+    <h1 style="color: white; font-size: 48px; margin: 0;">Hello Satori!</h1>
+    <p style="color: rgba(255, 255, 255, 0.8); font-size: 24px; margin: 16px 0 0 0;">Generate beautiful images from HTML</p>
+  </div>
+`
+
+// Generate SVG
+const svg = await satori(html, {
+  width: 1200,
+  height: 630,
+  fonts: [
+    {
+      name: 'Inter',
+      data: fontData,
+      weight: 400,
+      style: 'normal',
+    },
+  ],
+})
+
+console.log(svg)
+```
+
+### Advanced Example with Custom Components
+
+```javascript
+import satori from 'satori'
+import { join } from 'path'
+import { readFileSync } from 'fs'
+
+// Load fonts
+const interRegular = readFileSync(join(process.cwd(), 'fonts', 'Inter-Regular.ttf'))
+const interBold = readFileSync(join(process.cwd(), 'fonts', 'Inter-Bold.ttf'))
+
+// Create a blog post card
+const createBlogCard = (title, excerpt, author, date) => `
+  <div style="display: flex; flex-direction: column; width: 800px; height: 400px; background: white; border-radius: 16px; padding: 40px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);">
+    <div style="display: flex; flex-direction: column; flex: 1;">
+      <h1 style="font-size: 32px; font-weight: bold; color: #1a1a1a; margin: 0 0 16px 0; line-height: 1.2;">
+        ${title}
+      </h1>
+      <p style="font-size: 18px; color: #666; margin: 0; line-height: 1.5; flex: 1;">
+        ${excerpt}
+      </p>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 24px; padding-top: 24px; border-top: 1px solid #eee;">
+      <div style="display: flex; align-items: center;">
+        <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin-right: 12px;"></div>
+        <span style="font-size: 16px; color: #1a1a1a; font-weight: 500;">${author}</span>
+      </div>
+      <span style="font-size: 14px; color: #999;">${date}</span>
+    </div>
+  </div>
+`
+
+// Generate the card
+const svg = await satori(createBlogCard(
+  'Building Modern Web Applications',
+  'Learn how to build scalable and maintainable web applications using modern technologies and best practices.',
+  'John Doe',
+  'January 15, 2024'
+), {
+  width: 800,
+  height: 400,
+  fonts: [
+    {
+      name: 'Inter',
+      data: interRegular,
+      weight: 400,
+      style: 'normal',
+    },
+    {
+      name: 'Inter',
+      data: interBold,
+      weight: 700,
+      style: 'normal',
+    },
+  ],
+})
+```
+
+## Font Configuration
+
+### Loading Custom Fonts
+
+```javascript
+import { readFileSync } from 'fs'
+import { join } from 'path'
+
+// Load multiple font weights
+const fonts = [
+  {
+    name: 'Inter',
+    data: readFileSync(join(process.cwd(), 'fonts', 'Inter-Regular.ttf')),
+    weight: 400,
+    style: 'normal',
+  },
+  {
+    name: 'Inter',
+    data: readFileSync(join(process.cwd(), 'fonts', 'Inter-Bold.ttf')),
+    weight: 700,
+    style: 'normal',
+  },
+  {
+    name: 'Inter',
+    data: readFileSync(join(process.cwd(), 'fonts', 'Inter-Italic.ttf')),
+    weight: 400,
+    style: 'italic',
+  },
+]
+
+const svg = await satori(html, {
+  width: 1200,
+  height: 630,
+  fonts,
+})
+```
+
+### Using Google Fonts
+
+```javascript
+// Fetch Google Fonts
+const fetchGoogleFont = async (family, weight = 400) => {
+  const url = `https://fonts.googleapis.com/css2?family=${family}:wght@${weight}&display=swap`
+  const response = await fetch(url)
+  const css = await response.text()
+  
+  // Extract font URL from CSS
+  const fontUrl = css.match(/src: url\((.+)\)/)?.[1]
+  if (!fontUrl) throw new Error('Font URL not found')
+  
+  const fontResponse = await fetch(fontUrl)
+  return await fontResponse.arrayBuffer()
+}
+
+const interFont = await fetchGoogleFont('Inter', 400)
+const fonts = [
+  {
+    name: 'Inter',
+    data: interFont,
+    weight: 400,
+    style: 'normal',
+  },
+]
+```
+
+## CSS Support
+
+### Supported Properties
+
+Satori supports most common CSS properties:
+
+```javascript
+const html = `
+  <div style="
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  ">
+    <h1 style="
+      color: white;
+      font-size: 48px;
+      font-weight: bold;
+      margin: 0 0 16px 0;
+      text-align: center;
+      line-height: 1.2;
+    ">Welcome to Satori</h1>
+    <p style="
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 24px;
+      margin: 0;
+      text-align: center;
+      line-height: 1.5;
+    ">Generate beautiful images from HTML and CSS</p>
+  </div>
+`
+```
+
+### Flexbox Layout
+
+```javascript
+const html = `
+  <div style="display: flex; width: 100%; height: 100%;">
+    <div style="flex: 1; background: #f0f0f0; padding: 20px;">
+      <h2>Left Panel</h2>
+      <p>This is the left side content.</p>
+    </div>
+    <div style="flex: 2; background: #e0e0e0; padding: 20px;">
+      <h2>Main Content</h2>
+      <p>This is the main content area.</p>
+    </div>
+    <div style="flex: 1; background: #d0d0d0; padding: 20px;">
+      <h2>Right Panel</h2>
+      <p>This is the right side content.</p>
+    </div>
+  </div>
+`
+```
+
+## Integration Examples
+
+### Next.js API Route
+
+```javascript
+// pages/api/og-image.js
+import satori from 'satori'
+import { readFileSync } from 'fs'
+import { join } from 'path'
+
+export default async function handler(req, res) {
+  const { title, description } = req.query
+  
+  const fontPath = join(process.cwd(), 'fonts', 'Inter-Regular.ttf')
+  const fontData = readFileSync(fontPath)
+  
+  const html = `
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      <h1 style="color: white; font-size: 48px; margin: 0; text-align: center;">${title}</h1>
+      <p style="color: rgba(255, 255, 255, 0.8); font-size: 24px; margin: 16px 0 0 0; text-align: center;">${description}</p>
+    </div>
+  `
+  
+  const svg = await satori(html, {
+    width: 1200,
+    height: 630,
+    fonts: [
+      {
+        name: 'Inter',
+        data: fontData,
+        weight: 400,
+        style: 'normal',
+      },
+    ],
+  })
+  
+  res.setHeader('Content-Type', 'image/svg+xml')
+  res.send(svg)
+}
+```
+
+### Vercel Edge Function
+
+```javascript
+// api/og-image.js
+import satori from 'satori'
+import { readFileSync } from 'fs'
+import { join } from 'path'
+
+export default async function handler(req) {
+  const { searchParams } = new URL(req.url)
+  const title = searchParams.get('title') || 'Default Title'
+  
+  const fontPath = join(process.cwd(), 'fonts', 'Inter-Regular.ttf')
+  const fontData = readFileSync(fontPath)
+  
+  const html = `
+    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+      <h1 style="color: white; font-size: 48px; margin: 0; text-align: center;">${title}</h1>
+    </div>
+  `
+  
+  const svg = await satori(html, {
+    width: 1200,
+    height: 630,
+    fonts: [
+      {
+        name: 'Inter',
+        data: fontData,
+        weight: 400,
+        style: 'normal',
+      },
+    ],
+  })
+  
+  return new Response(svg, {
+    headers: {
+      'Content-Type': 'image/svg+xml',
+      'Cache-Control': 'public, max-age=31536000, immutable',
+    },
+  })
+}
+```
+
+## Best Practices
+
+### 1. Font Optimization
+
+```javascript
+// Preload fonts for better performance
+const fonts = [
+  {
+    name: 'Inter',
+    data: await fetchGoogleFont('Inter', 400),
+    weight: 400,
+    style: 'normal',
+  },
+  {
+    name: 'Inter',
+    data: await fetchGoogleFont('Inter', 700),
+    weight: 700,
+    style: 'normal',
+  },
+]
+
+// Cache fonts for reuse
+const fontCache = new Map()
+const getFont = async (name, weight) => {
+  const key = `${name}-${weight}`
+  if (!fontCache.has(key)) {
+    fontCache.set(key, await fetchGoogleFont(name, weight))
+  }
+  return fontCache.get(key)
+}
+```
+
+### 2. Responsive Design
+
+```javascript
+// Create responsive layouts
+const createResponsiveCard = (width, height) => {
+  const fontSize = Math.min(width, height) * 0.1
+  const padding = Math.min(width, height) * 0.05
+  
+  return `
+    <div style="
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      padding: ${padding}px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    ">
+      <h1 style="
+        color: white;
+        font-size: ${fontSize}px;
+        margin: 0;
+        text-align: center;
+      ">Responsive Design</h1>
+    </div>
+  `
+}
+```
+
+### 3. Error Handling
+
+```javascript
+const generateImage = async (html, options) => {
+  try {
+    const svg = await satori(html, options)
+    return svg
+  } catch (error) {
+    console.error('Failed to generate image:', error)
+    
+    // Fallback to a simple error image
+    const fallbackHtml = `
+      <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; background: #f0f0f0;">
+        <p style="color: #666; font-size: 16px;">Failed to generate image</p>
+      </div>
+    `
+    
+    return await satori(fallbackHtml, options)
+  }
+}
+```
+
+## Performance Tips
+
+### 1. Font Loading
+- Preload and cache fonts
+- Use system fonts when possible
+- Minimize font file sizes
+
+### 2. HTML Optimization
+- Keep HTML structure simple
+- Avoid complex CSS animations
+- Use efficient CSS selectors
+
+### 3. Caching
+- Cache generated SVGs
+- Use appropriate cache headers
+- Implement cache invalidation
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Font not loading**
+   - Ensure font file path is correct
+   - Check font file format (TTF/OTF)
+   - Verify font weight and style
+
+2. **Layout issues**
+   - Check CSS property support
+   - Verify flexbox/grid syntax
+   - Test with simpler layouts first
+
+3. **Performance problems**
+   - Optimize font loading
+   - Simplify HTML structure
+   - Use caching strategies
+
+## Next Steps
+
+- Explore [Advanced Layouts](/advanced/layouts)
+- Learn about [Font Optimization](/advanced/fonts)
+- Check out [Performance Best Practices](/advanced/performance)
