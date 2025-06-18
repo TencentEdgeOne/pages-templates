@@ -2,10 +2,15 @@
   "name": "edgeone-pages-hono-app",
   "scripts": {
     "dev": "edgeone pages dev",
-    "deploy": "rm -rf ./node_modules && edgeone pages deploy ./ -n edgeone-hono-app -t "
+    "deploy": "rm -rf ./node_modules && edgeone pages deploy ./ -n edgeone-hono-app -t ",
+    "sync-docs": "node scripts/sync-docs.js",
+    "build": "npm run sync-docs"
   },
   "dependencies": {
-    "hono": "^4.7.10"
+    "highlight.js": "^11.11.1",
+    "hono": "^4.7.10",
+    "marked": "^15.0.12",
+    "marked-highlight": "^2.2.1"
   },
   "devDependencies": {
     "@edgeone/ef-types": "^1.0.5",

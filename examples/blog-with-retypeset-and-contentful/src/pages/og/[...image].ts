@@ -1,10 +1,10 @@
 import type { CollectionEntry } from 'astro:content'
-import { getPostsFromContentful } from '@/utils/content'
+import { getPosts } from '@/utils/content';
 import { generateDescription } from '@/utils/description'
 import { OGImageRoute } from 'astro-og-canvas'
 
 // eslint-disable-next-line antfu/no-top-level-await
-const blogEntries = await getPostsFromContentful()
+const blogEntries = await getPosts();
 
 // Convert blog entries into a lookup object with slug as key and title/description as value
 const pages = Object.fromEntries(
