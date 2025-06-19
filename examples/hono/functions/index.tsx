@@ -1,7 +1,7 @@
-import { Hono } from 'hono';
+import { Context, Hono } from 'hono';
 // import { ipRestriction } from 'hono/ip-restriction';
 import type { KVNamespace } from './env';
-import { book, upload, pages } from './routers/index';
+import { book, upload, ssr } from './routers/index';
 
 declare global {
   let my_kv: KVNamespace;
@@ -12,7 +12,7 @@ const app = new Hono().basePath('/');
 // Register route modules
 app.route('/book', book);
 app.route('/upload', upload);
-app.route('/', pages);
+app.route('/ssr', ssr);
 
 // IP restriction middleware (optional)
 // app.use(
@@ -38,8 +38,7 @@ app.route('/', pages);
 //   )
 // );
 
-// Global error handling
-app.notFound((c) => {
+const notFound = async (c: Context) => {
   return c.html(
     `
     <!DOCTYPE html>
@@ -88,10 +87,40 @@ app.notFound((c) => {
   `,
     404
   );
+};
+
+// Fallback to static directory
+app.notFound(async (c) => {
+  const url = new URL(c.req.url);
+
+  if (url.pathname === '/') {
+    url.pathname = '/index.html';
+  }
+
+  try {
+    const res = await fetch(url.toString(), {
+      headers: c.req.header()
+    });
+
+    if (res.ok) {
+      const contentType = res.headers.get('Content-Type')!;
+      const body = await res.arrayBuffer();
+
+      return new Response(body, {
+        status: res.status,
+        headers: {
+          'Content-Type': contentType,
+          'Cache-Control': 'public, max-age=3600',
+        },
+      });
+    }
+  } catch (error) {
+    return notFound(c);
+  }
+  return notFound(c);
 });
 
 app.onError((err, c) => {
-  console.error(`Error: ${err}`);
   return c.html(
     `
     <!DOCTYPE html>
@@ -133,6 +162,7 @@ app.onError((err, c) => {
           <h1>500</h1>
           <h2>Internal Server Error</h2>
           <p>Something went wrong on our server. Please try again later.</p>
+          <p>Error: ${err.message}</p>
           <p><a href="/">← Go back to home</a></p>
         </div>
       </body>

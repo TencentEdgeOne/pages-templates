@@ -10,6 +10,9 @@ Contentful CMS integration has been added on top of the original template.
 * Step4 Execute the import command: `contentful space import --content-file contentful-blog-model.json --space-id  ${your Contentful space id}`
 * Step5 Copy the Contentful Space Id and Contentful Delivery API token for later use
 
+> For more Contentful integration documentation:https://edgeone.ai/document/178178425272651776
+
+
 ### Using This Template
 Select this template in the console, fill in the Contentful Space Id and Contentful Delivery API token as environment variables, and click deploy.
 

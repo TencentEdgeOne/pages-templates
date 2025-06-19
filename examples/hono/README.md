@@ -28,23 +28,30 @@ functions/
 │   └── Layout.tsx         # Page layout component
 └── routers/              # Route modules
     ├── index.ts          # Unified route exports
-    ├── book.ts           # Book related routes
-    ├── pages.ts          # Page rendering routes
+    ├── book.tsx          # Book related routes
+    ├── ssr.tsx           # Server-side rendering routes
     └── upload.ts         # File upload routes
 ```
 
 ## 🛣️ Route Details
 
-### Page Routes (`/`)
+### Static Routes
 
 | Path | Method | Description |
 |------|------|------|
-| `/` | GET | Home page, displays application introduction and navigation links |
-| `/:name` | GET | Dynamic page, displays personalized welcome message |
+| `/` | GET | Static home page, serves `index.html` from public directory |
 
 **Examples:**
-- `https://hono.edgeone.app/` - Home page
-- `https://hono.edgeone.app/john` - Shows "Hello john!" page
+- `https://hono.edgeone.app/` - Static home page
+
+### SSR Routes (`/ssr`)
+
+| Path | Method | Description |
+|------|------|------|
+| `/ssr/:name` | GET | Dynamic SSR page, displays personalized welcome message |
+
+**Examples:**
+- `https://hono.edgeone.app/ssr/john` - Shows "Hello john!" page
 
 ### Book Management Routes (`/book`)
 

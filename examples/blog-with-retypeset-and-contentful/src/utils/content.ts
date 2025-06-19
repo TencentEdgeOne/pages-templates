@@ -1,9 +1,36 @@
 import type { CollectionEntry } from 'astro:content'
-import type { Blog } from './contentful'
 import { defaultLocale } from '@/config'
-import { documentToHtmlString } from '@contentful/rich-text-html-renderer'
-import { BLOCKS } from '@contentful/rich-text-types'
-import { contentfulClient } from './contentful'
+import fs from 'node:fs/promises'
+import path from 'node:path'
+import matter from 'gray-matter'
+import MarkdownIt from 'markdown-it'
+import markdownItAttrs from 'markdown-it-attrs'
+
+const CONTENT_DIR = path.join(process.cwd(), 'src/content/posts')
+
+// 创建 markdown-it 实例并配置插件
+const md = new MarkdownIt({
+  html: true, // 允许 HTML 标签
+  breaks: true, // 转换换行符为 <br>
+  linkify: true, // 自动转换 URL 为链接
+})
+// 添加属性支持，允许为元素添加类名等
+.use(markdownItAttrs)
+
+// 自定义图片渲染规则
+md.renderer.rules.image = (tokens, idx) => {
+  const token = tokens[idx]
+  const src = token.attrGet('src')
+  const alt = token.content || ''
+  const title = token.attrGet('title') || alt
+
+  return `<img src="${src}" alt="${alt}" title="${title}" loading="lazy" class="rounded-lg shadow-md hover:shadow-lg transition-shadow" />`
+}
+
+// 将 Markdown 转换为 HTML
+function convertMarkdownToHtml(content: string): string {
+  return md.render(content)
+}
 
 // Type definitions
 export type Post = CollectionEntry<'posts'> & {
@@ -19,143 +46,84 @@ async function addMetaToPost(post: CollectionEntry<'posts'>): Promise<Post> {
 }
 
 /**
- * Find duplicate post slugs within the same language
- * @param posts Array of blog posts
- * @returns Array of descriptive error messages for duplicate slugs
+ * Read all markdown files from the content directory
  */
-export async function checkPostSlugDuplication(posts: CollectionEntry<'posts'>[]): Promise<string[]> {
-  const slugMap = new Map<string, Set<string>>()
-  const duplicates: string[] = []
+async function readMarkdownFiles() {
+  try {
+    const files = await fs.readdir(CONTENT_DIR)
+    const markdownFiles = files.filter(file => file.endsWith('.md'))
 
-  posts.forEach((post) => {
-    const lang = post.data.lang
-    const slug = post.data.abbrlink || post.slug
-
-    if (!slugMap.has(lang)) {
-      slugMap.set(lang, new Set())
-    }
-
-    const slugSet = slugMap.get(lang)!
-    if (slugSet.has(slug)) {
-      if (!lang) {
-        duplicates.push(`Duplicate slug "${slug}" found in universal post (applies to all languages)`)
-      }
-      else {
-        duplicates.push(`Duplicate slug "${slug}" found in "${lang}" language post`)
-      }
-    }
-    else {
-      slugSet.add(slug)
-    }
-  })
-
-  return duplicates
-}
-
-export async function getPostsFromContentful(lang?: string) {
-  const currentLang = lang || defaultLocale
-
-  const entries = await contentfulClient.getEntries<Blog>({
-    content_type: 'blog',
-  })
-  // console.warn('entries', JSON.stringify(entries.items[1]))
-  const parsedEntries = entries.items.map((item, index) => {
-    index === 0 && console.warn(
-      item.fields.content,
-      documentToHtmlString(item.fields.content),
+    const posts = await Promise.all(
+      markdownFiles
+        .map(async (file) => {
+          const filePath = path.join(CONTENT_DIR, file);
+          const content = await fs.readFile(filePath, 'utf-8');
+          const { data, content: body } = matter(content);
+          // 将 Markdown 转换为 HTML
+          const processedBody = convertMarkdownToHtml(body);
+          // Extract language from filename (e.g., "my-post-en.md" -> "en")
+          const fileNameParts = file.replace('.md', '').split('-');
+          const fileLang = fileNameParts[fileNameParts.length - 1];
+          return {
+            id: file,
+            slug: fileNameParts.slice(0, -1).join('-'), // Remove language part from slug
+            collection: 'posts',
+            data: {
+              title: data.title,
+              description: data.description,
+              published: new Date(data.published),
+              updated: new Date(data.updated),
+              lang: fileLang,
+              tags: data.tags || [],
+              draft: data.draft,
+              category: data.category,
+            },
+            body: processedBody,
+            render: async () => {
+              return {
+                remarkPluginFrontmatter: {
+                  minutes: Math.ceil(body.length / 1000),
+                },
+              };
+            },
+          } as CollectionEntry<'posts'>;
+        })
     )
-    const options = {
-      renderNode: {
-        [BLOCKS.EMBEDDED_ASSET]: (node) => {
-          console.warn('asset', JSON.stringify(node), node)
-
-          const { fields, sys } = node?.data?.target ?? {}
-          const file = fields.file
-
-          if (sys.type === 'Asset' && file.contentType.startsWith('image')) {
-            return `<img src=${file.url} alt=${file.title}/>`
-          }
-          return `<div>other handler asset here</div>`
-        },
-      },
-    }
-    const renderedContent = documentToHtmlString(item.fields.content, options);
-    return {
-      id: item.sys.id,
-      slug: item.fields.slug,
-      collection: 'posts',
-      data: {
-        title: item.fields.title,
-        description: item.fields.description,
-        published: new Date(item.fields.date || item.sys.createdAt),
-        updated: new Date(item.sys.updatedAt),
-        lang: item.fields?.language || currentLang,
-        tags: item.metadata.tags.map((tag) => tag.sys.id),
-        draft: import.meta.env.DEV ? !item.sys?.publishedAt : false,
-        // pin: item.fields.pinned ? 1 : 0,
-        abbrlink: item.fields.slug,
-      },
-      body: renderedContent || '',
-      render: async () => {
-        return {
-          remarkPluginFrontmatter: {
-            minutes: Math.ceil((renderedContent.length || 0) / 1000),
-          },
-        };
-      },
-    } as unknown as CollectionEntry<'posts'>;
-  })
-  return parsedEntries
+    return posts
+  } catch (error) {
+    console.error('Error reading markdown files:', error)
+    return []
+  }
 }
+
 /**
- * Get all posts (including pinned ones, excluding drafts in production)
- * @param lang Language code, optional, defaults to site's default language
- * @returns Posts filtered by language, enhanced with metadata, sorted by date
+ * Get all posts (including drafts in development)
  */
 export async function getPosts(lang?: string) {
   const currentLang = lang || defaultLocale
-
-  const parsedEntries = (await getPostsFromContentful(lang) ?? []).filter((data: CollectionEntry<'posts'>) => {
-    const shouldInclude = import.meta.env.DEV || !data.data.draft
-    return shouldInclude && (data.data.lang === currentLang || data.data.lang === '')
+  const posts = await readMarkdownFiles()
+  
+  const filteredPosts = posts.filter(post => {
+    const shouldInclude = import.meta.env.DEV || !post.data.draft
+    return shouldInclude && (post.data.lang === currentLang || post.data.lang === '')
   })
 
-  const enhancedPosts = await Promise.all(parsedEntries.map(addMetaToPost))
+  const enhancedPosts = await Promise.all(filteredPosts.map(addMetaToPost))
 
-  return enhancedPosts.sort((a: Post, b: Post) =>
-    b.data.published.valueOf() - a.data.published.valueOf(),
+  return enhancedPosts.sort((a, b) =>
+    b.data.published.valueOf() - a.data.published.valueOf()
   )
 }
 
-/**
- * Get all non-pinned posts
- * @param lang Language code, optional, defaults to site's default language
- * @returns Regular posts (not pinned), already filtered by language and drafts
- */
-export async function getRegularPosts(lang?: string) {
-  const posts = await getPosts(lang)
-  return posts.filter(post => !post.data.pin)
-}
-
-/**
- * Get pinned posts and sort by pin priority
- * @param lang Language code, optional, defaults to site's default language
- * @returns Pinned posts sorted by pin value in descending order
- */
-export async function getPinnedPosts(lang?: string) {
-  const posts = await getPosts(lang)
+export async function getAllPosts() {
+  const posts = await readMarkdownFiles()
   return posts
-    .filter(post => post.data.pin && post.data.pin > 0)
-    .sort((a, b) => (b.data.pin || 0) - (a.data.pin || 0))
 }
-
 /**
  * Group posts by year and sort within each year
- * @param lang Language code, optional, defaults to site's default language
- * @returns Map of posts grouped by year (descending), with posts in each year sorted by date (descending)
  */
 export async function getPostsByYear(lang?: string): Promise<Map<number, Post[]>> {
-  const posts = await getRegularPosts(lang)
+  const posts = await getPosts(lang)
   const yearMap = new Map<number, Post[]>()
 
   posts.forEach((post: Post) => {
@@ -177,10 +145,16 @@ export async function getPostsByYear(lang?: string): Promise<Map<number, Post[]>
   return new Map([...yearMap.entries()].sort((a, b) => b[0] - a[0]))
 }
 
+export async function getPinnedPosts(lang?: string) {
+  const posts = await getPosts(lang)
+  return posts.filter((post) => post.data.pinned)
+}
+export async function checkPostSlugDuplication(slug: string, lang?: string) {
+  const posts = await getPosts(lang)
+  return posts.some((post) => post.slug === slug)
+}
 /**
  * Get all tags sorted by post count
- * @param lang Language code, optional, defaults to site's default language
- * @returns Array of tags sorted by popularity (most posts first)
  */
 export async function getAllTags(lang?: string) {
   const tagMap = await getPostsGroupByTags(lang)
@@ -192,8 +166,6 @@ export async function getAllTags(lang?: string) {
 
 /**
  * Group posts by their tags
- * @param lang Language code, optional, defaults to site's default language
- * @returns Map where keys are tag names and values are arrays of posts with that tag
  */
 export async function getPostsGroupByTags(lang?: string) {
   const posts = await getPosts(lang)
@@ -213,9 +185,6 @@ export async function getPostsGroupByTags(lang?: string) {
 
 /**
  * Get all posts that contain a specific tag
- * @param tag The tag name to filter posts by
- * @param lang Language code, optional, defaults to site's default language
- * @returns Array of posts that contain the specified tag
  */
 export async function getPostsByTag(tag: string, lang?: string) {
   const tagMap = await getPostsGroupByTags(lang)

@@ -4,178 +4,337 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EdgeOne Pages Hono Application</title>
-    <style>
-      body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-        line-height: 1.6;
-        color: #333;
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f5f7fa;
-      }
-      
-      .container {
-        background: white;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      }
-      
-      h1 {
-        color: #2c3e50;
-        border-bottom: 3px solid #3498db;
-        padding-bottom: 10px;
-      }
-      
-      h2 {
-        color: #2980b9;
-        margin-top: 30px;
-      }
-      
-      h3 {
-        color: #27ae60;
-        margin-top: 20px;
-      }
-      
-      a {
-        color: #3498db;
-        text-decoration: none;
-      }
-      
-      a:hover {
-        text-decoration: underline;
-      }
-      
-      ul {
-        padding-left: 20px;
-      }
-      
-      li {
-        margin-bottom: 8px;
-      }
-      
-      .nav-links {
-        background: #ecf0f1;
-        padding: 20px;
-        border-radius: 8px;
-        margin: 20px 0;
-      }
-      
-      .highlight-box {
-        background: #e8f5e8;
-        border-left: 4px solid #27ae60;
-        padding: 20px;
-        margin: 20px 0;
-        border-radius: 4px;
-      }
-      
-      pre {
-        background: #2c3e50;
-        color: #ecf0f1;
-        padding: 15px;
-        border-radius: 8px;
-        overflow-x: auto;
-        font-family: 'Monaco', 'Consolas', monospace;
-      }
-      
-      code {
-        background: #ecf0f1;
-        padding: 2px 6px;
-        border-radius: 3px;
-        font-family: 'Monaco', 'Consolas', monospace;
-      }
-      
-      pre code {
-        background: none;
-        padding: 0;
-      }
-      
-      .emoji {
-        margin-right: 8px;
-      }
-    </style>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="icon" href="./favicon.ico" type="image/x-icon">
   </head>
   <body>
     <div class="container">
       <h1>EdgeOne Pages Hono Application</h1>
+<p>This is a modern Web application built on the <a href="https://hono.dev/" target="_blank" rel="noopener noreferrer">Hono</a> framework, deployed on the EdgeOne Pages platform.</p>
+<p>Live demo: <a href="https://hono.edgeone.app" target="_blank" rel="noopener noreferrer">https://hono.edgeone.app</a></p>
+<h2>Deploy</h2>
+<p><a href="https://edgeone.ai/pages/new?from=github&template=hono" target="_blank" rel="noopener noreferrer"><img src="https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg" alt="Deploy with EdgeOne Pages" /></a></p>
+<h2>🚀 Project Features</h2>
+<ul>
+<li><strong>Modular Route Design</strong> - Clear route organization structure</li>
+<li><strong>Server-Side Rendering</strong> - Page rendering using JSX and HTML templates</li>
+<li><strong>File Upload</strong> - File upload functionality support</li>
+<li><strong>Book Management</strong> - Example CRUD operations</li>
+<li><strong>Error Handling</strong> - Beautiful 404 and 500 error pages</li>
+<li><strong>TypeScript Support</strong> - Complete type definitions</li>
+</ul>
+<h2>📁 Project Structure</h2>
+<pre><code>functions/
+├── index.tsx              # Main entry file
+├── [[default]].ts         # EdgeOne Functions default route
+├── env.ts                 # Environment type definitions
+├── components/            # Components directory
+│   └── Layout.tsx         # Page layout component
+└── routers/              # Route modules
+    ├── index.ts          # Unified route exports
+    ├── book.tsx          # Book related routes
+    ├── ssr.tsx           # Server-side rendering routes
+    └── upload.ts         # File upload routes
+</code></pre>
+<h2>🛣️ Route Details</h2>
+<h3>Static Routes</h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/</code></td>
+<td>GET</td>
+<td>Static home page, serves <code>index.html</code> from public directory</td>
+</tr>
+</tbody></table>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><code>https://hono.edgeone.app/</code> - Static home page</li>
+</ul>
+<h3>SSR Routes (<code>/ssr</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/ssr/:name</code></td>
+<td>GET</td>
+<td>Dynamic SSR page, displays personalized welcome message</td>
+</tr>
+</tbody></table>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><code>https://hono.edgeone.app/ssr/john</code> - Shows &quot;Hello john!&quot; page</li>
+</ul>
+<h3>Book Management Routes (<code>/book</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/book</code></td>
+<td>GET</td>
+<td>Get all books list page</td>
+</tr>
+<tr>
+<td><code>/book/:id</code></td>
+<td>GET</td>
+<td>Get specific book details page</td>
+</tr>
+<tr>
+<td><code>/book</code></td>
+<td>POST</td>
+<td>Create new book (API endpoint)</td>
+</tr>
+</tbody></table>
+<p><strong>Examples:</strong></p>
+<ul>
+<li><code>https://hono.edgeone.app/book</code> - Book list</li>
+<li><code>https://hono.edgeone.app/book/1</code> - Details of the first book</li>
+</ul>
+<p><strong>Create Book API Request Example:</strong></p>
+<pre><code class="language-bash">curl -X POST https://hono.edgeone.app/book \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{
+    &quot;title&quot;: &quot;New Book Title&quot;,
+    &quot;author&quot;: &quot;Author Name&quot;
+  }&#x27;</span>
+</code></pre>
+<p><strong>Supported Features:</strong></p>
+<ul>
+<li>CORS cross-origin support</li>
+</ul>
+<h3>File Upload Routes (<code>/upload</code>)</h3>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Method</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>/upload</code></td>
+<td>POST</td>
+<td>File upload endpoint</td>
+</tr>
+</tbody></table>
+<p><strong>Example:</strong></p>
+<pre><code class="language-bash">curl -X POST https://hono.edgeone.app/upload \
+  -F <span class="hljs-string">&quot;file=@example.txt&quot;</span>
+</code></pre>
+<h2>📖 Detailed API Documentation</h2>
+<h3>Basic Information</h3>
+<ul>
+<li><strong>Base URL</strong>: <code>https://hono.edgeone.app</code></li>
+<li><strong>Content-Type</strong>: <code>application/json</code></li>
+<li><strong>Encoding</strong>: UTF-8</li>
+</ul>
+<h3>API Details</h3>
+<h4>1. File Upload</h4>
+<p><strong>Endpoint</strong>: <code>POST /upload</code></p>
+<p><strong>Description</strong>: Upload files to server</p>
+<p><strong>Request Format</strong>: <code>multipart/form-data</code></p>
+<p><strong>Request Parameters</strong>:</p>
+<ul>
+<li><code>file</code> (required): File to upload</li>
+</ul>
+<p><strong>curl Request Examples</strong>:</p>
+<pre><code class="language-bash"><span class="hljs-comment"># Upload text file</span>
+curl -X POST https://hono.edgeone.app/upload \
+  -F <span class="hljs-string">&quot;file=@/path/to/your/file.txt&quot;</span>
+
+<span class="hljs-comment"># Upload image file</span>
+curl -X POST https://hono.edgeone.app/upload \
+  -F <span class="hljs-string">&quot;file=@/path/to/image.jpg&quot;</span>
+
+<span class="hljs-comment"># Upload with custom filename</span>
+curl -X POST https://hono.edgeone.app/upload \
+  -F <span class="hljs-string">&quot;file=@document.pdf;filename=my-document.pdf&quot;</span>
+</code></pre>
+<p><strong>Response Example</strong>:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;File uploaded successfully&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;fileName&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;file.txt&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p><strong>Error Response</strong>:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">false</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;No file provided&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h4>2. Create Book</h4>
+<p><strong>Endpoint</strong>: <code>POST /book</code></p>
+<p><strong>Description</strong>: Create new book record</p>
+<p><strong>Request Parameters</strong>:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Book Title&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;author&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Author Name&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<p><strong>Parameter Description</strong>:</p>
+<ul>
+<li><code>title</code> (optional): Book title, defaults to &quot;Untitled&quot;</li>
+<li><code>author</code> (optional): Author name, defaults to &quot;Unknown&quot;</li>
+</ul>
+<p><strong>curl Request Examples</strong>:</p>
+<pre><code class="language-bash"><span class="hljs-comment"># Create book with complete information</span>
+curl -X POST https://hono.edgeone.app/book \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{
+    &quot;title&quot;: &quot;Dream of the Red Chamber&quot;,
+    &quot;author&quot;: &quot;Cao Xueqin&quot;
+  }&#x27;</span>
+
+<span class="hljs-comment"># Create book with only title</span>
+curl -X POST https://hono.edgeone.app/book \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{
+    &quot;title&quot;: &quot;New Book Title&quot;
+  }&#x27;</span>
+
+<span class="hljs-comment"># Create empty book (using defaults)</span>
+curl -X POST https://hono.edgeone.app/book \
+  -H <span class="hljs-string">&quot;Content-Type: application/json&quot;</span> \
+  -d <span class="hljs-string">&#x27;{}&#x27;</span>
+</code></pre>
+<p><strong>Response Example</strong>:</p>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Book created successfully&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;book&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span>
+    <span class="hljs-attr">&quot;id&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;abc123def&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;title&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Book Title&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;author&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Author Name&quot;</span><span class="hljs-punctuation">,</span>
+    <span class="hljs-attr">&quot;createdAt&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;2023-12-01T10:00:00.000Z&quot;</span>
+  <span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h4>3. Get Book Information</h4>
+<p><strong>curl Request Examples</strong>:</p>
+<pre><code class="language-bash"><span class="hljs-comment"># Get all books list</span>
+curl -X GET https://hono.edgeone.app/book
+
+<span class="hljs-comment"># Get specific book details</span>
+curl -X GET https://hono.edgeone.app/book/1
+
+<span class="hljs-comment"># Get personal page</span>
+curl -X GET https://hono.edgeone.app/john
+</code></pre>
+<h3>Error Code Description</h3>
+<table>
+<thead>
+<tr>
+<th>Error Code</th>
+<th>HTTP Status Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>VALIDATION_ERROR</code></td>
+<td>400</td>
+<td>Request parameter validation failed</td>
+</tr>
+<tr>
+<td><code>FILE_UPLOAD_ERROR</code></td>
+<td>400</td>
+<td>File upload failed</td>
+</tr>
+<tr>
+<td><code>NOT_FOUND</code></td>
+<td>404</td>
+<td>Resource not found</td>
+</tr>
+<tr>
+<td><code>INTERNAL_ERROR</code></td>
+<td>500</td>
+<td>Internal server error</td>
+</tr>
+</tbody></table>
+<h3>Rate Limiting</h3>
+<ul>
+<li>All API endpoints currently have no rate limiting</li>
+<li>Client-side request frequency control is recommended</li>
+</ul>
+<h3>CORS Support</h3>
+<p>All API endpoints support cross-origin access, response headers include:</p>
+<ul>
+<li><code>Access-Control-Allow-Origin: *</code></li>
+<li><code>Access-Control-Allow-Methods: POST, GET, OPTIONS</code></li>
+<li><code>Access-Control-Allow-Headers: Content-Type, Authorization</code></li>
+</ul>
+<h2>🔧 Development</h2>
+<h3>Local Development</h3>
+<pre><code class="language-bash"><span class="hljs-comment"># Install dependencies</span>
+npm install
+
+<span class="hljs-comment"># Start development server</span>
+npm run dev
+</code></pre>
+<h3>Deployment</h3>
+<pre><code class="language-bash"><span class="hljs-comment"># Deploy to EdgeOne</span>
+npm run deploy
+</code></pre>
+<h2>🌐 Environment Variables</h2>
+<p>The project uses the following environment variables and global objects:</p>
+<ul>
+<li><code>my_kv</code> - KV storage instance for data persistence</li>
+</ul>
+<h2>🛡️ Security Features</h2>
+<h3>IP Restriction (Optional)</h3>
+<p>The project includes IP restriction middleware configuration (commented by default), which can limit access sources:</p>
+<pre><code class="language-typescript">app.<span class="hljs-title function_">use</span>(<span class="hljs-string">&#x27;*&#x27;</span>, <span class="hljs-title function_">ipRestriction</span>(<span class="hljs-comment">/* configuration */</span>));
+</code></pre>
+<h2>📝 API Response Format</h2>
+<h3>Success Response</h3>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;success&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-literal"><span class="hljs-keyword">true</span></span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Operation successful&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;data&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-punctuation">{</span><span class="hljs-punctuation">}</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h3>Error Response</h3>
+<pre><code class="language-json"><span class="hljs-punctuation">{</span>
+  <span class="hljs-attr">&quot;error&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;ERROR_CODE&quot;</span><span class="hljs-punctuation">,</span>
+  <span class="hljs-attr">&quot;message&quot;</span><span class="hljs-punctuation">:</span> <span class="hljs-string">&quot;Error description&quot;</span>
+<span class="hljs-punctuation">}</span>
+</code></pre>
+<h2>🎨 UI Design</h2>
+<p>The project adopts modern UI design:</p>
+<ul>
+<li>Responsive layout</li>
+<li>System font stack</li>
+<li>Card-style design</li>
+<li>Unified color theme</li>
+<li>Elegant error pages</li>
+</ul>
+<h2>📦 Dependencies</h2>
+<ul>
+<li><strong>hono</strong> - Web framework</li>
+<li><strong>@edgeone/ef-types</strong> - EdgeOne Functions type definitions</li>
+<li><strong>edgeone</strong> - EdgeOne CLI tool</li>
+</ul>
+<h2>🤝 Contributing</h2>
+<p>Welcome to submit Issues and Pull Requests to improve this project.</p>
+<h2>📄 License</h2>
+<p>MIT License</p>
+
       
-      <p>This is a modern Web application built on the <a href="https://hono.dev/" target="_blank" rel="noopener">Hono</a> framework, deployed on the EdgeOne Functions platform.</p>
-      
-      <h2>🚀 Project Features</h2>
-      <ul>
-        <li><strong>Modular Route Design</strong> - Clear route organization structure</li>
-        <li><strong>Server-Side Rendering</strong> - Page rendering using JSX and HTML templates</li>
-        <li><strong>File Upload</strong> - File upload functionality support</li>
-        <li><strong>Book Management</strong> - Example CRUD operations</li>
-        <li><strong>Error Handling</strong> - Beautiful 404 and 500 error pages</li>
-        <li><strong>TypeScript Support</strong> - Complete type definitions</li>
-      </ul>
-
-      <h2>🛣️ Route Overview</h2>
-      <div class="nav-links">
-        <h3>Page Routes</h3>
-        <ul>
-          <li><a href="/">Home - Application introduction and navigation</a></li>
-          <li><a href="/demo">Dynamic page example (/demo)</a></li>
-        </ul>
-
-        <h3>Book Management</h3>
-        <ul>
-          <li><a href="/book">📚 Book list page</a></li>
-          <li><a href="/book/1">📖 Book details example</a></li>
-        </ul>
-
-        <h3>API Endpoints</h3>
-        <ul>
-          <li><strong>POST /book</strong> - Create new book</li>
-          <li><strong>POST /upload</strong> - File upload</li>
-        </ul>
-      </div>
-
-      <h2>📖 Quick API Usage</h2>
-      <h3>Create Book</h3>
-      <pre><code>curl -X POST /book \
-  -H "Content-Type: application/json" \
-  -d '{
-    "title": "New Book Title",
-    "author": "Author Name"
-  }'</code></pre>
-
-      <h3>File Upload</h3>
-      <pre><code>curl -X POST /upload \
-  -F "file=@example.txt"</code></pre>
-
-      <h2>🔧 Technology Stack</h2>
-      <ul>
-        <li><strong>Hono</strong> - Lightweight Web framework</li>
-        <li><strong>EdgeOne Functions</strong> - Edge computing platform</li>
-        <li><strong>TypeScript</strong> - Type safety</li>
-        <li><strong>JSX</strong> - Server-side rendering</li>
-      </ul>
-
-      <h2>📦 Source Code</h2>
-      <p>
-        <strong>GitHub Repository:</strong>
-        <a 
-          href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/hono" 
-          target="_blank" 
-          rel="noopener noreferrer"
-        >
-          TencentEdgeOne/pages-templates - Hono Example
-        </a>
-      </p>
-      <p>This template is part of the official EdgeOne Pages templates collection, providing ready-to-use examples for various frameworks.</p>
-
-      <h2>🌐 Deployment Information</h2>
-      <p>This application is deployed on the EdgeOne Functions platform, supporting:</p>
-      <ul>
-        <li>Global edge node acceleration</li>
-        <li>Auto-scaling</li>
-        <li>CORS cross-origin support</li>
-        <li>KV storage persistence</li>
-      </ul>
-
       <div class="highlight-box">
         <h3>📝 Development Notes</h3>
         <p>This is a complete example application demonstrating various features and best practices of the Hono framework on EdgeOne Functions.</p>

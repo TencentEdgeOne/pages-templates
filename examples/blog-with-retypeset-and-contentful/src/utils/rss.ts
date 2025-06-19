@@ -19,9 +19,10 @@ export async function generateRSS({ lang }: GenerateRSSOptions = {}) {
   const currentUI = ui[lang as keyof typeof ui] || ui[defaultLocale as keyof typeof ui]
   const siteTitle = themeConfig.site.i18nTitle ? currentUI.title : title
   const siteDescription = themeConfig.site.i18nTitle ? currentUI.description : description
-
   // Get posts for specific language (including universal posts and default language when lang is undefined)
   const posts = await getPosts(lang);
+  console.warn('siteTitle', posts);
+
   return rss({
     title: siteTitle,
     site: lang ? `${url}/${lang}` : url,
