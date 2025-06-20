@@ -4,8 +4,6 @@
 
 你可以将它作为自己项目的起始模板。
 
-[![](https://edgeone.ai/media/64ec487b-fba7-4815-bb8d-3cfdac1a377f.png)](https://nextra-docs-template.edgeone.app/)
-
 ## 安装
 ```bash
 npm i
