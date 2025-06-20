@@ -2,9 +2,6 @@
 
 A clean and customizable VitePress documentation template with a well-organized structure and modern design.
 
-![](https://edgeone.ai/media/49e5304e-1538-47e3-a4be-10bd8c3e1395.png)
-
-
 ## Features
 
 - 📚 Well-organized documentation structure

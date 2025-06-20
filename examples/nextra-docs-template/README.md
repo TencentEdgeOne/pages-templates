@@ -4,8 +4,6 @@ This is a template for creating documentation using [Nextra](https://nextra.site
 
 You can use this as a starting template for your own project.
 
-[![](https://edgeone.ai/media/64ec487b-fba7-4815-bb8d-3cfdac1a377f.png)](https://nextra-docs-template.edgeone.app/)
-
 ## Installation
 ```bash
 npm i
