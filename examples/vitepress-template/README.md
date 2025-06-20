@@ -2,6 +2,11 @@
 
 A clean and customizable VitePress documentation template with a well-organized structure and modern design.
 
+## Deploy
+Deploy with EdgeOne Pages.
+
+[![EdgeOne Pages deploy](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=vitepress-template)
+
 ## Features
 
 - 📚 Well-organized documentation structure

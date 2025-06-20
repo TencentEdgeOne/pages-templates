@@ -2,6 +2,11 @@
 
 一个简洁可定制的 VitePress 文档模板，具有良好的组织结构和现代化设计。
 
+## 部署
+部署到 EdgeOne Pages。
+
+[![EdgeOne Pages deploy](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?template=vitepress-template)
+
 ## 特性
 
 - 📚 结构良好的文档组织
