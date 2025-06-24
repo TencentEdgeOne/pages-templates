@@ -1,0 +1,36 @@
+baseURL = '/'
+languageCode = 'en-us'
+title = 'Hugo Template'
+theme = 'ananke'
+
+# Theme parameters
+[params]
+  featured_image = "/images/gohugo-default-sample-hero-image.jpg"
+  site_logo = ""
+  description = "The last theme you'll ever need"
+  body_classes = "avenir bg-near-white"
+
+# Menu Configuration
+[menu]
+  [[menu.main]]
+    identifier = "home"
+    name = "Home"
+    url = "/"
+    weight = 1
+  [[menu.main]]
+    identifier = "get-start"
+    name = "Get Started"
+    url = "/get-start/"
+    weight = 2
+  [[menu.main]]
+    identifier = "installation"
+    name = "Installation"
+    url = "/get-start/installation/"
+    weight = 3
+
+# Outputs configuration
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML"]
+  term = ["HTML"]
