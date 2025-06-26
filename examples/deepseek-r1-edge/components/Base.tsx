@@ -28,6 +28,26 @@ interface KeywordButton {
   query: string;
 }
 
+interface ModelOption {
+  id: string;
+  name: string;
+}
+
+const MODEL_OPTIONS: ModelOption[] = [
+  {
+    id: '@tx/deepseek-ai/deepseek-r1-distill-qwen-32b',
+    name: 'DeepSeek R1 Distill (32B)'
+  },
+  {
+    id: '@tx/deepseek-ai/deepseek-r1-0528',
+    name: 'DeepSeek R1 (0528)'
+  },
+  {
+    id: '@tx/deepseek-ai/deepseek-v3-0324',
+    name: 'DeepSeek V3 (0324)'
+  }
+];
+
 const ThinkDrawer = ({
   content,
   t,
@@ -89,6 +109,7 @@ export const Base = () => {
   const [isSiteEnv, setIsSiteEnv] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const [selectedModel, setSelectedModel] = useState('@tx/deepseek-ai/deepseek-v3-0324');
 
   useEffect(() => {
     setIsSiteEnv(window.location.href.includes('.site'));
@@ -105,7 +126,7 @@ export const Base = () => {
         '帮助优化快速排序算法的Python代码并分析时间复杂度',
       'Create a comparison table of marketing strategies between TikTok and Instagram Reels':
         '创建抖音和Instagram Reels营销策略的对比表',
-      'DeepSeek R1 on the Edge': 'DeepSeek R1 边缘计算',
+      'DeepSeek 671B on the Edge': 'DeepSeek 671B 边缘计算',
       'EdgeOne AI is transforming user experience and operational efficiency by performing AI computations closer to end-users, ensuring ultra-low latency and consistently high performance.':
         'EdgeOne AI 通过在靠近终端用户的地方执行 AI 计算，提升用户体验和运营效率，确保超低延迟和稳定的高性能。',
       'Available for free on ': '免费使用 ',
@@ -117,6 +138,10 @@ export const Base = () => {
       'Network: Off': '联网: 关闭',
       References: '参考',
       Stop: '停止',
+      'Model': '模型',
+      'DeepSeek R1 Distill (32B)': 'DeepSeek R1 Distill (32B)',
+      'DeepSeek R1 (0528)': 'DeepSeek R1 (0528)',
+      'DeepSeek V3 (0324)': 'DeepSeek V3 (0324)',
     };
     return isSiteEnv ? map[en] || en : en;
   };
@@ -391,6 +416,7 @@ export const Base = () => {
             content: msg.content,
           })),
           network: useNetwork,
+          model: selectedModel,
         }),
         signal, // Attach the signal to the fetch request
       });
@@ -478,7 +504,7 @@ export const Base = () => {
       <div className="flex items-center justify-center min-h-[50vh]">
         <div className="max-w-3xl px-4 mx-auto text-center">
           <h2 className="mb-2 text-2xl font-semibold text-gray-800">
-            {t('DeepSeek R1 on the Edge')}
+            {t('DeepSeek 671B on the Edge')}
           </h2>
           <p className="text-gray-600">
             {t(
@@ -670,7 +696,7 @@ export const Base = () => {
                             const match = /language-(\w+)/.exec(
                               className || ''
                             );
-                            return true ? (
+                            return match ? (
                               <pre className="p-4 overflow-auto bg-white rounded-lg">
                                 <code className={className} {...props}>
                                   {children}
@@ -748,25 +774,46 @@ export const Base = () => {
                   }
                 }}
               />
-              <div className="flex items-center justify-end gap-2 px-4 py-2 bg-gray-50">
-                <button
-                  type="button"
-                  onClick={() => setUseNetwork(!useNetwork)}
-                  className={`flex items-center px-2 py-1.5 rounded-lg text-sm ${
-                    useNetwork
-                      ? 'bg-blue-50 text-blue-600'
-                      : 'bg-gray-100 text-gray-600'
-                  }`}
-                >
-                  <svg
-                    className="w-4 h-4 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
+              <div className="flex items-center justify-between gap-3 px-4 py-2 bg-gray-50">
+                <div className="flex items-center gap-3">
+                  <div className="relative">
+                    <select
+                      value={selectedModel}
+                      onChange={(e) => setSelectedModel(e.target.value)}
+                      className="pl-3 pr-8 py-1.5 text-sm bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 min-w-[180px] appearance-none w-full cursor-pointer"
+                      disabled={isLoading}
+                    >
+                      {MODEL_OPTIONS.map((model) => (
+                        <option key={model.id} value={model.id}>
+                          {t(model.name)}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                      <svg className="w-4 h-4 text-gray-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setUseNetwork(!useNetwork)}
+                    className={`flex items-center px-3 py-1.5 rounded-lg text-sm transition-colors ${
+                      useNetwork
+                        ? 'bg-blue-50 text-blue-600 border border-blue-200'
+                        : 'bg-gray-100 text-gray-600 border border-gray-200'
+                    }`}
                   >
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
-                  </svg>
-                  {useNetwork ? t('Network: On') : t('Network: Off')}
-                </button>
+                    <svg
+                      className="w-4 h-4 mr-1.5"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+                    </svg>
+                    {useNetwork ? t('Network: On') : t('Network: Off')}
+                  </button>
+                </div>
                 <button
                   type={isStreaming ? 'button' : 'submit'}
                   onClick={isStreaming ? handleStopResponse : undefined}
