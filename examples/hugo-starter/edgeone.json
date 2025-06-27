@@ -1,5 +1,0 @@
-{
-  "installCommand": "npm run postinstall && HUGO_BIN_EXTENDED=true npm install --save-dev cross-env",
-  "buildCommand": "npm run build",
-  "outputDirectory": "./public"
-}
