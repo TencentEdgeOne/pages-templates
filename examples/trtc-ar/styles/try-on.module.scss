@@ -1,0 +1,103 @@
+.layout {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 30px 20px;
+  :global(.t-tabs__nav-item-text-wrapper) {
+    font-weight: 700;
+    font-size: 16px;
+    height: 56px;
+  }
+  :global(.t-tabs__nav-item.t-size-m) {
+    height: 56px;
+    line-height: 56px;
+  }
+}
+
+.tryOnDemo {
+  display: flex;
+  justify-content: space-around;
+  gap: 50px;
+  padding-top: 50px;
+
+  .demoShow {
+    position: relative;
+    width: 344px;
+    height: 400px;
+    border-radius: 20px;
+    background-color: black;
+    video {
+      border-radius: 20px;
+      transform: none !important;
+    }
+
+    .handWrapper {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      height: 100%;
+      width: 100%;
+    }
+
+    .tryOnBtn {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 30px;
+      padding: 0 14px;
+      font-weight: 700;
+    }
+  }
+  .demoSelects {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    min-width: 300px;
+    row-gap: 40px;
+    column-gap: 80px;
+    .demoItem {
+      width: 100px;
+      height: 100px;
+      cursor: pointer;
+      background-size: 102%;
+      background-repeat: no-repeat;
+      background-position-x: -1px;
+      border-radius: 50%;
+    }
+    .demoItemSelect {
+      outline: 2px solid #1c66e5;
+    }
+    .lenDemoItem,
+    .ringDemoItem,
+    .noneItem {
+      background-position: center;
+      background-color: rgb(249, 250, 252);
+    }
+    .lenDemoItem,
+    .noneItem {
+      background-size: 50%;
+    }
+    .ringDemoItem {
+      background-size: 60%;
+    }
+  }
+}
+.tabStyle {
+  :global(.t-tabs__nav-item) {
+    font-weight: 700;
+    font-size: 16px;
+    height: 56px;
+    color: rgb(153, 162, 178);
+  }
+  :global(.t-tabs__nav-item.t-is-active) {
+    color: rgb(28, 102, 229);
+    text-shadow: rgb(28, 102, 229) 0px 0px 0.3px;
+  }
+  :global(.t-tabs__nav-item:not(.t-is-disabled):not(.t-is-active):hover .t-tabs__nav-item-wrapper) {
+    background-color: #fff;
+    color: rgb(28, 102, 229);
+    text-shadow: rgb(28, 102, 229) 0px 0px 0.3px;
+  }
+}
