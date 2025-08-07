@@ -4,7 +4,12 @@ This is a template for creating documentation using [Nextra](https://nextra.site
 
 You can use this as a starting template for your own project.
 
+## Deploy
+
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=nextra-docs-template)
+
 ## Installation
+
 ```bash
 npm i
 ```
@@ -12,6 +17,7 @@ npm i
 ## Local Development
 
 ### Starting the Project
+
 ```bash
 npm dev
 ```
@@ -23,6 +29,7 @@ This command starts a local development server and opens a browser window. Then 
 In the Nextra framework, creating new documentation pages is very intuitive. Simply create a new `.mdx` file in the `/pages` directory, and the system will automatically add it to the document structure. The navigation menu will automatically generate corresponding paths and links based on the filename.
 
 **Examples:**
+
 - Creating `/pages/getting-started.mdx` will generate a "Getting Started" entry in the navigation
 - Creating `/pages/advanced/configuration.mdx` will generate a "Configuration" entry under the "Advanced" category
 

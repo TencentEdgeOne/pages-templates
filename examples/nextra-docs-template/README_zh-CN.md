@@ -4,7 +4,12 @@
 
 你可以将它作为自己项目的起始模板。
 
+## 部署
+
+[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?template=nextra-docs-template)
+
 ## 安装
+
 ```bash
 npm i
 ```
@@ -12,6 +17,7 @@ npm i
 ## 本地开发
 
 ### 启动项目
+
 ```bash
 npm dev
 ```
@@ -23,6 +29,7 @@ npm dev
 在 Nextra 框架中，创建新的文档页面非常直观。只需在 `/pages` 目录下创建一个新的 `.mdx` 文件，系统将自动将其添加到文档结构中。导航菜单会根据文件名自动生成相应的路径和链接。
 
 **示例：**
+
 - 创建 `/pages/getting-started.mdx` 将在导航中生成"Getting Started"条目
 - 创建 `/pages/advanced/configuration.mdx` 将在"Advanced"分类下生成"Configuration"条目
 
