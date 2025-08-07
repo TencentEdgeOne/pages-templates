@@ -2,6 +2,10 @@
 
 Building an e-commerce website from scratch can be complex. This template implements a Jamstack architecture e-commerce solution powered by WordPress + WooCommerce backend, the frontend framework is GatsbyJS..
 
+## Deploy
+
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=gatsby-woocommerce-template)
+
 ## WordPress Setup
 ### Docker Deployment(Recommended)
 We provide a [pre-configured docker project](https://github.com/TencentEdgeOne/wp-ecommerce-docker-demo) that can be directly deployed to your server using Docker containers.

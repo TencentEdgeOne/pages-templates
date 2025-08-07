@@ -1,6 +1,10 @@
 # Gatsby Woocommerce Template
 从头开始搭建一个电商网站是很繁琐的，本实例基于 WordPress + WooCommerce 后台，实现 Jamstack 架构的电商网站，前端框架是 GatsbyJS。
 
+## 部署
+
+[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?template=gatsby-woocommerce-template)
+
 ## 准备 WordPress 应用
 ### docker 项目（推荐）
 我们提供了可供直接部署的 [docker 项目](https://github.com/TencentEdgeOne/wp-ecommerce-docker-demo)，可以直接使用 docker 容器部署到您的服务器上。

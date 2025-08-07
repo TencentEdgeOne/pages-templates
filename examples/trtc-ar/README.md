@@ -6,7 +6,7 @@ This template supports Tencent's Web Beauty Filters, allowing you to experience 
 
 ### 1. Deploy to Edgeone Pages and get the project preview link address
 
-[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.tencent.com/edgeone/pages/new?template=trtc-ar)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=trtc-ar)
 
 ![1751509234860](https://raw.githubusercontent.com/clumsy-goose/template-readme-images/main/trtc-ar/1751509234860.png)
 
