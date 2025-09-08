@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { Menu, X, LogOut, User } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { cn, getURL } from '@/lib/utils';
+import { cn } from '@/lib/utils';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -35,7 +35,7 @@ const Navbar = () => {
   };
 
   const handleSignOut = async () => {
-    const res = await fetch(getURL("/auth/signout"), {
+    const res = await fetch("/auth/signout", {
       credentials: "include",
     });
     if (res.status === 200) {

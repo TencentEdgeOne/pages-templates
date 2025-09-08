@@ -9,7 +9,6 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Checkbox } from "@/components/ui/checkbox";
 import { toast } from "sonner";
 import { Mail, Lock, User, ArrowRight } from 'lucide-react';
-import { getURL } from '@/lib/utils';
 
 const Auth = ({mode}) => {
   const navigate = useNavigate();
@@ -33,7 +32,7 @@ const Auth = ({mode}) => {
       const formdata = new FormData();
       formdata.append("email", email);
       formdata.append("password", password);
-      return fetch(getURL(`/auth/signup`), {
+      return fetch(`/auth/signup`, {
         method: "POST",
         body: formdata,
       }).then(async (resp) => {
@@ -54,7 +53,7 @@ const Auth = ({mode}) => {
     const formdata = new FormData();
     formdata.append("email", email);
     formdata.append("password", password);
-    return fetch(getURL(`/auth/login`), {
+    return fetch(`/auth/login`, {
       method: "POST",
       body: formdata,
       credentials: "include",

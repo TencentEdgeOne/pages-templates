@@ -6,7 +6,6 @@ import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell } from '@
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import Navbar from '@/components/Navbar';
 import { toast } from 'sonner';
-import { getURL } from '@/lib/utils';
 
 interface Subscription {
   id: string;
@@ -42,7 +41,7 @@ const AccountPage = () => {
   const fetchSubscriptions = async () => {
     try {
       setLoading(true);
-      fetch(getURL("/auth/subscriptions"), {
+      fetch("/auth/subscriptions", {
         credentials: "include",
       }).then(async (resp) => {
         console.log("resp", resp);

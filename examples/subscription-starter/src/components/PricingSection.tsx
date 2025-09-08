@@ -3,7 +3,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Check, X } from 'lucide-react';
 import { getPrices, supabase } from '@/lib/supabase';
-import { getURL } from '@/lib/utils';
 
 const PricingSection = () => {
   const pricingRef = useRef<HTMLDivElement>(null);
@@ -60,9 +59,9 @@ const PricingSection = () => {
               <p className="text-muted-foreground mb-6">{plan.description}</p>
 
               <a
-                href={getURL(
+                href={
                   `/stripe/checkout?plan=${plan.id}&price=${plan.priceId}`
-                )}
+                }
               >
                 <Button
                   className={`w-full mb-6 ${
