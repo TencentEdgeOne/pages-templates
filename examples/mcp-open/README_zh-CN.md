@@ -77,6 +77,6 @@ EdgeOne Pages 为现代 Web 开发提供全套解决方案:
 
 ## 了解更多
 
-- [EdgeOne Pages 产品介绍](https://edgeone.ai/products/pages)
-- [EdgeOne Pages Functions 开发文档](https://edgeone.ai/document/162227908259442688)
-- [EdgeOne Pages KV 存储指南](https://edgeone.ai/document/162227803822321664)
+- [EdgeOne Pages 产品介绍](https://pages.edgeone.ai/zh/document/product-introduction)
+- [EdgeOne Pages Functions 开发文档](https://pages.edgeone.ai/zh/document/pages-functions-overview)
+- [EdgeOne Pages KV 存储指南](https://pages.edgeone.ai/zh/document/kv-storage)

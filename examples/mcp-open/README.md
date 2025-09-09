@@ -10,10 +10,10 @@ EdgeOne Pages MCP server lets AI coding assistants deploy HTML directly to EdgeO
 
 EdgeOne Pages is perfect for MCP services thanks to its serverless architecture. With code running at edge nodes worldwide, you can:
 
-* Deploy AI-generated HTML instantly
-* Get public URLs with minimal latency
-* Scale automatically as needed
-* Skip the server management headaches
+- Deploy AI-generated HTML instantly
+- Get public URLs with minimal latency
+- Scale automatically as needed
+- Skip the server management headaches
 
 ## Key Features
 
@@ -45,9 +45,9 @@ Here's how to set it up in Cursor:
 
 1. Go to Settings → MCP
 2. Add a new MCP Server with these details:
-   * Name: edgeone-pages-mcp-server
-   * Type: command
-   * Command: npx edgeone-pages-mcp
+   - Name: edgeone-pages-mcp-server
+   - Type: command
+   - Command: npx edgeone-pages-mcp
 
 ![](https://write-document-release-1258344699.cos.ap-guangzhou.myqcloud.com/100026466949%2F3113c4ad09f211f0a6d15254007c27c5.png)
 
@@ -68,12 +68,13 @@ This MCP service plugs into EdgeOne Pages Functions to handle HTML deployment:
 
 1. **EdgeOne Pages Functions** runs your JavaScript/TypeScript at the edge.
 
-2. **Behind the Scenes:** 
+2. **Behind the Scenes:**
+
    - Stores HTML in EdgeOne Pages KV
    - Generates unique public URLs
    - Handles errors gracefully
 
-3. **The Process:** 
+3. **The Process:**
    - Send HTML via the `deploy_html` tool
    - EdgeOne Pages API generates a base URL
    - Content deploys to EdgeOne KV
@@ -95,4 +96,4 @@ Get started by signing up at [EdgeOne Pages](https://edgeone.ai/products/pages) 
 
 ## Learn More
 
-For details, check out the [EdgeOne Pages Functions documentation](https://edgeone.ai/document/162227908259442688) and [EdgeOne Pages KV Storage Guide](https://edgeone.ai/document/162227803822321664).
+For details, check out the [EdgeOne Pages Functions documentation](https://pages.edgeone.ai/document/pages-functions-overview) and [EdgeOne Pages KV Storage Guide](https://pages.edgeone.ai/document/kv-storage).

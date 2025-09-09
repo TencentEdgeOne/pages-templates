@@ -22,7 +22,7 @@ NEXT_PUBLIC_SANITY_DATASET=${your sanity dataset}
 ```
 
 ![](https://cloudcache.tencent-cloud.com/qcloud/ui/static/static_source_business/98699d3e-dacd-4317-b087-e6e3b8265997.png)
-Sanity integration guide:https://edgeone.ai/document/178179132824436736?product=edgedeveloperplatform
+Sanity integration guide: [https://pages.edgeone.ai/document/sanity-integration](https://pages.edgeone.ai/document/sanity-integration)
 
 ## Getting Started
 

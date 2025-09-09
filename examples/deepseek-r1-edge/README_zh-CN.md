@@ -2,7 +2,7 @@
 
 在边缘函数中使用 DeepSeek R1，同时支持网络搜索功能。
 
-搜索功能使用 [searxng](https://github.com/searxng/searxng)，并通过 [EdgeOne Pages 函数](https://edgeone.ai/document/162227908259442688) 进行封装。
+搜索功能使用 [searxng](https://github.com/searxng/searxng)，并通过 [EdgeOne Pages 函数](https://pages.edgeone.ai/zh/document/pages-functions-overview) 进行封装。
 
 部署后获得与 OpenAI 体验一致的接口，能够与其他第三方工具无缝集成。
 
