@@ -62,7 +62,7 @@ Adding products will trigger edge functions to update Supabase data via webhooks
 ## 3. Local Development
 After cloning the project, install [Edgeone Pages Cli](https://www.npmjs.com/package/edgeone).
 Run `edgeone login` to authenticate.
-Then run `edgeone pages link ${your-project-name}` to link local config, which writes env vars to .env.
+Then run `edgeone pages link` to link local config, which writes env vars to .env.
 
 #### Run front end dev server
 `npm run dev`
