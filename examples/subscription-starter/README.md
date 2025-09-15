@@ -64,13 +64,6 @@ After cloning the project, install [Edgeone Pages Cli](https://www.npmjs.com/pac
 Run `edgeone login` to authenticate.
 Then run `edgeone link ${your-project-name}` to link local config, which writes env vars to .env.
 
-#### Configure Dev Environment Variables
-Add these variables in `.env` for cross-origin handling:
-```
-FRONT_END_URL_DEV=http://localhost:8080/
-PUBLIC_API_URL_DEV=http://localhost:8088/
-DEV=true
-```
 #### Run front end dev server
 `npm run dev`
 
