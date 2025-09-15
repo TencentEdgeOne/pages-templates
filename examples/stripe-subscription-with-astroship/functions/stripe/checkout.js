@@ -1,7 +1,6 @@
 
 import { createStripe } from '../libs/stripe';
 import { createSupabaseAdminClient } from '../libs/supabase-admin';
-import { getURL } from '../libs/utils';
 
 
 export async function onRequestGet(context) {
@@ -18,8 +17,8 @@ export async function onRequestGet(context) {
   const sbId = cookies.get("sb-user-id") && cookies.get("sb-user-id").value;
 
   if (!sbId) {
-    const redirectUrl = getURL(env, `stripe/checkout?plan=${plan}&price=${priceId}`);
-    return Response.redirect(getURL(env,`login?redirectUrl=${encodeURIComponent(redirectUrl)}`), 302);
+    const redirectUrl =  `stripe/checkout?plan=${plan}&price=${priceId}`;
+    return Response.redirect(`login?redirectUrl=${encodeURIComponent(redirectUrl)}`, 302);
   }
   try {
     const supabase = createSupabaseAdminClient(env);

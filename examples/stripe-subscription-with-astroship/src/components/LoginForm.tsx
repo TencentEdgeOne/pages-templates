@@ -1,4 +1,3 @@
-import { getURL } from "@utils/all";
 import { useState } from "react";
 export default function LoginForm() {
   const [email, setEmail] = useState<string>("");
@@ -11,7 +10,7 @@ export default function LoginForm() {
     const formdata = new FormData();
     formdata.append("email", email);
     formdata.append("password", password);
-    return fetch(getURL(`/auth/login`), {
+    return fetch(`/auth/login`, {
       method: "POST",
       body: formdata,
       credentials: "include",

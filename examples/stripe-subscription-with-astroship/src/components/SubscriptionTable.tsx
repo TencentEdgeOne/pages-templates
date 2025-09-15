@@ -1,10 +1,9 @@
-import { getURL } from "@utils/all";
 import { useEffect, useState } from "react";
 
 export default function SubscriptionTable() {
   const [subscriptions, setSubscriptions] = useState([]);
   useEffect(() => {
-    fetch(getURL("/auth/subscriptions"), {
+    fetch("/auth/subscriptions", {
       credentials: 'include'
     }).then(async (resp) => {
       console.log("resp", resp);

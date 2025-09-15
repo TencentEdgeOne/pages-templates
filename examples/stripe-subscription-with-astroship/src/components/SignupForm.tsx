@@ -1,4 +1,3 @@
-import { getURL } from "@utils/all";
 import { useState } from "react";
 
 export default function SignupForm() {
@@ -10,7 +9,7 @@ export default function SignupForm() {
     const formdata = new FormData();
     formdata.append("email", email);
     formdata.append("password", password);
-    return fetch(getURL(`/auth/signup`), {
+    return fetch(`/auth/signup`, {
       method: "POST",
       body: formdata,
     }).then(async (resp) => {

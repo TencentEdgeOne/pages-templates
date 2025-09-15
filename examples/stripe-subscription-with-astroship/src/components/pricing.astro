@@ -1,7 +1,6 @@
 ---
 import { Tick } from "@components/ui/icons";
 import Link from "@components/ui/link.astro";
-import { getURL } from "@utils/all";
 
 const { plan } = Astro.props;
 ---
@@ -31,7 +30,7 @@ const { plan } = Astro.props;
       }
     </ul><div class="flex mt-8">
       <Link
-        href={getURL(`/stripe/checkout?plan=${plan.id}&price=${plan.price.id}`)}
+        href={`/stripe/checkout?plan=${plan.id}&price=${plan.price.id}`}
         block
         style={plan.popular ? "primary" : "outline"}>
         {plan?.button?.text || "Get Started"}

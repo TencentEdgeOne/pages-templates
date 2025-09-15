@@ -99,22 +99,9 @@ Copy URL to Contentful's webhooks:
 
 After cloning the project, install [Edgeone Pages Cli](https://www.npmjs.com/package/edgeone).
 Run `edgeone login` to authenticate.
-Then run `edgeone link ${your-project-name}` to link local config, which writes env vars to .env.
+Then run `edgeone pages link` to link local config, which writes env vars to .env.
 
-#### Configure Dev Environment Variables
 
-Add these variables in `.env` for cross-origin handling:
-
-```
-FRONT_END_URL_DEV=http://localhost:4321/
-PUBLIC_API_URL_DEV=http://localhost:8088/
-DEV=true
-```
-
-#### Run front end dev server
-
-`npm run dev`
-
-#### Run function sever
+#### Run dev sever
 
 `edgeone pages dev`

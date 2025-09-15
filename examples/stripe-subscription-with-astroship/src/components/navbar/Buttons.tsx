@@ -1,4 +1,3 @@
-import { getURL } from "@utils/all";
 import { useMemo } from "react";
 
 export default function NavbarButtons({}) {
@@ -6,7 +5,7 @@ export default function NavbarButtons({}) {
     return localStorage.getItem("sb-user-id");
   }, [location]);
   const logOut = async () => {
-    const res = await fetch(getURL("/auth/signout"), {
+    const res = await fetch("/auth/signout", {
       credentials: "include"
     });
     if (res.status === 200) {
