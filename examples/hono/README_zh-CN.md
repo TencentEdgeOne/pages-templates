@@ -242,14 +242,7 @@ curl -X GET https://hono.edgeone.app/john
 npm install
 
 # 启动开发服务器
-npm run dev
-```
-
-### 部署
-
-```bash
-# 部署到 EdgeOne
-npm run deploy
+edgeone pages dev
 ```
 
 ## 🌐 环境变量
