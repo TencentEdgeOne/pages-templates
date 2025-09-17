@@ -74,5 +74,5 @@ After starting, visit [http://localhost:3000](http://localhost:3000) in your bro
 Learn more about related technologies:
 
 - [Next.js Documentation](https://nextjs.org/docs) - Next.js framework features and API
-- [EdgeOne Pages Functions Documentation](https://edgeone.ai/document/162227908259442688s) - Detailed explanation of EdgeOne serverless functions
+- [EdgeOne Pages Functions Documentation](https://pages.edgeone.ai/document/pages-functions-overview) - Detailed explanation of EdgeOne serverless functions
 - [Model Context Protocol (MCP)](https://modelcontextprotocol.io/specification/2025-03-26/changelog) - Implemented based on the 2025-03-26 version of Streamable HTTP transport

@@ -19,7 +19,7 @@ More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 - Step4 Execute the import command: `contentful space import --content-file contentful-blog-model.json --space-id  ${your Contentful space id}`
 - Step5 Copy the Contentful Space Id and Contentful Delivery API token for later use
 
-> For more Contentful integration documentation:https://edgeone.ai/document/178178425272651776
+> For more Contentful integration documentation: [https://pages.edgeone.ai/document/contentful-integration](https://pages.edgeone.ai/document/contentful-integration)
 
 ### Using This Template
 

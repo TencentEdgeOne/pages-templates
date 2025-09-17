@@ -25,7 +25,7 @@ NEXT_PUBLIC_SANITY_DATASET=${你的 sanity 数据集}
 ```
 
 ![](https://cloudcache.tencent-cloud.com/qcloud/ui/static/static_source_business/752893cb-caf0-4414-902a-8380c6ba243a.png)
-Sanity 集成指南：https://edgeone.cloud.tencent.com/pages/document/178968125217869824
+Sanity 集成指南：[https://pages.edgeone.ai/document/sanity-integration](https://pages.edgeone.ai/document/sanity-integration)
 
 ## 本地开发
 

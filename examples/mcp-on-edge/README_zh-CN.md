@@ -76,5 +76,5 @@ npm run dev
 了解更多相关技术：
 
 - [Next.js 文档](https://nextjs.org/docs) - Next.js 框架特性与 API
-- [EdgeOne Pages 函数文档](https://edgeone.ai/document/162227908259442688s) - EdgeOne 无服务器函数详解
+- [EdgeOne Pages 函数文档](https://pages.edgeone.ai/zh/document/pages-functions-overview) - EdgeOne 无服务器函数详解
 - [模型上下文协议 (MCP)](https://modelcontextprotocol.io/specification/2025-03-26/changelog) - 基于 2025-03-26 版本实现的 Streamable HTTP transport

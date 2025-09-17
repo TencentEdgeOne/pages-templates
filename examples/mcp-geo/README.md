@@ -1,4 +1,4 @@
-# MCP with Pages Functions ：Geo Location Demo 
+# MCP with Pages Functions ：Geo Location Demo
 
 This project demonstrates how to use EdgeOne Pages Functions to retrieve user geolocation information and integrate it with large language models through MCP (Model Context Protocol).
 
@@ -18,18 +18,18 @@ More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
 The project includes an EdgeOne Pages Function that retrieves user geolocation information:
 
-* Uses the EdgeOne request context to access geolocation data
-* Returns location information in a JSON format
-* Located in `functions/get_geo.ts`
+- Uses the EdgeOne request context to access geolocation data
+- Returns location information in a JSON format
+- Located in `functions/get_geo.ts`
 
 ### 2. MCP Server Integration
 
 The MCP server component provides an interface for large language models to access geolocation data:
 
-* Implements the Model Context Protocol (MCP)
-* Exposes a `get_geolocation` tool that can be used by AI models
-* Uses the EdgeOne Pages Function to fetch geolocation data
-* Located in `mcp-server/index.ts`
+- Implements the Model Context Protocol (MCP)
+- Exposes a `get_geolocation` tool that can be used by AI models
+- Uses the EdgeOne Pages Function to fetch geolocation data
+- Located in `mcp-server/index.ts`
 
 ## MCP Configuration
 
@@ -48,6 +48,6 @@ To use the MCP server with large language models, add the following configuratio
 
 ## Learn More
 
-* [EdgeOne Pages](https://edgeone.ai/products/pages)
-* [EdgeOne Pages Functions documentation](https://edgeone.ai/document/162227908259442688)
-* [Model Context Protocol (MCP)](https://modelcontextprotocol.github.io) - Learn about integrating AI models with external tools and services
+- [EdgeOne Pages](https://edgeone.ai/products/pages)
+- [EdgeOne Pages Functions documentation](https://pages.edgeone.ai/document/pages-functions-overview)
+- [Model Context Protocol (MCP)](https://modelcontextprotocol.github.io) - Learn about integrating AI models with external tools and services

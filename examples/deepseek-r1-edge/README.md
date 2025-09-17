@@ -2,7 +2,7 @@
 
 Utilize DeepSeek R1 in edge functions with integrated web search capabilities.
 
-The search functionality utilizes [searxng](https://github.com/searxng/searxng) and is encapsulated via [EdgeOne Pages functions](https://edgeone.ai/document/162227908259442688).
+The search functionality utilizes [searxng](https://github.com/searxng/searxng) and is encapsulated via [EdgeOne Pages functions](https://pages.edgeone.ai/document/pages-functions-overview).
 
 After deployment, the interface ensures a consistent experience with OpenAI and seamlessly integrates with other third-party tools.
 
