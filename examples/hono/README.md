@@ -242,15 +242,9 @@ All API endpoints support cross-origin access, response headers include:
 npm install
 
 # Start development server
-npm run dev
+edgeone pages dev
 ```
 
-### Deployment
-
-```bash
-# Deploy to EdgeOne
-npm run deploy
-```
 
 ## 🌐 Environment Variables
 
