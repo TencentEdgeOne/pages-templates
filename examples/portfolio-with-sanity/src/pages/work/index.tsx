@@ -1,9 +1,13 @@
 import Image from 'next/image';
 import PageLayout from '@/components/PageLayout';
 import { Project } from '@/lib/types';
-import { getAllProjects } from '@/lib/markdown';
 import { GetStaticProps } from 'next';
 import React, { useState } from 'react';
+import {  fetchAllProjects, hasSanityClient } from '@/lib/sanity-fetch';
+import { NEXT_REVALIDATE } from '@/conf';
+
+
+
 
 // Define the page props type
 interface WorkPageProps {
@@ -13,12 +17,13 @@ interface WorkPageProps {
 // Use getStaticProps for static data fetching
 export const getStaticProps: GetStaticProps<WorkPageProps> = async () => {
   try {
-    const projects = await getAllProjects();
-    console.log('projects', typeof projects[0].publishedAt);
+    const projects = await fetchAllProjects();
     return {
       props: {
         projects,
-      }
+      },
+      // If Sanity is configured, the ISR is enabled
+      revalidate: hasSanityClient() ? NEXT_REVALIDATE : false
     };
   } catch (error) {
     console.error('Failed to get project list:', error);

@@ -6,7 +6,8 @@
     "dev": "npm run prebuild && next dev",
     "build": "npm run prebuild && next build",
     "prebuild": "tsx scripts/fetch-content.ts",
-    "start": "npm run prebuild && next start",
+    "env": "tsx scripts/env.ts",
+    "start": "npm run env && next start",
     "lint": "next lint"
   },
   "dependencies": {

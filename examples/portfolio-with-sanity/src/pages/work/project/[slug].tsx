@@ -2,9 +2,10 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import PageLayout from '@/components/PageLayout';
 import { ProjectDetail } from '@/lib/types';
-import { getAllProjects, getProjectBySlug } from '@/lib/markdown';
 import Link from 'next/link';
 import { GetStaticProps, GetStaticPaths } from 'next';
+import { fetchAllProjects, fetchProjectBySlug, hasSanityClient } from '@/lib/sanity-fetch';
+import { NEXT_REVALIDATE } from '@/conf';
 
 interface ProjectPageProps {
   projectDetail: ProjectDetail;
@@ -12,21 +13,22 @@ interface ProjectPageProps {
 
 // Generate all possible paths
 export const getStaticPaths: GetStaticPaths = async () => {
+  const fallback = hasSanityClient() ? 'blocking' : false;
   try {
-    const projects = await getAllProjects();
+    const projects = await fetchAllProjects();
     const paths = projects.map((project) => ({
       params: { slug: project.slug },
     }));
 
     return {
       paths,
-      fallback: false
+      fallback,
     };
   } catch (error) {
     console.error('Failed to generate project paths:', error);
     return {
       paths: [],
-      fallback: false
+      fallback,
     };
   }
 };
@@ -40,7 +42,7 @@ export const getStaticProps: GetStaticProps<ProjectPageProps, { slug: string }> 
   }
 
   try {
-    const projectDetail = await getProjectBySlug(params.slug);
+    const projectDetail = await fetchProjectBySlug(params.slug);
     if (!projectDetail) {
       return {
         notFound: true,
@@ -50,7 +52,9 @@ export const getStaticProps: GetStaticProps<ProjectPageProps, { slug: string }> 
     return {
       props: {
         projectDetail,
-      }
+      },
+      // If Sanity is configured, the ISR is enabled
+      revalidate: hasSanityClient() ? NEXT_REVALIDATE : false
     };
   } catch (error) {
     console.error('Failed to get project details:', error);
