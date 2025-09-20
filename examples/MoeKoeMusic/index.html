@@ -1,0 +1,50 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>MoeKoe 萌音</title>
+    <meta name="theme-color" content="#FF91AF">
+    <meta name="description" content="MoeKoe 萌音,一个高颜值的kugou第三方播放器">
+    <meta name="author" content="MoeKoe,阿珏酱">
+    <mata name="url" content="https://MoeJue.cn/">
+    <mata name="keywords" content="MoeKoe,萌音,kugou,第三方播放器,阿珏酱">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.js"></script>
+    <script>
+        const getBrowserLocale = () => {
+            const browserLang = navigator.language;
+            if (browserLang.startsWith('zh')) {
+                if (browserLang === 'zh-TW' || browserLang === 'zh-HK') {
+                    return 'zh-TW';
+                }
+                return 'zh-CN';
+            }
+            const lang = browserLang.split('-')[0];
+            return Object.keys(messages).includes(lang) ? lang : 'ja';
+        };
+        const settings = JSON.parse(localStorage.getItem('settings'));
+        document.documentElement.lang = settings?.language || getBrowserLocale();
+        const font = settings?.font || '';
+        const fontUrl = settings?.fontUrl || '';
+        if (fontUrl && font) {
+            const link = document.createElement('link');
+            link.href = fontUrl;
+            link.rel = 'stylesheet';
+            document.head.appendChild(link);
+            const style = document.createElement('style');
+            style.textContent = `* { font-family: "${font}", Arial, sans-serif; }`;
+            document.head.appendChild(style);
+        }
+    </script>
+</body>
+
+</html>

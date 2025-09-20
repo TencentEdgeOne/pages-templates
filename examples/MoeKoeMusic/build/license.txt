@@ -1,0 +1,22 @@
+MoeKoe Music Software License Agreement
+
+1. Terms of Use
+This software is released under the GPL-2.0 license. You are free to use, modify, and distribute this software, but must comply with all terms of the GPL-2.0 license. This means any modified versions must also be open-sourced under the same license.
+
+2. Disclaimer
+This software is provided "as is" without any express or implied warranties.
+
+3. Copyright Notice
+Copyright 2024 MoeKoe. All rights reserved.
+
+4. Usage Restrictions
+- Prohibited for any illegal purposes
+- Prohibited for commercial use
+
+5. Privacy Policy
+This software collects necessary usage data to improve service quality.
+
+6. Termination
+Any violation of the terms in this agreement will result in automatic termination of the license.
+
+By installing or using this software, you agree to accept all terms of this agreement.
