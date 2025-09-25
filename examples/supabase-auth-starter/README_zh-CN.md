@@ -1,6 +1,6 @@
 # Supabase Auth Starter
 
-此模板是基于 Supabase, React 和 EdgeOne Pages 构建的站点鉴权方案示例。
+此模板是基于 Supabase, Next.js 和 EdgeOne Pages 构建的站点鉴权方案示例。
 
 ## 部署
 
@@ -26,5 +26,3 @@
 安装依赖：`npm install`
 
 本地开发：`npm run dev`
-
-运行函数调试服务：`edgeone pages dev --fePort=5173`

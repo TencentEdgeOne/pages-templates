@@ -1,6 +1,6 @@
 # Supabase Auth Starter
 
-This template is an authentication solution example built with Supabase, React, and EdgeOne Pages.
+This template is an authentication solution example built with Supabase, Next.js, and EdgeOne Pages.
 
 ## Deploy
 
@@ -26,5 +26,3 @@ Click deploy and wait for the deployment to complete.
 Install dependencies: `npm install`
 
 Local development: `npm run dev`
-
-Run function debugging service: `edgeone pages dev --fePort=5173`
