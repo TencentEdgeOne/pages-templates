@@ -1,14 +1,15 @@
+'use client';
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
-import { getURL } from "../lib/utils";
+import { useRouter } from 'next/navigation';
 
-export function SignUp() {
+export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+  const router = useRouter();
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -19,16 +20,18 @@ export function SignUp() {
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
+      formData.append("supabaseUrl", process.env.NEXT_PUBLIC_SUPABASE_URL || '');
+      formData.append("supabaseKey", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '');
       
-      const response = await fetch(getURL("/auth/signup"), {
+      const response = await fetch("/api/auth/signup", {
         method: "POST",
         body: formData,
         credentials: "include",
       });
       
       if (response.status === 200) {
-        // 注册成功，跳转到登录页
-        navigate("/signin");
+        // Registration successful, redirect to login page
+        router.push("/signin");
       } else {
         const data = await response.text();
         setError(data || "Sign up failed");
@@ -96,12 +99,12 @@ export function SignUp() {
 
           <div className="text-center text-sm">
             Already have an account?{" "}
-            <Link to="/signin" className="text-primary hover:underline">
+            <a href="/signin" className="text-primary hover:underline">
               Sign in
-            </Link>
+            </a>
           </div>
         </div>
       </div>
     </>
   );
-} 
+}
