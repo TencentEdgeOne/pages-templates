@@ -1,0 +1,168 @@
+{
+  "name": "moekoemusic",
+  "version": "1.4.7",
+  "main": "electron/main.js",
+  "scripts": {
+    "install-all": "npm install && cd api && npm install",
+    "serve": "vite",
+    "build": "vite build",
+    "build:docker": "cross-env VITE_APP_API_URL=/api vite build",
+    "preview": "vite preview",
+    "electron:serve": "cross-env NODE_ENV=development electron .",
+    "api": "node api/app.js",
+    "dev": "npm run api & npm run serve & npm run electron:serve",
+    "build:api:win": "npm run --prefix ./api pkgwin",
+    "build:api:linux": "npm run --prefix ./api pkglinux",
+    "build:api:macos": "npm run --prefix ./api pkgmacos",
+    "electron:build:win": "run-s build:api:win \"electron:build -- --win --publish never\"",
+    "electron:build:linux": "run-s build:api:linux \"electron:build -- --linux --publish never\"",
+    "electron:build:macos": "run-s build:api:macos \"electron:build -- --mac --universal --publish never\"",
+    "electron:build": "cross-env NODE_ENV=production electron-builder"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "build": {
+    "publish": {
+      "provider": "github",
+      "owner": "iAJue",
+      "repo": "MoeKoeMusic"
+    },
+    "compression": "maximum",
+    "extraResources": [
+      {
+        "from": "build/icons/",
+        "to": "icons/",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "extraFiles": [
+      {
+        "from": "api/bin",
+        "to": "api/",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "public/assets",
+        "to": "assets"
+      }
+    ],
+    "appId": "cn.MoeKoe.Music",
+    "productName": "MoeKoe Music",
+    "copyright": "© 2024 MoeKoe",
+    "directories": {
+      "output": "dist_electron"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "icon": "build/icons/icon",
+    "protocols": [
+      {
+        "name": "MoeKoe Music Protocol",
+        "schemes": [
+          "moekoe"
+        ]
+      }
+    ],
+    "win": {
+      "icon": "build/icons/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "artifactName": "MoeKoe_Music_Setup_v${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": true,
+      "installerIcon": "build/icons/icon.ico",
+      "uninstallerIcon": "build/icons/icon.ico",
+      "installerHeaderIcon": "build/icons/icon.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MoeKoe Music",
+      "include": "build/installer.nsh",
+      "license": "build/license.txt",
+      "language": "2052",
+      "warningsAsErrors": true
+    },
+    "mac": {
+      "x64ArchFiles": "*",
+      "icon": "build/icons/icon.icns",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "identity": null,
+      "artifactName": "${productName}.${ext}",
+      "protocols": [
+        {
+          "name": "MoeKoe Music Protocol",
+          "schemes": [
+            "moekoe"
+          ]
+        }
+      ]
+    },
+    "dmg": {
+      "sign": false
+    },
+    "linux": {
+      "icon": "build/icons/linux_256x256.png",
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "category": "Utility",
+      "artifactName": "${productName}.${ext}"
+    }
+  },
+  "type": "module",
+  "author": {
+    "name": "MoeJue",
+    "email": "MoeJue@qq.com"
+  },
+  "blog": "MoeJue.cn",
+  "license": "MIT",
+  "description": "An open-source KuGou third-party music client",
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.1.4",
+    "@vue/compiler-sfc": "^3.5.12",
+    "cross-env": "^7.0.3",
+    "electron": "^33.0.2",
+    "electron-builder": "^25.1.8",
+    "npm-run-all": "^4.1.5",
+    "vite": "^5.4.10",
+    "vite-plugin-pwa": "^1.0.0",
+    "vue-loader": "^17.3.1",
+    "wait-on": "^8.0.1"
+  },
+  "dependencies": {
+    "electron-is-dev": "^3.0.1",
+    "electron-log": "^5.2.0",
+    "electron-store": "^10.0.0",
+    "electron-updater": "^6.6.2",
+    "element-plus": "^2.8.7",
+    "pinia": "^2.2.4",
+    "pinia-plugin-persistedstate": "^4.1.1",
+    "tree-kill": "^1.2.2",
+    "vue": "^3.5.12",
+    "vue-i18n": "^10.0.4",
+    "vue-router": "^4.4.5",
+    "vue3-virtual-scroller": "^0.2.3",
+    "ws": "^8.18.1"
+  }
+}
