@@ -7,8 +7,8 @@ export async function POST(request) {
     const password = formData.get('password')?.toString();
     const accessToken = formData.get('access_token')?.toString();
     const refreshToken = formData.get('refresh_token')?.toString();
-    const supabaseUrl = formData.get('supabaseUrl')?.toString();
-    const supabaseKey = formData.get('supabaseKey')?.toString();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
     if (!password) {
       return NextResponse.json(

@@ -18,8 +18,6 @@ export async function getServerAuthStateViaAPI() {
     const baseUrl = domain || 'http://localhost:3000';
     const apiUrl = `${baseUrl}/api/auth/user`;
     const formData = new FormData();
-    formData.append('supabaseUrl', process.env.NEXT_PUBLIC_SUPABASE_URL);
-    formData.append('supabaseKey', process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
     
     // Make internal API request
     const response = await fetch(apiUrl, {

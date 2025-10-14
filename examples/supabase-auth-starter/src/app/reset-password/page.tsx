@@ -20,8 +20,6 @@ function RequestPasswordReset() {
       const formData = new FormData();
       formData.append("email", email);
       formData.append("redirectTo", process.env.NEXT_PUBLIC_SITE_URL || '');
-      formData.append("supabaseUrl", process.env.NEXT_PUBLIC_SUPABASE_URL || '');
-      formData.append("supabaseKey", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '');
       
       const response = await fetch("/api/auth/forgot-password", {
         method: "POST",
@@ -148,8 +146,6 @@ export default function ResetPasswordPage() {
       formData.append("password", password);
       formData.append("access_token", accessToken || "");
       formData.append("refresh_token", refreshToken || "");
-      formData.append("supabaseUrl", process.env.NEXT_PUBLIC_SUPABASE_URL || '');
-      formData.append("supabaseKey", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '');
       
       const response = await fetch("/api/auth/reset-password", {
         method: "POST",

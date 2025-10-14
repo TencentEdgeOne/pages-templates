@@ -5,18 +5,14 @@ import { createSupabaseClient } from '../../libs/supabase.js';
 export async function POST(request) {
   try {
     const cookieStore = await cookies();
-    const allCookie = cookieStore.get('all-cookies')?.value;
-    let accessToken = null;
-    let refreshToken = null;
-    let userId = null;
-    if(allCookie) {
-      accessToken = allCookie.split('&&')[0];
-      refreshToken = allCookie.split('&&')[1];
-      userId = allCookie.split('&&')[2];
-    }
+
+    let accessToken = cookieStore.get('access_token')?.value;;
+    let refreshToken = cookieStore.get('refresh_token')?.value;
+    let userId = cookieStore.get('user_id')?.value;
+
     const formData = await request.formData();
-    const supabaseUrl = formData.get('supabaseUrl');
-    const supabaseKey = formData.get('supabaseKey');
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
     // Create response first
     const response = NextResponse.json(
@@ -25,22 +21,9 @@ export async function POST(request) {
     );
 
     // Always clear cookies, even if user is not logged in
-    const cookiesToClear = [
-      'sb-access-token',
-      'sb-refresh-token', 
-      'sb-user-id',
-      'sb-provider-token',
-      'sb-provider-refresh-token',
-      'supabase-auth-token',
-      'supabase.auth.token'
-    ];
-
-    response.cookies.set('all-cookies', '', {
-      path: '/',
-      httpOnly: true,
-      maxAge: 0,
-      expires: new Date(0)
-    });
+    response.cookies.delete('access_token');
+    response.cookies.delete('refresh_token');
+    response.cookies.delete('user_id');
 
     // If we have tokens, try to sign out from Supabase
     if (accessToken && supabaseUrl && supabaseKey) {
@@ -70,6 +53,10 @@ export async function POST(request) {
       { message: 'Signed out successfully' },
       { status: 200 }
     );
+    // Ensure cookies are deleted on error path as well
+    response.cookies.delete('access_token');
+    response.cookies.delete('refresh_token');
+    response.cookies.delete('user_id');
   
     return response;
   }

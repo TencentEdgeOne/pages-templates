@@ -8,12 +8,7 @@ export default function AccountClient() {
 
   const handleSignOut = async () => {
     try {
-      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-      
       const formData = new FormData();
-      formData.append('supabaseUrl', supabaseUrl || '');
-      formData.append('supabaseKey', supabaseKey || '');
       
       // Clear any client-side storage first - comprehensive cleanup
       if (typeof window !== 'undefined') {

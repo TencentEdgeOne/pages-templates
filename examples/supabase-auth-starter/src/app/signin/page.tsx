@@ -19,8 +19,6 @@ export default function SignInPage() {
       const formdata = new FormData();
       formdata.append("email", email);
       formdata.append("password", password);
-      formdata.append("supabaseUrl", process.env.NEXT_PUBLIC_SUPABASE_URL || '');
-      formdata.append("supabaseKey", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '');
       const response = await fetch("/api/auth/signin", {
         method: "POST",
         body: formdata,
