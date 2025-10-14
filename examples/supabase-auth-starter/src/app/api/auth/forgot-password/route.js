@@ -5,8 +5,8 @@ export async function POST(request) {
   try {
     const formData = await request.formData();
     const email = formData.get('email')?.toString();
-    const supabaseUrl = formData.get('supabaseUrl')?.toString();
-    const supabaseKey = formData.get('supabaseKey')?.toString();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
     const redirectTo = formData.get('redirectTo')?.toString();
 
     if (!email) {

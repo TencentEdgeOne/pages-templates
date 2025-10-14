@@ -6,8 +6,8 @@ export async function POST(request) {
     const formData = await request.formData();
     const email = formData.get('email')?.toString();
     const password = formData.get('password')?.toString();
-    const supabaseUrl = formData.get('supabaseUrl')?.toString();
-    const supabaseKey = formData.get('supabaseKey')?.toString();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
     if (!email || !password) {
       return NextResponse.json(
@@ -32,7 +32,9 @@ export async function POST(request) {
     
     const { access_token, refresh_token } = data.session;
 
-    const allCookie = `all-cookies=${access_token}&&${refresh_token}&&${data.user.id}; Path=/; Max-Age=604800; HttpOnly; Secure; SameSite=lax`;
+    const accessTokenCookie = `access_token=${access_token}; Path=/; Max-Age=604800; HttpOnly; Secure; SameSite=lax`;
+    const refreshTokenCookie = `refresh_token=${refresh_token}; Path=/; Max-Age=604800; HttpOnly; Secure; SameSite=lax`;
+    const userIdCookie = `user_id=${data.user.id}; Path=/; Max-Age=604800; HttpOnly; Secure; SameSite=lax`;
     const responseBody = JSON.stringify({
       success: true,
       user: data.user
@@ -41,7 +43,7 @@ export async function POST(request) {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
-        'Set-Cookie': [allCookie]
+        'Set-Cookie': [accessTokenCookie, refreshTokenCookie, userIdCookie]
       }
     });
   } catch (error) {

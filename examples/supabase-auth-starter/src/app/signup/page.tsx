@@ -20,8 +20,6 @@ export default function SignUpPage() {
       const formData = new FormData();
       formData.append("email", email);
       formData.append("password", password);
-      formData.append("supabaseUrl", process.env.NEXT_PUBLIC_SUPABASE_URL || '');
-      formData.append("supabaseKey", process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '');
       
       const response = await fetch("/api/auth/signup", {
         method: "POST",

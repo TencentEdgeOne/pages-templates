@@ -7,8 +7,8 @@ export async function POST(request) {
     const formData = await request.formData();
     const email = formData.get('email')?.toString();
     const password = formData.get('password')?.toString();
-    const supabaseUrl = formData.get('supabaseUrl')?.toString();
-    const supabaseKey = formData.get('supabaseKey')?.toString();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password are required' },

@@ -24,36 +24,13 @@ async function getAuthState(options = {}) {
   try {
     // Get cookies with UTF-8 validation
     const cookieStore = await cookies();
-    const allCookie = cookieStore.get('all-cookies')?.value;
-    let accessToken = null;
-    let refreshToken = null;
-    let userId = null;
+    let accessToken = cookieStore.get('access_token')?.value;
+    let refreshToken = cookieStore.get('refresh_token')?.value;
+    let userId = cookieStore.get('user_id')?.value;
     
-    if(allCookie) {
-      try {
-        // Validate UTF-8 encoding
-        const decodedCookie = decodeURIComponent(allCookie);
-        const parts = decodedCookie.split('&&');
-        
-        if (parts.length >= 3) {
-          accessToken = parts[0];
-          refreshToken = parts[1];
-          userId = parts[2];
-          
-          // Additional validation - check if tokens are valid base64/JWT format
-        
-        }
-      } catch (cookieError) {
-        console.log('Cookie parsing error (possibly invalid UTF-8):', cookieError.message);
-        // Clear invalid cookies by setting them to null
-        accessToken = null;
-        refreshToken = null;
-        userId = null;
-      }
-    }
-
-    const supabaseUrl = data.supabaseUrl;
-    const supabaseKey = data.supabaseKey;
+    
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
     if (!accessToken) {
       const error = 'No access token found';
