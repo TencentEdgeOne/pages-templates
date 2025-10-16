@@ -2,7 +2,7 @@
 
 This is a modern Web application built on the [Hono](https://hono.dev/) framework, deployed on the EdgeOne Pages platform.
 
-Live demo: https://hono.edgeone.app
+Live demo: https://hono-template.edgeone.app
 
 ## Deploy
 
