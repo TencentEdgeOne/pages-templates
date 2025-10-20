@@ -1,8 +1,9 @@
+const { i18n } = require('./next-i18next.config')
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    serverActions: true,
-  },
+  i18n,
+
   images: {
     domains: ['your-bucket.s3.amazonaws.com'],
   },

@@ -13,11 +13,17 @@
     "@aws-sdk/client-s3": "^3.913.0",
     "@aws-sdk/s3-presigned-post": "^3.913.0",
     "@aws-sdk/s3-request-presigner": "^3.454.0",
+    "@types/formidable": "^3.4.6",
     "@types/uuid": "^10.0.0",
+    "formidable": "^3.5.4",
+    "i18next": "^25.6.0",
     "lucide-react": "^0.292.0",
     "next": "14.0.3",
+    "next-i18next": "^15.4.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.3.8",
+    "react-i18next": "^16.1.0",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
