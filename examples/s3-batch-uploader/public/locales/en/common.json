@@ -134,7 +134,7 @@
   "maxFilesLimit": "Max files: {count}",
   "supportedFormats": "Supported formats: {formats}",
   
-  "uploadConfig": "Upload Configuration",
+
   "bucketName": "Bucket Name",
   "region": "Region",
   "prefix": "File Prefix",
