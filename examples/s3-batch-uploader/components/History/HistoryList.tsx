@@ -282,7 +282,7 @@ export default function HistoryList({
                     <span>{formatFileSize(item.fileSize)}</span>
                     <span>{formatDate(item.uploadTime)}</span>
                     <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
-                      已上传
+                      {t('uploaded')}
                     </span>
                   </div>
                 </div>
@@ -295,26 +295,28 @@ export default function HistoryList({
                     rel="noopener noreferrer"
                     className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
                     onClick={(e) => e.stopPropagation()}
-                    title="查看文件"
+                    title={t('viewFile')}
                   >
                     <Eye className="w-4 h-4" />
                   </a>
-                  <a
-                    href={item.s3Url}
-                    download={item.fileName}
+                  <button
+                    onClick={(e) => handleCopyUrl(item, e)}
                     className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-md transition-colors"
-                    onClick={(e) => e.stopPropagation()}
-                    title="下载文件"
+                    title={t('copyLink')}
                   >
-                    <Download className="w-4 h-4" />
-                  </a>
+                    {copiedId === item.id ? (
+                      <Check className="w-4 h-4 text-green-600" />
+                    ) : (
+                      <Copy className="w-4 h-4" />
+                    )}
+                  </button>
                   <button
                     onClick={(e) => {
                       e.stopPropagation()
                       onDelete(item.id)
                     }}
                     className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
-                    title="删除文件"
+                    title={t('deleteFile')}
                   >
                     <Trash2 className="w-4 h-4" />
                   </button>

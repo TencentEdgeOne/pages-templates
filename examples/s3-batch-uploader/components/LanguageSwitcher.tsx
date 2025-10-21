@@ -24,7 +24,7 @@ export default function LanguageSwitcher() {
               : 'bg-white text-gray-700 hover:bg-gray-50'
           }`}
         >
-          中文
+          {t('languages.zh', { defaultValue: '中文' })}
         </button>
         <button
           onClick={() => switchLanguage('en')}
@@ -34,7 +34,7 @@ export default function LanguageSwitcher() {
               : 'bg-white text-gray-700 hover:bg-gray-50'
           }`}
         >
-          English
+          {t('languages.en', { defaultValue: 'English' })}
         </button>
       </div>
     </div>

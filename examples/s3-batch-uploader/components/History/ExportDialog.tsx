@@ -5,6 +5,7 @@ import { X, Download } from 'lucide-react'
 import { Button } from '../UI/Button'
 import { Modal } from '../UI/Modal'
 import { HistoryItem } from '../../types/upload'
+import { useTranslation } from 'next-i18next'
 
 interface ExportDialogProps {
   isOpen: boolean
@@ -13,18 +14,19 @@ interface ExportDialogProps {
   selectedCount?: number
 }
 
-export type ExportFormat = 'csv' | 'excel'
+export type ExportFormat = 'csv' | 'json'
 
 export function ExportDialog({ isOpen, onClose, items, selectedCount = 0 }: ExportDialogProps) {
+  const { t } = useTranslation('common')
   const [exportFormat, setExportFormat] = useState<ExportFormat>('csv')
 
   const handleExport = () => {
     if (items.length === 0) {
-      alert('没有可导出的数据')
+      alert(t('noFilesFound'))
       return
     }
 
-    const headers = ['文件名', '文件大小', '文件类型', '上传时间', 'S3地址']
+    const headers = [t('fileName'), t('fileSize'), t('fileType'), t('uploadTime'), t('s3Url')]
     const data = items.map(item => [
       item.fileName,
       formatFileSize(item.fileSize),
@@ -36,7 +38,7 @@ export function ExportDialog({ isOpen, onClose, items, selectedCount = 0 }: Expo
     if (exportFormat === 'csv') {
       exportToCSV(headers, data)
     } else {
-      exportToExcel(headers, data)
+      exportToJSON(headers, data)
     }
 
     onClose()
@@ -52,7 +54,7 @@ export function ExportDialog({ isOpen, onClose, items, selectedCount = 0 }: Expo
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
-    return date.toLocaleString('zh-CN', {
+    return date.toLocaleString(undefined, {
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
@@ -73,26 +75,30 @@ export function ExportDialog({ isOpen, onClose, items, selectedCount = 0 }: Expo
     const link = document.createElement('a')
     const url = URL.createObjectURL(blob)
     link.setAttribute('href', url)
-    link.setAttribute('download', `文件导出记录_${new Date().toISOString().split('T')[0]}.csv`)
+    link.setAttribute('download', `${t('exportDialog')}_${new Date().toISOString().split('T')[0]}.csv`)
     link.style.visibility = 'hidden'
     document.body.appendChild(link)
     link.click()
     document.body.removeChild(link)
   }
 
-  const exportToExcel = (headers: string[], data: string[][]) => {
-    // 简单的 Excel 导出（实际上是 CSV 格式，但使用 .xls 扩展名）
-    const csvContent = [
-      headers.join('\t'),
-      ...data.map(row => row.join('\t'))
-    ].join('\n')
-
-    const BOM = '\uFEFF'
-    const blob = new Blob([BOM + csvContent], { type: 'application/vnd.ms-excel;charset=utf-8;' })
+  const exportToJSON = (headers: string[], data: string[][]) => {
+    const json = JSON.stringify(
+      data.map(row => ({
+        [headers[0]]: row[0],
+        [headers[1]]: row[1],
+        [headers[2]]: row[2],
+        [headers[3]]: row[3],
+        [headers[4]]: row[4],
+      })),
+      null,
+      2
+    )
+    const blob = new Blob([json], { type: 'application/json;charset=utf-8;' })
     const link = document.createElement('a')
     const url = URL.createObjectURL(blob)
     link.setAttribute('href', url)
-    link.setAttribute('download', `文件导出记录_${new Date().toISOString().split('T')[0]}.xls`)
+    link.setAttribute('download', `${t('exportDialog')}_${new Date().toISOString().split('T')[0]}.json`)
     link.style.visibility = 'hidden'
     document.body.appendChild(link)
     link.click()
@@ -100,17 +106,14 @@ export function ExportDialog({ isOpen, onClose, items, selectedCount = 0 }: Expo
   }
 
   const getExportTitle = () => {
-    if (selectedCount > 0) {
-      return `导出选中的文件记录 (${selectedCount} 个文件)`
-    }
-    return `导出所有文件记录 (${items.length} 个文件)`
+    return t('exportDialog')
   }
 
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title="导出文件记录"
+      title={t('exportDialog')}
       size="md"
     >
       <div className="space-y-6">
@@ -121,8 +124,8 @@ export function ExportDialog({ isOpen, onClose, items, selectedCount = 0 }: Expo
           </h3>
           <p className="text-blue-700 text-sm">
             {selectedCount > 0 
-              ? '将导出您选中的文件信息，包括文件名、大小、类型、上传时间和S3地址。'
-              : '将导出所有文件信息，包括文件名、大小、类型、上传时间和S3地址。'
+              ? t('selectedFilesOnly')
+              : t('allFiles')
             }
           </p>
         </div>
@@ -130,7 +133,7 @@ export function ExportDialog({ isOpen, onClose, items, selectedCount = 0 }: Expo
         {/* Export Format */}
         <div className="space-y-4">
           <div>
-            <label className="text-base font-medium text-gray-700 block mb-4">选择导出格式</label>
+            <label className="text-base font-medium text-gray-700 block mb-4">{t('exportFormat')}</label>
             <div className="space-y-3">
               <label className="flex items-center space-x-4 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition-colors">
                 <input
@@ -142,22 +145,22 @@ export function ExportDialog({ isOpen, onClose, items, selectedCount = 0 }: Expo
                   className="w-5 h-5 text-blue-600 focus:ring-blue-500"
                 />
                 <div className="flex-1">
-                  <span className="text-base text-gray-900 font-medium">CSV 格式</span>
-                  <p className="text-sm text-gray-500 mt-1">适用于 Excel、Google Sheets 等表格软件</p>
+                  <span className="text-base text-gray-900 font-medium">{t('csvFormat')}</span>
+                  <p className="text-sm text-gray-500 mt-1"></p>
                 </div>
               </label>
               <label className="flex items-center space-x-4 cursor-pointer p-3 rounded-lg hover:bg-gray-50 transition-colors">
                 <input
                   type="radio"
                   name="format"
-                  value="excel"
-                  checked={exportFormat === 'excel'}
+                  value="json"
+                  checked={exportFormat === 'json'}
                   onChange={(e) => setExportFormat(e.target.value as ExportFormat)}
                   className="w-5 h-5 text-blue-600 focus:ring-blue-500"
                 />
                 <div className="flex-1">
-                  <span className="text-base text-gray-900 font-medium">Excel 格式</span>
-                  <p className="text-sm text-gray-500 mt-1">直接在 Microsoft Excel 中打开</p>
+                  <span className="text-base text-gray-900 font-medium">{t('jsonFormat')}</span>
+                  <p className="text-sm text-gray-500 mt-1"></p>
                 </div>
               </label>
             </div>
@@ -170,14 +173,14 @@ export function ExportDialog({ isOpen, onClose, items, selectedCount = 0 }: Expo
             variant="ghost"
             onClick={onClose}
           >
-            取消
+            {t('cancel')}
           </Button>
           <Button
             onClick={handleExport}
             disabled={items.length === 0}
           >
             <Download className="w-4 h-4 mr-2" />
-            开始导出
+            {t('export')}
           </Button>
         </div>
       </div>
