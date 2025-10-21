@@ -105,3 +105,7 @@ export async function onRequestDelete({ request } ) {
     return json({ errorCode: 500, message }, 500)
   }
 }
+
+export async function onRequestPost() {
+    return json({ ok: true }, 200)
+}

@@ -1,63 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>S3 Batch Uploader</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f9fafb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-        .container {
-            text-align: center;
-        }
-        .spinner {
-            width: 32px;
-            height: 32px;
-            border: 2px solid #e5e7eb;
-            border-top: 2px solid #2563eb;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 16px;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .text {
-            color: #6b7280;
-            font-size: 14px;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="spinner"></div>
-        <p class="text">Redirecting... / 正在跳转...</p>
-    </div>
-    
-    <script>
-        // 检测浏览器语言偏好并重定向
-        function redirect() {
-            const browserLang = navigator.language.toLowerCase();
-            const isZh = browserLang.startsWith('zh');
-            
-            if (isZh) {
-                window.location.href = '/zh.html';
-            } else {
-                window.location.href = '/en.html';
+<html>
+    <body>
+        <script>
+            {
+                window.location.href = "/zh"
             }
-        }
-        
-        // 立即执行重定向
-        redirect();
-    </script>
-</body>
+        </script>
+    </body>
 </html>
