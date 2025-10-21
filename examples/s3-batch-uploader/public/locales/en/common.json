@@ -63,7 +63,7 @@
   "selectedCount": "Selected {{count}} files, total {{size}}",
   "startUploadCount": "Start Upload {{count}}",
   "completedFiles": "Completed Files {{count}}",
-  "totalSize": "Total Size: {size}",
+  "totalSize": "Total Size: {{size}}",
   "uploadStatistics": "Upload Statistics",
   "totalFiles": "Total Files",
   "selected": "Selected",

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Search, Filter, Download, Trash2, RefreshCw, AlertCircle } from 'lucide-react'
+import { Search, Filter, Download, Trash2, RefreshCw, AlertCircle, ChevronDown } from 'lucide-react'
 import HistoryList from '../components/History/HistoryList'
 import { ExportDialog } from '../components/History/ExportDialog'
 import { Button } from '../components/UI/Button'
@@ -129,7 +129,7 @@ function HistoryPage() {
               variant="secondary"
               onClick={handleRefresh}
               disabled={loading}
-              className="hidden sm:flex"
+              className="hidden lg:flex"
             >
               <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
               {t('refreshData')}
@@ -138,7 +138,7 @@ function HistoryPage() {
               variant="secondary"
               onClick={handleRefresh}
               disabled={loading}
-              className="sm:hidden"
+              className="lg:hidden"
               size="sm"
             >
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
@@ -148,7 +148,7 @@ function HistoryPage() {
               variant="primary"
               onClick={handleExport}
               disabled={items.length === 0 || loading}
-              className="hidden sm:flex"
+              className="hidden lg:flex"
             >
               <Download className="w-4 h-4 mr-2" />
               {t('exportRecords')}
@@ -157,7 +157,7 @@ function HistoryPage() {
               variant="primary"
               onClick={handleExport}
               disabled={items.length === 0 || loading}
-              className="sm:hidden"
+              className="lg:hidden"
               size="sm"
             >
               <Download className="w-4 h-4" />
@@ -226,33 +226,39 @@ function HistoryPage() {
 
           <div className="flex items-center space-x-4">
             {/* Filter by type */}
-            <select
-              value={filterType}
-              onChange={(e) => setFilterType(e.target.value as 'all' | 'image' | 'video')}
-              className="clean-input px-4 py-3 text-base min-w-[120px]"
-            >
-              <option value="all">{t('allTypes')}</option>
-              <option value="image">{t('image')}</option>
-              <option value="video">{t('video')}</option>
-            </select>
+            <div className="relative">
+              <select
+                value={filterType}
+                onChange={(e) => setFilterType(e.target.value as 'all' | 'image' | 'video')}
+                className="clean-input appearance-none px-4 py-3 text-base min-w-[120px] pr-10"
+              >
+                <option value="all">{t('allTypes')}</option>
+                <option value="image">{t('image')}</option>
+                <option value="video">{t('video')}</option>
+              </select>
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+            </div>
 
             {/* Sort */}
-            <select
-              value={`${sortBy}-${sortOrder}`}
-              onChange={(e) => {
-                const [by, order] = e.target.value.split('-')
-                setSortBy(by as 'date' | 'name' | 'size')
-                setSortOrder(order as 'asc' | 'desc')
-              }}
-              className="clean-input px-4 py-3 text-base min-w-[140px]"
-            >
-              <option value="date-desc">{t('latestUpload')}</option>
-              <option value="date-asc">{t('earliestUpload')}</option>
-              <option value="name-asc">{t('fileNameAZ')}</option>
-              <option value="name-desc">{t('fileNameZA')}</option>
-              <option value="size-desc">{t('fileSizeLargeSmall')}</option>
-              <option value="size-asc">{t('fileSizeSmallLarge')}</option>
-            </select>
+            <div className="relative">
+              <select
+                value={`${sortBy}-${sortOrder}`}
+                onChange={(e) => {
+                  const [by, order] = e.target.value.split('-')
+                  setSortBy(by as 'date' | 'name' | 'size')
+                  setSortOrder(order as 'asc' | 'desc')
+                }}
+                className="clean-input appearance-none px-4 py-3 text-base min-w-[140px] pr-10"
+              >
+                <option value="date-desc">{t('latestUpload')}</option>
+                <option value="date-asc">{t('earliestUpload')}</option>
+                <option value="name-asc">{t('fileNameAZ')}</option>
+                <option value="name-desc">{t('fileNameZA')}</option>
+                <option value="size-desc">{t('fileSizeLargeSmall')}</option>
+                <option value="size-asc">{t('fileSizeSmallLarge')}</option>
+              </select>
+              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
+            </div>
           </div>
         </div>
 

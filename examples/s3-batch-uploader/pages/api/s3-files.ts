@@ -1,3 +1,5 @@
+// 本地api接口， 获取s3文件列表，删除文件
+// 优先使用 EdgeOne Node Functions，404 时回退到本地 API
 import { NextApiRequest, NextApiResponse } from 'next'
 import { S3Client, ListObjectsV2Command, HeadObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 

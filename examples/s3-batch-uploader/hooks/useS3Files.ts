@@ -27,16 +27,23 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
       setLoading(true)
       setError(null)
 
-      const params = new URLSearchParams({
-        prefix,
-        maxKeys: maxKeys.toString(),
-      })
+      const params = new URLSearchParams()
+      params.set('prefix', prefix)
+      // 同时提供两种参数，Edge 用 pageSize，本地 API 用 maxKeys
+      params.set('pageSize', maxKeys.toString())
+      params.set('maxKeys', maxKeys.toString())
 
       if (continuationToken) {
         params.append('continuationToken', continuationToken)
       }
 
-      const response = await fetch(`/api/s3-files?${params}`)
+      // 优先同源 EdgeOne Node Functions，404 时回退到本地 API
+      const edgeUrl = `/s3-files?${params.toString()}`
+      let response = await fetch(edgeUrl)
+      if (!response.ok && response.status === 404) {
+        const localUrl = `/api/s3-files?${params.toString()}`
+        response = await fetch(localUrl)
+      }
       
       if (!response.ok) {
         let errorMessage = 'Failed to fetch S3 files'
@@ -83,9 +90,13 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
 
   const deleteFile = useCallback(async (s3Key: string) => {
     try {
-      const response = await fetch(`/api/s3-files?key=${encodeURIComponent(s3Key)}`, {
-        method: 'DELETE',
-      })
+      // 优先同源 EdgeOne Node Functions，404 时回退到本地 API
+      const edgeDel = `/s3-files?key=${encodeURIComponent(s3Key)}`
+      let response = await fetch(edgeDel, { method: 'DELETE' })
+      if (!response.ok && response.status === 404) {
+        const localDel = `/api/s3-files?key=${encodeURIComponent(s3Key)}`
+        response = await fetch(localDel, { method: 'DELETE' })
+      }
 
       if (!response.ok) {
         let errorMessage = 'Failed to delete file'

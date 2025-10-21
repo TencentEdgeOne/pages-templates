@@ -37,3 +37,9 @@ next-env.d.ts
 
 # Turborepo
 .turbo
+# Tencent Cloud EdgeOne
+.env
+.edgeone/*
+!.edgeone/project.json
+.tef_dist/*
+  

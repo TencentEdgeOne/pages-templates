@@ -8,7 +8,7 @@ interface MainLayoutProps {
 
 export default function MainLayout({ children }: MainLayoutProps) {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 min-w-[1000px]">
       <div className="flex h-screen">
         {/* 侧边栏 */}
         <div className="w-64 flex-shrink-0 bg-white border-r border-gray-200">

@@ -61,7 +61,7 @@ function UploadPage() {
   }
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div className="p-6 max-w-7xl min-w-[1000px] mx-auto">
       {/* Header */}
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-gray-900 mb-2">{t('fileUpload')}</h1>
@@ -130,7 +130,7 @@ function UploadPage() {
                       loading={isUploading}
                     >
                       <UploadIcon className="w-4 h-4 mr-2" />
-                      {t('startUploadCount', { count: selectedFiles.length })}
+                      {t('startUpload')}
                     </Button>
                   </div>
                 </div>
