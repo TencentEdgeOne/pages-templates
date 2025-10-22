@@ -21,7 +21,11 @@
     "concurrentUploads": "Concurrent Uploads",
     "filesUnit": "files",
     "uploadMethod": "Upload Method",
-    "uploadMethodDescription": "Direct upload to S3 using pre-signed URLs, secure and efficient with resume support"
+    "uploadMethodDescription": "Direct upload to S3 using pre-signed URLs, secure and efficient with resume support",
+    "systemLimits": "System Limits",
+    "maxFileSizeLimit": "Max File Size Limit",
+    "maxFilesLimit": "Max Files Limit",
+    "maxConcurrentLimit": "Max Concurrent Upload Limit"
   },
   "selectFiles": "Select Files",
   "dragDrop": "Drag and drop files here or click to select",

@@ -1,4 +1,5 @@
 import { UploadFile, UploadProgress } from '../types/upload'
+import { UPLOAD_CONFIG, isFileTypeAllowed, isFileSizeValid, formatFileSize as configFormatFileSize } from '../config/upload.js'
 
 export const formatFileSize = (bytes: number): string => {
   if (bytes === 0) return '0 Bytes'
@@ -96,23 +97,16 @@ export const generateFilePreview = (file: File): Promise<string> => {
   })
 }
 
-export const validateFile = (file: File, maxSize: number): string | null => {
-  if (file.size > maxSize) {
-    return `文件大小超过限制 (${formatFileSize(maxSize)})`
+export const validateFile = (file: File, maxSize?: number): string | null => {
+  // 使用配置文件中的最大文件大小，如果没有传入参数的话
+  const maxFileSize = maxSize || UPLOAD_CONFIG.MAX_FILE_SIZE
+  
+  if (!isFileSizeValid(file.size)) {
+    return `文件大小超过限制 (${configFormatFileSize(maxFileSize)})`
   }
   
-  const allowedTypes = [
-    'image/jpeg',
-    'image/png',
-    'image/gif',
-    'image/webp',
-    'video/mp4',
-    'video/webm',
-    'video/quicktime',
-  ]
-  
-  if (!allowedTypes.includes(file.type)) {
-    return '不支持的文件类型'
+  if (!isFileTypeAllowed(file.type)) {
+    return `不支持的文件类型: ${file.type}`
   }
   
   return null

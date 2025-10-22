@@ -1,4 +1,5 @@
 import { HistoryItem, UploadConfig } from '../types/upload'
+import { UPLOAD_CONFIG } from '../config/upload.js'
 
 const STORAGE_KEYS = {
   UPLOAD_HISTORY: 'upload_history',
@@ -41,26 +42,38 @@ export const removeFromUploadHistory = (id: string): void => {
 
 export const getUploadConfig = (): UploadConfig => {
   if (typeof window === 'undefined') {
+    // Server-side default - 使用配置文件中的值
     return {
-      maxFileSize: 104857600, // 100MB
-      maxFiles: 20,
-      concurrentUploads: 3,
+      maxFileSize: UPLOAD_CONFIG.MAX_FILE_SIZE,
+      maxFiles: UPLOAD_CONFIG.MAX_FILES,
+      concurrentUploads: UPLOAD_CONFIG.CONCURRENT_UPLOADS,
     }
   }
   
   try {
     const config = localStorage.getItem(STORAGE_KEYS.UPLOAD_CONFIG)
-    return config ? JSON.parse(config) : {
-      maxFileSize: 104857600, // 100MB
-      maxFiles: 20,
-      concurrentUploads: 3,
+    if (config) {
+      const parsedConfig = JSON.parse(config)
+      // 确保保存的配置不超过系统限制
+      return {
+        maxFileSize: Math.min(parsedConfig.maxFileSize || UPLOAD_CONFIG.MAX_FILE_SIZE, UPLOAD_CONFIG.MAX_FILE_SIZE),
+        maxFiles: Math.min(parsedConfig.maxFiles || UPLOAD_CONFIG.MAX_FILES, UPLOAD_CONFIG.MAX_FILES),
+        concurrentUploads: Math.min(parsedConfig.concurrentUploads || UPLOAD_CONFIG.CONCURRENT_UPLOADS, UPLOAD_CONFIG.CONCURRENT_UPLOADS),
+      }
+    }
+    
+    // Default config - 使用配置文件中的值
+    return {
+      maxFileSize: UPLOAD_CONFIG.MAX_FILE_SIZE,
+      maxFiles: UPLOAD_CONFIG.MAX_FILES,
+      concurrentUploads: UPLOAD_CONFIG.CONCURRENT_UPLOADS,
     }
   } catch (error) {
     console.error('Error reading upload config:', error)
     return {
-      maxFileSize: 104857600, // 100MB
-      maxFiles: 20,
-      concurrentUploads: 3,
+      maxFileSize: UPLOAD_CONFIG.MAX_FILE_SIZE,
+      maxFiles: UPLOAD_CONFIG.MAX_FILES,
+      concurrentUploads: UPLOAD_CONFIG.CONCURRENT_UPLOADS,
     }
   }
 }

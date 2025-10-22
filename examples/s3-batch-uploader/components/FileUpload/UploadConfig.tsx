@@ -4,6 +4,7 @@ import { Settings } from 'lucide-react'
 import { useTranslation } from 'next-i18next'
 import { UploadConfig } from '../../types/upload'
 import { formatFileSize } from '../../lib/upload-utils'
+import { UPLOAD_CONFIG, formatFileSize as configFormatFileSize } from '../../config/upload.js'
 
 interface UploadConfigProps {
   config: UploadConfig
@@ -34,8 +35,23 @@ export function UploadConfigComponent({ config, onConfigChange }: UploadConfigPr
           </div>
         </div>
 
-        {/* Upload Method Info */}
+        {/* System Limits Info */}
         <div className="pt-3 border-t border-gray-200">
+          <div className="bg-gradient-to-r from-gray-50 to-slate-50 border border-gray-200 rounded-lg p-4">
+            <div className="flex items-center space-x-2 mb-2">
+              <Settings className="w-4 h-4 text-gray-600" />
+              <div className="font-semibold text-gray-800">{t('uploadConfig.systemLimits')}</div>
+            </div>
+            <div className="text-sm text-gray-600 space-y-1">
+              <div>{t('uploadConfig.maxFileSizeLimit')}: {configFormatFileSize(UPLOAD_CONFIG.MAX_FILE_SIZE)}</div>
+              <div>{t('uploadConfig.maxFilesLimit')}: {UPLOAD_CONFIG.MAX_FILES} {t('uploadConfig.filesUnit')}</div>
+              <div>{t('uploadConfig.maxConcurrentLimit')}: {UPLOAD_CONFIG.CONCURRENT_UPLOADS} {t('uploadConfig.filesUnit')}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Upload Method Info */}
+        <div className="pt-3">
           <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-center space-x-2 mb-2">
               <div className="w-4 h-4 bg-blue-600 rounded-full"></div>

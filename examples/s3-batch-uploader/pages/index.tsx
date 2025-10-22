@@ -10,7 +10,11 @@ export default function Home() {
 
   useEffect(() => {
     // 自动重定向到 /upload 页面
-    router.replace('/upload')
+    if (window.location.pathname === '/upload' || window.location.pathname === '/') {
+        router.replace('/zh/upload')
+    } else if (window.location.pathname === '/history') {
+        router.replace('/zh/history')
+    }
   }, [router])
 
   return (
