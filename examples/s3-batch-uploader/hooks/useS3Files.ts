@@ -37,13 +37,8 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
         params.append('continuationToken', continuationToken)
       }
 
-      // 优先同源 EdgeOne Node Functions，404 时回退到本地 API
-      const edgeUrl = `/s3-files?${params.toString()}`
-      let response = await fetch(edgeUrl)
-      if (!response.ok && response.status === 404) {
-        const localUrl = `/api/s3-files?${params.toString()}`
-        response = await fetch(localUrl)
-      }
+      const localUrl = `/api/s3-files?${params.toString()}`
+      const response = await fetch(localUrl)
       
       if (!response.ok) {
         let errorMessage = 'Failed to fetch S3 files'
@@ -90,13 +85,8 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
 
   const deleteFile = useCallback(async (s3Key: string) => {
     try {
-      // 优先同源 EdgeOne Node Functions，404 时回退到本地 API
-      const edgeDel = `/s3-files?key=${encodeURIComponent(s3Key)}`
-      let response = await fetch(edgeDel, { method: 'DELETE' })
-      if (!response.ok && response.status === 404) {
-        const localDel = `/api/s3-files?key=${encodeURIComponent(s3Key)}`
-        response = await fetch(localDel, { method: 'DELETE' })
-      }
+      const localDel = `/api/s3-files?key=${encodeURIComponent(s3Key)}`
+      const  response = await fetch(localDel, { method: 'DELETE' })
 
       if (!response.ok) {
         let errorMessage = 'Failed to delete file'

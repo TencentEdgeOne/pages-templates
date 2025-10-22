@@ -1,6 +1,6 @@
 {
-  "name": "s3-batch-uploader-v3",
-  "version": "3.0.0",
+  "name": "s3-batch-uploader",
+  "version": "1.0.0",
   "description": "S3批量上传工具 - 极简扁平风格版本",
   "private": true,
   "scripts": {
