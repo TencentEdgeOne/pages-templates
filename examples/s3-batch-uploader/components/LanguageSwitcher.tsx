@@ -1,15 +1,23 @@
 'use client'
 
-import { useRouter } from 'next/router'
-import { useTranslation } from 'next-i18next'
+import { useRouter, usePathname } from 'next/navigation'
+import { useTranslation } from '../app/[locale]/i18n-provider'
+import { useParams } from 'next/navigation'
 
 export default function LanguageSwitcher() {
   const router = useRouter()
-  const { t } = useTranslation('common')
+  const pathname = usePathname()
+  const params = useParams()
+  const { t, locale } = useTranslation()
 
-  const switchLanguage = (locale: string) => {
-    // 使用 Next.js 内置 i18n 切换当前路由语言，保持路径不变
-    router.push(router.asPath, undefined, { locale })
+  const switchLanguage = (newLocale: string) => {
+    // 获取当前路径，去掉语言前缀
+    const segments = pathname.split('/').filter(Boolean)
+    const currentPath = segments.slice(1).join('/') // 去掉第一个语言段
+    
+    // 构建新的路径
+    const newPath = `/${newLocale}/${currentPath}`
+    router.push(newPath)
   }
 
   return (
@@ -17,24 +25,24 @@ export default function LanguageSwitcher() {
       <span className="text-sm text-gray-600">{t('language')}:</span>
       <div className="flex rounded-md overflow-hidden border border-gray-300">
         <button
-          onClick={() => switchLanguage('zh')}
-          className={`px-3 py-1 text-sm font-medium transition-colors ${
-            router.locale === 'zh'
-              ? 'bg-blue-600 text-white'
-              : 'bg-white text-gray-700 hover:bg-gray-50'
-          }`}
-        >
-          {t('languages.zh', { defaultValue: '中文' })}
-        </button>
-        <button
           onClick={() => switchLanguage('en')}
           className={`px-3 py-1 text-sm font-medium transition-colors ${
-            router.locale === 'en'
+            locale === 'en'
               ? 'bg-blue-600 text-white'
               : 'bg-white text-gray-700 hover:bg-gray-50'
           }`}
         >
-          {t('languages.en', { defaultValue: 'English' })}
+          {t('languages.en')}
+        </button>
+        <button
+          onClick={() => switchLanguage('zh')}
+          className={`px-3 py-1 text-sm font-medium transition-colors ${
+            locale === 'zh'
+              ? 'bg-blue-600 text-white'
+              : 'bg-white text-gray-700 hover:bg-gray-50'
+          }`}
+        >
+          {t('languages.zh')}
         </button>
       </div>
     </div>

@@ -1,20 +1,19 @@
+'use client'
+
 import { useState, useEffect } from 'react'
-import { CheckSquare, Square, Upload as UploadIcon, Trash2 } from 'lucide-react'
-import { useTranslation } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
-import { DropZone } from '../components/FileUpload/DropZone'
-import { FilePreview } from '../components/FileUpload/FilePreview'
-import { UploadConfigComponent } from '../components/FileUpload/UploadConfig'
-import { Button } from '../components/UI/Button'
-import { useFileUpload } from '../hooks/useFileUpload'
-import { useLocalStorage } from '../hooks/useLocalStorage'
-import { UploadConfig } from '../types/upload'
-import { getUploadConfig, saveUploadConfig } from '../lib/storage'
-import MainLayout from '../components/Layout/MainLayout'
+import { Upload as UploadIcon, Trash2 } from 'lucide-react'
+import { useTranslation } from '../i18n-provider'
+import { DropZone } from '../../../components/FileUpload/DropZone'
+import { FilePreview } from '../../../components/FileUpload/FilePreview'
+import { UploadConfigComponent } from '../../../components/FileUpload/UploadConfig'
+import { Button } from '../../../components/UI/Button'
+import { useFileUpload } from '../../../hooks/useFileUpload'
+import { UploadConfig } from '../../../types/upload'
+import { getUploadConfig, saveUploadConfig } from '../../../lib/storage'
+import MainLayout from '../../../components/Layout/MainLayout'
 
 function UploadPage() {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation()
   const [config, setConfig] = useState<UploadConfig>(() => getUploadConfig())
   
   const {
@@ -29,10 +28,8 @@ function UploadPage() {
     startUpload,
     retryFile,
     cancelFile,
-    closeErrorDialog,
   } = useFileUpload(config)
 
-  // Save config changes to localStorage
   useEffect(() => {
     saveUploadConfig(config)
   }, [config])
@@ -62,18 +59,13 @@ function UploadPage() {
 
   return (
     <div className="p-6 max-w-7xl min-w-[1000px] mx-auto">
-      {/* Header */}
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-gray-900 mb-2">{t('fileUpload')}</h1>
-        <p className="text-gray-600">
-          {t('fileUploadDescription')}
-        </p>
+        <p className="text-gray-600">{t('fileUploadDescription')}</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Upload Area */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Drop Zone */}
           <DropZone
             onFilesSelected={addFiles}
             maxFiles={config.maxFiles}
@@ -81,10 +73,8 @@ function UploadPage() {
             disabled={isUploading}
           />
 
-          {/* Pending Files */}
           {pendingFiles.length > 0 && (
             <div className="space-y-4">
-              {/* Controls */}
               <div className="bg-white border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-4">
@@ -105,9 +95,7 @@ function UploadPage() {
                       ) : (
                         <div className="w-4 h-4 border-2 border-gray-300 rounded hover:border-blue-600 transition-colors" />
                       )}
-                      <span>
-                        {allSelected ? t('deselectAll') : t('selectAll')}
-                      </span>
+                      <span>{allSelected ? t('deselectAll') : t('selectAll')}</span>
                     </button>
                     
                     <div className="px-3 py-1 bg-gray-100 text-gray-700 text-sm rounded-md">
@@ -116,12 +104,7 @@ function UploadPage() {
                   </div>
 
                   <div className="flex items-center space-x-2">
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={clearFiles}
-                      disabled={isUploading}
-                    >
+                    <Button variant="secondary" size="sm" onClick={clearFiles} disabled={isUploading}>
                       <Trash2 className="w-4 h-4 mr-1" />
                       {t('clear')}
                     </Button>
@@ -140,7 +123,6 @@ function UploadPage() {
                 </div>
               </div>
 
-              {/* Pending Files Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 {pendingFiles.map((file) => (
                   <FilePreview
@@ -156,7 +138,6 @@ function UploadPage() {
             </div>
           )}
 
-          {/* Completed Files */}
           {completedFiles.length > 0 && (
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <div className="flex items-center justify-between mb-4">
@@ -173,11 +154,11 @@ function UploadPage() {
                   <FilePreview
                     key={file.id}
                     file={file}
-                    onToggleSelect={() => {}} // 已完成文件不需要选择
+                    onToggleSelect={() => {}}
                     onRemove={removeFile}
-                    onRetry={() => {}} // 已完成文件不需要重试
-                    onCancel={() => {}} // 已完成文件不需要取消
-                    isCompleted={true} // 标识为已完成文件
+                    onRetry={() => {}}
+                    onCancel={() => {}}
+                    isCompleted={true}
                   />
                 ))}
               </div>
@@ -185,16 +166,11 @@ function UploadPage() {
           )}
         </div>
 
-        {/* Sidebar */}
         <div className="space-y-6">
           <div className="bg-white border border-gray-200 rounded-lg p-6">
-            <UploadConfigComponent
-              config={config}
-              onConfigChange={setConfig}
-            />
+            <UploadConfigComponent config={config} onConfigChange={setConfig} />
           </div>
 
-          {/* Upload Statistics */}
           {files.length > 0 && (
             <div className="bg-white border border-gray-200 rounded-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-4">{t('uploadStatistics')}</h3>
@@ -238,13 +214,4 @@ export default function Upload() {
       <UploadPage />
     </MainLayout>
   )
-}
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const lng = locale || 'en'
-  return {
-    props: {
-      ...(await serverSideTranslations(lng, ['common'])),
-    },
-  }
 }

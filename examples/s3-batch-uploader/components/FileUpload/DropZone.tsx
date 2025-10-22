@@ -3,7 +3,7 @@
 import { useCallback, useState } from 'react'
 import { Upload, FileImage, FileVideo } from 'lucide-react'
 import { clsx } from 'clsx'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '../../app/[locale]/i18n-provider'
 import { Button } from '../UI/Button'
 
 interface DropZoneProps {

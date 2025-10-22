@@ -1,17 +1,17 @@
-import { useState, useEffect } from 'react'
+'use client'
+
+import { useState } from 'react'
 import { Search, Filter, Download, Trash2, RefreshCw, AlertCircle, ChevronDown } from 'lucide-react'
-import HistoryList from '../components/History/HistoryList'
-import { ExportDialog } from '../components/History/ExportDialog'
-import { Button } from '../components/UI/Button'
-import { HistoryItem } from '../types/upload'
-import { useS3Files } from '../hooks/useS3Files'
-import { useTranslation } from 'next-i18next'
-import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { GetStaticProps } from 'next'
-import MainLayout from '../components/Layout/MainLayout'
+import HistoryList from '../../../components/History/HistoryList'
+import { ExportDialog } from '../../../components/History/ExportDialog'
+import { Button } from '../../../components/UI/Button'
+import { HistoryItem } from '../../../types/upload'
+import { useS3Files } from '../../../hooks/useS3Files'
+import { useTranslation } from '../i18n-provider'
+import MainLayout from '../../../components/Layout/MainLayout'
 
 function HistoryPage() {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation()
   const [searchTerm, setSearchTerm] = useState('')
   const [filterType, setFilterType] = useState<'all' | 'image' | 'video'>('all')
   const [sortBy, setSortBy] = useState<'date' | 'name' | 'size'>('date')
@@ -19,7 +19,6 @@ function HistoryPage() {
   const [showExportDialog, setShowExportDialog] = useState(false)
   const [selectedItems, setSelectedItems] = useState<HistoryItem[]>([])
 
-  // 使用S3 Hook获取文件列表
   const { 
     files: items, 
     loading, 
@@ -30,7 +29,7 @@ function HistoryPage() {
     deleteFile 
   } = useS3Files({
     autoRefresh: false,
-    refreshInterval: 0 // 取消自动刷新
+    refreshInterval: 0
   })
 
   const handleDelete = async (id: string) => {
@@ -40,7 +39,6 @@ function HistoryPage() {
     if (window.confirm(`确定要删除文件 "${item.fileName}" 吗？此操作将从S3存储桶中永久删除文件，不可恢复。`)) {
       try {
         await deleteFile(item.s3Key)
-        // 从选中列表中移除
         setSelectedItems(prev => prev.filter(i => i.id !== id))
       } catch (error) {
         alert('删除文件失败：' + (error instanceof Error ? error.message : '未知错误'))
@@ -76,7 +74,6 @@ function HistoryPage() {
     setSelectedItems([])
   }
 
-  // Filter and sort items
   const filteredItems = items
     .filter(item => {
       const matchesSearch = item.fileName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -114,7 +111,6 @@ function HistoryPage() {
 
   return (
     <div className="p-6 max-w-7xl mx-auto space-y-6">
-      {/* Header */}
       <div className="bg-white border border-gray-200 rounded-lg p-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-4 sm:space-y-0">
           <div>
@@ -125,47 +121,24 @@ function HistoryPage() {
           </div>
           
           <div className="flex items-center space-x-3">
-            <Button
-              variant="secondary"
-              onClick={handleRefresh}
-              disabled={loading}
-              className="hidden lg:flex"
-            >
+            <Button variant="secondary" onClick={handleRefresh} disabled={loading} className="hidden lg:flex">
               <RefreshCw className={`w-4 h-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
               {t('refreshData')}
             </Button>
-            <Button
-              variant="secondary"
-              onClick={handleRefresh}
-              disabled={loading}
-              className="lg:hidden"
-              size="sm"
-            >
+            <Button variant="secondary" onClick={handleRefresh} disabled={loading} className="lg:hidden" size="sm">
               <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             </Button>
 
-            <Button
-              variant="primary"
-              onClick={handleExport}
-              disabled={items.length === 0 || loading}
-              className="hidden lg:flex"
-            >
+            <Button variant="primary" onClick={handleExport} disabled={items.length === 0 || loading} className="hidden lg:flex">
               <Download className="w-4 h-4 mr-2" />
               {t('exportRecords')}
             </Button>
-            <Button
-              variant="primary"
-              onClick={handleExport}
-              disabled={items.length === 0 || loading}
-              className="lg:hidden"
-              size="sm"
-            >
+            <Button variant="primary" onClick={handleExport} disabled={items.length === 0 || loading} className="lg:hidden" size="sm">
               <Download className="w-4 h-4" />
             </Button>
           </div>
         </div>
 
-        {/* Error Display */}
         {error && (
           <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-3">
             <AlertCircle className="w-6 h-6 text-red-500 flex-shrink-0" />
@@ -173,18 +146,13 @@ function HistoryPage() {
               <p className="text-red-800 font-semibold">{t('errorLoadingFiles')}</p>
               <p className="text-red-600 text-sm mt-1">{error}</p>
             </div>
-            <Button
-              variant="error"
-              size="sm"
-              onClick={handleRefresh}
-            >
+            <Button variant="error" size="sm" onClick={handleRefresh}>
               {t('retry')}
             </Button>
           </div>
         )}
       </div>
 
-      {/* Statistics */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div className="bg-white border border-gray-200 rounded-lg p-4 text-center">
           <div className="text-2xl font-semibold text-gray-900 mb-1">{items.length}</div>
@@ -208,11 +176,8 @@ function HistoryPage() {
         </div>
       </div>
 
-      {/* 统一控制面板 */}
       <div className="bg-white border border-gray-200 rounded-lg p-6">
-        {/* 第一行：搜索和筛选 */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-6 mb-4">
-          {/* Search */}
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
@@ -225,7 +190,6 @@ function HistoryPage() {
           </div>
 
           <div className="flex items-center space-x-4">
-            {/* Filter by type */}
             <div className="relative">
               <select
                 value={filterType}
@@ -239,7 +203,6 @@ function HistoryPage() {
               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
             </div>
 
-            {/* Sort */}
             <div className="relative">
               <select
                 value={`${sortBy}-${sortOrder}`}
@@ -262,7 +225,6 @@ function HistoryPage() {
           </div>
         </div>
 
-        {/* 第二行：选择控制和统计信息 */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0 pt-4 border-t border-gray-100">
           <div className="flex items-center space-x-4">
             <button
@@ -270,14 +232,17 @@ function HistoryPage() {
               className="flex items-center space-x-2 text-sm text-gray-600 hover:text-gray-900 transition-colors"
             >
               {selectedItems.length === filteredItems.length && filteredItems.length > 0 ? (
-                <svg className="w-4 h-4 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2v8h10V6H5z" clipRule="evenodd" />
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
+                <div className="w-4 h-4 bg-blue-600 border-2 border-blue-600 rounded flex items-center justify-center">
+                  <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                </div>
+              ) : selectedItems.length > 0 ? (
+                <div className="w-4 h-4 bg-blue-600 border-2 border-blue-600 rounded flex items-center justify-center">
+                  <div className="w-2 h-0.5 bg-white rounded-sm" />
+                </div>
               ) : (
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                </svg>
+                <div className="w-4 h-4 border-2 border-gray-300 rounded hover:border-blue-600 transition-colors" />
               )}
               <span>{selectedItems.length === filteredItems.length && filteredItems.length > 0 ? t('deselectAll') : t('selectAll')}</span>
             </button>
@@ -307,7 +272,6 @@ function HistoryPage() {
         </div>
       </div>
 
-      {/* File List */}
       <HistoryList 
         items={filteredItems} 
         onDelete={handleDelete}
@@ -318,20 +282,14 @@ function HistoryPage() {
         onClearSelection={handleClearSelection}
       />
 
-      {/* Load More Button */}
       {hasMore && !loading && (
         <div className="flex justify-center">
-          <Button
-            variant="secondary"
-            onClick={loadMoreFiles}
-            className="w-full max-w-md"
-          >
+          <Button variant="secondary" onClick={loadMoreFiles} className="w-full max-w-md">
             {t('loadMoreFiles')}
           </Button>
         </div>
       )}
 
-      {/* Export Dialog */}
       <ExportDialog
         isOpen={showExportDialog}
         onClose={() => setShowExportDialog(false)}
@@ -348,12 +306,4 @@ export default function History() {
       <HistoryPage />
     </MainLayout>
   )
-}
-
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  return {
-    props: {
-      ...(await serverSideTranslations(locale ?? 'zh', ['common'])),
-    },
-  }
 }

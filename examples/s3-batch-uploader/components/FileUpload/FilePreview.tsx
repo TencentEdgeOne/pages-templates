@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { CheckCircle, XCircle, Clock, Play, Image as ImageIcon, FileText, Trash2, RotateCcw, Square, CheckSquare, X } from 'lucide-react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '../../app/[locale]/i18n-provider'
 import { UploadFile, FileStatus } from '../../types/upload'
 import { formatFileSize } from '../../lib/upload-utils'
 import { ProgressOverlay } from './ProgressOverlay'

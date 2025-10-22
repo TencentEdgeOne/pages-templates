@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Clock, Copy, Trash2, Eye, FileText, Image, Video, File, Check, Download } from 'lucide-react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '../../app/[locale]/i18n-provider'
 import { HistoryItem } from '../../types/upload'
 
 interface HistoryListProps {

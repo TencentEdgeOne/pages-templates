@@ -1,7 +1,7 @@
 'use client'
 
 import { Settings } from 'lucide-react'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '../../app/[locale]/i18n-provider'
 import { UploadConfig } from '../../types/upload'
 import { formatFileSize } from '../../lib/upload-utils'
 import { UPLOAD_CONFIG, formatFileSize as configFormatFileSize } from '../../config/upload.js'

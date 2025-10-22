@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '../app/[locale]/i18n-provider'
 
 interface FileWithProgress {
   file: File

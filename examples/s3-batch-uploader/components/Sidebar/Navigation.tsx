@@ -1,25 +1,26 @@
-import { useRouter } from 'next/router'
+import { usePathname, useParams } from 'next/navigation'
 import Link from 'next/link'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '../../app/[locale]/i18n-provider'
 import { Upload, Database, Settings, Folder, PaintBucket } from 'lucide-react'
 
 export function Navigation() {
-  const router = useRouter()
-  const pathname = router.pathname
+  const pathname = usePathname()
+  const params = useParams()
   const { t } = useTranslation('common')
+  const locale = params?.locale as string || 'zh'
 
   const menuItems = [
     {
       id: 'upload',
       label: t('navigation.fileUpload'),
       icon: Upload,
-      href: '/upload'
+      href: `/${locale}/upload`
     },
     {
       id: 'bucket',
       label: t('navigation.storageBucket'),
       icon: PaintBucket,
-      href: '/history'
+      href: `/${locale}/history`
     },
   ]
 

@@ -5,7 +5,7 @@ import { X, Download } from 'lucide-react'
 import { Button } from '../UI/Button'
 import { Modal } from '../UI/Modal'
 import { HistoryItem } from '../../types/upload'
-import { useTranslation } from 'next-i18next'
+import { useTranslation } from '../../app/[locale]/i18n-provider'
 
 interface ExportDialogProps {
   isOpen: boolean
