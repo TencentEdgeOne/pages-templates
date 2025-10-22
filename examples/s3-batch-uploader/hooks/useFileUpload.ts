@@ -149,7 +149,6 @@ export function useFileUpload(config: UploadConfig) {
   const uploadFileWithPresignedUrl = useCallback(async (file: UploadFile): Promise<string> => {
     // 第一步：获取预签名 URL
     updateFileStatus(file.id, { progress: 10 })
-    // 统一路由：生产环境自动使用 Node Functions，开发环境回退到本地 API
     const presignResponse = await fetch('/api/upload-batch', {
       method: 'POST',
       headers: {
