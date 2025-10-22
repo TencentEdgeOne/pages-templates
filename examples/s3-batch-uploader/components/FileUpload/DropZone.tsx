@@ -152,7 +152,7 @@ export function DropZone({
         </div>
         
         <div className="text-xs text-gray-500 space-y-1 pt-2 border-t border-gray-200">
-          <p>{t('maxFilesLimit', { count: maxFiles })} {t('maxFileSizeLimit', { size: formatFileSize(maxFileSize) })}</p>
+          <p>{t('maxFilesLimit', { count: maxFiles })} <span className="text-gray-400 mx-2">|</span> {t('maxFileSizeLimit', { size: formatFileSize(maxFileSize) })}</p>
           <p>{t('supportedFormats', { formats: 'JPG、PNG、GIF、WebP、MP4、WebM、MOV' })}</p>
         </div>
       </div>

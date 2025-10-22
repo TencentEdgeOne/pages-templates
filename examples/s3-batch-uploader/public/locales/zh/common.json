@@ -21,7 +21,7 @@
     "concurrentUploads": "并发上传数",
     "filesUnit": "个",
     "uploadMethod": "上传方式",
-    "uploadMethodDescription": "使用预签名URL直接上传到S3，安全高效，支持断点续传",
+    "uploadMethodDescription": "使用预签名URL直接上传到S3，安全高效",
     "systemLimits": "系统限制",
     "maxFileSizeLimit": "最大文件大小限制",
     "maxFilesLimit": "最大文件数量限制",
