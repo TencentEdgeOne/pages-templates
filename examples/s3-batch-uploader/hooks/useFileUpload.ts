@@ -122,10 +122,10 @@ export function useFileUpload(config: UploadConfig) {
       // 添加到历史记录
       addToUploadHistory({
         id: file.id,
+        s3Key: file.id, // 使用文件 ID 作为 S3 key
         fileName: file.file.name,
         fileSize: file.file.size,
         fileType: file.file.type,
-        s3Url: publicUrl,
         uploadTime: new Date().toISOString(),
       })
 
@@ -166,21 +166,10 @@ export function useFileUpload(config: UploadConfig) {
       throw new Error(errorData.error || 'Failed to get upload URL')
     }
 
-    const { uploadUrl, fields, publicUrl } = await presignResponse.json()
+    const { uploadUrl, publicUrl } = await presignResponse.json()
     updateFileStatus(file.id, { progress: 20 })
 
-    // 第二步：使用 XMLHttpRequest 上传到 S3 以获取真实进度
-    const uploadFormData = new FormData()
-    
-    // 添加预签名字段
-    Object.entries(fields).forEach(([key, value]) => {
-      uploadFormData.append(key, value as string)
-    })
-    
-    // 添加文件（必须最后添加）
-    uploadFormData.append('file', file.file)
-
-    // 使用 XMLHttpRequest 进行上传以获取进度
+    // 第二步：使用 XMLHttpRequest 直接上传文件到预签名 URL
     await new Promise<void>((resolve, reject) => {
       const xhr = new XMLHttpRequest()
       
@@ -214,8 +203,10 @@ export function useFileUpload(config: UploadConfig) {
         reject(new Error('上传被取消'))
       })
       
-      xhr.open('POST', uploadUrl)
-      xhr.send(uploadFormData)
+      // 使用 PUT 方法直接上传文件到预签名 URL
+      xhr.open('PUT', uploadUrl)
+      // 移除 Content-Type 头，让浏览器自动处理
+      xhr.send(file.file)
     })
 
     return publicUrl

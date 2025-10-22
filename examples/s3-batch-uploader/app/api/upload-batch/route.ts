@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { S3Client, CreateMultipartUploadCommand, GetObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, CreateMultipartUploadCommand, PutObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { createHash } from 'crypto'
 
 const s3Client = new S3Client({
   region: process.env.AWS_REGION!,
@@ -23,10 +24,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 生成唯一的文件键
-    const timestamp = Date.now()
-    const randomId = Math.random().toString(36).substring(2, 15)
-    const key = `uploads/${timestamp}-${randomId}-${filename}`
+    // 生成基于文件属性的固定键名，实现覆盖功能
+    // 使用文件名、大小和类型的组合生成哈希，确保同一文件总是得到相同的键名
+    const fileIdentifier = `${filename}-${fileSize}-${contentType}`
+    const fileHash = createHash('md5').update(fileIdentifier).digest('hex').substring(0, 8)
+    const fileExtension = filename.split('.').pop() || ''
+    const baseFileName = filename.replace(/\.[^/.]+$/, '') // 移除扩展名
+    const key = `uploads/${fileHash}-${baseFileName}.${fileExtension}`
 
     // 如果文件大小超过 5MB，使用分片上传
     if (fileSize > 5 * 1024 * 1024) {
@@ -46,20 +50,22 @@ export async function POST(request: NextRequest) {
       })
     } else {
       // 直接上传的预签名 URL
-      const command = new GetObjectCommand({
+      const command = new PutObjectCommand({
         Bucket: BUCKET_NAME,
         Key: key,
+        ContentType: contentType,
       })
 
       const uploadUrl = await getSignedUrl(s3Client, command, {
-        expiresIn: 3600, // 1小时
+        expiresIn: 300, // 5分钟，与其他预签名URL保持一致
       })
 
       return NextResponse.json({
-        uploadUrl: uploadUrl.replace('GetObject', 'PutObject'),
+        uploadUrl,
         key,
         publicUrl: `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`,
         multipart: false,
+        fields: {}, // 直接预签名 URL 不需要额外字段
       })
     }
   } catch (error) {

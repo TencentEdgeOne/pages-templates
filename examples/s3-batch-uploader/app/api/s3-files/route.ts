@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       fileSize: obj.Size || 0,
       fileType: getFileType(obj.Key!),
       uploadTime: obj.LastModified?.toISOString() || new Date().toISOString(),
-      s3Url: `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${obj.Key}`,
+      // 移除直接 S3 URL，改为使用预签名 URL
     }))
 
     return NextResponse.json({

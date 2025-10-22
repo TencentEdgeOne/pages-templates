@@ -28,9 +28,14 @@ export const saveUploadHistory = (items: HistoryItem[]): void => {
   }
 }
 
-export const addToUploadHistory = (item: HistoryItem): void => {
+export const addToUploadHistory = (item: Omit<HistoryItem, 's3Url'> & { s3Url?: string }): void => {
   const history = getUploadHistory()
-  const updatedHistory = [item, ...history.filter(h => h.id !== item.id)]
+  // 添加 s3Key 如果没有提供
+  const itemWithKey: HistoryItem = {
+    ...item,
+    s3Key: item.s3Key || item.id, // 使用 s3Key 或 fallback 到 id
+  }
+  const updatedHistory = [itemWithKey, ...history.filter(h => h.id !== itemWithKey.id)]
   saveUploadHistory(updatedHistory)
 }
 

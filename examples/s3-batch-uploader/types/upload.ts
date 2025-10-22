@@ -17,16 +17,16 @@ export interface UploadConfig {
 
 export interface HistoryItem {
   id: string
+  s3Key: string
   fileName: string
   fileSize: number
   fileType: string
-  s3Url: string
+  s3Url?: string // 可选，用于缓存预签名 URL
   uploadTime: string
   thumbnail?: string
   // S3特有属性
   etag?: string
   storageClass?: string
-  s3Key?: string
   s3Metadata?: Record<string, string>
 }
 

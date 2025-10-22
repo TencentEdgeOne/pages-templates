@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Clock, Copy, Trash2, Eye, FileText, Image, Video, File, Check, Download } from 'lucide-react'
 import { useTranslation } from '../../app/[locale]/i18n-provider'
 import { HistoryItem } from '../../types/upload'
+import { usePresignedUrl } from '../../hooks/usePresignedUrl'
 
 interface HistoryListProps {
   items: HistoryItem[]
@@ -20,9 +21,11 @@ export default function HistoryList({
   selectedItems,
   onItemSelect 
 }: HistoryListProps) {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation()
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid')
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [itemsWithUrls, setItemsWithUrls] = useState<HistoryItem[]>([])
+  const { getBatchPresignedUrls } = usePresignedUrl()
 
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes'
@@ -63,8 +66,47 @@ export default function HistoryList({
     onItemSelect(item, !selected)
   }
 
+  // 加载预签名 URL
+  useEffect(() => {
+    const loadPresignedUrls = async () => {
+      if (items.length === 0) {
+        setItemsWithUrls([])
+        return
+      }
+
+      try {
+        const s3Keys = items.map(item => item.s3Key).filter(Boolean)
+        
+        if (s3Keys.length === 0) {
+          setItemsWithUrls(items)
+          return
+        }
+
+        const presignedUrls = await getBatchPresignedUrls(s3Keys)
+        
+        const updatedItems = items.map(item => ({
+          ...item,
+          s3Url: presignedUrls[item.s3Key] || '',
+        }))
+        setItemsWithUrls(updatedItems)
+      } catch (error) {
+        console.error('Failed to load presigned URLs:', error)
+        // 如果获取预签名 URL 失败，仍然显示文件列表，但不显示图片预览
+        setItemsWithUrls(items.map(item => ({ ...item, s3Url: '' })))
+      }
+    }
+
+    loadPresignedUrls()
+  }, [items, getBatchPresignedUrls])
+
   const handleCopyUrl = async (item: HistoryItem, e: React.MouseEvent) => {
     e.stopPropagation()
+    
+    if (!item.s3Url) {
+      console.error('No URL available for copying')
+      return
+    }
+    
     try {
       await navigator.clipboard.writeText(item.s3Url)
       setCopiedId(item.id)
@@ -114,7 +156,7 @@ export default function HistoryList({
       <div className="p-6 border-b border-gray-200">
         <div className="flex items-center justify-between">
           <h3 className="text-lg font-semibold text-gray-900">
-            {t('fileList', { count: items.length })}
+            {t('fileList', { count: itemsWithUrls.length })}
           </h3>
           
           <div className="flex items-center space-x-2">
@@ -150,7 +192,7 @@ export default function HistoryList({
       <div className="p-6">
         {viewMode === 'grid' ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-            {items.map((item) => (
+            {itemsWithUrls.map((item) => (
               <div
                 key={item.id}
                 className={`relative group border-2 rounded-lg p-4 cursor-pointer transition-all duration-200 ${
@@ -177,13 +219,34 @@ export default function HistoryList({
 
                 {/* File Preview */}
                 <div className="mb-3 pt-6">
-                  {item.fileType.startsWith('image/') ? (
+                  {item.fileType.startsWith('image/') && item.s3Url ? (
                     <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden">
                       <img
                         src={item.s3Url}
                         alt={item.fileName}
                         className="w-full h-full object-cover"
                         loading="lazy"
+                        crossOrigin="anonymous"
+                        referrerPolicy="no-referrer"
+                        onError={(e) => {
+                          console.log(e, item.s3Url)
+                          // 如果图片加载失败，显示文件图标
+                          const target = e.target as HTMLImageElement
+                          target.style.display = 'none'
+                          const parent = target.parentElement
+                          if (parent) {
+                            // 创建文件图标的 SVG 字符串
+                            let iconSvg = ''
+                            if (item.fileType.startsWith('image/')) {
+                              iconSvg = '<svg class="w-8 h-8 text-blue-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd" /></svg>'
+                            } else if (item.fileType.startsWith('video/')) {
+                              iconSvg = '<svg class="w-8 h-8 text-purple-500" fill="currentColor" viewBox="0 0 20 20"><path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zM14.553 7.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" /></svg>'
+                            } else {
+                              iconSvg = '<svg class="w-8 h-8 text-gray-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4zm2 6a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm1 3a1 1 0 100 2h6a1 1 0 100-2H7z" clip-rule="evenodd" /></svg>'
+                            }
+                            parent.innerHTML = `<div class="w-full h-full flex items-center justify-center">${iconSvg}</div>`
+                          }
+                        }}
                       />
                     </div>
                   ) : (
@@ -207,27 +270,31 @@ export default function HistoryList({
                 {/* Actions */}
                 <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="flex items-center space-x-1">
-                    <a
-                      href={item.s3Url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 bg-white rounded-md shadow-sm border border-gray-200 text-gray-600 hover:text-blue-600 transition-colors"
-                      onClick={(e) => e.stopPropagation()}
-                      title={t('viewFile')}
-                    >
-                      <Eye className="w-3 h-3" />
-                    </a>
-                    <button
-                      onClick={(e) => handleCopyUrl(item, e)}
-                      className="p-1.5 bg-white rounded-md shadow-sm border border-gray-200 text-gray-600 hover:text-green-600 transition-colors"
-                      title={t('copyLink')}
-                    >
-                      {copiedId === item.id ? (
-                        <Check className="w-3 h-3 text-green-600" />
-                      ) : (
-                        <Copy className="w-3 h-3" />
-                      )}
-                    </button>
+                    {item.s3Url && (
+                      <a
+                        href={item.s3Url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="p-1.5 bg-white rounded-md shadow-sm border border-gray-200 text-gray-600 hover:text-blue-600 transition-colors"
+                        onClick={(e) => e.stopPropagation()}
+                        title={t('viewFile')}
+                      >
+                        <Eye className="w-3 h-3" />
+                      </a>
+                    )}
+                    {item.s3Url && (
+                      <button
+                        onClick={(e) => handleCopyUrl(item, e)}
+                        className="p-1.5 bg-white rounded-md shadow-sm border border-gray-200 text-gray-600 hover:text-green-600 transition-colors"
+                        title={t('copyLink')}
+                      >
+                        {copiedId === item.id ? (
+                          <Check className="w-3 h-3 text-green-600" />
+                        ) : (
+                          <Copy className="w-3 h-3" />
+                        )}
+                      </button>
+                    )}
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
@@ -245,7 +312,7 @@ export default function HistoryList({
           </div>
         ) : (
           <div className="space-y-2">
-            {items.map((item) => (
+            {itemsWithUrls.map((item) => (
               <div
                 key={item.id}
                 className={`flex items-center space-x-4 p-4 rounded-lg cursor-pointer transition-all duration-200 ${
@@ -289,27 +356,31 @@ export default function HistoryList({
 
                 {/* Actions */}
                 <div className="flex items-center space-x-2">
-                  <a
-                    href={item.s3Url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
-                    onClick={(e) => e.stopPropagation()}
-                    title={t('viewFile')}
-                  >
-                    <Eye className="w-4 h-4" />
-                  </a>
-                  <button
-                    onClick={(e) => handleCopyUrl(item, e)}
-                    className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-md transition-colors"
-                    title={t('copyLink')}
-                  >
-                    {copiedId === item.id ? (
-                      <Check className="w-4 h-4 text-green-600" />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
-                  </button>
+                  {item.s3Url && (
+                    <a
+                      href={item.s3Url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-md transition-colors"
+                      onClick={(e) => e.stopPropagation()}
+                      title={t('viewFile')}
+                    >
+                      <Eye className="w-4 h-4" />
+                    </a>
+                  )}
+                  {item.s3Url && (
+                    <button
+                      onClick={(e) => handleCopyUrl(item, e)}
+                      className="p-2 text-gray-600 hover:text-green-600 hover:bg-green-50 rounded-md transition-colors"
+                      title={t('copyLink')}
+                    >
+                      {copiedId === item.id ? (
+                        <Check className="w-4 h-4 text-green-600" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                    </button>
+                  )}
                   <button
                     onClick={(e) => {
                       e.stopPropagation()

@@ -17,7 +17,7 @@ interface ExportDialogProps {
 export type ExportFormat = 'csv' | 'json'
 
 export function ExportDialog({ isOpen, onClose, items, selectedCount = 0 }: ExportDialogProps) {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation()
   const [exportFormat, setExportFormat] = useState<ExportFormat>('csv')
 
   const handleExport = () => {
@@ -32,7 +32,7 @@ export function ExportDialog({ isOpen, onClose, items, selectedCount = 0 }: Expo
       formatFileSize(item.fileSize),
       item.fileType,
       formatDate(item.uploadTime),
-      item.s3Url
+      item.s3Url || '' // 如果没有预签名 URL，使用空字符串
     ])
 
     if (exportFormat === 'csv') {
