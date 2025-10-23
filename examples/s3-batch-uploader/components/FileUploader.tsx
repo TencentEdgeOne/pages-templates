@@ -13,7 +13,7 @@ interface FileWithProgress {
 }
 
 export default function FileUploader() {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation()
   const [files, setFiles] = useState<FileWithProgress[]>([])
   const [isUploading, setIsUploading] = useState(false)
 

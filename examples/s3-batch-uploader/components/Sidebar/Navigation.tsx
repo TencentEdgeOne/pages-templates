@@ -6,7 +6,7 @@ import { Upload, Database, Settings, Folder, PaintBucket } from 'lucide-react'
 export function Navigation() {
   const pathname = usePathname()
   const params = useParams()
-  const { t } = useTranslation('common')
+  const { t } = useTranslation()
   const locale = params?.locale as string || 'zh'
 
   const menuItems = [

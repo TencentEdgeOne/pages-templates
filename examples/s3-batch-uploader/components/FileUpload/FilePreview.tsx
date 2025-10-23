@@ -25,7 +25,7 @@ export function FilePreview({
   onToggleSelect,
   isCompleted = false
 }: FilePreviewProps) {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation()
   const [imageError, setImageError] = useState(false)
 
   const getStatusIcon = (status: FileStatus) => {

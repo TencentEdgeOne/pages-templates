@@ -12,7 +12,7 @@ interface UploadConfigProps {
 }
 
 export function UploadConfigComponent({ config, onConfigChange }: UploadConfigProps) {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation()
   
   return (
     <div>

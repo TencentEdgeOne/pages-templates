@@ -21,7 +21,7 @@ export function DropZone({
   accept = 'image/*,video/*',
   disabled = false 
 }: DropZoneProps) {
-  const { t } = useTranslation('common')
+  const { t } = useTranslation()
   const [isDragOver, setIsDragOver] = useState(false)
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
