@@ -2,8 +2,8 @@
 // 这些配置不需要从环境变量加载，直接在代码中定义
 
 export const UPLOAD_CONFIG = {
-  // 最大文件大小 (100MB)
-  MAX_FILE_SIZE: 104857600, // 100MB in bytes
+  // 最大文件大小 (10MB)
+  MAX_FILE_SIZE: 10485760, // 10MB in bytes
   
   // 最大文件数量
   MAX_FILES: 20,

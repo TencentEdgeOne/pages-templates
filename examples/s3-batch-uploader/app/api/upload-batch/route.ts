@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { S3Client, CreateMultipartUploadCommand, PutObjectCommand } from '@aws-sdk/client-s3'
+import { S3Client, CreateMultipartUploadCommand, PutObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { createHash } from 'crypto'
 
@@ -12,6 +12,38 @@ const s3Client = new S3Client({
 })
 
 const BUCKET_NAME = process.env.AWS_BUCKET_NAME!
+const MAX_STORAGE_SIZE = 500 * 1024 * 1024 // 500MB in bytes
+
+// 检查存储使用情况
+async function checkStorageUsage(): Promise<{ totalSize: number; canUpload: boolean; message?: string }> {
+  try {
+    const listCommand = new ListObjectsV2Command({
+      Bucket: BUCKET_NAME,
+      Prefix: 'uploads/',
+    })
+
+    const response = await s3Client.send(listCommand)
+    
+    let totalSize = 0
+    if (response.Contents) {
+      response.Contents.forEach((object) => {
+        if (object.Size) {
+          totalSize += object.Size
+        }
+      })
+    }
+
+    return {
+      totalSize,
+      canUpload: totalSize < MAX_STORAGE_SIZE,
+      message: totalSize >= MAX_STORAGE_SIZE ? '存储空间已满，无法上传更多文件' : undefined
+    }
+  } catch (error) {
+    console.error('Error checking storage usage:', error)
+    // 如果检查失败，允许上传但记录错误
+    return { totalSize: 0, canUpload: true }
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -21,6 +53,30 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'Missing required fields: filename, contentType' },
         { status: 400 }
+      )
+    }
+
+    // 检查存储容量
+    const storageCheck = await checkStorageUsage()
+    const totalAfterUpload = storageCheck.totalSize + (fileSize || 0)
+    
+    if (totalAfterUpload > MAX_STORAGE_SIZE) {
+      const usedMB = Math.round(storageCheck.totalSize / (1024 * 1024))
+      const uploadMB = Math.round((fileSize || 0) / (1024 * 1024))
+      const maxMB = Math.round(MAX_STORAGE_SIZE / (1024 * 1024))
+      
+      return NextResponse.json(
+        { 
+          error: `存储空间不足！当前已用 ${usedMB}MB，尝试上传 ${uploadMB}MB，将超出 ${maxMB}MB 限制。请先清理一些文件后再试。`,
+          code: 'STORAGE_LIMIT_EXCEEDED',
+          details: {
+            currentUsage: storageCheck.totalSize,
+            uploadSize: fileSize,
+            maxSize: MAX_STORAGE_SIZE,
+            remainingSize: MAX_STORAGE_SIZE - storageCheck.totalSize
+          }
+        },
+        { status: 413 } // 413 Payload Too Large
       )
     }
 

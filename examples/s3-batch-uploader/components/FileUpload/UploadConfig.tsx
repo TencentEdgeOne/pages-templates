@@ -5,6 +5,7 @@ import { useTranslation } from '../../app/[locale]/i18n-provider'
 import { UploadConfig } from '../../types/upload'
 import { formatFileSize } from '../../lib/upload-utils'
 import { UPLOAD_CONFIG, formatFileSize as configFormatFileSize } from '../../config/upload.js'
+import { StorageUsage } from '../Storage/StorageUsage'
 
 interface UploadConfigProps {
   config: UploadConfig
@@ -33,6 +34,11 @@ export function UploadConfigComponent({ config, onConfigChange }: UploadConfigPr
             <span className="text-gray-900">{t('uploadConfig.concurrentUploads')}</span>
             <span className="text-gray-900 font-medium">{config.concurrentUploads} {t('uploadConfig.filesUnit')}</span>
           </div>
+        </div>
+
+        {/* Storage Usage Display */}
+        <div className="pt-3">
+          <StorageUsage />
         </div>
 
         {/* Upload Method Info */}

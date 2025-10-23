@@ -1,7 +1,7 @@
 'use client'
 
 import { useCallback, useState } from 'react'
-import { Upload, FileImage, FileVideo } from 'lucide-react'
+import { Upload, FileImage, FileVideo, AlertCircle } from 'lucide-react'
 import { clsx } from 'clsx'
 import { useTranslation } from '../../app/[locale]/i18n-provider'
 import { Button } from '../UI/Button'
@@ -14,6 +14,17 @@ interface DropZoneProps {
   disabled?: boolean
 }
 
+interface StorageCheckResult {
+  allowed: boolean
+  message?: string
+  details?: {
+    currentUsage: number
+    uploadSize: number
+    maxSize: number
+    remainingSize: number
+  }
+}
+
 export function DropZone({ 
   onFilesSelected, 
   maxFiles, 
@@ -23,6 +34,8 @@ export function DropZone({
 }: DropZoneProps) {
   const { t } = useTranslation()
   const [isDragOver, setIsDragOver] = useState(false)
+  const [storageError, setStorageError] = useState<string | null>(null)
+  const [isCheckingStorage, setIsCheckingStorage] = useState(false)
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault()
@@ -40,22 +53,22 @@ export function DropZone({
     e.preventDefault()
     setIsDragOver(false)
     
-    if (disabled) return
+    if (disabled || isCheckingStorage) return
 
     const files = Array.from(e.dataTransfer.files)
     if (files.length > 0) {
-      onFilesSelected(files.slice(0, maxFiles))
+      handleFilesWithStorageCheck(files)
     }
-  }, [onFilesSelected, maxFiles, disabled])
+  }, [disabled, isCheckingStorage])
 
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || [])
     if (files.length > 0) {
-      onFilesSelected(files.slice(0, maxFiles))
+      handleFilesWithStorageCheck(files)
     }
     // Reset input value to allow selecting the same files again
     e.target.value = ''
-  }, [onFilesSelected, maxFiles])
+  }, [])
 
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes'
@@ -63,6 +76,73 @@ export function DropZone({
     const sizes = ['Bytes', 'KB', 'MB', 'GB']
     const i = Math.floor(Math.log(bytes) / Math.log(k))
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
+  }
+
+  // 检查存储容量
+  const checkStorageCapacity = async (files: File[]): Promise<StorageCheckResult> => {
+    try {
+      const totalUploadSize = files.reduce((sum, file) => sum + file.size, 0)
+      
+      // 调用存储使用API检查当前使用情况
+      const response = await fetch('/api/storage-usage')
+      if (!response.ok) {
+        throw new Error('Failed to check storage usage')
+      }
+      
+      const storageInfo = await response.json()
+      const totalAfterUpload = storageInfo.totalSize + totalUploadSize
+      
+      if (totalAfterUpload > storageInfo.maxSize) {
+        const usedMB = Math.round(storageInfo.totalSize / (1024 * 1024))
+        const uploadMB = Math.round(totalUploadSize / (1024 * 1024))
+        const maxMB = Math.round(storageInfo.maxSize / (1024 * 1024))
+        
+        return {
+          allowed: false,
+          message: `存储空间不足！当前已用 ${usedMB}MB，尝试上传 ${uploadMB}MB，将超出 ${maxMB}MB 限制。请先清理一些文件后再试。`,
+          details: {
+            currentUsage: storageInfo.totalSize,
+            uploadSize: totalUploadSize,
+            maxSize: storageInfo.maxSize,
+            remainingSize: storageInfo.remainingSize
+          }
+        }
+      }
+      
+      return { allowed: true }
+    } catch (error) {
+      console.error('Error checking storage capacity:', error)
+      // 如果检查失败，允许上传但显示警告
+      return { 
+        allowed: true, 
+        message: '无法检查存储容量，请谨慎上传'
+      }
+    }
+  }
+
+  // 处理文件选择（包含存储检查）
+  const handleFilesWithStorageCheck = async (files: File[]) => {
+    if (files.length === 0) return
+    
+    setIsCheckingStorage(true)
+    setStorageError(null)
+    
+    try {
+      const storageCheck = await checkStorageCapacity(files)
+      
+      if (!storageCheck.allowed) {
+        setStorageError(storageCheck.message || '存储空间不足')
+        return
+      }
+      
+      // 存储检查通过，继续文件选择流程
+      onFilesSelected(files.slice(0, maxFiles))
+    } catch (error) {
+      console.error('Storage check error:', error)
+      setStorageError('存储检查失败，请重试')
+    } finally {
+      setIsCheckingStorage(false)
+    }
   }
 
   return (
@@ -84,8 +164,8 @@ export function DropZone({
         multiple
         accept={accept}
         onChange={handleFileSelect}
-        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
-        disabled={disabled}
+        className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed pointer-events-auto"
+        disabled={disabled || isCheckingStorage}
         id="file-upload"
       />
       
@@ -134,10 +214,10 @@ export function DropZone({
         <Button
           variant="primary"
           size="md"
-          disabled={disabled}
+          disabled={disabled || isCheckingStorage}
           onClick={() => document.getElementById('file-upload')?.click()}
         >
-          {t('selectFiles')}
+          {isCheckingStorage ? '检查存储空间...' : t('selectFiles')}
         </Button>
         
         <div className="flex items-center justify-center space-x-6 text-sm text-gray-600">
@@ -155,6 +235,29 @@ export function DropZone({
           <p>{t('maxFilesLimit', { count: maxFiles })} <span className="text-gray-400 mx-2">|</span> {t('maxFileSizeLimit', { size: formatFileSize(maxFileSize) })}</p>
           <p>{t('supportedFormats', { formats: 'JPG、PNG、GIF、WebP、MP4、WebM、MOV' })}</p>
         </div>
+
+        {/* 存储错误提示 */}
+        {storageError && (
+          <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg relative z-10 pointer-events-auto">
+            <div className="flex items-start space-x-2">
+              <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
+              <div>
+                <h4 className="text-sm font-medium text-red-800 mb-1">存储空间不足</h4>
+                <p className="text-sm text-red-700">{storageError}</p>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    setStorageError(null)
+                  }}
+                  className="mt-2 text-xs text-red-600 hover:text-red-800 underline"
+                >
+                  关闭提示
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

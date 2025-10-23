@@ -8,6 +8,7 @@ import { FilePreview } from '../../../components/FileUpload/FilePreview'
 import { UploadConfigComponent } from '../../../components/FileUpload/UploadConfig'
 import { Button } from '../../../components/UI/Button'
 import { useFileUpload } from '../../../hooks/useFileUpload'
+import { useStorageRefresh } from '../../../hooks/useStorageRefresh'
 import { UploadConfig } from '../../../types/upload'
 import { getUploadConfig, saveUploadConfig } from '../../../lib/storage'
 import MainLayout from '../../../components/Layout/MainLayout'
@@ -15,6 +16,7 @@ import MainLayout from '../../../components/Layout/MainLayout'
 function UploadPage() {
   const { t } = useTranslation()
   const [config, setConfig] = useState<UploadConfig>(() => getUploadConfig())
+  const { refreshStorage } = useStorageRefresh()
   
   const {
     files,
@@ -33,6 +35,18 @@ function UploadPage() {
   useEffect(() => {
     saveUploadConfig(config)
   }, [config])
+
+  // 监听上传完成，刷新存储信息
+  useEffect(() => {
+    const completedCount = files.filter(f => f.status === 'success').length
+    const errorCount = files.filter(f => f.status === 'error').length
+    const uploadingCount = files.filter(f => f.status === 'uploading').length
+    
+    // 如果有文件上传完成且没有正在上传的文件，刷新存储信息
+    if (completedCount > 0 && uploadingCount === 0 && !isUploading) {
+      refreshStorage()
+    }
+  }, [files, isUploading, refreshStorage])
 
   const pendingFiles = files.filter(f => f.status === 'pending' || f.status === 'uploading' || f.status === 'error')
   const completedFiles = files.filter(f => f.status === 'success')
