@@ -17,6 +17,7 @@ export function I18nProvider({
   locale: string 
 }) {
   const [translations, setTranslations] = useState<Record<string, any>>({})
+  const [isLoaded, setIsLoaded] = useState(false)
 
   useEffect(() => {
     // 加载翻译文件
@@ -29,9 +30,12 @@ export function I18nProvider({
         }
       } catch (error) {
         console.error('Failed to load translations:', error)
+      } finally {
+        setIsLoaded(true)
       }
     }
 
+    setIsLoaded(false)
     loadTranslations()
   }, [locale])
 
@@ -66,7 +70,7 @@ export function I18nProvider({
 
   return (
     <TranslationContext.Provider value={{ t, locale }}>
-      {children}
+      {isLoaded ? children : <div>Loading translations...</div>}
     </TranslationContext.Provider>
   )
 }

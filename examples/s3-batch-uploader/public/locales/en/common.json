@@ -162,6 +162,20 @@
     "cancelled": "Cancelled"
   },
   
+  "storage": {
+    "title": "Storage Usage",
+    "usedSpace": "Used Space",
+    "remainingSpace": "Remaining Space",
+    "fileCount": "File Count",
+    "refreshInfo": "Refresh Storage Info",
+    "loadFailed": "Failed to load storage info",
+    "retryLoad": "Retry",
+    "insufficientSpace": "Insufficient Storage",
+    "insufficientSpaceMessage": "Insufficient storage space! Currently used {{used}}MB, attempting to upload {{upload}}MB, will exceed {{max}}MB limit. Please clean up some files first.",
+    "checkFailed": "Unable to check storage capacity, please upload with caution",
+    "closeAlert": "Close Alert"
+  },
+  
   "errors": {
     "fileTooLarge": "File size exceeds limit",
     "tooManyFiles": "Too many files",

@@ -71,14 +71,14 @@ export function StorageUsage({ className, showDetails = true }: StorageUsageProp
       <div className={clsx('bg-white rounded-lg border border-red-200 p-4', className)}>
         <div className="flex items-center space-x-3 mb-2">
           <XCircle className="w-5 h-5 text-red-500" />
-          <h3 className="font-medium text-red-900">存储信息获取失败</h3>
+          <h3 className="font-medium text-red-900">{t('storage.loadFailed')}</h3>
         </div>
         <p className="text-sm text-red-600 mb-3">{error}</p>
         <button
           onClick={refreshStorageInfo}
           className="text-sm text-red-600 hover:text-red-800 underline"
         >
-          重试
+          {t('storage.retryLoad')}
         </button>
       </div>
     )
@@ -94,7 +94,7 @@ export function StorageUsage({ className, showDetails = true }: StorageUsageProp
       <div className="space-y-3">
         {/* 使用情况文字显示 */}
         <div className="flex justify-between items-center text-sm">
-          <span className="text-gray-600">已用空间</span>
+          <span className="text-gray-600">{t('storage.usedSpace')}</span>
           <span className="font-medium text-gray-900">
             {formatFileSize(storageInfo.totalSize)} / {formatFileSize(storageInfo.maxSize)} ({storageInfo.usagePercentage}%)
           </span>
@@ -110,7 +110,7 @@ export function StorageUsage({ className, showDetails = true }: StorageUsageProp
 
         {/* 剩余空间 */}
         <div className="flex justify-between items-center text-sm">
-          <span className="text-gray-600">剩余空间</span>
+          <span className="text-gray-600">{t('storage.remainingSpace')}</span>
           <span className="font-medium text-gray-900">
             {formatFileSize(storageInfo.remainingSize)}
           </span>
@@ -120,11 +120,9 @@ export function StorageUsage({ className, showDetails = true }: StorageUsageProp
           <>
             {/* 文件统计 */}
             <div className="flex justify-between items-center text-sm">
-              <span className="text-gray-600">文件数量</span>
-              <span className="font-medium text-gray-900">{storageInfo.totalCount} 个</span>
+              <span className="text-gray-600">{t('storage.fileCount')}</span>
+              <span className="font-medium text-gray-900">{storageInfo.totalCount} {t('uploadConfig.filesUnit')}</span>
             </div>
-
-
           </>
         )}
 
@@ -134,7 +132,7 @@ export function StorageUsage({ className, showDetails = true }: StorageUsageProp
             onClick={refreshStorageInfo}
             className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
           >
-            🔄 刷新存储信息
+            🔄 {t('storage.refreshInfo')}
           </button>
         </div>
       </div>

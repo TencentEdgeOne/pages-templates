@@ -97,9 +97,23 @@ export function DropZone({
         const uploadMB = Math.round(totalUploadSize / (1024 * 1024))
         const maxMB = Math.round(storageInfo.maxSize / (1024 * 1024))
         
+        // 检查翻译是否已加载，如果没有则使用回退文本
+        const translatedMessage = t('storage.insufficientSpaceMessage', { 
+          used: usedMB, 
+          upload: uploadMB, 
+          max: maxMB 
+        })
+
+
+        
+        // 如果翻译系统返回键名，说明翻译还未加载，使用回退文本
+        const message = translatedMessage.includes('storage.insufficientSpaceMessage') 
+          ? `存储空间不足！当前已用 ${usedMB}MB，尝试上传 ${uploadMB}MB，将超出 ${maxMB}MB 限制。请先清理一些文件后再试。`
+          : translatedMessage
+        
         return {
           allowed: false,
-          message: `存储空间不足！当前已用 ${usedMB}MB，尝试上传 ${uploadMB}MB，将超出 ${maxMB}MB 限制。请先清理一些文件后再试。`,
+          message: message,
           details: {
             currentUsage: storageInfo.totalSize,
             uploadSize: totalUploadSize,
@@ -113,9 +127,12 @@ export function DropZone({
     } catch (error) {
       console.error('Error checking storage capacity:', error)
       // 如果检查失败，允许上传但显示警告
+      const checkFailedMessage = t('storage.checkFailed')
       return { 
         allowed: true, 
-        message: '无法检查存储容量，请谨慎上传'
+        message: checkFailedMessage.includes('storage.checkFailed') 
+          ? '无法检查存储容量，请谨慎上传' 
+          : checkFailedMessage
       }
     }
   }
@@ -242,7 +259,7 @@ export function DropZone({
             <div className="flex items-start space-x-2">
               <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
               <div>
-                <h4 className="text-sm font-medium text-red-800 mb-1">存储空间不足</h4>
+                <h4 className="text-sm font-medium text-red-800 mb-1">{t('storage.insufficientSpace')}</h4>
                 <p className="text-sm text-red-700">{storageError}</p>
                 <button
                   onClick={(e) => {
@@ -252,7 +269,7 @@ export function DropZone({
                   }}
                   className="mt-2 text-xs text-red-600 hover:text-red-800 underline"
                 >
-                  关闭提示
+                  {t('storage.closeAlert')}
                 </button>
               </div>
             </div>

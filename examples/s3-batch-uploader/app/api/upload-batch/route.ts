@@ -67,7 +67,8 @@ export async function POST(request: NextRequest) {
       
       return NextResponse.json(
         { 
-          error: `存储空间不足！当前已用 ${usedMB}MB，尝试上传 ${uploadMB}MB，将超出 ${maxMB}MB 限制。请先清理一些文件后再试。`,
+          error: `Insufficient storage space! Currently used ${usedMB}MB, attempting to upload ${uploadMB}MB, will exceed ${maxMB}MB limit. Please clean up some files first.`,
+          errorZh: `存储空间不足！当前已用 ${usedMB}MB，尝试上传 ${uploadMB}MB，将超出 ${maxMB}MB 限制。请先清理一些文件后再试。`,
           code: 'STORAGE_LIMIT_EXCEEDED',
           details: {
             currentUsage: storageCheck.totalSize,

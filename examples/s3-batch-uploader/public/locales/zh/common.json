@@ -161,6 +161,20 @@
     "cancelled": "已取消"
   },
   
+  "storage": {
+    "title": "存储使用情况",
+    "usedSpace": "已用空间",
+    "remainingSpace": "剩余空间",
+    "fileCount": "文件数量",
+    "refreshInfo": "刷新存储信息",
+    "loadFailed": "存储信息获取失败",
+    "retryLoad": "重试",
+    "insufficientSpace": "存储空间不足",
+    "insufficientSpaceMessage": "存储空间不足！当前已用 {{used}}MB，尝试上传 {{upload}}MB，将超出 {{max}}MB 限制。请先清理一些文件后再试。",
+    "checkFailed": "无法检查存储容量，请谨慎上传",
+    "closeAlert": "关闭提示"
+  },
+  
   "errors": {
     "fileTooLarge": "文件大小超过限制",
     "tooManyFiles": "文件数量超过限制",
