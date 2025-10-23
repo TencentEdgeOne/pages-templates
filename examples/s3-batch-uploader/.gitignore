@@ -42,4 +42,6 @@ next-env.d.ts
 .edgeone/*
 !.edgeone/project.json
 .tef_dist/*
+.codebuddy/*
+.edgeone/*
   
