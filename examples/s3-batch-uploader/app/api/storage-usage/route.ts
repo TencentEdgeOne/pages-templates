@@ -71,13 +71,13 @@ export async function GET(request: NextRequest) {
     let message = ''
     switch (status) {
       case 'normal':
-        message = `还可上传约 ${estimatedRemainingFiles} 个文件`
+        message = `Can upload approximately ${estimatedRemainingFiles} more files`
         break
       case 'warning':
-        message = '存储空间即将不足，建议及时清理'
+        message = 'Storage space is running low, please clean up files'
         break
       case 'danger':
-        message = '存储空间严重不足，请清理文件后再上传'
+        message = 'Storage space is critically low, please clean up files before uploading'
         break
     }
 
