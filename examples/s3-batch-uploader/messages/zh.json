@@ -1,0 +1,69 @@
+{
+  "nav": {
+    "upload": "Upload",
+    "history": "History",
+    "settings": "Settings"
+  },
+  "upload": {
+    "title": "File Upload",
+    "dragHint": "Drag files here or click to select",
+    "selectFiles": "Select Files",
+    "startUpload": "Start Upload",
+    "uploading": "Uploading...",
+    "uploadSuccess": "Upload Successful",
+    "uploadFailed": "Upload Failed",
+    "removeFile": "Remove File",
+    "clearAll": "Clear All",
+    "maxFiles": "Maximum {count} files allowed",
+    "maxSize": "File size cannot exceed {size}MB",
+    "supportedFormats": "Supported formats: {formats}",
+    "storageWarning": "Storage space insufficient, please clean up files first",
+    "storageError": "Storage check failed, please try again later"
+  },
+  "history": {
+    "title": "Upload History",
+    "empty": "No upload history yet",
+    "fileName": "File Name",
+    "fileSize": "File Size",
+    "uploadTime": "Upload Time",
+    "status": "Status",
+    "actions": "Actions",
+    "download": "Download",
+    "delete": "Delete",
+    "preview": "Preview",
+    "selectAll": "Select All",
+    "deleteSelected": "Delete Selected",
+    "confirmDelete": "Are you sure you want to delete the selected files?",
+    "deleteSuccess": "Files deleted successfully",
+    "deleteFailed": "Failed to delete files"
+  },
+  "storage": {
+    "title": "Storage Usage",
+    "used": "Used",
+    "available": "Available",
+    "total": "Total",
+    "refresh": "Refresh",
+    "fileCount": "File Count",
+    "estimatedRemaining": "Estimated Remaining Files",
+    "status": {
+      "normal": "Normal",
+      "warning": "Warning",
+      "danger": "Danger"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "close": "Close",
+    "retry": "Retry",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "save": "Save",
+    "edit": "Edit",
+    "view": "View"
+  }
+}
