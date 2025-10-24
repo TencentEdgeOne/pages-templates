@@ -2,6 +2,8 @@
 
 一个功能完整、界面美观的 AWS S3 批量文件上传系统，支持拖拽上传、进度监控等高级功能。
 
+[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?template=<s3-batch-uploader>)
+
 ## ✨ 功能特性
 
 ### 📁 文件上传

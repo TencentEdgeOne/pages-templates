@@ -2,6 +2,10 @@
 
 A feature-complete, beautifully designed AWS S3 batch file upload system with drag-and-drop upload, progress monitoring, and advanced features.
 
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=<s3-batch-uploader>)
+
+More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
+
 ## ✨ Features
 
 ### 📁 File Upload
