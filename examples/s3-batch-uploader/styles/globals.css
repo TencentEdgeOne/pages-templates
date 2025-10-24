@@ -7,7 +7,7 @@
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
   
-  /* 简洁专业配色系统 */
+  /* Clean professional color system */
   --primary: #2563eb;
   --primary-hover: #1d4ed8;
   --primary-light: #dbeafe;
@@ -52,7 +52,7 @@ body {
   font-size: 14px;
 }
 
-/* 简洁专业样式 */
+/* Clean professional styles */
 .clean-section {
   background: #ffffff;
   border: 1px solid var(--gray-200);
@@ -116,7 +116,7 @@ body {
   height: 100%;
 }
 
-/* 简洁布局 */
+/* Clean layout */
 .clean-grid {
   display: grid;
   gap: 20px;
@@ -148,7 +148,7 @@ body {
   color: var(--primary);
 }
 
-/* 状态指示器 */
+/* Status indicators */
 .status-success {
   color: var(--success);
   background: var(--success-light);
@@ -176,7 +176,7 @@ body {
   border-radius: 4px;
 }
 
-/* 简洁动画 */
+/* Clean animations */
 .clean-fade-in {
   animation: cleanFadeIn 0.2s ease;
 }
@@ -192,7 +192,7 @@ body {
   }
 }
 
-/* 简洁滚动条 */
+/* Clean scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -211,13 +211,13 @@ body {
   background: var(--gray-500);
 }
 
-/* 选择状态 */
+/* Selection state */
 .clean-selected {
   background: var(--primary-light);
   border-color: var(--primary);
 }
 
-/* 文件卡片样式 */
+/* File card styles */
 .file-card {
   background: #ffffff;
   border: 1px solid var(--gray-200);
@@ -235,7 +235,7 @@ body {
   box-shadow: 0 0 0 2px var(--primary-light);
 }
 
-/* 通用卡片样式 */
+/* General card styles */
 .flat-card {
   background: #ffffff;
   border: 1px solid var(--gray-200);
@@ -253,7 +253,7 @@ body {
   box-shadow: 0 0 0 2px var(--primary-light);
 }
 
-/* 拖拽区域 */
+/* Drag zone */
 .clean-drag-zone {
   border: 2px dashed var(--gray-300);
   background: var(--gray-50);
@@ -266,7 +266,7 @@ body {
   background: var(--primary-light);
 }
 
-/* 极简表格 */
+/* Minimal table */
 .table-minimal {
   border-collapse: collapse;
   width: 100%;
@@ -285,7 +285,7 @@ body {
   color: #475569;
 }
 
-/* 极简模态框 */
+/* Minimal modal */
 .modal-minimal {
   background: rgba(15, 23, 42, 0.5);
 }
@@ -296,7 +296,7 @@ body {
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-/* 响应式网格 */
+/* Responsive grid */
 @media (max-width: 640px) {
   .grid-responsive {
     grid-template-columns: 1fr;

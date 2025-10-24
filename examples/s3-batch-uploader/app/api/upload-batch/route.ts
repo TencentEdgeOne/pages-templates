@@ -14,7 +14,7 @@ const s3Client = new S3Client({
 const BUCKET_NAME = process.env.AWS_BUCKET_NAME!
 const MAX_STORAGE_SIZE = 500 * 1024 * 1024 // 500MB in bytes
 
-// 检查存储使用情况
+// Check storage usage
 async function checkStorageUsage(): Promise<{ totalSize: number; canUpload: boolean; message?: string }> {
   try {
     const listCommand = new ListObjectsV2Command({
@@ -36,11 +36,11 @@ async function checkStorageUsage(): Promise<{ totalSize: number; canUpload: bool
     return {
       totalSize,
       canUpload: totalSize < MAX_STORAGE_SIZE,
-      message: totalSize >= MAX_STORAGE_SIZE ? '存储空间已满，无法上传更多文件' : undefined
+      message: totalSize >= MAX_STORAGE_SIZE ? 'Storage space is full, cannot upload more files' : undefined
     }
   } catch (error) {
     console.error('Error checking storage usage:', error)
-    // 如果检查失败，允许上传但记录错误
+    // If check fails, allow upload but log error
     return { totalSize: 0, canUpload: true }
   }
 }
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 检查存储容量
+    // Check storage capacity
     const storageCheck = await checkStorageUsage()
     const totalAfterUpload = storageCheck.totalSize + (fileSize || 0)
     
@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { 
           error: `Insufficient storage space! Currently used ${usedMB}MB, attempting to upload ${uploadMB}MB, will exceed ${maxMB}MB limit. Please clean up some files first.`,
-          errorZh: `存储空间不足！当前已用 ${usedMB}MB，尝试上传 ${uploadMB}MB，将超出 ${maxMB}MB 限制。请先清理一些文件后再试。`,
+          errorZh: `Insufficient storage space! Currently used ${usedMB}MB, attempting to upload ${uploadMB}MB, will exceed ${maxMB}MB limit. Please clean up some files first.`,
           code: 'STORAGE_LIMIT_EXCEEDED',
           details: {
             currentUsage: storageCheck.totalSize,
@@ -81,15 +81,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 生成基于文件属性的固定键名，实现覆盖功能
-    // 使用文件名、大小和类型的组合生成哈希，确保同一文件总是得到相同的键名
+    // Generate fixed key name based on file attributes, enabling overwrite functionality
+    // Use combination of filename, size and type to generate hash, ensuring same file always gets same key name
     const fileIdentifier = `${filename}-${fileSize}-${contentType}`
     const fileHash = createHash('md5').update(fileIdentifier).digest('hex').substring(0, 8)
     const fileExtension = filename.split('.').pop() || ''
-    const baseFileName = filename.replace(/\.[^/.]+$/, '') // 移除扩展名
+    const baseFileName = filename.replace(/\.[^/.]+$/, '') // Remove extension
     const key = `uploads/${fileHash}-${baseFileName}.${fileExtension}`
 
-    // 如果文件大小超过 5MB，使用分片上传
+    // If file size exceeds 5MB, use multipart upload
     if (fileSize > 5 * 1024 * 1024) {
       const createMultipartCommand = new CreateMultipartUploadCommand({
         Bucket: BUCKET_NAME,
@@ -106,7 +106,7 @@ export async function POST(request: NextRequest) {
         multipart: true,
       })
     } else {
-      // 直接上传的预签名 URL
+      // Presigned URL for direct upload
       const command = new PutObjectCommand({
         Bucket: BUCKET_NAME,
         Key: key,
@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
       })
 
       const uploadUrl = await getSignedUrl(s3Client, command, {
-        expiresIn: 300, // 5分钟，与其他预签名URL保持一致
+        expiresIn: 300, // 5 minutes, consistent with other presigned URLs
       })
 
       return NextResponse.json({
@@ -122,7 +122,7 @@ export async function POST(request: NextRequest) {
         key,
         publicUrl: `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`,
         multipart: false,
-        fields: {}, // 直接预签名 URL 不需要额外字段
+        fields: {}, // Direct presigned URL doesn't need additional fields
       })
     }
   } catch (error) {

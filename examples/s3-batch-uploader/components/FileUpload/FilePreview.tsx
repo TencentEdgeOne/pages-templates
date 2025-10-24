@@ -13,7 +13,7 @@ interface FilePreviewProps {
   onRetry: (id: string) => void
   onCancel: (id: string) => void
   onToggleSelect: (id: string) => void
-  isCompleted?: boolean // 新增：标识是否为已完成文件
+  isCompleted?: boolean // New: indicates if file is completed
 }
 
 export function FilePreview({
@@ -102,11 +102,11 @@ export function FilePreview({
       relative bg-white border rounded-lg overflow-hidden transition-all duration-200 shadow-sm
       ${file.selected ? 'selected-minimal border-blue-500 ring-2 ring-blue-100' : 'border-gray-200 hover:border-gray-300'}
     `}>
-      {/* 文件预览区域 */}
+      {/* File preview area */}
       <div className="aspect-square relative overflow-hidden bg-gray-50">
         {renderPreview()}
         
-        {/* 左上角勾选按钮 - 待上传文件显示，默认勾选 */}
+        {/* Top-left checkbox - shown for pending upload files, checked by default */}
         {!isCompleted && file.status !== 'uploading' && (
           <div className="absolute top-3 left-3 z-10">
             <button
@@ -128,7 +128,7 @@ export function FilePreview({
           </div>
         )}
 
-        {/* 上传进度蒙板 - 使用专用的ProgressOverlay组件，确保在最上层 */}
+        {/* Upload progress overlay - using dedicated ProgressOverlay component, ensuring top layer */}
         <ProgressOverlay
           status={file.status}
           progress={file.progress}
@@ -138,7 +138,7 @@ export function FilePreview({
         />
       </div>
 
-      {/* 底部文件名区域 */}
+      {/* Bottom filename area */}
       <div className="p-3 bg-white">
         <div className="flex items-center justify-between">
           <div className="flex-1 min-w-0">
@@ -153,7 +153,7 @@ export function FilePreview({
             </p>
           </div>
           
-          {/* 操作按钮 - 只在非上传状态显示 */}
+          {/* Action buttons - only shown when not uploading */}
           {file.status !== 'uploading' && !isCompleted && (
             <div className="flex items-center space-x-1 ml-2">
               {file.status === 'error' && (
@@ -176,7 +176,7 @@ export function FilePreview({
           )}
         </div>
 
-        {/* 成功状态提示 - 已完成文件 */}
+        {/* Success status indicator - completed files */}
         {isCompleted && file.status === 'success' && (
           <div className="flex items-center space-x-2 mt-2 p-2 bg-green-50 rounded border border-green-200">
             <CheckCircle className="w-4 h-4 text-green-600 flex-shrink-0" />

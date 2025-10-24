@@ -13,7 +13,7 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
     prefix = '',
     maxKeys = 1000,
     autoRefresh = false,
-    refreshInterval = 30000 // 30秒
+    refreshInterval = 30000 // 30 seconds
   } = options
 
   const [files, setFiles] = useState<HistoryItem[]>([])
@@ -29,7 +29,7 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
 
       const params = new URLSearchParams()
       params.set('prefix', prefix)
-      // 同时提供两种参数，Edge 用 pageSize，本地 API 用 maxKeys
+      // Provide both parameters: pageSize for Edge, maxKeys for local API
       params.set('pageSize', maxKeys.toString())
       params.set('maxKeys', maxKeys.toString())
 
@@ -46,7 +46,7 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
           const errorData = await response.json()
           errorMessage = errorData.error || errorMessage
         } catch {
-          // 如果响应不是JSON，使用状态文本
+          // If response is not JSON, use status text
           errorMessage = `HTTP ${response.status}: ${response.statusText}`
         }
         throw new Error(errorMessage)
@@ -55,10 +55,10 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
       const data: S3FilesResponse = await response.json()
 
       if (continuationToken) {
-        // 追加更多文件（分页加载）
+        // Append more files (pagination loading)
         setFiles(prev => [...prev, ...data.files])
       } else {
-        // 替换所有文件（刷新）
+        // Replace all files (refresh)
         setFiles(data.files)
       }
 
@@ -99,7 +99,7 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
         throw new Error(errorMessage)
       }
 
-      // 从本地状态中移除文件
+      // Remove file from local state
       setFiles(prev => prev.filter(file => file.s3Key !== s3Key))
 
       return true
@@ -109,12 +109,12 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
     }
   }, [])
 
-  // 初始加载
+  // Initial loading
   useEffect(() => {
     fetchFiles()
   }, [fetchFiles])
 
-  // 自动刷新
+  // Auto refresh
   useEffect(() => {
     if (!autoRefresh || refreshInterval <= 0) return
 

@@ -91,7 +91,7 @@ export function StorageUsage({ className, showDetails = true }: StorageUsageProp
     <div className={clsx('bg-white rounded-lg border border-gray-200 p-4', className)}>
 
       <div className="space-y-3">
-        {/* 使用情况文字显示 */}
+        {/* Usage text display */}
         <div className="flex justify-between items-center text-sm">
           <span className="text-gray-600">Used Space</span>
           <span className="font-medium text-gray-900">
@@ -99,7 +99,7 @@ export function StorageUsage({ className, showDetails = true }: StorageUsageProp
           </span>
         </div>
 
-        {/* 进度条 */}
+        {/* Progress bar */}
         <div className="w-full bg-gray-200 rounded-full h-2">
           <div
             className={clsx('h-2 rounded-full transition-all duration-300', getProgressBarColor(storageInfo.status))}
@@ -107,7 +107,7 @@ export function StorageUsage({ className, showDetails = true }: StorageUsageProp
           ></div>
         </div>
 
-        {/* 剩余空间 */}
+        {/* Remaining space */}
         <div className="flex justify-between items-center text-sm">
           <span className="text-gray-600">Remaining Space</span>
           <span className="font-medium text-gray-900">
@@ -117,7 +117,7 @@ export function StorageUsage({ className, showDetails = true }: StorageUsageProp
 
         {showDetails && (
           <>
-            {/* 文件统计 */}
+            {/* File statistics */}
             <div className="flex justify-between items-center text-sm">
               <span className="text-gray-600">File Count</span>
               <span className="font-medium text-gray-900">{storageInfo.totalCount} files</span>
@@ -125,7 +125,7 @@ export function StorageUsage({ className, showDetails = true }: StorageUsageProp
           </>
         )}
 
-        {/* 刷新按钮 */}
+        {/* Refresh button */}
         <div className="pt-2 border-t border-gray-100">
           <button
             onClick={refreshStorageInfo}

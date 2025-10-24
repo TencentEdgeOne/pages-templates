@@ -1,22 +1,22 @@
-// 上传配置文件
-// 这些配置不需要从环境变量加载，直接在代码中定义
+// Upload configuration file
+// These configurations don't need to be loaded from environment variables, define directly in code
 
 export const UPLOAD_CONFIG = {
-  // 最大文件大小 (10MB)
+  // Maximum file size (10MB)
   MAX_FILE_SIZE: 10485760, // 10MB in bytes
   
-  // 最大文件数量
+  // Maximum number of files
   MAX_FILES: 20,
   
-  // 分块上传大小 (5MB)
+  // Chunk upload size (5MB)
   CHUNK_SIZE: 5242880, // 5MB chunk size for multipart upload
   
-  // 并发上传数量
+  // Concurrent upload count
   CONCURRENT_UPLOADS: 3,
   
-  // 支持的文件类型
+  // Supported file types
   ALLOWED_FILE_TYPES: [
-    // 图片类型
+    // Image types
     'image/jpeg',
     'image/jpg', 
     'image/png',
@@ -25,7 +25,7 @@ export const UPLOAD_CONFIG = {
     'image/bmp',
     'image/svg+xml',
     
-    // 视频类型
+    // Video types
     'video/mp4',
     'video/avi',
     'video/mov',
@@ -34,7 +34,7 @@ export const UPLOAD_CONFIG = {
     'video/webm',
     'video/mkv',
     
-    // 文档类型
+    // Document types
     'application/pdf',
     'application/msword',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
@@ -45,13 +45,13 @@ export const UPLOAD_CONFIG = {
     'text/plain',
     'text/csv',
     
-    // 压缩文件
+    // Archive files
     'application/zip',
     'application/x-rar-compressed',
     'application/x-7z-compressed',
     'application/gzip',
     
-    // 音频文件
+    // Audio files
     'audio/mpeg',
     'audio/wav',
     'audio/ogg',
@@ -59,17 +59,17 @@ export const UPLOAD_CONFIG = {
     'audio/flac'
   ],
   
-  // 预签名URL过期时间 (10分钟)
+  // Presigned URL expiration time (10 minutes)
   PRESIGNED_URL_EXPIRES: 600,
   
-  // 上传重试次数
+  // Upload retry attempts
   MAX_RETRY_ATTEMPTS: 3,
   
-  // 上传超时时间 (30秒)
+  // Upload timeout (30 seconds)
   UPLOAD_TIMEOUT: 30000
 }
 
-// 格式化文件大小
+// Format file size
 export function formatFileSize(bytes) {
   if (bytes === 0) return '0 Bytes'
   const k = 1024
@@ -78,17 +78,17 @@ export function formatFileSize(bytes) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
 }
 
-// 检查文件类型是否支持
+// Check if file type is supported
 export function isFileTypeAllowed(fileType) {
   return UPLOAD_CONFIG.ALLOWED_FILE_TYPES.includes(fileType)
 }
 
-// 检查文件大小是否符合限制
+// Check if file size meets requirements
 export function isFileSizeValid(fileSize) {
   return fileSize <= UPLOAD_CONFIG.MAX_FILE_SIZE
 }
 
-// 获取文件类型分类
+// Get file type category
 export function getFileCategory(fileType) {
   if (fileType.startsWith('image/')) return 'image'
   if (fileType.startsWith('video/')) return 'video'

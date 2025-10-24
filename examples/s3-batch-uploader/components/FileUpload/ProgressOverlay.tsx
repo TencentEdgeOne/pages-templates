@@ -29,7 +29,7 @@ export function ProgressOverlay({
   return (
     <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-30">
       <div className="bg-white rounded-lg p-3 shadow-xl max-w-xs w-full mx-2 relative">
-        {/* 关闭按钮 */}
+        {/* Close button */}
         {onClose && (
           <button
             onClick={onClose}

@@ -30,10 +30,10 @@ export const saveUploadHistory = (items: HistoryItem[]): void => {
 
 export const addToUploadHistory = (item: Omit<HistoryItem, 's3Url'> & { s3Url?: string }): void => {
   const history = getUploadHistory()
-  // 添加 s3Key 如果没有提供
+  // Add s3Key if not provided
   const itemWithKey: HistoryItem = {
     ...item,
-    s3Key: item.s3Key || item.id, // 使用 s3Key 或 fallback 到 id
+    s3Key: item.s3Key || item.id, // Use s3Key or fallback to id
   }
   const updatedHistory = [itemWithKey, ...history.filter(h => h.id !== itemWithKey.id)]
   saveUploadHistory(updatedHistory)
@@ -47,7 +47,7 @@ export const removeFromUploadHistory = (id: string): void => {
 
 export const getUploadConfig = (): UploadConfig => {
   if (typeof window === 'undefined') {
-    // Server-side default - 使用配置文件中的值
+    // Server-side default - use values from config file
     return {
       maxFileSize: UPLOAD_CONFIG.MAX_FILE_SIZE,
       maxFiles: UPLOAD_CONFIG.MAX_FILES,
@@ -59,7 +59,7 @@ export const getUploadConfig = (): UploadConfig => {
     const config = localStorage.getItem(STORAGE_KEYS.UPLOAD_CONFIG)
     if (config) {
       const parsedConfig = JSON.parse(config)
-      // 确保保存的配置不超过系统限制
+      // Ensure saved config doesn't exceed system limits
       return {
         maxFileSize: Math.min(parsedConfig.maxFileSize || UPLOAD_CONFIG.MAX_FILE_SIZE, UPLOAD_CONFIG.MAX_FILE_SIZE),
         maxFiles: Math.min(parsedConfig.maxFiles || UPLOAD_CONFIG.MAX_FILES, UPLOAD_CONFIG.MAX_FILES),
@@ -67,7 +67,7 @@ export const getUploadConfig = (): UploadConfig => {
       }
     }
     
-    // Default config - 使用配置文件中的值
+    // Default config - use values from config file
     return {
       maxFileSize: UPLOAD_CONFIG.MAX_FILE_SIZE,
       maxFiles: UPLOAD_CONFIG.MAX_FILES,

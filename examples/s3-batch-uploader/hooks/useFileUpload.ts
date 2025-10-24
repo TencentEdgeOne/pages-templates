@@ -109,20 +109,20 @@ export function useFileUpload(config: UploadConfig) {
     try {
       updateFileStatus(file.id, { status: 'uploading', progress: 0 })
       
-      // 使用预签名URL单次上传
+      // Use presigned URL for single upload
       const publicUrl = await uploadFileWithPresignedUrl(file)
 
-      // 上传成功
+      // Upload successful
       updateFileStatus(file.id, {
         status: 'success',
         progress: 100,
         s3Url: publicUrl,
       })
 
-      // 添加到历史记录
+      // Add to history
       addToUploadHistory({
         id: file.id,
-        s3Key: file.id, // 使用文件 ID 作为 S3 key
+        s3Key: file.id, // Use file ID as S3 key
         fileName: file.file.name,
         fileSize: file.file.size,
         fileType: file.file.type,
@@ -133,21 +133,21 @@ export function useFileUpload(config: UploadConfig) {
       console.error('Upload error:', error)
       updateFileStatus(file.id, {
         status: 'error',
-        error: error instanceof Error ? error.message : '上传失败',
+        error: error instanceof Error ? error.message : 'Upload failed',
       })
     } finally {
       activeUploads.current.delete(file.id)
       xhrRefs.current.delete(file.id)
-      // 延迟触发队列处理检查，确保状态更新完成
+      // Delay queue processing check to ensure state update completion
       setTimeout(() => {
         processUploadQueue()
       }, 200)
     }
   }, [updateFileStatus])
 
-  // 预签名URL单次上传
+  // Presigned URL single upload
   const uploadFileWithPresignedUrl = useCallback(async (file: UploadFile): Promise<string> => {
-    // 第一步：获取预签名 URL
+    // Step 1: Get presigned URL
     updateFileStatus(file.id, { progress: 10 })
     const presignResponse = await fetch('/api/upload-batch', {
       method: 'POST',
@@ -169,14 +169,14 @@ export function useFileUpload(config: UploadConfig) {
     const { uploadUrl, publicUrl } = await presignResponse.json()
     updateFileStatus(file.id, { progress: 20 })
 
-    // 第二步：使用 XMLHttpRequest 直接上传文件到预签名 URL
+    // Step 2: Use XMLHttpRequest to upload file directly to presigned URL
     await new Promise<void>((resolve, reject) => {
       const xhr = new XMLHttpRequest()
       
-      // 存储 XMLHttpRequest 引用以便暂停/取消
+      // Store XMLHttpRequest reference for pause/cancel
       xhrRefs.current.set(file.id, xhr)
       
-      // 上传进度监听
+      // Upload progress listener
       xhr.upload.addEventListener('progress', (event) => {
         if (event.lengthComputable) {
           const percentComplete = Math.round((event.loaded / event.total) * 80) + 20 // 20-100%
@@ -189,23 +189,23 @@ export function useFileUpload(config: UploadConfig) {
         if (xhr.status >= 200 && xhr.status < 300) {
           resolve()
         } else {
-          reject(new Error(`上传失败: ${xhr.status}`))
+          reject(new Error(`Upload failed: ${xhr.status}`))
         }
       })
       
       xhr.addEventListener('error', () => {
         xhrRefs.current.delete(file.id)
-        reject(new Error('网络错误'))
+        reject(new Error('Network error'))
       })
       
       xhr.addEventListener('abort', () => {
         xhrRefs.current.delete(file.id)
-        reject(new Error('上传被取消'))
+        reject(new Error('Upload cancelled'))
       })
       
-      // 使用 PUT 方法直接上传文件到预签名 URL
+      // Use PUT method to upload file directly to presigned URL
       xhr.open('PUT', uploadUrl)
-      // 移除 Content-Type 头，让浏览器自动处理
+      // Remove Content-Type header, let browser handle automatically
       xhr.send(file.file)
     })
 
@@ -213,9 +213,9 @@ export function useFileUpload(config: UploadConfig) {
   }, [updateFileStatus])
 
   const processUploadQueue = useCallback(() => {
-    // 获取当前文件状态
+    // Get current file status
     setFiles(currentFiles => {
-      // 处理队列中的文件
+      // Process files in queue
       while (uploadQueue.current.length > 0 && activeUploads.current.size < config.concurrentUploads) {
         const fileId = uploadQueue.current.shift()
         if (!fileId) break
@@ -224,11 +224,11 @@ export function useFileUpload(config: UploadConfig) {
         if (!file || !file.selected || file.status !== 'pending') continue
 
         activeUploads.current.add(fileId)
-        // 异步执行上传，不阻塞队列处理
+        // Execute upload asynchronously, don't block queue processing
         uploadFile(file).catch(console.error)
       }
 
-      // 检查是否所有上传都已完成
+      // Check if all uploads are completed
       const hasActiveUploads = activeUploads.current.size > 0
       const hasQueuedUploads = uploadQueue.current.length > 0
       const hasUploadingFiles = currentFiles.some(f => f.status === 'uploading')
@@ -273,17 +273,17 @@ export function useFileUpload(config: UploadConfig) {
       xhr.abort()
     }
     
-    // 从所有相关状态中移除文件
+    // Remove file from all related states
     activeUploads.current.delete(id)
     xhrRefs.current.delete(id)
     uploadQueue.current = uploadQueue.current.filter(fileId => fileId !== id)
     
-    // 移除文件
+    // Remove file
     removeFile(id)
   }, [removeFile])
 
   const closeErrorDialog = useCallback((id: string) => {
-    // 关闭错误弹窗，将状态重置为 pending，但保留错误信息以便用户查看
+    // Close error dialog, reset status to pending, but keep error info for user reference
     updateFileStatus(id, { status: 'pending' })
   }, [updateFileStatus])
 

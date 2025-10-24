@@ -76,12 +76,12 @@ export function DropZone({
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
-  // 检查存储容量
+  // Check storage capacity
   const checkStorageCapacity = async (files: File[]): Promise<StorageCheckResult> => {
     try {
       const totalUploadSize = files.reduce((sum, file) => sum + file.size, 0)
       
-      // 调用存储使用API检查当前使用情况
+      // Call storage usage API to check current usage
       const response = await fetch('/api/storage-usage')
       if (!response.ok) {
         throw new Error('Failed to check storage usage')
@@ -112,7 +112,7 @@ export function DropZone({
       return { allowed: true }
     } catch (error) {
       console.error('Error checking storage capacity:', error)
-      // 如果检查失败，允许上传但显示警告
+      // If check fails, allow upload but show warning
       return { 
         allowed: true, 
         message: 'Unable to check storage capacity, please upload with caution'
@@ -120,7 +120,7 @@ export function DropZone({
     }
   }
 
-  // 处理文件选择（包含存储检查）
+  // Handle file selection (including storage check)
   const handleFilesWithStorageCheck = async (files: File[]) => {
     if (files.length === 0) return
     
@@ -135,7 +135,7 @@ export function DropZone({
         return
       }
       
-      // 存储检查通过，继续文件选择流程
+      // Storage check passed, continue with file selection process
       onFilesSelected(files.slice(0, maxFiles))
     } catch (error) {
       console.error('Storage check error:', error)
@@ -238,7 +238,7 @@ export function DropZone({
           <p>Supported formats: JPG, PNG, GIF, WebP, MP4, WebM, MOV</p>
         </div>
 
-        {/* 存储错误提示 */}
+        {/* Storage error message */}
         {storageError && (
           <div className="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg relative z-10 pointer-events-auto">
             <div className="flex items-start space-x-2">

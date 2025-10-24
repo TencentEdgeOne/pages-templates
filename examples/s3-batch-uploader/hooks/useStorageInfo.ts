@@ -64,7 +64,7 @@ export function useStorageInfo(): UseStorageInfoReturn {
   useEffect(() => {
     fetchStorageInfo()
     
-    // 监听存储刷新事件
+    // Listen to storage refresh events
     const unsubscribe = storageRefreshManager.subscribe(() => {
       fetchStorageInfo()
     })

@@ -22,7 +22,7 @@ export function Navigation() {
 
   return (
     <div className="h-full flex flex-col bg-white border-r border-gray-200">
-      {/* Logo区域 */}
+      {/* Logo area */}
       <div className="px-6 py-5 border-b border-gray-200">
         <div className="flex items-center space-x-3">
           <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center">
@@ -35,7 +35,7 @@ export function Navigation() {
         </div>
       </div>
 
-      {/* 导航菜单 */}
+      {/* Navigation menu */}
       <nav className="flex-1 px-4 py-6">
         <ul className="space-y-1">
           {menuItems.map((item) => {
@@ -63,7 +63,7 @@ export function Navigation() {
         </ul>
       </nav>
 
-      {/* 底部信息 */}
+      {/* Bottom information */}
       <div className="px-4 py-4 border-t border-gray-200 bg-gray-50">
         <div className="text-center">
           <p className="text-xs text-gray-600">Version 1.0</p>

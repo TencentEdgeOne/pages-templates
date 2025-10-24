@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
       fileSize: obj.Size || 0,
       fileType: getFileType(obj.Key!),
       uploadTime: obj.LastModified?.toISOString() || new Date().toISOString(),
-      // 移除直接 S3 URL，改为使用预签名 URL
+      // Remove direct S3 URL, use presigned URL instead
     }))
 
     return NextResponse.json({

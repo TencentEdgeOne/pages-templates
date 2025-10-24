@@ -34,13 +34,13 @@ function UploadPage() {
     saveUploadConfig(config)
   }, [config])
 
-  // 监听上传完成，刷新存储信息
+  // Listen for upload completion, refresh storage information
   useEffect(() => {
     const completedCount = files.filter(f => f.status === 'success').length
     const errorCount = files.filter(f => f.status === 'error').length
     const uploadingCount = files.filter(f => f.status === 'uploading').length
     
-    // 如果有文件上传完成且没有正在上传的文件，刷新存储信息
+    // If files have completed upload and no files are currently uploading, refresh storage info
     if (completedCount > 0 && uploadingCount === 0 && !isUploading) {
       refreshStorage()
     }

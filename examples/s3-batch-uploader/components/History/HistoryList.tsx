@@ -57,7 +57,7 @@ export default function HistoryList({
     })
   }
 
-  // 加载预签名 URL
+  // Load presigned URLs
   useEffect(() => {
     const loadPresignedUrls = async () => {
       if (items.length === 0) {
@@ -86,7 +86,7 @@ export default function HistoryList({
         setItemsWithUrls(updatedItems)
       } catch (error) {
         console.error('Failed to load presigned URLs:', error)
-        // 如果获取预签名 URL 失败，仍然显示文件列表，但不显示图片预览
+        // If getting presigned URLs fails, still show file list but without image preview
         setItemsWithUrls(items.map(item => ({ ...item, s3Url: '' })))
       } finally {
         setIsProcessingUrls(false)
@@ -200,7 +200,7 @@ export default function HistoryList({
                 }`}
                 onClick={() => handleItemClick(item)}
               >
-                {/* 选择框 */}
+                {/* Selection checkbox */}
                 <div className="absolute top-3 left-3 z-10">
                   <div className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${
                     isSelected(item) 
@@ -215,7 +215,7 @@ export default function HistoryList({
                   </div>
                 </div>
 
-                {/* 操作按钮 */}
+                {/* Action buttons */}
                 <div className="absolute top-3 right-3 z-10 flex items-center space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   {item.s3Url && (
                     <a
@@ -255,7 +255,7 @@ export default function HistoryList({
                   </button>
                 </div>
 
-                {/* 文件预览区域 */}
+                {/* File preview area */}
                 <div className="aspect-square bg-gray-50 flex items-center justify-center relative overflow-hidden">
                   {item.fileType.startsWith('image/') ? (
                     item.s3Url && !imageErrors.has(item.id) ? (
@@ -292,7 +292,7 @@ export default function HistoryList({
                   )}
                 </div>
 
-                {/* 文件信息 */}
+                {/* File information */}
                 <div className="p-3">
                   <h4 className="text-sm font-medium text-gray-900 truncate mb-1" title={item.fileName}>
                     {item.fileName}

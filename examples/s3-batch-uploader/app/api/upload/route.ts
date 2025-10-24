@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 生成唯一的文件键
+    // Generate unique file key
     const timestamp = Date.now()
     const randomId = Math.random().toString(36).substring(2, 15)
     const key = `uploads/${timestamp}-${randomId}-${filename}`
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     })
 
     const uploadUrl = await getSignedUrl(s3Client, command, {
-      expiresIn: 3600, // 1小时
+      expiresIn: 3600, // 1 hour
     })
 
     return NextResponse.json({

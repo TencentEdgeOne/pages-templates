@@ -1,7 +1,7 @@
 {
   "name": "s3-batch-uploader",
   "version": "1.0.0",
-  "description": "S3批量上传工具 - 极简扁平风格版本",
+  "description": "S3 Batch Uploader - Minimalist Flat Design Version",
   "private": true,
   "scripts": {
     "dev": "next dev -p 3003",

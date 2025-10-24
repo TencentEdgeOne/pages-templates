@@ -70,7 +70,7 @@ export const generateFilePreview = (file: File): Promise<string> => {
             resolve(dataURL)
           } else {
             cleanup()
-            reject(new Error('无法获取canvas上下文'))
+            reject(new Error('Unable to get canvas context'))
           }
         } catch (error) {
           cleanup()
@@ -86,7 +86,7 @@ export const generateFilePreview = (file: File): Promise<string> => {
       // Set timeout to prevent hanging
       setTimeout(() => {
         cleanup()
-        reject(new Error('视频预览生成超时'))
+        reject(new Error('Video preview generation timeout'))
       }, 10000)
       
       video.src = URL.createObjectURL(file)
@@ -98,15 +98,15 @@ export const generateFilePreview = (file: File): Promise<string> => {
 }
 
 export const validateFile = (file: File, maxSize?: number): string | null => {
-  // 使用配置文件中的最大文件大小，如果没有传入参数的话
+  // Use max file size from config if no parameter is passed
   const maxFileSize = maxSize || UPLOAD_CONFIG.MAX_FILE_SIZE
   
   if (!isFileSizeValid(file.size)) {
-    return `文件大小超过限制 (${configFormatFileSize(maxFileSize)})`
+    return `File size exceeds limit (${configFormatFileSize(maxFileSize)})`
   }
   
   if (!isFileTypeAllowed(file.type)) {
-    return `不支持的文件类型: ${file.type}`
+    return `Unsupported file type: ${file.type}`
   }
   
   return null

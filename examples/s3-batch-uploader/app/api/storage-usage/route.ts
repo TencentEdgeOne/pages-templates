@@ -21,10 +21,10 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // 获取存储桶中所有对象
+    // Get all objects in the storage bucket
     const listCommand = new ListObjectsV2Command({
       Bucket: BUCKET_NAME,
-      Prefix: 'uploads/', // 只统计 uploads 目录下的文件
+      Prefix: 'uploads/', // Only count files in uploads directory
     })
 
     const response = await s3Client.send(listCommand)
@@ -51,15 +51,15 @@ export async function GET(request: NextRequest) {
       })
     }
 
-    // 计算使用百分比
+    // Calculate usage percentage
     const usagePercentage = Math.round((totalSize / MAX_STORAGE_SIZE) * 100)
     const remainingSize = MAX_STORAGE_SIZE - totalSize
     
-    // 根据平均文件大小估算还能上传多少文件
-    const averageFileSize = totalCount > 0 ? totalSize / totalCount : 5 * 1024 * 1024 // 默认5MB
+    // Estimate how many more files can be uploaded based on average file size
+    const averageFileSize = totalCount > 0 ? totalSize / totalCount : 5 * 1024 * 1024 // Default 5MB
     const estimatedRemainingFiles = Math.floor(remainingSize / averageFileSize)
 
-    // 确定状态
+    // Determine status
     let status: 'normal' | 'warning' | 'danger' = 'normal'
     if (usagePercentage >= 90) {
       status = 'danger'
@@ -67,7 +67,7 @@ export async function GET(request: NextRequest) {
       status = 'warning'
     }
 
-    // 生成提示信息
+    // Generate hint message
     let message = ''
     switch (status) {
       case 'normal':
@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
       status,
       message,
       estimatedRemainingFiles,
-      files: files.slice(0, 10) // 返回最近的10个文件信息
+      files: files.slice(0, 10) // Return information for the most recent 10 files
     })
 
   } catch (error) {

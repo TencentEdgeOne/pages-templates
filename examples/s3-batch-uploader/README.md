@@ -1,6 +1,6 @@
 # 🚀 S3 Batch Uploader
 
-A fully-featured, beautifully designed AWS S3 batch file upload system with drag-and-drop upload, progress monitoring, and other advanced features.
+A feature-complete, beautifully designed AWS S3 batch file upload system with drag-and-drop upload, progress monitoring, and advanced features.
 
 ## ✨ Features
 
@@ -9,16 +9,16 @@ A fully-featured, beautifully designed AWS S3 batch file upload system with drag
 - ✅ **Click to Select** - Traditional file selection method
 - ✅ **Batch Processing** - Select multiple files for batch upload at once
 - ✅ **File Preview** - Display image thumbnails and video covers
-- ✅ **File Information** - Show detailed information like file format and size
+- ✅ **File Information** - Show file format, size and other detailed information
 
 ### 📊 Progress Monitoring
 - ✅ **Real-time Progress Bar** - Display upload progress for each file
-- ✅ **Upload Status** - Waiting, uploading, success, and failure status indicators
-- ✅ **Progress Overlay** - Show semi-transparent progress layer on file preview during upload
-- ✅ **Error Handling** - Display error messages and retry options when upload fails
+- ✅ **Upload Status** - Waiting, uploading, success, failure status indicators
+- ✅ **Progress Overlay** - Display semi-transparent progress layer on file preview during upload
+- ✅ **Error Handling** - Show error information and retry options when upload fails
 
 ### ⚙️ Advanced Configuration
-- ✅ **Concurrency Control** - Configure the number of files to upload simultaneously
+- ✅ **Concurrency Control** - Configurable number of simultaneous file uploads
 - ✅ **File Selection** - Check/uncheck files to upload
 
 ### 📋 History Management
@@ -33,8 +33,8 @@ A fully-featured, beautifully designed AWS S3 batch file upload system with drag
 
 ## 🚀 Quick Start
 
-### 1. Project Running
-The project is currently running at: **http://localhost:3003**
+### 1. Project Already Running
+Project is currently running at: **http://localhost:3001**
 
 ### 2. Configure AWS S3
 Before using, please configure your AWS S3 settings:
@@ -49,17 +49,17 @@ nano .env.local
 
 Fill in your AWS configuration:
 ```env
-AWS_REGION=us-east-1
-AWS_ACCESS_KEY_ID=your-access-key-id
-AWS_SECRET_ACCESS_KEY=your-secret-access-key
-AWS_BUCKET_NAME=your-bucket-name
+AWS_ACCESS_KEY_ID=your_access_key
+AWS_SECRET_ACCESS_KEY=your_secret_key
+AWS_REGION=your_region
+AWS_S3_BUCKET_NAME=your_bucket_name
 ```
 
 ### 3. AWS S3 Setup
 
 #### Create S3 Bucket
-1. Log in to AWS Console
-2. Create a new S3 bucket
+1. Login to AWS Console
+2. Create new S3 bucket
 3. Configure CORS policy:
 
 ```json
@@ -68,13 +68,13 @@ AWS_BUCKET_NAME=your-bucket-name
     "AllowedHeaders": ["*"],
     "AllowedMethods": ["GET", "PUT", "POST", "DELETE"],
     "AllowedOrigins": ["*"],
-    "ExposeHeaders": ["ETag"]
+    "ExposeHeaders": []
   }
 ]
 ```
 
 #### Create IAM User
-1. Create a new IAM user
+1. Create new IAM user
 2. Add S3 access permission policy:
 
 ```json
@@ -84,8 +84,8 @@ AWS_BUCKET_NAME=your-bucket-name
     {
       "Effect": "Allow",
       "Action": [
-        "s3:PutObject",
         "s3:GetObject",
+        "s3:PutObject",
         "s3:DeleteObject",
         "s3:ListBucket"
       ],
@@ -99,8 +99,8 @@ AWS_BUCKET_NAME=your-bucket-name
 ```
 
 #### Allow Public Access Permissions
-1. Enable public access permissions in the S3 bucket
-2. Allow anonymous users to access objects in the bucket
+1. Enable public access permissions in S3 bucket
+2. Allow anonymous users to access objects in bucket
 3. Allow anonymous users to upload objects
 
 ## 📖 Usage Guide
@@ -108,18 +108,18 @@ AWS_BUCKET_NAME=your-bucket-name
 ### Upload Files
 1. Visit http://localhost:3003
 2. Select "Upload" page (default)
-3. Drag files to the upload area or click to select files
+3. Drag files to upload area or click to select files
 4. Configure upload options
-5. Check the files you want to upload
+5. Check files to upload
 6. Click "Start Upload"
 
 ### View History
 1. Click "History" menu on the left
 2. Browse uploaded files
-3. Click on files to view detailed information
+3. Click files to view detailed information
 
 ### Advanced Features
-- **Batch Operations**: Upload multiple files simultaneously
+- **Batch Operations**: Can upload multiple files simultaneously
 
 ## 🛠️ Technical Architecture
 
@@ -131,7 +131,7 @@ AWS_BUCKET_NAME=your-bucket-name
 
 ### Backend Integration
 - **AWS SDK v3** - S3 client
-- **Pre-signed URLs** - Secure file upload
+- **Presigned URLs** - Secure file upload
 
 ### Core Features
 - **Custom Hooks** - File upload logic encapsulation
@@ -141,7 +141,6 @@ AWS_BUCKET_NAME=your-bucket-name
 ## 📁 Project Structure
 
 ```
-s3-batch-uploader/
 ├── app/                    # Next.js App Router
 │   ├── api/               # API routes
 │   │   └── upload-batch/  # Batch upload API
@@ -151,7 +150,7 @@ s3-batch-uploader/
 │   │   └── ui/           # Common UI components
 │   ├── hooks/            # Custom Hooks
 │   │   └── useFileUpload.ts
-│   ├── lib/              # Utility libraries
+│   ├── lib/              # Utility library
 │   │   └── s3-client.ts  # S3 client configuration
 │   ├── types/            # TypeScript type definitions
 │   ├── upload/           # Upload page
@@ -187,29 +186,7 @@ npm start
 npm run lint
 ```
 
-## References
-- **AWS S3 Documentation**: https://docs.aws.amazon.com/s3/
-- **Next.js App Router**: https://nextjs.org/docs/app
-- **AWS SDK v3**: https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/
-
-## 🐛 Common Issues
-
-### 1. Node.js Version Compatibility
-- Recommended to use Node.js 18+ for optimal performance
-
-### 2. AWS Configuration Issues
-- Ensure AWS credentials are correct
-- Check S3 bucket permissions
-- Verify CORS configuration
-
-### 3. Upload Failures
-- Check file size limits
-- Ensure stable network connection
-- Check browser console for error messages
-
-## 📞 Technical Support
-
-If you encounter issues, please:
-1. Check environment variable configuration
-2. Verify AWS permission settings
-3. Check browser console errors
+## 📚 References
+- [AWS S3 Documentation](https://docs.aws.amazon.com/s3/)
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)

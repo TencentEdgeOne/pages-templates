@@ -13,11 +13,11 @@ export function usePresignedUrl() {
   const [loading, setLoading] = useState(false)
   const cache = useRef<PresignedUrlCache>({})
 
-  // 获取单个预签名 URL
+  // Get single presigned URL
   const getPresignedUrl = useCallback(async (s3Key: string, expiresIn: number = 300): Promise<string> => {
-    // 检查缓存
+    // Check cache
     const cached = cache.current[s3Key]
-    if (cached && cached.expiresAt > Date.now() + 30000) { // 提前30秒过期
+    if (cached && cached.expiresAt > Date.now() + 30000) { // Expire 30 seconds early
       return cached.url
     }
 
@@ -39,10 +39,10 @@ export function usePresignedUrl() {
 
       const { presignedUrl } = await response.json()
       
-      // 缓存结果
+      // Cache result
       cache.current[s3Key] = {
         url: presignedUrl,
-        expiresAt: Date.now() + (expiresIn * 1000) - 30000, // 提前30秒过期
+        expiresAt: Date.now() + (expiresIn * 1000) - 30000, // Expire 30 seconds early
       }
 
       return presignedUrl
@@ -52,14 +52,14 @@ export function usePresignedUrl() {
     }
   }, [])
 
-  // 批量获取预签名 URL
+  // Batch get presigned URLs
   const getBatchPresignedUrls = useCallback(async (s3Keys: string[], expiresIn: number = 300): Promise<Record<string, string>> => {
     if (s3Keys.length === 0) return {}
 
     setLoading(true)
     
     try {
-      // 检查哪些 URL 需要重新获取
+      // Check which URLs need to be refetched
       const keysToFetch: string[] = []
       const cachedUrls: Record<string, string> = {}
 
@@ -72,12 +72,12 @@ export function usePresignedUrl() {
         }
       })
 
-      // 如果所有 URL 都已缓存，直接返回
+      // If all URLs are cached, return directly
       if (keysToFetch.length === 0) {
         return cachedUrls
       }
 
-      // 获取新的预签名 URL
+      // Get new presigned URLs
       const response = await fetch('/api/presigned-url', {
         method: 'PUT',
         headers: {
@@ -96,7 +96,7 @@ export function usePresignedUrl() {
       const data = await response.json()
       const presignedUrls = data.presignedUrls || {}
       
-      // 缓存新获取的 URL
+      // Cache newly fetched URLs
       Object.entries(presignedUrls).forEach(([key, url]) => {
         cache.current[key] = {
           url: url as string,
@@ -104,7 +104,7 @@ export function usePresignedUrl() {
         }
       })
 
-      // 合并缓存的和新获取的 URL
+      // Merge cached and newly fetched URLs
       return { ...cachedUrls, ...presignedUrls }
     } catch (error) {
       console.error('Error getting batch presigned URLs:', error)
@@ -114,12 +114,12 @@ export function usePresignedUrl() {
     }
   }, [])
 
-  // 清除缓存
+  // Clear cache
   const clearCache = useCallback(() => {
     cache.current = {}
   }, [])
 
-  // 清除过期缓存
+  // Clear expired cache
   const clearExpiredCache = useCallback(() => {
     const now = Date.now()
     Object.keys(cache.current).forEach(key => {
@@ -135,10 +135,10 @@ export function usePresignedUrl() {
     clearCache,
     clearExpiredCache,
     loading,
-    // 强制刷新所有预签名 URL
+    // Force refresh all presigned URLs
     forceRefresh: () => {
       clearCache()
-      // 触发重新获取
+      // Trigger refetch
       window.location.reload()
     }
   }

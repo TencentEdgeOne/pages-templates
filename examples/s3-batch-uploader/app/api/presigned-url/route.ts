@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 生成预签名 URL
+    // Generate presigned URL
     const command = new GetObjectCommand({
       Bucket: BUCKET_NAME,
       Key: key,
@@ -47,13 +47,13 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// 批量生成预签名 URL
+// Batch generate presigned URLs
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json()
     const { keys, s3Keys, expiresIn = 300 } = body
     
-    // 支持两种参数名称：keys 或 s3Keys
+    // Support two parameter names: keys or s3Keys
     const keysArray = keys || s3Keys
     
     if (!keysArray || !Array.isArray(keysArray)) {
@@ -65,7 +65,7 @@ export async function PUT(request: NextRequest) {
 
     const presignedUrls: Record<string, string> = {}
 
-    // 并行生成所有预签名 URL
+    // Generate all presigned URLs in parallel
     await Promise.all(
       keysArray.map(async (key: string) => {
         try {
@@ -81,7 +81,7 @@ export async function PUT(request: NextRequest) {
           presignedUrls[key] = presignedUrl
         } catch (error) {
           console.error(`Error generating presigned URL for key ${key}:`, error)
-          // 继续处理其他文件，不因单个文件失败而中断
+          // Continue processing other files, don't interrupt due to single file failure
         }
       })
     )
