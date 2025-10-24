@@ -129,7 +129,7 @@ export default function HistoryList({
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
           <span className="text-gray-600">
-            {loading ? 'Loading file list...' : 'Processing file URLs...'}
+            Loading file list...
           </span>
         </div>
       </div>
