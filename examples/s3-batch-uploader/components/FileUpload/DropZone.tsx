@@ -167,6 +167,8 @@ export function DropZone({
         className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed pointer-events-auto"
         disabled={disabled || isCheckingStorage}
         id="file-upload"
+        title="Click to select files"
+        aria-label="Select files to upload"
       />
       
       <div className="space-y-5">

@@ -28,6 +28,7 @@ export default function HistoryList({
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [itemsWithUrls, setItemsWithUrls] = useState<HistoryItem[]>([])
   const [imageErrors, setImageErrors] = useState<Set<string>>(new Set())
+  const [isProcessingUrls, setIsProcessingUrls] = useState(false)
   const { getBatchPresignedUrls } = usePresignedUrl()
 
 
@@ -61,14 +62,18 @@ export default function HistoryList({
     const loadPresignedUrls = async () => {
       if (items.length === 0) {
         setItemsWithUrls([])
+        setIsProcessingUrls(false)
         return
       }
+
+      setIsProcessingUrls(true)
 
       try {
         const s3Keys = items.map(item => item.s3Key).filter(Boolean)
         
         if (s3Keys.length === 0) {
           setItemsWithUrls(items)
+          setIsProcessingUrls(false)
           return
         }
 
@@ -83,6 +88,8 @@ export default function HistoryList({
         console.error('Failed to load presigned URLs:', error)
         // 如果获取预签名 URL 失败，仍然显示文件列表，但不显示图片预览
         setItemsWithUrls(items.map(item => ({ ...item, s3Url: '' })))
+      } finally {
+        setIsProcessingUrls(false)
       }
     }
 
@@ -116,12 +123,14 @@ export default function HistoryList({
     }
   }
 
-  if (loading) {
+  if (loading || isProcessingUrls) {
     return (
       <div className="bg-white border border-gray-200 rounded-lg p-12">
         <div className="flex flex-col items-center justify-center space-y-4">
           <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
-          <span className="text-gray-600">Loading file list...</span>
+          <span className="text-gray-600">
+            {loading ? 'Loading file list...' : 'Processing file URLs...'}
+          </span>
         </div>
       </div>
     )
