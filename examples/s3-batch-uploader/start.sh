@@ -1,22 +1,22 @@
 #!/bin/bash
 
-# S3 批量上传器启动脚本
-echo "🚀 启动 S3 批量上传器..."
+# S3 Batch Uploader startup script
+echo "🚀 Starting S3 Batch Uploader..."
 
-# 检查 Node.js 版本
+# Check Node.js version
 NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
 if [ "$NODE_VERSION" -lt 18 ]; then
-    echo "⚠️  警告: 当前 Node.js 版本为 $(node -v)，推荐使用 Node.js 18+ 以获得最佳体验"
-    echo "📝 如果遇到问题，请考虑升级 Node.js 版本"
+    echo "⚠️  Warning: Current Node.js version is $(node -v), recommend using Node.js 18+ for best experience"
+    echo "📝 If you encounter issues, please consider upgrading your Node.js version"
 fi
 
-# 检查环境变量文件
+# Check environment variables file
 if [ ! -f ".env.local" ]; then
-    echo "📋 创建环境变量文件..."
+    echo "📋 Creating environment variables file..."
     cp .env.example .env.local
-    echo "✅ 请编辑 .env.local 文件，填入你的 AWS 配置信息"
+    echo "✅ Please edit .env.local file and fill in your AWS configuration"
 fi
 
-# 启动开发服务器
-echo "🔧 启动开发服务器..."
+# Start development server
+echo "🔧 Starting development server..."
 npm run dev
