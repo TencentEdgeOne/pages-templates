@@ -4,7 +4,7 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { createHash } from 'crypto'
 
 const s3Client = new S3Client({
-  region: process.env.AWS_REGION!,
+  region: process.env.AWS_BUCKET_REGION!,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
@@ -102,7 +102,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         uploadId: multipartResponse.UploadId,
         key,
-        publicUrl: `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`,
+        publicUrl: `https://${BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${key}`,
         multipart: true,
       })
     } else {
@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({
         uploadUrl,
         key,
-        publicUrl: `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`,
+        publicUrl: `https://${BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${key}`,
         multipart: false,
         fields: {}, // Direct presigned URL doesn't need additional fields
       })

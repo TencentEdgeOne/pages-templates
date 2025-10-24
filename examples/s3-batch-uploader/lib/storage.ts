@@ -1,5 +1,5 @@
 import { HistoryItem, UploadConfig } from '../types/upload'
-import { UPLOAD_CONFIG } from '../config/upload.js'
+import { UPLOAD_CONFIG } from '../config/upload'
 
 const STORAGE_KEYS = {
   UPLOAD_HISTORY: 'upload_history',

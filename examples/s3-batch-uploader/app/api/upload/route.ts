@@ -3,7 +3,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 
 const s3Client = new S3Client({
-  region: process.env.AWS_REGION!,
+  region: process.env.AWS_BUCKET_REGION!,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       uploadUrl,
       key,
-      publicUrl: `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${key}`,
+      publicUrl: `https://${BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${key}`,
     })
   } catch (error) {
     console.error('Error creating presigned URL:', error)

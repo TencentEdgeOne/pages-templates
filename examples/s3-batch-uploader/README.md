@@ -38,7 +38,7 @@ More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 ## 🚀 Quick Start
 
 ### 1. Project Already Running
-Project is currently running at: **http://localhost:3001**
+Project is currently running at: **http://localhost:3003**
 
 ### 2. Configure AWS S3
 Before using, please configure your AWS S3 settings:
@@ -55,7 +55,7 @@ Fill in your AWS configuration:
 ```env
 AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
-AWS_REGION=your_region
+AWS_BUCKET_REGION=your-bucket-region
 AWS_S3_BUCKET_NAME=your_bucket_name
 ```
 

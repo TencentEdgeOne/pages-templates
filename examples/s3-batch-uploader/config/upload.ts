@@ -59,8 +59,8 @@ export const UPLOAD_CONFIG = {
     'audio/flac'
   ],
   
-  // Presigned URL expiration time (10 minutes)
-  PRESIGNED_URL_EXPIRES: 600,
+  // Presigned URL expiration time (5 minutes)
+  PRESIGNED_URL_EXPIRES: 300,
   
   // Upload retry attempts
   MAX_RETRY_ATTEMPTS: 3,

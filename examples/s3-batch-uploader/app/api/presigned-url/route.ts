@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { S3Client, GetObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { UPLOAD_CONFIG } from '../../../config/upload'
 
 const s3Client = new S3Client({
-  region: process.env.AWS_REGION!,
+  region: process.env.AWS_BUCKET_REGION!,
   credentials: {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
@@ -14,7 +15,7 @@ const BUCKET_NAME = process.env.AWS_BUCKET_NAME!
 
 export async function POST(request: NextRequest) {
   try {
-    const { key, expiresIn = 300 } = await request.json()
+    const { key, expiresIn = UPLOAD_CONFIG.PRESIGNED_URL_EXPIRES } = await request.json()
     
     if (!key) {
       return NextResponse.json(

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useRef } from 'react'
+import { UPLOAD_CONFIG } from '../config/upload'
 
 interface PresignedUrlCache {
   [key: string]: {
@@ -14,7 +15,7 @@ export function usePresignedUrl() {
   const cache = useRef<PresignedUrlCache>({})
 
   // Get single presigned URL
-  const getPresignedUrl = useCallback(async (s3Key: string, expiresIn: number = 300): Promise<string> => {
+  const getPresignedUrl = useCallback(async (s3Key: string, expiresIn: number = UPLOAD_CONFIG.PRESIGNED_URL_EXPIRES): Promise<string> => {
     // Check cache
     const cached = cache.current[s3Key]
     if (cached && cached.expiresAt > Date.now() + 30000) { // Expire 30 seconds early

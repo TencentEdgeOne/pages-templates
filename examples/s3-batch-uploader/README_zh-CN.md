@@ -36,7 +36,7 @@
 ## 🚀 快速开始
 
 ### 1. 项目已启动
-项目当前运行在：**http://localhost:3001**
+项目当前运行在：**http://localhost:3003**
 
 ### 2. 配置 AWS S3
 在使用前，请配置你的 AWS S3 设置：
@@ -51,7 +51,7 @@ nano .env.local
 
 填入你的 AWS 配置：
 ```env
-AWS_REGION=us-east-1
+AWS_BUCKET_REGION=your-bucket-region
 AWS_ACCESS_KEY_ID=your-access-key-id
 AWS_SECRET_ACCESS_KEY=your-secret-access-key
 AWS_BUCKET_NAME=your-bucket-name
