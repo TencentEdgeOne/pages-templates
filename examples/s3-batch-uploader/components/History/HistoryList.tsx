@@ -267,9 +267,6 @@ export default function HistoryList({
                           console.log('Image load error for:', item.fileName, item.s3Url)
                           handleImageError(item.id)
                         }}
-                        onLoad={() => {
-                          console.log('Image loaded successfully:', item.fileName)
-                        }}
                       />
                     ) : (
                       <div className="flex flex-col items-center justify-center text-gray-400">
