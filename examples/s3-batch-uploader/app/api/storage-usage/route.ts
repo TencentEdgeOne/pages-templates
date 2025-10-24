@@ -56,7 +56,7 @@ export async function GET(request: NextRequest) {
     const remainingSize = MAX_STORAGE_SIZE - totalSize
     
     // Estimate how many more files can be uploaded based on average file size
-    const averageFileSize = totalCount > 0 ? totalSize / totalCount : 5 * 1024 * 1024 // Default 5MB
+    const averageFileSize = totalCount > 0 ? totalSize / totalCount : 50 * 1024 * 1024 // Default 50MB
     const estimatedRemainingFiles = Math.floor(remainingSize / averageFileSize)
 
     // Determine status

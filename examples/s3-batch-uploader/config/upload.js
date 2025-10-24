@@ -2,14 +2,14 @@
 // These configurations don't need to be loaded from environment variables, define directly in code
 
 export const UPLOAD_CONFIG = {
-  // Maximum file size (10MB)
-  MAX_FILE_SIZE: 10485760, // 10MB in bytes
+  // Maximum file size (50MB)
+  MAX_FILE_SIZE: 52428800, // 50MB in bytes
   
   // Maximum number of files
   MAX_FILES: 20,
   
-  // Chunk upload size (5MB)
-  CHUNK_SIZE: 5242880, // 5MB chunk size for multipart upload
+  // Chunk upload size (50MB)
+  CHUNK_SIZE: 52428800, // 50MB chunk size for multipart upload
   
   // Concurrent upload count
   CONCURRENT_UPLOADS: 3,

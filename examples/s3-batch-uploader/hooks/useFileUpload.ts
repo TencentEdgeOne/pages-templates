@@ -166,8 +166,20 @@ export function useFileUpload(config: UploadConfig) {
       throw new Error(errorData.error || 'Failed to get upload URL')
     }
 
-    const { uploadUrl, publicUrl } = await presignResponse.json()
+    const responseData = await presignResponse.json()
+    const { uploadUrl, publicUrl, multipart, uploadId, key } = responseData
     updateFileStatus(file.id, { progress: 20 })
+
+    // Check if it's multipart upload (for large files)
+    if (multipart && uploadId) {
+      // For now, show error message for multipart uploads as they need special handling
+      throw new Error('Large file uploads (>50MB) are not fully supported yet. Please use smaller files or contact support.')
+    }
+
+    // Ensure uploadUrl exists for direct upload
+    if (!uploadUrl) {
+      throw new Error('No upload URL received from server')
+    }
 
     // Step 2: Use XMLHttpRequest to upload file directly to presigned URL
     await new Promise<void>((resolve, reject) => {

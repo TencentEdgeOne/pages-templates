@@ -89,8 +89,8 @@ export async function POST(request: NextRequest) {
     const baseFileName = filename.replace(/\.[^/.]+$/, '') // Remove extension
     const key = `uploads/${fileHash}-${baseFileName}.${fileExtension}`
 
-    // If file size exceeds 5MB, use multipart upload
-    if (fileSize > 5 * 1024 * 1024) {
+    // If file size exceeds 50MB, use multipart upload
+    if (fileSize > 50 * 1024 * 1024) {
       const createMultipartCommand = new CreateMultipartUploadCommand({
         Bucket: BUCKET_NAME,
         Key: key,

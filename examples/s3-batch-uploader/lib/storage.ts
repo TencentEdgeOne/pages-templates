@@ -46,50 +46,18 @@ export const removeFromUploadHistory = (id: string): void => {
 }
 
 export const getUploadConfig = (): UploadConfig => {
-  if (typeof window === 'undefined') {
-    // Server-side default - use values from config file
-    return {
-      maxFileSize: UPLOAD_CONFIG.MAX_FILE_SIZE,
-      maxFiles: UPLOAD_CONFIG.MAX_FILES,
-      concurrentUploads: UPLOAD_CONFIG.CONCURRENT_UPLOADS,
-    }
-  }
-  
-  try {
-    const config = localStorage.getItem(STORAGE_KEYS.UPLOAD_CONFIG)
-    if (config) {
-      const parsedConfig = JSON.parse(config)
-      // Ensure saved config doesn't exceed system limits
-      return {
-        maxFileSize: Math.min(parsedConfig.maxFileSize || UPLOAD_CONFIG.MAX_FILE_SIZE, UPLOAD_CONFIG.MAX_FILE_SIZE),
-        maxFiles: Math.min(parsedConfig.maxFiles || UPLOAD_CONFIG.MAX_FILES, UPLOAD_CONFIG.MAX_FILES),
-        concurrentUploads: Math.min(parsedConfig.concurrentUploads || UPLOAD_CONFIG.CONCURRENT_UPLOADS, UPLOAD_CONFIG.CONCURRENT_UPLOADS),
-      }
-    }
-    
-    // Default config - use values from config file
-    return {
-      maxFileSize: UPLOAD_CONFIG.MAX_FILE_SIZE,
-      maxFiles: UPLOAD_CONFIG.MAX_FILES,
-      concurrentUploads: UPLOAD_CONFIG.CONCURRENT_UPLOADS,
-    }
-  } catch (error) {
-    console.error('Error reading upload config:', error)
-    return {
-      maxFileSize: UPLOAD_CONFIG.MAX_FILE_SIZE,
-      maxFiles: UPLOAD_CONFIG.MAX_FILES,
-      concurrentUploads: UPLOAD_CONFIG.CONCURRENT_UPLOADS,
-    }
+  // Always return the same default config to avoid SSR hydration mismatch
+  // localStorage customization can be implemented later if needed
+  return {
+    maxFileSize: UPLOAD_CONFIG.MAX_FILE_SIZE,
+    maxFiles: UPLOAD_CONFIG.MAX_FILES,
+    concurrentUploads: UPLOAD_CONFIG.CONCURRENT_UPLOADS,
   }
 }
 
 export const saveUploadConfig = (config: UploadConfig): void => {
-  if (typeof window === 'undefined') return
-  
-  try {
-    localStorage.setItem(STORAGE_KEYS.UPLOAD_CONFIG, JSON.stringify(config))
-  } catch (error) {
-    console.error('Error saving upload config:', error)
-  }
+  // Configuration is now read-only from config file
+  // This function is kept for compatibility but does nothing
+  return
 }
 
