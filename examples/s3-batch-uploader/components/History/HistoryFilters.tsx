@@ -26,6 +26,23 @@ export function HistoryFilters({
     onSortChange(by as 'date' | 'name' | 'size', order as 'asc' | 'desc')
   }
 
+  // Filter type options
+  const filterOptions = [
+    { value: 'all', label: 'All Types' },
+    { value: 'image', label: 'Image' },
+    { value: 'video', label: 'Video' }
+  ]
+
+  // Sort options
+  const sortOptions = [
+    { value: 'date-desc', label: 'Latest Upload' },
+    { value: 'date-asc', label: 'Earliest Upload' },
+    { value: 'name-asc', label: 'File Name A-Z' },
+    { value: 'name-desc', label: 'File Name Z-A' },
+    { value: 'size-desc', label: 'File Size Large-Small' },
+    { value: 'size-asc', label: 'File Size Small-Large' }
+  ]
+
   return (
     <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 lg:space-x-6 mb-4">
       <div className="relative flex-1 max-w-md">
@@ -46,9 +63,11 @@ export function HistoryFilters({
             onChange={(e) => onFilterChange(e.target.value as 'all' | 'image' | 'video')}
             className="clean-input appearance-none px-4 py-3 text-base min-w-[120px] pr-10"
           >
-            <option value="all">All Types</option>
-            <option value="image">Image</option>
-            <option value="video">Video</option>
+            {filterOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
           <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
         </div>
@@ -59,12 +78,11 @@ export function HistoryFilters({
             onChange={(e) => handleSortChange(e.target.value)}
             className="clean-input appearance-none px-4 py-3 text-base min-w-[140px] pr-10"
           >
-            <option value="date-desc">Latest Upload</option>
-            <option value="date-asc">Earliest Upload</option>
-            <option value="name-asc">File Name A-Z</option>
-            <option value="name-desc">File Name Z-A</option>
-            <option value="size-desc">File Size Large-Small</option>
-            <option value="size-asc">File Size Small-Large</option>
+            {sortOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
           </select>
           <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" />
         </div>
