@@ -1,15 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { S3Client, ListObjectsV2Command } from '@aws-sdk/client-s3'
+import { ListObjectsV2Command } from '@aws-sdk/client-s3'
+import { s3Client, BUCKET_NAME } from '../../../lib/s3-client'
 
-const s3Client = new S3Client({
-  region: process.env.AWS_BUCKET_REGION || 'us-east-1',
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID || '',
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY || '',
-  },
-})
-
-const BUCKET_NAME = process.env.AWS_BUCKET_NAME || ''
 const MAX_STORAGE_SIZE = 500 * 1024 * 1024 // 500MB in bytes
 
 export async function GET(request: NextRequest) {

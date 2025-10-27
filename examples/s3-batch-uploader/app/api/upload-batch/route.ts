@@ -1,17 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { S3Client, CreateMultipartUploadCommand, PutObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
+import { CreateMultipartUploadCommand, PutObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { createHash } from 'crypto'
+import { s3Client, BUCKET_NAME } from '../../../lib/s3-client'
 
-const s3Client = new S3Client({
-  region: process.env.AWS_BUCKET_REGION!,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID!,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY!,
-  },
-})
 
-const BUCKET_NAME = process.env.AWS_BUCKET_NAME!
 const MAX_STORAGE_SIZE = 500 * 1024 * 1024 // 500MB in bytes
 
 // Check storage usage
