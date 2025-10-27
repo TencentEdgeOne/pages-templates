@@ -52,9 +52,9 @@ nano .env.local
 
 Fill in your AWS configuration:
 ```env
-AWS_BUCKET_REGION=your-bucket-region
 AWS_ACCESS_KEY_ID=your-access-key-id
 AWS_SECRET_ACCESS_KEY=your-secret-access-key
+AWS_BUCKET_REGION=your-bucket-region
 AWS_BUCKET_NAME=your-bucket-name
 ```
 
