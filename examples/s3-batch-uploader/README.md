@@ -2,7 +2,7 @@
 
 A feature-complete, beautifully designed AWS S3 batch file upload system with drag-and-drop upload, progress monitoring, and advanced features.
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=<s3-batch-uploader>)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=s3-batch-uploader)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
@@ -25,14 +25,13 @@ More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 - ✅ **Concurrency Control** - Configurable number of simultaneous file uploads
 - ✅ **File Selection** - Check/uncheck files to upload
 
-### 📋 History Management
-- ✅ **Upload History** - View list of uploaded files
+### 📋 Storage Bucket Management
+- ✅ **Storage Bucket** - View list of uploaded files
 - ✅ **File Details** - Click to view detailed file information
 
 ### 🎨 User Interface
 - ✅ **Modern Design** - Clean and beautiful user interface
 - ✅ **Responsive Layout** - Adapt to different screen sizes
-- ✅ **Sidebar Navigation** - Switch between upload and history pages
 - ✅ **Status Feedback** - Rich visual feedback and interactive effects
 
 ## 🚀 Quick Start
@@ -123,7 +122,7 @@ AWS_BUCKET_NAME=your-bucket-name
 ## 🛠️ Technical Architecture
 
 ### Frontend Tech Stack
-- **Next.js 13** - React full-stack framework
+- **Next.js 14** - React full-stack framework
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling framework
 - **Lucide React** - Icon library
