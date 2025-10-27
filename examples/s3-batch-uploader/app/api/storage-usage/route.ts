@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { ListObjectsV2Command } from '@aws-sdk/client-s3'
 import { s3Client, BUCKET_NAME } from '../../../lib/s3-client'
-
-const MAX_STORAGE_SIZE = 500 * 1024 * 1024 // 500MB in bytes
+import { UPLOAD_CONFIG } from '../../../config/upload'
 
 export async function GET(request: NextRequest) {
   try {
@@ -44,8 +43,8 @@ export async function GET(request: NextRequest) {
     }
 
     // Calculate usage percentage
-    const usagePercentage = Math.round((totalSize / MAX_STORAGE_SIZE) * 100)
-    const remainingSize = MAX_STORAGE_SIZE - totalSize
+    const usagePercentage = Math.round((totalSize / UPLOAD_CONFIG.MAX_STORAGE_SIZE) * 100)
+    const remainingSize = UPLOAD_CONFIG.MAX_STORAGE_SIZE - totalSize
     
     // Estimate how many more files can be uploaded based on average file size
     const averageFileSize = totalCount > 0 ? totalSize / totalCount : 50 * 1024 * 1024 // Default 50MB
@@ -76,7 +75,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       totalSize,
       totalCount,
-      maxSize: MAX_STORAGE_SIZE,
+      maxSize: UPLOAD_CONFIG.MAX_STORAGE_SIZE,
       remainingSize,
       usagePercentage,
       status,

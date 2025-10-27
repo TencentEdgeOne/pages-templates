@@ -5,6 +5,9 @@ export const UPLOAD_CONFIG = {
   // Maximum file size (50MB)
   MAX_FILE_SIZE: 52428800, // 50MB in bytes
   
+  // Maximum storage size (500MB)
+  MAX_STORAGE_SIZE: 500 * 1024 * 1024, // 500MB in bytes
+  
   // Maximum number of files
   MAX_FILES: 20,
   
@@ -64,9 +67,6 @@ export const UPLOAD_CONFIG = {
   
   // Upload retry attempts
   MAX_RETRY_ATTEMPTS: 3,
-  
-  // Upload timeout (30 seconds)
-  UPLOAD_TIMEOUT: 30000
 }
 
 // Format file size

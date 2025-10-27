@@ -3,9 +3,7 @@ import { CreateMultipartUploadCommand, PutObjectCommand, ListObjectsV2Command } 
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { createHash } from 'crypto'
 import { s3Client, BUCKET_NAME } from '../../../lib/s3-client'
-
-
-const MAX_STORAGE_SIZE = 500 * 1024 * 1024 // 500MB in bytes
+import { UPLOAD_CONFIG } from '../../../config/upload'
 
 // Check storage usage
 async function checkStorageUsage(): Promise<{ totalSize: number; canUpload: boolean; message?: string }> {
@@ -28,8 +26,8 @@ async function checkStorageUsage(): Promise<{ totalSize: number; canUpload: bool
 
     return {
       totalSize,
-      canUpload: totalSize < MAX_STORAGE_SIZE,
-      message: totalSize >= MAX_STORAGE_SIZE ? 'Storage space is full, cannot upload more files' : undefined
+      canUpload: totalSize < UPLOAD_CONFIG.MAX_STORAGE_SIZE,
+      message: totalSize >= UPLOAD_CONFIG.MAX_STORAGE_SIZE ? 'Storage space is full, cannot upload more files' : undefined
     }
   } catch (error) {
     console.error('Error checking storage usage:', error)
@@ -53,10 +51,10 @@ export async function POST(request: NextRequest) {
     const storageCheck = await checkStorageUsage()
     const totalAfterUpload = storageCheck.totalSize + (fileSize || 0)
     
-    if (totalAfterUpload > MAX_STORAGE_SIZE) {
+    if (totalAfterUpload > UPLOAD_CONFIG.MAX_STORAGE_SIZE) {
       const usedMB = Math.round(storageCheck.totalSize / (1024 * 1024))
       const uploadMB = Math.round((fileSize || 0) / (1024 * 1024))
-      const maxMB = Math.round(MAX_STORAGE_SIZE / (1024 * 1024))
+      const maxMB = Math.round(UPLOAD_CONFIG.MAX_STORAGE_SIZE / (1024 * 1024))
       
       return NextResponse.json(
         { 
@@ -66,8 +64,8 @@ export async function POST(request: NextRequest) {
           details: {
             currentUsage: storageCheck.totalSize,
             uploadSize: fileSize,
-            maxSize: MAX_STORAGE_SIZE,
-            remainingSize: MAX_STORAGE_SIZE - storageCheck.totalSize
+            maxSize: UPLOAD_CONFIG.MAX_STORAGE_SIZE,
+            remainingSize: UPLOAD_CONFIG.MAX_STORAGE_SIZE - storageCheck.totalSize
           }
         },
         { status: 413 } // 413 Payload Too Large
