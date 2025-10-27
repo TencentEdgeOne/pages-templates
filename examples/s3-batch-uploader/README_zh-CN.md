@@ -2,7 +2,7 @@
 
 一个功能完整、界面美观的 AWS S3 批量文件上传系统，支持拖拽上传、进度监控等高级功能。
 
-[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?template=<s3-batch-uploader>)
+[![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?template=s3-batch-uploader)
 
 ## ✨ 功能特性
 
@@ -23,14 +23,13 @@
 - ✅ **并发控制** - 可配置同时上传的文件数量
 - ✅ **文件选择** - 可以勾选/取消勾选要上传的文件
 
-### 📋 历史管理
-- ✅ **历史记录** - 查看已上传的文件列表
-- ✅ **文件详情** - 点击查看文件的详细信息
+### 📋 存储桶管理
+- ✅ **存储桶记录** - 查看已上传的文件列表
+- ✅ **在线预览** - 可以在线预览图片和视频文件
 
 ### 🎨 用户界面
 - ✅ **现代化设计** - 简洁美观的用户界面
 - ✅ **响应式布局** - 适配不同屏幕尺寸
-- ✅ **侧边导航** - 上传和历史记录页面切换
 - ✅ **状态反馈** - 丰富的视觉反馈和交互效果
 
 ## 🚀 快速开始
@@ -51,9 +50,9 @@ nano .env.local
 
 填入你的 AWS 配置：
 ```env
-AWS_BUCKET_REGION=your-bucket-region
 AWS_ACCESS_KEY_ID=your-access-key-id
 AWS_SECRET_ACCESS_KEY=your-secret-access-key
+AWS_BUCKET_REGION=your-bucket-region
 AWS_BUCKET_NAME=your-bucket-name
 ```
 
@@ -100,11 +99,6 @@ AWS_BUCKET_NAME=your-bucket-name
 }
 ```
 
-#### 允许公共访问权限
-1. 在 S3 存储桶中启用公共访问权限
-2. 允许匿名用户访问存储桶中的对象
-3. 允许匿名用户上传对象
-
 ## 📖 使用指南
 
 ### 上传文件
@@ -115,8 +109,8 @@ AWS_BUCKET_NAME=your-bucket-name
 5. 勾选要上传的文件
 6. 点击"开始上传"
 
-### 查看历史
-1. 点击左侧"历史记录"菜单
+### 查看存储桶
+1. 点击左侧"存储桶"菜单
 2. 浏览已上传的文件
 3. 点击文件查看详细信息
 
@@ -126,7 +120,7 @@ AWS_BUCKET_NAME=your-bucket-name
 ## 🛠️ 技术架构
 
 ### 前端技术栈
-- **Next.js 13** - React 全栈框架
+- **Next.js 14** - React 全栈框架
 - **TypeScript** - 类型安全
 - **Tailwind CSS** - 样式框架
 - **Lucide React** - 图标库

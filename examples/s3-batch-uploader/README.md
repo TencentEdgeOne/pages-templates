@@ -2,7 +2,7 @@
 
 A feature-complete, beautifully designed AWS S3 batch file upload system with drag-and-drop upload, progress monitoring, and advanced features.
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=<s3-batch-uploader>)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=s3-batch-uploader)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
@@ -25,14 +25,13 @@ More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 - ✅ **Concurrency Control** - Configurable number of simultaneous file uploads
 - ✅ **File Selection** - Check/uncheck files to upload
 
-### 📋 History Management
-- ✅ **Upload History** - View list of uploaded files
+### 📋 Storage Bucket Management
+- ✅ **Storage Bucket** - View list of uploaded files
 - ✅ **File Details** - Click to view detailed file information
 
 ### 🎨 User Interface
 - ✅ **Modern Design** - Clean and beautiful user interface
 - ✅ **Responsive Layout** - Adapt to different screen sizes
-- ✅ **Sidebar Navigation** - Switch between upload and history pages
 - ✅ **Status Feedback** - Rich visual feedback and interactive effects
 
 ## 🚀 Quick Start
@@ -53,10 +52,10 @@ nano .env.local
 
 Fill in your AWS configuration:
 ```env
-AWS_ACCESS_KEY_ID=your_access_key
-AWS_SECRET_ACCESS_KEY=your_secret_key
+AWS_ACCESS_KEY_ID=your-access-key-id
+AWS_SECRET_ACCESS_KEY=your-secret-access-key
 AWS_BUCKET_REGION=your-bucket-region
-AWS_S3_BUCKET_NAME=your_bucket_name
+AWS_BUCKET_NAME=your-bucket-name
 ```
 
 ### 3. AWS S3 Setup
@@ -102,11 +101,6 @@ AWS_S3_BUCKET_NAME=your_bucket_name
 }
 ```
 
-#### Allow Public Access Permissions
-1. Enable public access permissions in S3 bucket
-2. Allow anonymous users to access objects in bucket
-3. Allow anonymous users to upload objects
-
 ## 📖 Usage Guide
 
 ### Upload Files
@@ -117,8 +111,8 @@ AWS_S3_BUCKET_NAME=your_bucket_name
 5. Check files to upload
 6. Click "Start Upload"
 
-### View History
-1. Click "History" menu on the left
+### View Storage Bucket
+1. Click "Storage Bucket" menu on the left
 2. Browse uploaded files
 3. Click files to view detailed information
 
@@ -128,7 +122,7 @@ AWS_S3_BUCKET_NAME=your_bucket_name
 ## 🛠️ Technical Architecture
 
 ### Frontend Tech Stack
-- **Next.js 13** - React full-stack framework
+- **Next.js 14** - React full-stack framework
 - **TypeScript** - Type safety
 - **Tailwind CSS** - Styling framework
 - **Lucide React** - Icon library
@@ -145,6 +139,7 @@ AWS_S3_BUCKET_NAME=your_bucket_name
 ## 📁 Project Structure
 
 ```
+s3-batch-uploader/
 ├── app/                    # Next.js App Router
 │   ├── api/               # API routes
 │   │   └── upload-batch/  # Batch upload API
