@@ -140,87 +140,29 @@ AWS_BUCKET_NAME=your-bucket-name
 
 ```
 s3-batch-uploader/
-├── app/                           # Next.js App Router
-│   ├── api/                      # API routes
-│   │   ├── health/               # Health check endpoint
-│   │   ├── presigned-url/        # Presigned URL generation
-│   │   ├── rewrite/              # URL rewrite handling
-│   │   ├── s3-files/             # S3 file operations
-│   │   ├── storage-usage/        # Storage usage statistics
-│   │   ├── upload/               # Single file upload
-│   │   └── upload-batch/         # Batch upload API
-│   ├── history/                  # History page
-│   │   └── page.tsx
-│   ├── upload/                   # Upload page
-│   │   └── page.tsx
-│   ├── favicon.ico
-│   ├── layout.tsx               # Root layout
-│   └── page.tsx                 # Home page
-├── components/                   # React components
-│   ├── FileUpload/              # File upload components
-│   │   ├── DropZone.tsx         # Drag & drop zone
-│   │   ├── FilePreview.tsx      # File preview display
-│   │   ├── ProgressOverlay.tsx  # Upload progress overlay
-│   │   └── UploadConfig.tsx     # Upload configuration
-│   ├── History/                 # History management components
-│   │   ├── ErrorDisplay.tsx     # Error display component
-│   │   ├── ExportDialog.tsx     # Export functionality
-│   │   ├── HistoryActions.tsx   # Action buttons
-│   │   ├── HistoryFilters.tsx   # Filter controls
-│   │   ├── HistoryHeader.tsx    # Header component
-│   │   ├── HistoryList.tsx      # File list display
-│   │   └── HistoryStats.tsx     # Statistics display
-│   ├── Layout/                  # Layout components
-│   │   └── MainLayout.tsx       # Main layout wrapper
-│   ├── Sidebar/                 # Navigation components
-│   │   └── Navigation.tsx       # Sidebar navigation
-│   ├── Storage/                 # Storage components
-│   │   └── StorageUsage.tsx     # Storage usage display
-│   ├── UI/                      # Common UI components
-│   │   ├── Button.tsx           # Button component
-│   │   ├── Modal.tsx            # Modal component
-│   │   └── Progress.tsx         # Progress bar component
-│   └── FileUploader.tsx         # Main file uploader
-├── config/                      # Configuration files
-│   └── upload.ts               # Upload configuration
-├── hooks/                       # Custom React Hooks
-│   ├── useFileUpload.ts        # File upload logic
-│   ├── useHistoryFilters.ts    # History filtering
-│   ├── useHistorySelection.ts  # History selection
-│   ├── usePresignedUrl.ts      # Presigned URL management
-│   ├── useS3Files.ts           # S3 file operations
-│   ├── useStorageInfo.ts       # Storage information
-│   └── useStorageRefresh.ts    # Storage refresh logic
-├── lib/                        # Utility libraries
-│   ├── s3-client.ts           # S3 client configuration
-│   ├── storage.ts             # Storage utilities
-│   └── upload-utils.ts        # Upload helper functions
-├── messages/                   # Internationalization
-│   └── zh.json               # Chinese translations
-├── public/                     # Static assets
-│   ├── icons/                 # Icon files
-│   │   └── file-default.svg   # Default file icon
-│   ├── favicon-16.svg
-│   ├── favicon-32.svg
-│   ├── favicon.ico
-│   └── favicon.svg
-├── styles/                     # Styling files
-│   └── globals.css            # Global styles
-├── types/                      # TypeScript type definitions
-│   └── upload.ts              # Upload-related types
-├── .env.example               # Environment variable template
-├── .eslintrc.json            # ESLint configuration
-├── .gitignore                # Git ignore rules
-├── .prettierrc               # Prettier configuration
-├── middleware.ts             # Next.js middleware
-├── next.config.js            # Next.js configuration
-├── package.json              # Project dependencies
-├── postcss.config.js         # PostCSS configuration
-├── start.sh                  # Startup script
-├── tailwind.config.js        # Tailwind CSS configuration
-├── tsconfig.json             # TypeScript configuration
-├── README.md                 # Project documentation (English)
-└── README_zh-CN.md           # Project documentation (Chinese)
+├── app/                    # Next.js App Router
+│   ├── api/               # API 路由
+│   │   └── upload-batch/  # 批量上传 API
+│   ├── components/        # React 组件
+│   │   ├── FileUpload/    # 文件上传组件
+│   │   ├── Navigation/    # 导航组件
+│   │   └── ui/           # 通用 UI 组件
+│   ├── hooks/            # 自定义 Hooks
+│   │   └── useFileUpload.ts
+│   ├── lib/              # 工具库
+│   │   └── s3-client.ts  # S3 客户端配置
+│   ├── types/            # TypeScript 类型定义
+│   ├── upload/           # 上传页面
+│   ├── history/          # 历史记录页面
+│   └── globals.css       # 全局样式
+├── public/               # 静态资源
+├── .env.example          # 环境变量模板
+├── .env.local           # 本地环境变量（需配置）
+├── package.json         # 项目依赖
+├── tailwind.config.js   # Tailwind 配置
+├── start.sh            # 启动脚本
+├── SETUP.md            # 设置指南
+└── README.md           # 项目说明
 ```
 
 ## 🔧 Development

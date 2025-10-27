@@ -138,87 +138,29 @@ AWS_BUCKET_NAME=your-bucket-name
 
 ```
 s3-batch-uploader/
-├── app/                           # Next.js App Router
-│   ├── api/                      # API 路由
-│   │   ├── health/               # 健康检查端点
-│   │   ├── presigned-url/        # 预签名 URL 生成
-│   │   ├── rewrite/              # URL 重写处理
-│   │   ├── s3-files/             # S3 文件操作
-│   │   ├── storage-usage/        # 存储使用统计
-│   │   ├── upload/               # 单文件上传
-│   │   └── upload-batch/         # 批量上传 API
-│   ├── history/                  # 历史记录页面
-│   │   └── page.tsx
-│   ├── upload/                   # 上传页面
-│   │   └── page.tsx
-│   ├── favicon.ico
-│   ├── layout.tsx               # 根布局
-│   └── page.tsx                 # 首页
-├── components/                   # React 组件
-│   ├── FileUpload/              # 文件上传组件
-│   │   ├── DropZone.tsx         # 拖拽上传区域
-│   │   ├── FilePreview.tsx      # 文件预览显示
-│   │   ├── ProgressOverlay.tsx  # 上传进度蒙板
-│   │   └── UploadConfig.tsx     # 上传配置
-│   ├── History/                 # 历史记录管理组件
-│   │   ├── ErrorDisplay.tsx     # 错误显示组件
-│   │   ├── ExportDialog.tsx     # 导出功能
-│   │   ├── HistoryActions.tsx   # 操作按钮
-│   │   ├── HistoryFilters.tsx   # 过滤控件
-│   │   ├── HistoryHeader.tsx    # 头部组件
-│   │   ├── HistoryList.tsx      # 文件列表显示
-│   │   └── HistoryStats.tsx     # 统计信息显示
-│   ├── Layout/                  # 布局组件
-│   │   └── MainLayout.tsx       # 主布局包装器
-│   ├── Sidebar/                 # 导航组件
-│   │   └── Navigation.tsx       # 侧边栏导航
-│   ├── Storage/                 # 存储组件
-│   │   └── StorageUsage.tsx     # 存储使用显示
-│   ├── UI/                      # 通用 UI 组件
-│   │   ├── Button.tsx           # 按钮组件
-│   │   ├── Modal.tsx            # 模态框组件
-│   │   └── Progress.tsx         # 进度条组件
-│   └── FileUploader.tsx         # 主文件上传器
-├── config/                      # 配置文件
-│   └── upload.ts               # 上传配置
-├── hooks/                       # 自定义 React Hooks
-│   ├── useFileUpload.ts        # 文件上传逻辑
-│   ├── useHistoryFilters.ts    # 历史记录过滤
-│   ├── useHistorySelection.ts  # 历史记录选择
-│   ├── usePresignedUrl.ts      # 预签名 URL 管理
-│   ├── useS3Files.ts           # S3 文件操作
-│   ├── useStorageInfo.ts       # 存储信息
-│   └── useStorageRefresh.ts    # 存储刷新逻辑
-├── lib/                        # 工具库
-│   ├── s3-client.ts           # S3 客户端配置
-│   ├── storage.ts             # 存储工具
-│   └── upload-utils.ts        # 上传辅助函数
-├── messages/                   # 国际化
-│   └── zh.json               # 中文翻译
-├── public/                     # 静态资源
-│   ├── icons/                 # 图标文件
-│   │   └── file-default.svg   # 默认文件图标
-│   ├── favicon-16.svg
-│   ├── favicon-32.svg
-│   ├── favicon.ico
-│   └── favicon.svg
-├── styles/                     # 样式文件
-│   └── globals.css            # 全局样式
-├── types/                      # TypeScript 类型定义
-│   └── upload.ts              # 上传相关类型
-├── .env.example               # 环境变量模板
-├── .eslintrc.json            # ESLint 配置
-├── .gitignore                # Git 忽略规则
-├── .prettierrc               # Prettier 配置
-├── middleware.ts             # Next.js 中间件
-├── next.config.js            # Next.js 配置
-├── package.json              # 项目依赖
-├── postcss.config.js         # PostCSS 配置
-├── start.sh                  # 启动脚本
-├── tailwind.config.js        # Tailwind CSS 配置
-├── tsconfig.json             # TypeScript 配置
-├── README.md                 # 项目文档（英文）
-└── README_zh-CN.md           # 项目文档（中文）
+├── app/                    # Next.js App Router
+│   ├── api/               # API routes
+│   │   └── upload-batch/  # Batch upload API
+│   ├── components/        # React components
+│   │   ├── FileUpload/    # File upload components
+│   │   ├── Navigation/    # Navigation components
+│   │   └── ui/           # Common UI components
+│   ├── hooks/            # Custom Hooks
+│   │   └── useFileUpload.ts
+│   ├── lib/              # Utility library
+│   │   └── s3-client.ts  # S3 client configuration
+│   ├── types/            # TypeScript type definitions
+│   ├── upload/           # Upload page
+│   ├── history/          # History page
+│   └── globals.css       # Global styles
+├── public/               # Static assets
+├── .env.example          # Environment variable template
+├── .env.local           # Local environment variables (needs configuration)
+├── package.json         # Project dependencies
+├── tailwind.config.js   # Tailwind configuration
+├── start.sh            # Startup script
+├── SETUP.md            # Setup guide
+└── README.md           # Project documentation
 ```
 
 ## 🔧 开发说明
