@@ -139,28 +139,28 @@ AWS_BUCKET_NAME=your-bucket-name
 ```
 s3-batch-uploader/
 ├── app/                    # Next.js App Router
-│   ├── api/               # API routes
-│   │   └── upload-batch/  # Batch upload API
-│   ├── components/        # React components
-│   │   ├── FileUpload/    # File upload components
-│   │   ├── Navigation/    # Navigation components
-│   │   └── ui/           # Common UI components
-│   ├── hooks/            # Custom Hooks
+│   ├── api/               # API 路由
+│   │   └── upload-batch/  # 批量上传 API
+│   ├── components/        # React 组件
+│   │   ├── FileUpload/    # 文件上传组件
+│   │   ├── Navigation/    # 导航组件
+│   │   └── ui/           # 通用 UI 组件
+│   ├── hooks/            # 自定义 Hooks
 │   │   └── useFileUpload.ts
-│   ├── lib/              # Utility library
-│   │   └── s3-client.ts  # S3 client configuration
-│   ├── types/            # TypeScript type definitions
-│   ├── upload/           # Upload page
-│   ├── history/          # History page
-│   └── globals.css       # Global styles
-├── public/               # Static assets
-├── .env.example          # Environment variable template
-├── .env.local           # Local environment variables (needs configuration)
-├── package.json         # Project dependencies
-├── tailwind.config.js   # Tailwind configuration
-├── start.sh            # Startup script
-├── SETUP.md            # Setup guide
-└── README.md           # Project documentation
+│   ├── lib/              # 工具库
+│   │   └── s3-client.ts  # S3 客户端配置
+│   ├── types/            # TypeScript 类型定义
+│   ├── upload/           # 上传页面
+│   ├── history/          # 历史记录页面
+│   └── globals.css       # 全局样式
+├── public/               # 静态资源
+├── .env.example          # 环境变量模板
+├── .env.local           # 本地环境变量（需配置）
+├── package.json         # 项目依赖
+├── tailwind.config.js   # Tailwind 配置
+├── start.sh            # 启动脚本
+├── SETUP.md            # 设置指南
+└── README.md           # 项目说明
 ```
 
 ## 🔧 开发说明
