@@ -2,6 +2,8 @@
 
 A feature-complete, beautifully designed AWS S3 batch file upload system with drag-and-drop upload, progress monitoring, and advanced features.
 
+## Deploy
+
 [![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=s3-batch-uploader)
 
 More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
@@ -36,10 +38,7 @@ More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
 ## 🚀 Quick Start
 
-### 1. Project Already Running
-Project is currently running at: **http://localhost:3003**
-
-### 2. Configure AWS S3
+### 1. Configure AWS S3
 Before using, please configure your AWS S3 settings:
 
 ```bash
@@ -58,7 +57,7 @@ AWS_BUCKET_REGION=your-bucket-region
 AWS_BUCKET_NAME=your-bucket-name
 ```
 
-### 3. AWS S3 Setup
+### 2. AWS S3 Setup
 
 #### Create S3 Bucket
 1. Login to AWS Console
@@ -99,6 +98,28 @@ AWS_BUCKET_NAME=your-bucket-name
     }
   ]
 }
+```
+
+## 🔧 Development
+
+### Start Development Server
+```bash
+npm run dev
+# Or use startup script
+./start.sh
+```
+
+### Build Production Version
+```bash
+npm run build
+npm start
+```
+
+### Project is currently running at: **http://localhost:3003**
+
+### Code Linting
+```bash
+npm run lint
 ```
 
 ## 📖 Usage Guide
@@ -163,26 +184,6 @@ s3-batch-uploader/
 ├── start.sh            # Startup script
 ├── SETUP.md            # Setup guide
 └── README.md           # Project documentation
-```
-
-## 🔧 Development
-
-### Start Development Server
-```bash
-npm run dev
-# Or use startup script
-./start.sh
-```
-
-### Build Production Version
-```bash
-npm run build
-npm start
-```
-
-### Code Linting
-```bash
-npm run lint
 ```
 
 ## 📚 References

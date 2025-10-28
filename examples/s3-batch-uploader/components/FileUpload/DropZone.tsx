@@ -81,8 +81,15 @@ export function DropZone({
     try {
       const totalUploadSize = files.reduce((sum, file) => sum + file.size, 0)
       
-      // Call storage usage API to check current usage
-      const response = await fetch('/api/storage-usage')
+      // Call storage usage API to check current usage with cache busting
+      const timestamp = Date.now()
+      const response = await fetch(`/api/storage-usage?t=${timestamp}`, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      })
       if (!response.ok) {
         throw new Error('Failed to check storage usage')
       }

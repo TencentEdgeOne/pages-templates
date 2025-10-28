@@ -3,6 +3,10 @@ import { ListObjectsV2Command } from '@aws-sdk/client-s3'
 import { s3Client, BUCKET_NAME } from '../../../lib/s3-client'
 import { UPLOAD_CONFIG } from '../../../config/upload'
 
+// Disable Next.js caching - Force dynamic rendering
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export async function GET(request: NextRequest) {
   try {
     if (!BUCKET_NAME) {
@@ -11,6 +15,10 @@ export async function GET(request: NextRequest) {
         { status: 500 }
       )
     }
+
+    // Add a timestamp to ensure that each request is new
+    const requestTimestamp = Date.now()
+
 
     // Get all objects in the storage bucket
     const listCommand = new ListObjectsV2Command({
@@ -72,7 +80,7 @@ export async function GET(request: NextRequest) {
         break
     }
 
-    return NextResponse.json({
+    const responseData = {
       totalSize,
       totalCount,
       maxSize: UPLOAD_CONFIG.MAX_STORAGE_SIZE,
@@ -81,8 +89,22 @@ export async function GET(request: NextRequest) {
       status,
       message,
       estimatedRemainingFiles,
-      files: files.slice(0, 10) // Return information for the most recent 10 files
-    })
+      files: files.slice(0, 10), // Return information for the most recent 10 files
+      requestTimestamp,
+      lastUpdated: new Date().toISOString(),
+      s3ObjectsCount: response.Contents?.length || 0
+    }
+
+    const result = NextResponse.json(responseData)
+
+    // Set the response header to disable caching at all levels
+    result.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0')
+    result.headers.set('Pragma', 'no-cache')
+    result.headers.set('Expires', '0')
+    result.headers.set('Surrogate-Control', 'no-store')
+    result.headers.set('X-Timestamp', requestTimestamp.toString())
+    
+    return result
 
   } catch (error) {
     console.error('Error fetching storage usage:', error)
