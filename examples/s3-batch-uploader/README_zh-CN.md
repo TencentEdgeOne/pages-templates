@@ -2,6 +2,8 @@
 
 一个功能完整、界面美观的 AWS S3 批量文件上传系统，支持拖拽上传、进度监控等高级功能。
 
+## 部署
+
 [![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?template=s3-batch-uploader)
 
 ## ✨ 功能特性
@@ -34,10 +36,7 @@
 
 ## 🚀 快速开始
 
-### 1. 项目已启动
-项目当前运行在：**http://localhost:3003**
-
-### 2. 配置 AWS S3
+### 1. 配置 AWS S3
 在使用前，请配置你的 AWS S3 设置：
 
 ```bash
@@ -56,7 +55,7 @@ AWS_BUCKET_REGION=your-bucket-region
 AWS_BUCKET_NAME=your-bucket-name
 ```
 
-### 3. AWS S3 设置
+### 2. AWS S3 设置
 
 #### 创建 S3 存储桶
 1. 登录 AWS 控制台
@@ -97,6 +96,29 @@ AWS_BUCKET_NAME=your-bucket-name
     }
   ]
 }
+```
+
+## 🔧 开发说明
+
+### 启动开发服务器
+```bash
+npm run dev
+# 或使用启动脚本
+./start.sh
+```
+
+### 构建生产版本
+```bash
+npm run build
+npm start
+```
+
+### 项目已启动
+项目当前运行在：**http://localhost:3003**
+
+### 代码检查
+```bash
+npm run lint
 ```
 
 ## 📖 使用指南
@@ -162,27 +184,6 @@ s3-batch-uploader/
 ├── SETUP.md            # 设置指南
 └── README.md           # 项目说明
 ```
-
-## 🔧 开发说明
-
-### 启动开发服务器
-```bash
-npm run dev
-# 或使用启动脚本
-./start.sh
-```
-
-### 构建生产版本
-```bash
-npm run build
-npm start
-```
-
-### 代码检查
-```bash
-npm run lint
-```
-
 
 ## 参考资料
 - **AWS S3 文档**: https://docs.aws.amazon.com/s3/

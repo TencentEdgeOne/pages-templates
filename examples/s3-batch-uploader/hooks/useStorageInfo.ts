@@ -31,12 +31,22 @@ export function useStorageInfo(): UseStorageInfoReturn {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const fetchStorageInfo = useCallback(async () => {
+  const fetchStorageInfo = useCallback(async (forceRefresh = false) => {
     try {
       setLoading(true)
       setError(null)
 
-      const response = await fetch('/api/storage-usage')
+      const timestamp = Date.now()
+      const url = `/api/storage-usage?t=${timestamp}${forceRefresh ? '&refresh=true' : ''}`
+      
+      // Disable caching
+      const response = await fetch(url, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache'
+        }
+      })
       
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
@@ -58,7 +68,7 @@ export function useStorageInfo(): UseStorageInfoReturn {
   }, [])
 
   const refreshStorageInfo = useCallback(async () => {
-    await fetchStorageInfo()
+    await fetchStorageInfo(true)
   }, [fetchStorageInfo])
 
   useEffect(() => {
@@ -66,7 +76,7 @@ export function useStorageInfo(): UseStorageInfoReturn {
     
     // Listen to storage refresh events
     const unsubscribe = storageRefreshManager.subscribe(() => {
-      fetchStorageInfo()
+      fetchStorageInfo(true)
     })
     
     return unsubscribe
