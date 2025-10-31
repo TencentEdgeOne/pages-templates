@@ -1,0 +1,12 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+  <!-- Solid background, avoid gradient rendering issues -->
+  <rect width="64" height="64" rx="8" fill="#2563eb"/>
+  
+  <!-- S3 text - clean and clear -->
+  <text x="32" y="42" 
+        font-family="Arial, sans-serif" 
+        font-size="24" 
+        font-weight="bold" 
+        text-anchor="middle" 
+        fill="white">S3</text>
+</svg>
