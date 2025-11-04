@@ -8,16 +8,34 @@ interface HistoryStatsProps {
 
 export function HistoryStats({ items }: HistoryStatsProps) {
   const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
+    // Validate input
+    if (!bytes || bytes === 0 || !isFinite(bytes)) return '0 Bytes'
+    if (bytes < 0) return '0 Bytes'
+    
     const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB']
-    const i = Math.floor(Math.log(bytes) / Math.log(k))
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
+    const i = Math.min(Math.floor(Math.log(bytes) / Math.log(k)), sizes.length - 1)
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
   }
 
-  const totalSize = items.reduce((sum, item) => sum + item.fileSize, 0)
-  const imageCount = items.filter(item => item.fileType.startsWith('image/')).length
-  const videoCount = items.filter(item => item.fileType.startsWith('video/')).length
+  // Calculate total size with validation
+  const totalSize = items.reduce((sum, item) => {
+    const size = typeof item.fileSize === 'number' && isFinite(item.fileSize) ? item.fileSize : 0
+    // Log suspicious file sizes for debugging
+    if (size > 1099511627776) { // > 1TB
+      console.warn('Suspicious file size detected:', item.fileName, size)
+    }
+    return sum + size
+  }, 0)
+  
+  const imageCount = items.filter(item => item.fileType?.startsWith('image/')).length
+  const videoCount = items.filter(item => item.fileType?.startsWith('video/')).length
+
+  // Log total size for debugging
+  if (totalSize > 1099511627776) { // > 1TB
+    console.warn('Total size exceeds 1TB:', totalSize, 'bytes')
+    console.warn('Items:', items.map(i => ({ name: i.fileName, size: i.fileSize })))
+  }
 
   const stats = [
     { label: 'Total Files', value: items.length },

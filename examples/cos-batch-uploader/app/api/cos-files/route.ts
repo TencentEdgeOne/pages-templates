@@ -9,14 +9,30 @@ export async function GET(request: NextRequest) {
 
     const result = await listObjects('uploads/', maxKeys, continuationToken || undefined)
     
-    const files = result.objects.map(obj => ({
-      id: obj.Key,
-      s3Key: obj.Key,
-      fileName: obj.Key.split('/').pop() || obj.Key,
-      fileSize: obj.Size || 0,
-      fileType: getFileType(obj.Key),
-      uploadTime: obj.LastModified || new Date().toISOString(),
-    }))
+    const files = result.objects.map(obj => {
+      // Ensure fileSize is a valid number
+      let fileSize = 0
+      if (typeof obj.Size === 'number') {
+        fileSize = obj.Size
+      } else if (typeof obj.Size === 'string') {
+        fileSize = parseInt(obj.Size, 10) || 0
+      }
+      
+      // Validate fileSize is reasonable (not negative or extremely large)
+      if (fileSize < 0 || fileSize > 1099511627776) { // 1TB limit
+        console.warn(`Invalid file size for ${obj.Key}: ${obj.Size}, setting to 0`)
+        fileSize = 0
+      }
+      
+      return {
+        id: obj.Key,
+        s3Key: obj.Key,
+        fileName: obj.Key.split('/').pop() || obj.Key,
+        fileSize,
+        fileType: getFileType(obj.Key),
+        uploadTime: obj.LastModified || new Date().toISOString(),
+      }
+    })
 
     return NextResponse.json({
       files,

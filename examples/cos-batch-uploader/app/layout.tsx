@@ -12,12 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
   },
   icons: {
-    icon: [
-      { url: '/favicon.ico?v=3', sizes: '16x16', type: 'image/x-icon' },
-      { url: '/favicon.svg?v=3', sizes: 'any', type: 'image/svg+xml' }
-    ],
-    shortcut: '/favicon.ico?v=3',
-    apple: '/favicon.svg?v=3',
+    icon: '/favicon.ico',
   },
 }
 
