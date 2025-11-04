@@ -2,13 +2,13 @@ import type { Metadata } from 'next'
 import '../styles/globals.css'
 
 export const metadata: Metadata = {
-  title: 'S3 Batch Uploader - File Upload Tool',
-  description: 'Professional S3 batch file upload tool with drag-and-drop interface, progress tracking, and storage management',
-  keywords: 'S3, file upload, batch upload, AWS, cloud storage, file management',
-  authors: [{ name: 'S3 Batch Uploader' }],
+  title: 'COS Batch Uploader - File Upload Tool',
+  description: 'Professional COS batch file upload tool with drag-and-drop interface, progress tracking, and storage management',
+  keywords: 'COS, file upload, batch upload, Tencent, cloud storage, file management',
+  authors: [{ name: 'COS Batch Uploader' }],
   openGraph: {
-    title: 'S3 Batch Uploader',
-    description: 'Professional S3 batch file upload tool with drag-and-drop interface',
+    title: 'COS Batch Uploader',
+    description: 'Professional COS batch file upload tool with drag-and-drop interface',
     type: 'website',
   },
   icons: {

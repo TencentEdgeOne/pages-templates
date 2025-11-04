@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PutObjectCommand } from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { s3Client, BUCKET_NAME } from '../../../lib/s3-client'
+import { getPresignedUrl, getObjectUrl } from '../../../lib/cos-client'
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,25 +12,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Generate unique file key
-    const timestamp = Date.now()
-    const randomId = Math.random().toString(36).substring(2, 15)
-    const key = `uploads/${timestamp}-${randomId}-${filename}`
+    // 生成唯一的文件键
+    const key = `uploads/${filename}`
 
-    const command = new PutObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: key,
-      ContentType: contentType,
-    })
-
-    const uploadUrl = await getSignedUrl(s3Client, command, {
-      expiresIn: 3600, // 1 hour
-    })
+    // 生成预签名URL用于上传
+    const uploadUrl = await getPresignedUrl(key, 3600, 'put')
+    
+    // 生成公共访问URL
+    const publicUrl = getObjectUrl(key)
 
     return NextResponse.json({
       uploadUrl,
       key,
-      publicUrl: `https://${BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${key}`,
+      publicUrl,
     })
   } catch (error) {
     console.error('Error creating presigned URL:', error)

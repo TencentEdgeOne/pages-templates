@@ -9,7 +9,7 @@ import { HistoryActions } from '../../components/History/HistoryActions'
 import { ErrorDisplay } from '../../components/History/ErrorDisplay'
 import { ExportDialog } from '../../components/History/ExportDialog'
 import { Button } from '../../components/UI/Button'
-import { useS3Files } from '../../hooks/useS3Files'
+import { useCOSFiles } from '../../hooks/useCOSFiles'
 import { useHistoryFilters } from '../../hooks/useHistoryFilters'
 import { useHistorySelection } from '../../hooks/useHistorySelection'
 import MainLayout from '../../components/Layout/MainLayout'
@@ -25,7 +25,7 @@ function HistoryPage() {
     refreshFiles, 
     loadMoreFiles, 
     deleteFile 
-  } = useS3Files({
+  } = useCOSFiles({
     autoRefresh: false,
     refreshInterval: 0
   })

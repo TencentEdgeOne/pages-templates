@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { ListObjectsV2Command } from '@aws-sdk/client-s3'
-import { s3Client, BUCKET_NAME } from '../../../lib/s3-client'
+import { listObjects, BUCKET_NAME } from '../../../lib/cos-client'
 import { UPLOAD_CONFIG } from '../../../config/upload'
 
-// Disable Next.js caching - Force dynamic rendering
+// 禁用Next.js缓存 - 强制动态渲染
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
@@ -11,54 +10,48 @@ export async function GET(request: NextRequest) {
   try {
     if (!BUCKET_NAME) {
       return NextResponse.json(
-        { error: 'S3 bucket name not configured' },
+        { error: 'COS bucket name not configured' },
         { status: 500 }
       )
     }
 
-    // Add a timestamp to ensure that each request is new
+    // 添加时间戳确保每次请求都是新的
     const requestTimestamp = Date.now()
 
-
-    // Get all objects in the storage bucket
-    const listCommand = new ListObjectsV2Command({
-      Bucket: BUCKET_NAME,
-      Prefix: 'uploads/', // Only count files in uploads directory
-    })
-
-    const response = await s3Client.send(listCommand)
+    // 获取存储桶中所有对象
+    const result = await listObjects('uploads/', 1000)
     
     let totalSize = 0
     let totalCount = 0
     const files: Array<{
       key: string
       size: number
-      lastModified: Date
+      lastModified: string
     }> = []
 
-    if (response.Contents) {
-      response.Contents.forEach((object) => {
-        if (object.Size && object.Key && object.LastModified) {
-          totalSize += object.Size
-          totalCount++
-          files.push({
-            key: object.Key,
-            size: object.Size,
-            lastModified: object.LastModified
-          })
-        }
-      })
-    }
+    result.objects.forEach((object) => {
+      if (object.Size && object.Key && object.LastModified) {
+        // 注意：COS返回的Size是字符串类型，需要转换为数字
+        const fileSize = parseInt(object.Size, 10)
+        totalSize += fileSize
+        totalCount++
+        files.push({
+          key: object.Key,
+          size: fileSize,
+          lastModified: object.LastModified
+        })
+      }
+    })
 
-    // Calculate usage percentage
+    // 计算使用百分比
     const usagePercentage = Math.round((totalSize / UPLOAD_CONFIG.MAX_STORAGE_SIZE) * 100)
     const remainingSize = UPLOAD_CONFIG.MAX_STORAGE_SIZE - totalSize
     
-    // Estimate how many more files can be uploaded based on average file size
-    const averageFileSize = totalCount > 0 ? totalSize / totalCount : 50 * 1024 * 1024 // Default 50MB
+    // 根据平均文件大小估算还能上传多少文件
+    const averageFileSize = totalCount > 0 ? totalSize / totalCount : 50 * 1024 * 1024 // 默认50MB
     const estimatedRemainingFiles = Math.floor(remainingSize / averageFileSize)
 
-    // Determine status
+    // 确定状态
     let status: 'normal' | 'warning' | 'danger' = 'normal'
     if (usagePercentage >= 90) {
       status = 'danger'
@@ -66,7 +59,7 @@ export async function GET(request: NextRequest) {
       status = 'warning'
     }
 
-    // Generate hint message
+    // 生成提示消息
     let message = ''
     switch (status) {
       case 'normal':
@@ -89,22 +82,22 @@ export async function GET(request: NextRequest) {
       status,
       message,
       estimatedRemainingFiles,
-      files: files.slice(0, 10), // Return information for the most recent 10 files
+      files: files.slice(0, 10), // 返回最近10个文件的信息
       requestTimestamp,
       lastUpdated: new Date().toISOString(),
-      s3ObjectsCount: response.Contents?.length || 0
+      cosObjectsCount: result.objects.length
     }
 
-    const result = NextResponse.json(responseData)
+    const response = NextResponse.json(responseData)
 
-    // Set the response header to disable caching at all levels
-    result.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0')
-    result.headers.set('Pragma', 'no-cache')
-    result.headers.set('Expires', '0')
-    result.headers.set('Surrogate-Control', 'no-store')
-    result.headers.set('X-Timestamp', requestTimestamp.toString())
+    // 设置响应头禁用所有级别的缓存
+    response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0')
+    response.headers.set('Pragma', 'no-cache')
+    response.headers.set('Expires', '0')
+    response.headers.set('Surrogate-Control', 'no-store')
+    response.headers.set('X-Timestamp', requestTimestamp.toString())
     
-    return result
+    return response
 
   } catch (error) {
     console.error('Error fetching storage usage:', error)

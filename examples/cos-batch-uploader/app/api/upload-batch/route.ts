@@ -1,125 +1,59 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { CreateMultipartUploadCommand, PutObjectCommand, ListObjectsV2Command } from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { createHash } from 'crypto'
-import { s3Client, BUCKET_NAME } from '../../../lib/s3-client'
-import { UPLOAD_CONFIG } from '../../../config/upload'
+import { getPresignedUrl, createMultipartUpload, getObjectUrl } from '../../../lib/cos-client'
 
-// Check storage usage
-async function checkStorageUsage(): Promise<{ totalSize: number; canUpload: boolean; message?: string }> {
-  try {
-    const listCommand = new ListObjectsV2Command({
-      Bucket: BUCKET_NAME,
-      Prefix: 'uploads/',
-    })
-
-    const response = await s3Client.send(listCommand)
-    
-    let totalSize = 0
-    if (response.Contents) {
-      response.Contents.forEach((object) => {
-        if (object.Size) {
-          totalSize += object.Size
-        }
-      })
-    }
-
-    return {
-      totalSize,
-      canUpload: totalSize < UPLOAD_CONFIG.MAX_STORAGE_SIZE,
-      message: totalSize >= UPLOAD_CONFIG.MAX_STORAGE_SIZE ? 'Storage space is full, cannot upload more files' : undefined
-    }
-  } catch (error) {
-    console.error('Error checking storage usage:', error)
-    // If check fails, allow upload but log error
-    return { totalSize: 0, canUpload: true }
-  }
-}
+// 大文件阈值 (50MB)
+const LARGE_FILE_THRESHOLD = 50 * 1024 * 1024
 
 export async function POST(request: NextRequest) {
   try {
-    const { filename, contentType, fileSize } = await request.json()
-    
-    if (!filename || !contentType) {
+    const body = await request.json()
+    const { filename, contentType, fileSize } = body
+
+    if (!filename) {
       return NextResponse.json(
-        { error: 'Missing required fields: filename, contentType' },
+        { error: 'Missing filename' },
         { status: 400 }
       )
     }
 
-    // Check storage capacity
-    const storageCheck = await checkStorageUsage()
-    const totalAfterUpload = storageCheck.totalSize + (fileSize || 0)
-    
-    if (totalAfterUpload > UPLOAD_CONFIG.MAX_STORAGE_SIZE) {
-      const usedMB = Math.round(storageCheck.totalSize / (1024 * 1024))
-      const uploadMB = Math.round((fileSize || 0) / (1024 * 1024))
-      const maxMB = Math.round(UPLOAD_CONFIG.MAX_STORAGE_SIZE / (1024 * 1024))
-      
-      return NextResponse.json(
-        { 
-          error: `Insufficient storage space! Currently used ${usedMB}MB, attempting to upload ${uploadMB}MB, will exceed ${maxMB}MB limit. Please clean up some files first.`,
-          errorZh: `Insufficient storage space! Currently used ${usedMB}MB, attempting to upload ${uploadMB}MB, will exceed ${maxMB}MB limit. Please clean up some files first.`,
-          code: 'STORAGE_LIMIT_EXCEEDED',
-          details: {
-            currentUsage: storageCheck.totalSize,
-            uploadSize: fileSize,
-            maxSize: UPLOAD_CONFIG.MAX_STORAGE_SIZE,
-            remainingSize: UPLOAD_CONFIG.MAX_STORAGE_SIZE - storageCheck.totalSize
-          }
-        },
-        { status: 413 } // 413 Payload Too Large
-      )
-    }
+    // 生成唯一的对象键
+    const key = `uploads/${filename}`
 
-    // Generate fixed key name based on file attributes, enabling overwrite functionality
-    // Use combination of filename, size and type to generate hash, ensuring same file always gets same key name
-    const fileIdentifier = `${filename}-${fileSize}-${contentType}`
-    const fileHash = createHash('md5').update(fileIdentifier).digest('hex').substring(0, 8)
-    const fileExtension = filename.split('.').pop() || ''
-    const baseFileName = filename.replace(/\.[^/.]+$/, '') // Remove extension
-    const key = `uploads/${fileHash}-${baseFileName}.${fileExtension}`
+    // 判断是否需要分片上传
+    if (fileSize && fileSize > LARGE_FILE_THRESHOLD) {
+      // 大文件使用分片上传
+      try {
+        const uploadId = await createMultipartUpload(key, contentType)
+        const publicUrl = getObjectUrl(key)
 
-    // If file size exceeds 50MB, use multipart upload
-    if (fileSize > 50 * 1024 * 1024) {
-      const createMultipartCommand = new CreateMultipartUploadCommand({
-        Bucket: BUCKET_NAME,
-        Key: key,
-        ContentType: contentType,
-      })
-
-      const multipartResponse = await s3Client.send(createMultipartCommand)
-      
-      return NextResponse.json({
-        uploadId: multipartResponse.UploadId,
-        key,
-        publicUrl: `https://${BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${key}`,
-        multipart: true,
-      })
+        return NextResponse.json({
+          multipart: true,
+          uploadId,
+          key,
+          publicUrl,
+        })
+      } catch (error) {
+        console.error('Error creating multipart upload:', error)
+        return NextResponse.json(
+          { error: 'Failed to create multipart upload' },
+          { status: 500 }
+        )
+      }
     } else {
-      // Presigned URL for direct upload
-      const command = new PutObjectCommand({
-        Bucket: BUCKET_NAME,
-        Key: key,
-        ContentType: contentType,
-      })
-
-      const uploadUrl = await getSignedUrl(s3Client, command, {
-        expiresIn: 300, // 5 minutes, consistent with other presigned URLs
-      })
+      // 小文件使用简单上传
+      const uploadUrl = await getPresignedUrl(key, 3600, 'put')
+      const publicUrl = getObjectUrl(key)
 
       return NextResponse.json({
         uploadUrl,
+        publicUrl,
         key,
-        publicUrl: `https://${BUCKET_NAME}.s3.${process.env.AWS_BUCKET_REGION}.amazonaws.com/${key}`,
-        multipart: false,
-        fields: {}, // Direct presigned URL doesn't need additional fields
       })
     }
   } catch (error) {
-    console.error('Error creating presigned URL:', error)
+    console.error('Error in upload-batch:', error)
     return NextResponse.json(
-      { error: 'Failed to create upload URL' },
+      { error: 'Failed to process upload request' },
       { status: 500 }
     )
   }

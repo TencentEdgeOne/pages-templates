@@ -1,38 +1,31 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { ListObjectsV2Command, DeleteObjectCommand } from '@aws-sdk/client-s3'
-import { s3Client, BUCKET_NAME } from '../../../lib/s3-client'
+import { listObjects, deleteObject } from '../../../lib/cos-client'
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const continuationToken = searchParams.get('continuationToken')
-    const maxKeys = parseInt(searchParams.get('maxKeys') || '50')
+    const continuationToken = searchParams.get('continuationToken') || searchParams.get('marker')
+    const maxKeys = parseInt(searchParams.get('maxKeys') || searchParams.get('pageSize') || '50')
 
-    const command = new ListObjectsV2Command({
-      Bucket: BUCKET_NAME,
-      MaxKeys: maxKeys,
-      ContinuationToken: continuationToken || undefined,
-    })
-
-    const response = await s3Client.send(command)
+    const result = await listObjects('uploads/', maxKeys, continuationToken || undefined)
     
-    const files = (response.Contents || []).map(obj => ({
-      id: obj.Key!,
-      s3Key: obj.Key!,
-      fileName: obj.Key!.split('/').pop() || obj.Key!,
+    const files = result.objects.map(obj => ({
+      id: obj.Key,
+      s3Key: obj.Key,
+      fileName: obj.Key.split('/').pop() || obj.Key,
       fileSize: obj.Size || 0,
-      fileType: getFileType(obj.Key!),
-      uploadTime: obj.LastModified?.toISOString() || new Date().toISOString(),
-      // Remove direct S3 URL, use presigned URL instead
+      fileType: getFileType(obj.Key),
+      uploadTime: obj.LastModified || new Date().toISOString(),
     }))
 
     return NextResponse.json({
       files,
-      hasMore: response.IsTruncated || false,
-      nextContinuationToken: response.NextContinuationToken,
+      isTruncated: result.isTruncated,
+      hasMore: result.isTruncated,
+      nextContinuationToken: result.nextMarker,
     })
   } catch (error) {
-    console.error('Error listing S3 files:', error)
+    console.error('Error listing COS files:', error)
     return NextResponse.json(
       { error: 'Failed to list files' },
       { status: 500 }
@@ -52,16 +45,11 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    const command = new DeleteObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: key,
-    })
-
-    await s3Client.send(command)
+    await deleteObject(key)
     
     return NextResponse.json({ success: true })
   } catch (error) {
-    console.error('Error deleting S3 file:', error)
+    console.error('Error deleting COS file:', error)
     return NextResponse.json(
       { error: 'Failed to delete file' },
       { status: 500 }

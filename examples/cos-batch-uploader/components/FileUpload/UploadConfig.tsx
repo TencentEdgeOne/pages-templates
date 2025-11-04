@@ -48,7 +48,7 @@ export function UploadConfigComponent({ config, onConfigChange }: UploadConfigPr
               <div className="font-semibold text-blue-800">Upload Method</div>
             </div>
             <div className="text-sm text-blue-700">
-              Direct upload to S3 using pre-signed URLs, secure and efficient
+              Direct upload to COS using pre-signed URLs, secure and efficient
             </div>
           </div>
         </div>

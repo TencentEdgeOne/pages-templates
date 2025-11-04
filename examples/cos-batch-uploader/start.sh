@@ -1,22 +1,22 @@
 #!/bin/bash
 
-# S3 Batch Uploader startup script
-echo "🚀 Starting S3 Batch Uploader..."
+# 腾讯云COS批量上传器启动脚本
+echo "🚀 启动腾讯云COS批量上传器..."
 
-# Check Node.js version
+# 检查Node.js版本
 NODE_VERSION=$(node -v | cut -d'v' -f2 | cut -d'.' -f1)
 if [ "$NODE_VERSION" -lt 18 ]; then
-    echo "⚠️  Warning: Current Node.js version is $(node -v), recommend using Node.js 18+ for best experience"
-    echo "📝 If you encounter issues, please consider upgrading your Node.js version"
+    echo "⚠️  警告: 当前Node.js版本为 $(node -v), 建议使用Node.js 18+以获得最佳体验"
+    echo "📝 如果遇到问题,请考虑升级您的Node.js版本"
 fi
 
-# Check environment variables file
+# 检查环境变量文件
 if [ ! -f ".env.local" ]; then
-    echo "📋 Creating environment variables file..."
+    echo "📋 创建环境变量文件..."
     cp .env.example .env.local
-    echo "✅ Please edit .env.local file and fill in your AWS configuration"
+    echo "✅ 请编辑.env.local文件并填入您的腾讯云COS配置"
 fi
 
-# Start development server
-echo "🔧 Starting development server..."
+# 启动开发服务器
+echo "🔧 启动开发服务器..."
 npm run dev

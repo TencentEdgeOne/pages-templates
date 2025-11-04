@@ -1,192 +1,201 @@
-# 🚀 S3 Batch Uploader
+# 🚀 腾讯云COS批量上传器
 
-A feature-complete, beautifully designed AWS S3 batch file upload system with drag-and-drop upload, progress monitoring, and advanced features.
+一个功能完整、设计精美的腾讯云COS批量文件上传系统,支持拖拽上传、进度监控和高级功能。
 
-## Deploy
+## 部署
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=s3-batch-uploader)
+[![使用EdgeOne Pages部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=cos-batch-uploader)
 
-More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
+更多模板: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
-## ✨ Features
+## ✨ 功能特性
 
-### 📁 File Upload
-- ✅ **Drag & Drop Upload** - Support dragging files to the page for upload
-- ✅ **Click to Select** - Traditional file selection method
-- ✅ **Batch Processing** - Select multiple files for batch upload at once
-- ✅ **File Preview** - Display image thumbnails and video covers
-- ✅ **File Information** - Show file format, size and other detailed information
+### 📁 文件上传
+- ✅ **拖拽上传** - 支持拖拽文件到页面进行上传
+- ✅ **点击选择** - 传统的文件选择方式
+- ✅ **批量处理** - 一次选择多个文件进行批量上传
+- ✅ **文件预览** - 显示图片缩略图和视频封面
+- ✅ **文件信息** - 显示文件格式、大小等详细信息
 
-### 📊 Progress Monitoring
-- ✅ **Real-time Progress Bar** - Display upload progress for each file
-- ✅ **Upload Status** - Waiting, uploading, success, failure status indicators
-- ✅ **Progress Overlay** - Display semi-transparent progress layer on file preview during upload
-- ✅ **Error Handling** - Show error information and retry options when upload fails
+### 📊 进度监控
+- ✅ **实时进度条** - 显示每个文件的上传进度
+- ✅ **上传状态** - 等待、上传中、成功、失败状态指示
+- ✅ **进度叠加层** - 上传时在文件预览上显示半透明进度层
+- ✅ **错误处理** - 上传失败时显示错误信息和重试选项
 
-### ⚙️ Advanced Configuration
-- ✅ **Concurrency Control** - Configurable number of simultaneous file uploads
-- ✅ **File Selection** - Check/uncheck files to upload
+### ⚙️ 高级配置
+- ✅ **并发控制** - 可配置同时上传的文件数量
+- ✅ **文件选择** - 勾选/取消勾选要上传的文件
 
-### 📋 Storage Bucket Management
-- ✅ **Storage Bucket** - View list of uploaded files
-- ✅ **File Details** - Click to view detailed file information
+### 📋 存储桶管理
+- ✅ **存储桶** - 查看已上传文件列表
+- ✅ **文件详情** - 点击查看文件详细信息
 
-### 🎨 User Interface
-- ✅ **Modern Design** - Clean and beautiful user interface
-- ✅ **Responsive Layout** - Adapt to different screen sizes
-- ✅ **Status Feedback** - Rich visual feedback and interactive effects
+### 🎨 用户界面
+- ✅ **现代设计** - 简洁美观的用户界面
+- ✅ **响应式布局** - 适配不同屏幕尺寸
+- ✅ **状态反馈** - 丰富的视觉反馈和交互效果
 
-## 🚀 Quick Start
+## 🚀 快速开始
 
-### 1. Configure AWS S3
-Before using, please configure your AWS S3 settings:
+### 1. 配置腾讯云COS
+使用前请先配置您的腾讯云COS设置:
 
 ```bash
-# Copy environment variable template
+# 复制环境变量模板
 cp .env.example .env.local
 
-# Edit configuration file
+# 编辑配置文件
 nano .env.local
 ```
 
-Fill in your AWS configuration:
+填入您的腾讯云COS配置:
 ```env
-AWS_ACCESS_KEY_ID=your-access-key-id
-AWS_SECRET_ACCESS_KEY=your-secret-access-key
-AWS_BUCKET_REGION=your-bucket-region
-AWS_BUCKET_NAME=your-bucket-name
+COS_SECRET_ID=your-secret-id
+COS_SECRET_KEY=your-secret-key
+COS_BUCKET=your-bucket-name-appid
+COS_REGION=ap-guangzhou
 ```
 
-### 2. AWS S3 Setup
+### 2. 腾讯云COS设置
 
-#### Create S3 Bucket
-1. Login to AWS Console
-2. Create new S3 bucket
-3. Configure CORS policy:
+#### 创建COS存储桶
+1. 登录腾讯云控制台
+2. 创建新的COS存储桶
+3. 配置CORS策略:
 
 ```json
 [
   {
-    "AllowedHeaders": ["*"],
-    "AllowedMethods": ["GET", "PUT", "POST", "DELETE"],
-    "AllowedOrigins": ["*"],
-    "ExposeHeaders": []
+    "allowedOrigin": ["*"],
+    "allowedMethod": ["GET", "PUT", "POST", "DELETE", "HEAD"],
+    "allowedHeader": ["*"],
+    "exposeHeader": ["ETag", "Content-Length"],
+    "maxAgeSeconds": 3600
   }
 ]
 ```
 
-#### Create IAM User
-1. Create new IAM user
-2. Add S3 access permission policy:
+#### 创建访问密钥
+1. 进入访问管理 > API密钥管理
+2. 创建新的密钥对(SecretId和SecretKey)
+3. 配置存储桶访问权限策略:
 
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
+  "version": "2.0",
+  "statement": [
     {
-      "Effect": "Allow",
-      "Action": [
-        "s3:GetObject",
-        "s3:PutObject",
-        "s3:DeleteObject",
-        "s3:ListBucket"
+      "effect": "allow",
+      "action": [
+        "name/cos:GetObject",
+        "name/cos:PutObject",
+        "name/cos:DeleteObject",
+        "name/cos:GetBucket"
       ],
-      "Resource": [
-        "arn:aws:s3:::your-bucket-name",
-        "arn:aws:s3:::your-bucket-name/*"
+      "resource": [
+        "qcs::cos:ap-guangzhou:uid/your-appid:your-bucket-name-appid/*"
       ]
     }
   ]
 }
 ```
 
-## 🔧 Development
+## 🔧 开发
 
-### Start Development Server
+### 安装依赖
+```bash
+npm install
+```
+
+### 启动开发服务器
 ```bash
 npm run dev
-# Or use startup script
+# 或使用启动脚本
 ./start.sh
 ```
 
-### Build Production Version
+### 构建生产版本
 ```bash
 npm run build
 npm start
 ```
 
-### Project is currently running at: **http://localhost:3003**
+### 项目当前运行在: **http://localhost:3004**
 
-### Code Linting
+### 代码检查
 ```bash
 npm run lint
 ```
 
-## 📖 Usage Guide
+## 📖 使用指南
 
-### Upload Files
-1. Visit http://localhost:3003
-2. Select "Upload" page (default)
-3. Drag files to upload area or click to select files
-4. Configure upload options
-5. Check files to upload
-6. Click "Start Upload"
+### 上传文件
+1. 访问 http://localhost:3004
+2. 选择"上传"页面(默认)
+3. 拖拽文件到上传区域或点击选择文件
+4. 配置上传选项
+5. 勾选要上传的文件
+6. 点击"开始上传"
 
-### View Storage Bucket
-1. Click "Storage Bucket" menu on the left
-2. Browse uploaded files
-3. Click files to view detailed information
+### 查看存储桶
+1. 点击左侧"存储桶"菜单
+2. 浏览已上传的文件
+3. 点击文件查看详细信息
 
-### Advanced Features
-- **Batch Operations**: Can upload multiple files simultaneously
+### 高级功能
+- **批量操作**: 可以同时上传多个文件
 
-## 🛠️ Technical Architecture
+## 🛠️ 技术架构
 
-### Frontend Tech Stack
-- **Next.js 14** - React full-stack framework
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling framework
-- **Lucide React** - Icon library
+### 前端技术栈
+- **Next.js 14** - React全栈框架
+- **TypeScript** - 类型安全
+- **Tailwind CSS** - 样式框架
+- **Lucide React** - 图标库
 
-### Backend Integration
-- **AWS SDK v3** - S3 client
-- **Presigned URLs** - Secure file upload
+### 后端集成
+- **腾讯云COS JS SDK** - COS客户端
+- **预签名URL** - 安全的文件上传
 
-### Core Features
-- **Custom Hooks** - File upload logic encapsulation
-- **State Management** - React useState/useEffect
-- **Error Handling** - Comprehensive exception handling mechanism
+### 核心功能
+- **自定义Hooks** - 文件上传逻辑封装
+- **状态管理** - React useState/useEffect
+- **错误处理** - 完善的异常处理机制
 
-## 📁 Project Structure
+## 📁 项目结构
 
 ```
-s3-batch-uploader/
+cos-batch-uploader/
 ├── app/                    # Next.js App Router
-│   ├── api/               # API routes
-│   │   └── upload-batch/  # Batch upload API
-│   ├── components/        # React components
-│   │   ├── FileUpload/    # File upload components
-│   │   ├── Navigation/    # Navigation components
-│   │   └── ui/           # Common UI components
-│   ├── hooks/            # Custom Hooks
-│   │   └── useFileUpload.ts
-│   ├── lib/              # Utility library
-│   │   └── s3-client.ts  # S3 client configuration
-│   ├── types/            # TypeScript type definitions
-│   ├── upload/           # Upload page
-│   ├── history/          # History page
-│   └── globals.css       # Global styles
-├── public/               # Static assets
-├── .env.example          # Environment variable template
-├── .env.local           # Local environment variables (needs configuration)
-├── package.json         # Project dependencies
-├── tailwind.config.js   # Tailwind configuration
-├── start.sh            # Startup script
-├── SETUP.md            # Setup guide
-└── README.md           # Project documentation
+│   ├── api/               # API路由
+│   │   ├── upload-batch/  # 批量上传API
+│   │   ├── cos-files/     # COS文件管理API
+│   │   └── storage-usage/ # 存储用量API
+│   ├── components/        # React组件
+│   │   ├── FileUpload/    # 文件上传组件
+│   │   ├── Navigation/    # 导航组件
+│   │   └── ui/           # 通用UI组件
+│   ├── hooks/            # 自定义Hooks
+│   │   ├── useFileUpload.ts
+│   │   └── useCOSFiles.ts
+│   ├── lib/              # 工具库
+│   │   └── cos-client.ts  # COS客户端配置
+│   ├── types/            # TypeScript类型定义
+│   ├── upload/           # 上传页面
+│   ├── history/          # 历史记录页面
+│   └── globals.css       # 全局样式
+├── public/               # 静态资源
+├── .env.example          # 环境变量模板
+├── .env.local           # 本地环境变量(需配置)
+├── package.json         # 项目依赖
+├── tailwind.config.js   # Tailwind配置
+├── start.sh            # 启动脚本
+└── README.md           # 项目文档
 ```
 
-## 📚 References
-- [AWS S3 Documentation](https://docs.aws.amazon.com/s3/)
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+## 📚 参考文档
+- [腾讯云COS文档](https://cloud.tencent.com/document/product/436)
+- [COS JavaScript SDK](https://cloud.tencent.com/document/product/436/11459)
+- [Next.js文档](https://nextjs.org/docs)
+- [Tailwind CSS文档](https://tailwindcss.com/docs)

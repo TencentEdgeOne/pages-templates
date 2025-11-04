@@ -1,21 +1,19 @@
 {
-  "name": "s3-batch-uploader",
+  "name": "cos-batch-uploader",
   "version": "1.0.0",
-  "description": "S3 Batch Uploader - Minimalist Flat Design Version",
+  "description": "Tencent Cloud COS Batch Uploader - Minimalist Flat Design Version",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 3003",
+    "dev": "next dev -p 3004",
     "build": "next build",
-    "start": "next start -p 3003",
+    "start": "next start -p 3004",
     "lint": "next lint"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.913.0",
-    "@aws-sdk/s3-presigned-post": "^3.913.0",
-    "@aws-sdk/s3-request-presigner": "^3.454.0",
     "@types/formidable": "^3.4.6",
     "@types/uuid": "^10.0.0",
     "clsx": "^2.1.1",
+    "cos-nodejs-sdk-v5": "^2.15.4",
     "formidable": "^3.5.4",
     "lucide-react": "^0.292.0",
     "next": "^14.2.0",

@@ -1,19 +1,19 @@
 import { useState, useEffect, useCallback } from 'react'
 import { HistoryItem, S3FilesResponse } from '../types/upload'
 
-interface UseS3FilesOptions {
+interface UseCOSFilesOptions {
   prefix?: string
   maxKeys?: number
   autoRefresh?: boolean
   refreshInterval?: number
 }
 
-export function useS3Files(options: UseS3FilesOptions = {}) {
+export function useCOSFiles(options: UseCOSFilesOptions = {}) {
   const {
     prefix = '',
     maxKeys = 1000,
     autoRefresh = false,
-    refreshInterval = 30000 // 30 seconds
+    refreshInterval = 30000 // 30秒
   } = options
 
   const [files, setFiles] = useState<HistoryItem[]>([])
@@ -29,7 +29,7 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
 
       const params = new URLSearchParams()
       params.set('prefix', prefix)
-      // Provide both parameters: pageSize for Edge, maxKeys for local API
+      // 提供两个参数: pageSize用于Edge, maxKeys用于本地API
       params.set('pageSize', maxKeys.toString())
       params.set('maxKeys', maxKeys.toString())
 
@@ -37,16 +37,16 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
         params.append('continuationToken', continuationToken)
       }
 
-      const localUrl = `/api/s3-files?${params.toString()}`
+      const localUrl = `/api/cos-files?${params.toString()}`
       const response = await fetch(localUrl)
       
       if (!response.ok) {
-        let errorMessage = 'Failed to fetch S3 files'
+        let errorMessage = 'Failed to fetch COS files'
         try {
           const errorData = await response.json()
           errorMessage = errorData.error || errorMessage
         } catch {
-          // If response is not JSON, use status text
+          // 如果响应不是JSON,使用状态文本
           errorMessage = `HTTP ${response.status}: ${response.statusText}`
         }
         throw new Error(errorMessage)
@@ -55,10 +55,10 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
       const data: S3FilesResponse = await response.json()
 
       if (continuationToken) {
-        // Append more files (pagination loading)
+        // 追加更多文件(分页加载)
         setFiles(prev => [...prev, ...data.files])
       } else {
-        // Replace all files (refresh)
+        // 替换所有文件(刷新)
         setFiles(data.files)
       }
 
@@ -66,7 +66,7 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
       setIsTruncated(data.isTruncated)
 
     } catch (err) {
-      console.error('Error fetching S3 files:', err)
+      console.error('Error fetching COS files:', err)
       setError(err instanceof Error ? err.message : 'Unknown error occurred')
     } finally {
       setLoading(false)
@@ -85,8 +85,8 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
 
   const deleteFile = useCallback(async (s3Key: string) => {
     try {
-      const localDel = `/api/s3-files?key=${encodeURIComponent(s3Key)}`
-      const  response = await fetch(localDel, { method: 'DELETE' })
+      const localDel = `/api/cos-files?key=${encodeURIComponent(s3Key)}`
+      const response = await fetch(localDel, { method: 'DELETE' })
 
       if (!response.ok) {
         let errorMessage = 'Failed to delete file'
@@ -99,22 +99,22 @@ export function useS3Files(options: UseS3FilesOptions = {}) {
         throw new Error(errorMessage)
       }
 
-      // Remove file from local state
+      // 从本地状态中移除文件
       setFiles(prev => prev.filter(file => file.s3Key !== s3Key))
 
       return true
     } catch (err) {
-      console.error('Error deleting S3 file:', err)
+      console.error('Error deleting COS file:', err)
       throw err
     }
   }, [])
 
-  // Initial loading
+  // 初始加载
   useEffect(() => {
     fetchFiles()
   }, [fetchFiles])
 
-  // Auto refresh
+  // 自动刷新
   useEffect(() => {
     if (!autoRefresh || refreshInterval <= 0) return
 

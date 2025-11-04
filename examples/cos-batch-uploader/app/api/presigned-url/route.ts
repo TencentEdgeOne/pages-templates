@@ -1,63 +1,34 @@
-/**
- * S3 预签名 URL 生成 API 路由
- * 
- * 提供两个功能：
- * 1. POST: 生成单个文件的预签名下载 URL
- * 2. PUT: 批量生成多个文件的预签名下载 URL
- */
-
 import { NextRequest, NextResponse } from 'next/server'
-import { GetObjectCommand } from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { UPLOAD_CONFIG } from '../../../config/upload'
-import { s3Client, BUCKET_NAME } from '../../../lib/s3-client'
+import { getPresignedUrl } from '../../../lib/cos-client'
 
-
-
-/**
- * 生成单个文件的预签名下载 URL
- * 
- * @param request - 包含以下参数的请求对象:
- *   - key: S3 对象键（文件路径）
- *   - expiresIn: URL 过期时间（秒），可选，默认使用配置值
- * 
- * @returns JSON 响应包含:
- *   - presignedUrl: 预签名下载 URL
- *   - expiresIn: URL 过期时间
- *   - key: 原始文件键
- */
+// 处理单个预签名URL请求 (用于文件上传)
 export async function POST(request: NextRequest) {
   try {
-    // 解析请求参数：文件键和过期时间
-    const { key, expiresIn = UPLOAD_CONFIG.PRESIGNED_URL_EXPIRES } = await request.json()
-    
-    // 验证必需的文件键参数
-    if (!key) {
+    const body = await request.json()
+    const { filename, contentType } = body
+
+    if (!filename) {
       return NextResponse.json(
-        { error: 'Missing key parameter' },
+        { error: 'Missing filename' },
         { status: 400 }
       )
     }
 
-    // 创建 S3 GetObject 命令，用于生成下载 URL
-    const command = new GetObjectCommand({
-      Bucket: BUCKET_NAME,
-      Key: key,
-    })
+    // 生成唯一的对象键
+    const key = `uploads/${filename}`
 
-    // 生成预签名 URL，允许临时访问 S3 对象
-    const presignedUrl = await getSignedUrl(s3Client, command, {
-      expiresIn: expiresIn,
-    })
+    // 生成预签名URL用于上传 (PUT方法)
+    const uploadUrl = await getPresignedUrl(key, 3600, 'put')
+    
+    // 生成预签名URL用于访问 (GET方法)
+    const publicUrl = await getPresignedUrl(key, 86400, 'get')
 
-    // 返回预签名 URL 和相关信息
     return NextResponse.json({
-      presignedUrl,
-      expiresIn,
+      uploadUrl,
+      publicUrl,
       key,
     })
   } catch (error) {
-    // 记录错误并返回服务器错误响应
     console.error('Error generating presigned URL:', error)
     return NextResponse.json(
       { error: 'Failed to generate presigned URL' },
@@ -66,71 +37,42 @@ export async function POST(request: NextRequest) {
   }
 }
 
-/**
- * 批量生成多个文件的预签名下载 URL
- * 
- * @param request - 包含以下参数的请求对象:
- *   - keys 或 s3Keys: S3 对象键数组（文件路径列表）
- *   - expiresIn: URL 过期时间（秒），可选，默认 300 秒
- * 
- * @returns JSON 响应包含:
- *   - presignedUrls: 键值对对象，键为文件路径，值为预签名 URL
- *   - expiresIn: URL 过期时间
- */
+// 处理批量预签名URL请求 (用于文件列表显示)
 export async function PUT(request: NextRequest) {
   try {
-    // 解析请求体参数
     const body = await request.json()
-    const { keys, s3Keys, expiresIn = 300 } = body
-    
-    // 支持两种参数名称：keys 或 s3Keys（向后兼容）
-    const keysArray = keys || s3Keys
-    
-    // 验证文件键数组参数
-    if (!keysArray || !Array.isArray(keysArray)) {
+    const { s3Keys, expiresIn = 300 } = body
+
+    if (!s3Keys || !Array.isArray(s3Keys) || s3Keys.length === 0) {
       return NextResponse.json(
-        { error: 'Missing or invalid keys parameter' },
+        { error: 'Missing or invalid s3Keys array' },
         { status: 400 }
       )
     }
 
-    // 存储生成的预签名 URL 的对象
+    // 批量生成预签名URL
     const presignedUrls: Record<string, string> = {}
-
-    // 并行生成所有预签名 URL 以提高性能
+    
+    // 并发处理所有key，提高性能
     await Promise.all(
-      keysArray.map(async (key: string) => {
+      s3Keys.map(async (key: string) => {
         try {
-          // 为每个文件创建 GetObject 命令
-          const command = new GetObjectCommand({
-            Bucket: BUCKET_NAME,
-            Key: key,
-          })
-
-          // 生成该文件的预签名 URL
-          const presignedUrl = await getSignedUrl(s3Client, command, {
-            expiresIn: expiresIn,
-          })
-
-          // 将 URL 添加到结果对象中
-          presignedUrls[key] = presignedUrl
+          const url = await getPresignedUrl(key, expiresIn, 'get')
+          presignedUrls[key] = url
         } catch (error) {
           console.error(`Error generating presigned URL for key ${key}:`, error)
-          // 单个文件失败时继续处理其他文件，不中断整个批处理
+          // 对于失败的key，跳过处理，让成功的URL正常返回
         }
       })
     )
 
-    // 返回所有成功生成的预签名 URL
     return NextResponse.json({
       presignedUrls,
-      expiresIn,
     })
   } catch (error) {
-    // 记录批处理错误并返回服务器错误响应
     console.error('Error generating batch presigned URLs:', error)
     return NextResponse.json(
-      { error: 'Failed to generate presigned URLs' },
+      { error: 'Failed to generate batch presigned URLs' },
       { status: 500 }
     )
   }

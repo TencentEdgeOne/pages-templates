@@ -29,7 +29,7 @@ export function Navigation() {
             <Folder className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">S3 Uploader</h1>
+            <h1 className="text-lg font-semibold text-gray-900">COS Uploader</h1>
             <p className="text-xs text-gray-500">File Upload System</p>
           </div>
         </div>
@@ -67,7 +67,6 @@ export function Navigation() {
       <div className="px-4 py-4 border-t border-gray-200 bg-gray-50">
         <div className="text-center">
           <p className="text-xs text-gray-600">Version 1.0</p>
-          <p className="text-xs text-gray-500">© 2025 S3 Uploader</p>
         </div>
       </div>
     </div>

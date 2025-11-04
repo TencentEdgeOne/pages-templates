@@ -73,7 +73,7 @@ function UploadPage() {
     <div className="p-6 max-w-7xl min-w-[1000px] mx-auto">
       <div className="mb-6">
         <h1 className="text-xl font-semibold text-gray-900 mb-2">File Upload</h1>
-        <p className="text-gray-600">Support batch upload of images and videos to AWS S3 storage</p>
+        <p className="text-gray-600">Support batch upload of images and videos to Tencent Cloud Object Storage（COS）</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
