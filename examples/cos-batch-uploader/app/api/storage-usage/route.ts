@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { listObjects, BUCKET_NAME } from '../../../lib/cos-client'
 import { UPLOAD_CONFIG } from '../../../config/upload'
 
-// 禁用Next.js缓存 - 强制动态渲染
+// Disable Next.js caching - force dynamic rendering
 export const dynamic = 'force-dynamic'
 export const revalidate = 0
 
@@ -15,10 +15,10 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // 添加时间戳确保每次请求都是新的
+    // Add timestamp to ensure each request is fresh
     const requestTimestamp = Date.now()
 
-    // 获取存储桶中所有对象
+    // Get all objects in the bucket
     const result = await listObjects('uploads/', 1000)
     
     let totalSize = 0
@@ -31,7 +31,7 @@ export async function GET(request: NextRequest) {
 
     result.objects.forEach((object) => {
       if (object.Size && object.Key && object.LastModified) {
-        // 注意：COS返回的Size是字符串类型，需要转换为数字
+        // Note: COS returns Size as string type, need to convert to number
         const fileSize = parseInt(object.Size, 10)
         totalSize += fileSize
         totalCount++
@@ -43,15 +43,15 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    // 计算使用百分比
+    // Calculate usage percentage
     const usagePercentage = Math.round((totalSize / UPLOAD_CONFIG.MAX_STORAGE_SIZE) * 100)
     const remainingSize = UPLOAD_CONFIG.MAX_STORAGE_SIZE - totalSize
     
-    // 根据平均文件大小估算还能上传多少文件
-    const averageFileSize = totalCount > 0 ? totalSize / totalCount : 50 * 1024 * 1024 // 默认50MB
+    // Estimate remaining files based on average file size
+    const averageFileSize = totalCount > 0 ? totalSize / totalCount : 50 * 1024 * 1024 // Default 50MB
     const estimatedRemainingFiles = Math.floor(remainingSize / averageFileSize)
 
-    // 确定状态
+    // Determine status
     let status: 'normal' | 'warning' | 'danger' = 'normal'
     if (usagePercentage >= 90) {
       status = 'danger'
@@ -59,7 +59,7 @@ export async function GET(request: NextRequest) {
       status = 'warning'
     }
 
-    // 生成提示消息
+    // Generate message
     let message = ''
     switch (status) {
       case 'normal':
@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
       status,
       message,
       estimatedRemainingFiles,
-      files: files.slice(0, 10), // 返回最近10个文件的信息
+      files: files.slice(0, 10), // Return info for the most recent 10 files
       requestTimestamp,
       lastUpdated: new Date().toISOString(),
       cosObjectsCount: result.objects.length
@@ -90,7 +90,7 @@ export async function GET(request: NextRequest) {
 
     const response = NextResponse.json(responseData)
 
-    // 设置响应头禁用所有级别的缓存
+    // Set response headers to disable all levels of caching
     response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0')
     response.headers.set('Pragma', 'no-cache')
     response.headers.set('Expires', '0')

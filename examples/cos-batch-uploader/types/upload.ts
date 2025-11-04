@@ -21,10 +21,10 @@ export interface HistoryItem {
   fileName: string
   fileSize: number
   fileType: string
-  s3Url?: string // 可选，用于缓存预签名 URL
+  s3Url?: string // Optional, for caching presigned URL
   uploadTime: string
   thumbnail?: string
-  // S3特有属性
+  // COS-specific properties
   etag?: string
   storageClass?: string
   s3Metadata?: Record<string, string>

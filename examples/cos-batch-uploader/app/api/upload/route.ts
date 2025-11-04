@@ -12,13 +12,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 生成唯一的文件键
+    // Generate unique file key
     const key = `uploads/${filename}`
 
-    // 生成预签名URL用于上传
+    // Generate presigned URL for upload
     const uploadUrl = await getPresignedUrl(key, 3600, 'put')
     
-    // 生成公共访问URL
+    // Generate public access URL
     const publicUrl = getObjectUrl(key)
 
     return NextResponse.json({

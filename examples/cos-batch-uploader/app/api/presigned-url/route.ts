@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPresignedUrl } from '../../../lib/cos-client'
 
-// 处理单个预签名URL请求 (用于文件上传)
+// Handle single presigned URL request (for file upload)
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
@@ -14,13 +14,13 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 生成唯一的对象键
+    // Generate unique object key
     const key = `uploads/${filename}`
 
-    // 生成预签名URL用于上传 (PUT方法)
+    // Generate presigned URL for upload (PUT method)
     const uploadUrl = await getPresignedUrl(key, 3600, 'put')
     
-    // 生成预签名URL用于访问 (GET方法)
+    // Generate presigned URL for access (GET method)
     const publicUrl = await getPresignedUrl(key, 86400, 'get')
 
     return NextResponse.json({
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// 处理批量预签名URL请求 (用于文件列表显示)
+// Handle batch presigned URL request (for file list display)
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json()
@@ -50,10 +50,10 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    // 批量生成预签名URL
+    // Batch generate presigned URLs
     const presignedUrls: Record<string, string> = {}
     
-    // 并发处理所有key，提高性能
+    // Process all keys concurrently for better performance
     await Promise.all(
       s3Keys.map(async (key: string) => {
         try {
@@ -61,7 +61,7 @@ export async function PUT(request: NextRequest) {
           presignedUrls[key] = url
         } catch (error) {
           console.error(`Error generating presigned URL for key ${key}:`, error)
-          // 对于失败的key，跳过处理，让成功的URL正常返回
+          // For failed keys, skip processing and let successful URLs return normally
         }
       })
     )
