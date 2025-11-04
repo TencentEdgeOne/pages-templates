@@ -1,55 +1,55 @@
-# 🚀 腾讯云COS批量上传器
+# 🚀 Tencent Cloud COS Batch Uploader
 
-一个功能完整、设计精美的腾讯云COS批量文件上传系统,支持拖拽上传、进度监控和高级功能。
+A fully-featured, beautifully designed Tencent Cloud COS batch file upload system with drag-and-drop upload, progress monitoring, and advanced features.
 
-## 部署
+## Deploy
 
-[![使用EdgeOne Pages部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=cos-batch-uploader)
+[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=cos-batch-uploader)
 
-更多模板: [EdgeOne Pages](https://edgeone.ai/pages/templates)
+More templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
-## ✨ 功能特性
+## ✨ Features
 
-### 📁 文件上传
-- ✅ **拖拽上传** - 支持拖拽文件到页面进行上传
-- ✅ **点击选择** - 传统的文件选择方式
-- ✅ **批量处理** - 一次选择多个文件进行批量上传
-- ✅ **文件预览** - 显示图片缩略图和视频封面
-- ✅ **文件信息** - 显示文件格式、大小等详细信息
+### 📁 File Upload
+- ✅ **Drag & Drop** - Support dragging files to the page for upload
+- ✅ **Click to Select** - Traditional file selection method
+- ✅ **Batch Processing** - Select multiple files for batch upload at once
+- ✅ **File Preview** - Display image thumbnails and video covers
+- ✅ **File Information** - Show file format, size and other details
 
-### 📊 进度监控
-- ✅ **实时进度条** - 显示每个文件的上传进度
-- ✅ **上传状态** - 等待、上传中、成功、失败状态指示
-- ✅ **进度叠加层** - 上传时在文件预览上显示半透明进度层
-- ✅ **错误处理** - 上传失败时显示错误信息和重试选项
+### 📊 Progress Monitoring
+- ✅ **Real-time Progress Bar** - Display upload progress for each file
+- ✅ **Upload Status** - Pending, uploading, success, and failure status indicators
+- ✅ **Progress Overlay** - Show semi-transparent progress layer on file preview during upload
+- ✅ **Error Handling** - Display error messages and retry options when upload fails
 
-### ⚙️ 高级配置
-- ✅ **并发控制** - 可配置同时上传的文件数量
-- ✅ **文件选择** - 勾选/取消勾选要上传的文件
+### ⚙️ Advanced Configuration
+- ✅ **Concurrency Control** - Configurable number of simultaneous uploads
+- ✅ **File Selection** - Check/uncheck files to upload
 
-### 📋 存储桶管理
-- ✅ **存储桶** - 查看已上传文件列表
-- ✅ **文件详情** - 点击查看文件详细信息
+### 📋 Bucket Management
+- ✅ **Bucket View** - View list of uploaded files
+- ✅ **File Details** - Click to view detailed file information
 
-### 🎨 用户界面
-- ✅ **现代设计** - 简洁美观的用户界面
-- ✅ **响应式布局** - 适配不同屏幕尺寸
-- ✅ **状态反馈** - 丰富的视觉反馈和交互效果
+### 🎨 User Interface
+- ✅ **Modern Design** - Clean and beautiful user interface
+- ✅ **Responsive Layout** - Adapt to different screen sizes
+- ✅ **Status Feedback** - Rich visual feedback and interactive effects
 
-## 🚀 快速开始
+## 🚀 Quick Start
 
-### 1. 配置腾讯云COS
-使用前请先配置您的腾讯云COS设置:
+### 1. Configure Tencent Cloud COS
+Please configure your Tencent Cloud COS settings before use:
 
 ```bash
-# 复制环境变量模板
+# Copy environment variable template
 cp .env.example .env.local
 
-# 编辑配置文件
+# Edit configuration file
 nano .env.local
 ```
 
-填入您的腾讯云COS配置:
+Fill in your Tencent Cloud COS configuration:
 ```env
 COS_SECRET_ID=your-secret-id
 COS_SECRET_KEY=your-secret-key
@@ -57,12 +57,12 @@ COS_BUCKET=your-bucket-name-appid
 COS_REGION=ap-guangzhou
 ```
 
-### 2. 腾讯云COS设置
+### 2. Tencent Cloud COS Setup
 
-#### 创建COS存储桶
-1. 登录腾讯云控制台
-2. 创建新的COS存储桶
-3. 配置CORS策略:
+#### Create COS Bucket
+1. Log in to Tencent Cloud Console
+2. Create a new COS bucket
+3. Configure CORS policy:
 
 ```json
 [
@@ -76,10 +76,10 @@ COS_REGION=ap-guangzhou
 ]
 ```
 
-#### 创建访问密钥
-1. 进入访问管理 > API密钥管理
-2. 创建新的密钥对(SecretId和SecretKey)
-3. 配置存储桶访问权限策略:
+#### Create Access Keys
+1. Go to Access Management > API Key Management
+2. Create a new key pair (SecretId and SecretKey)
+3. Configure bucket access permission policy:
 
 ```json
 {
@@ -101,101 +101,101 @@ COS_REGION=ap-guangzhou
 }
 ```
 
-## 🔧 开发
+## 🔧 Development
 
-### 安装依赖
+### Install Dependencies
 ```bash
 npm install
 ```
 
-### 启动开发服务器
+### Start Development Server
 ```bash
 npm run dev
-# 或使用启动脚本
+# Or use startup script
 ./start.sh
 ```
 
-### 构建生产版本
+### Build for Production
 ```bash
 npm run build
 npm start
 ```
 
-### 项目当前运行在: **http://localhost:3004**
+### Project currently running at: **http://localhost:3004**
 
-### 代码检查
+### Code Linting
 ```bash
 npm run lint
 ```
 
-## 📖 使用指南
+## 📖 User Guide
 
-### 上传文件
-1. 访问 http://localhost:3004
-2. 选择"上传"页面(默认)
-3. 拖拽文件到上传区域或点击选择文件
-4. 配置上传选项
-5. 勾选要上传的文件
-6. 点击"开始上传"
+### Upload Files
+1. Visit http://localhost:3004
+2. Select "Upload" page (default)
+3. Drag files to upload area or click to select files
+4. Configure upload options
+5. Check the files to upload
+6. Click "Start Upload"
 
-### 查看存储桶
-1. 点击左侧"存储桶"菜单
-2. 浏览已上传的文件
-3. 点击文件查看详细信息
+### View Bucket
+1. Click "Bucket" menu on the left
+2. Browse uploaded files
+3. Click on a file to view detailed information
 
-### 高级功能
-- **批量操作**: 可以同时上传多个文件
+### Advanced Features
+- **Batch Operations**: Upload multiple files simultaneously
 
-## 🛠️ 技术架构
+## 🛠️ Technical Architecture
 
-### 前端技术栈
-- **Next.js 14** - React全栈框架
-- **TypeScript** - 类型安全
-- **Tailwind CSS** - 样式框架
-- **Lucide React** - 图标库
+### Frontend Stack
+- **Next.js 14** - React full-stack framework
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Styling framework
+- **Lucide React** - Icon library
 
-### 后端集成
-- **腾讯云COS JS SDK** - COS客户端
-- **预签名URL** - 安全的文件上传
+### Backend Integration
+- **Tencent Cloud COS JS SDK** - COS client
+- **Presigned URLs** - Secure file upload
 
-### 核心功能
-- **自定义Hooks** - 文件上传逻辑封装
-- **状态管理** - React useState/useEffect
-- **错误处理** - 完善的异常处理机制
+### Core Features
+- **Custom Hooks** - File upload logic encapsulation
+- **State Management** - React useState/useEffect
+- **Error Handling** - Comprehensive exception handling mechanism
 
-## 📁 项目结构
+## 📁 Project Structure
 
 ```
 cos-batch-uploader/
 ├── app/                    # Next.js App Router
-│   ├── api/               # API路由
-│   │   ├── upload-batch/  # 批量上传API
-│   │   ├── cos-files/     # COS文件管理API
-│   │   └── storage-usage/ # 存储用量API
-│   ├── components/        # React组件
-│   │   ├── FileUpload/    # 文件上传组件
-│   │   ├── Navigation/    # 导航组件
-│   │   └── ui/           # 通用UI组件
-│   ├── hooks/            # 自定义Hooks
+│   ├── api/               # API routes
+│   │   ├── upload-batch/  # Batch upload API
+│   │   ├── cos-files/     # COS file management API
+│   │   └── storage-usage/ # Storage usage API
+│   ├── components/        # React components
+│   │   ├── FileUpload/    # File upload components
+│   │   ├── Navigation/    # Navigation components
+│   │   └── ui/           # Common UI components
+│   ├── hooks/            # Custom Hooks
 │   │   ├── useFileUpload.ts
 │   │   └── useCOSFiles.ts
-│   ├── lib/              # 工具库
-│   │   └── cos-client.ts  # COS客户端配置
-│   ├── types/            # TypeScript类型定义
-│   ├── upload/           # 上传页面
-│   ├── history/          # 历史记录页面
-│   └── globals.css       # 全局样式
-├── public/               # 静态资源
-├── .env.example          # 环境变量模板
-├── .env.local           # 本地环境变量(需配置)
-├── package.json         # 项目依赖
-├── tailwind.config.js   # Tailwind配置
-├── start.sh            # 启动脚本
-└── README.md           # 项目文档
+│   ├── lib/              # Utility library
+│   │   └── cos-client.ts  # COS client configuration
+│   ├── types/            # TypeScript type definitions
+│   ├── upload/           # Upload page
+│   ├── history/          # History page
+│   └── globals.css       # Global styles
+├── public/               # Static assets
+├── .env.example          # Environment variable template
+├── .env.local           # Local environment variables (needs configuration)
+├── package.json         # Project dependencies
+├── tailwind.config.js   # Tailwind configuration
+├── start.sh            # Startup script
+└── README.md           # Project documentation
 ```
 
-## 📚 参考文档
-- [腾讯云COS文档](https://cloud.tencent.com/document/product/436)
+## 📚 Reference Documentation
+- [Tencent Cloud COS Documentation](https://cloud.tencent.com/document/product/436)
 - [COS JavaScript SDK](https://cloud.tencent.com/document/product/436/11459)
-- [Next.js文档](https://nextjs.org/docs)
+- [Next.js Documentation](https://nextjs.org/docs)
 - [Tailwind CSS文档](https://tailwindcss.com/docs)
