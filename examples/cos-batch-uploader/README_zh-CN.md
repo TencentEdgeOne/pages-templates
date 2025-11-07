@@ -54,7 +54,7 @@ nano .env.local
 COS_SECRET_ID=your-secret-id
 COS_SECRET_KEY=your-secret-key
 COS_BUCKET=your-bucket-name-appid
-COS_REGION=ap-guangzhou
+COS_REGION=your-bucket-region
 ```
 
 ### 2. 腾讯云COS设置
@@ -102,6 +102,8 @@ COS_REGION=ap-guangzhou
 ```
 
 ## 🔧 开发
+### 安装node.js 18.x
+项目使用Next.js 14.x 开发， 所以支持的Node.js最小版本为18.x
 
 ### 安装依赖
 ```bash

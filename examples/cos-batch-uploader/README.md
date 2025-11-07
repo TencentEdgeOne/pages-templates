@@ -54,7 +54,7 @@ Fill in your Tencent Cloud COS configuration:
 COS_SECRET_ID=your-secret-id
 COS_SECRET_KEY=your-secret-key
 COS_BUCKET=your-bucket-name-appid
-COS_REGION=ap-guangzhou
+COS_REGION=your-bucket-region
 ```
 
 ### 2. Tencent Cloud COS Setup
@@ -102,6 +102,8 @@ COS_REGION=ap-guangzhou
 ```
 
 ## 🔧 Development
+### Install Node.js 18.x
+The project is developed using Next.js 14.x, so the minimum supported version of Node.js is 18.x
 
 ### Install Dependencies
 ```bash
