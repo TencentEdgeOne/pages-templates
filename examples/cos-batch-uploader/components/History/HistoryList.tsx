@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Clock, Copy, Trash2, Eye, FileText, Image, Video, File, Check, Download, Grid3X3, List } from 'lucide-react'
 import { HistoryItem } from '../../types/upload'
 import { usePresignedUrl } from '../../hooks/usePresignedUrl'
+import { formatFileSize } from '../../lib/utils'
 
 interface HistoryListProps {
   items: HistoryItem[]
@@ -32,13 +33,7 @@ export default function HistoryList({
   const { getBatchPresignedUrls } = usePresignedUrl()
 
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-    const i = Math.min(Math.floor(Math.log(bytes) / Math.log(k)), sizes.length - 1)
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
+
 
   const isSelected = (item: HistoryItem) => {
     return selectedItems.some(selected => selected.id === item.id)

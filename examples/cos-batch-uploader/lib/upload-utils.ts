@@ -1,13 +1,6 @@
 import { UploadFile, UploadProgress } from '../types/upload'
-import { UPLOAD_CONFIG, isFileTypeAllowed, isFileSizeValid, formatFileSize as configFormatFileSize } from '../config/upload'
-
-export const formatFileSize = (bytes: number): string => {
-  if (bytes === 0) return '0 Bytes'
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(k)), sizes.length - 1)
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
+import { UPLOAD_CONFIG } from '../config/upload'
+import { isFileTypeAllowed, isFileSizeValid, formatFileSize } from './utils'
 
 export const formatUploadSpeed = (bytesPerSecond: number): string => {
   return formatFileSize(bytesPerSecond) + '/s'
@@ -102,7 +95,7 @@ export const validateFile = (file: File, maxSize?: number): string | null => {
   const maxFileSize = maxSize || UPLOAD_CONFIG.MAX_FILE_SIZE
   
   if (!isFileSizeValid(file.size)) {
-    return `File size exceeds limit (${configFormatFileSize(maxFileSize)})`
+    return `File size exceeds limit (${formatFileSize(maxFileSize)})`
   }
   
   if (!isFileTypeAllowed(file.type)) {

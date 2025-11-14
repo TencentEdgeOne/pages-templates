@@ -8,6 +8,7 @@ import { UploadConfigComponent } from '../../components/FileUpload/UploadConfig'
 import { Button } from '../../components/UI/Button'
 import { useFileUpload } from '../../hooks/useFileUpload'
 import { useStorageRefresh } from '../../hooks/useStorageRefresh'
+import { formatFileSize } from '../../lib/utils'
 import { UploadConfig } from '../../types/upload'
 import { getUploadConfig, saveUploadConfig } from '../../lib/storage'
 import MainLayout from '../../components/Layout/MainLayout'
@@ -61,13 +62,7 @@ function UploadPage() {
   }
 
   const totalSize = selectedFiles.reduce((sum, file) => sum + file.file.size, 0)
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-    const i = Math.min(Math.floor(Math.log(bytes) / Math.log(k)), sizes.length - 1)
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
+
 
   return (
     <div className="p-6 max-w-7xl min-w-[1000px] mx-auto">

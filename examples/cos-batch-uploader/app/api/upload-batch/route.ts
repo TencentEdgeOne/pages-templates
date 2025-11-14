@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPresignedUrl, createMultipartUpload, getObjectUrl } from '../../../lib/cos-client'
-
-// Large file threshold (50MB)
-const LARGE_FILE_THRESHOLD = 50 * 1024 * 1024
+import { UPLOAD_CONFIG } from '../../../config/upload'
 
 export async function POST(request: NextRequest) {
   try {
@@ -20,7 +18,7 @@ export async function POST(request: NextRequest) {
     const key = `uploads/${filename}`
 
     // Determine if multipart upload is needed
-    if (fileSize && fileSize > LARGE_FILE_THRESHOLD) {
+    if (fileSize && fileSize > UPLOAD_CONFIG.MAX_STORAGE_SIZE) {
       // Use multipart upload for large files
       try {
         const uploadId = await createMultipartUpload(key, contentType)
@@ -41,7 +39,7 @@ export async function POST(request: NextRequest) {
       }
     } else {
       // Use simple upload for small files
-      const uploadUrl = await getPresignedUrl(key, 3600, 'put')
+      const uploadUrl = await getPresignedUrl(key, UPLOAD_CONFIG.UPLOAD_URL_EXPIRES, 'put')
       const publicUrl = getObjectUrl(key)
 
       return NextResponse.json({

@@ -3,8 +3,8 @@
 import { Settings } from 'lucide-react'
 
 import { UploadConfig } from '../../types/upload'
-import { formatFileSize } from '../../lib/upload-utils'
-import { UPLOAD_CONFIG, formatFileSize as configFormatFileSize } from '../../config/upload.js'
+import { formatFileSize } from '../../lib/utils'
+import { UPLOAD_CONFIG } from '../../config/upload'
 import { StorageUsage } from '../Storage/StorageUsage'
 
 interface UploadConfigProps {

@@ -4,6 +4,7 @@ import { useStorageInfo } from '../../hooks/useStorageInfo'
 
 import { HardDrive, AlertTriangle, CheckCircle, XCircle } from 'lucide-react'
 import { clsx } from 'clsx'
+import { formatFileSize } from '../../lib/utils'
 
 interface StorageUsageProps {
   className?: string
@@ -13,13 +14,7 @@ interface StorageUsageProps {
 export function StorageUsage({ className, showDetails = true }: StorageUsageProps) {
   const { storageInfo, loading, error, refreshStorageInfo } = useStorageInfo()
 
-  const formatFileSize = (bytes: number): string => {
-    if (bytes === 0) return '0 B'
-    const k = 1024
-    const sizes = ['B', 'KB', 'MB', 'GB', 'TB']
-    const i = Math.min(Math.floor(Math.log(bytes) / Math.log(k)), sizes.length - 1)
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i]
-  }
+
 
   const getStatusIcon = (status: string) => {
     switch (status) {

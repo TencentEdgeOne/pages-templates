@@ -65,35 +65,10 @@ export const UPLOAD_CONFIG = {
   // Presigned URL expiration time (5 minutes)
   PRESIGNED_URL_EXPIRES: 300,
   
+  // Upload presigned URL expiration time (1 hour)
+  UPLOAD_URL_EXPIRES: 3600,
+  
   // Upload retry attempts
   MAX_RETRY_ATTEMPTS: 3,
 }
 
-// Format file size
-export function formatFileSize(bytes) {
-  if (bytes === 0) return '0 Bytes'
-  const k = 1024
-  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-  const i = Math.min(Math.floor(Math.log(bytes) / Math.log(k)), sizes.length - 1)
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-}
-
-// Check if file type is supported
-export function isFileTypeAllowed(fileType) {
-  return UPLOAD_CONFIG.ALLOWED_FILE_TYPES.includes(fileType)
-}
-
-// Check if file size meets requirements
-export function isFileSizeValid(fileSize) {
-  return fileSize <= UPLOAD_CONFIG.MAX_FILE_SIZE
-}
-
-// Get file type category
-export function getFileCategory(fileType) {
-  if (fileType.startsWith('image/')) return 'image'
-  if (fileType.startsWith('video/')) return 'video'
-  if (fileType.startsWith('audio/')) return 'audio'
-  if (fileType.includes('pdf') || fileType.includes('document') || fileType.includes('sheet') || fileType.includes('presentation') || fileType.includes('text')) return 'document'
-  if (fileType.includes('zip') || fileType.includes('rar') || fileType.includes('7z') || fileType.includes('gzip')) return 'archive'
-  return 'other'
-}

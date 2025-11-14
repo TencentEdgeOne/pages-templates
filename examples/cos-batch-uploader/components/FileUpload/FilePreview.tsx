@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { CheckCircle, XCircle, Clock, Play, Image as ImageIcon, FileText, Trash2, RotateCcw, Square, CheckSquare, X } from 'lucide-react'
 import { UploadFile, FileStatus } from '../../types/upload'
-import { formatFileSize } from '../../lib/upload-utils'
+import { formatFileSize } from '../../lib/utils'
 import { ProgressOverlay } from './ProgressOverlay'
 import { Button } from '../UI/Button'
 

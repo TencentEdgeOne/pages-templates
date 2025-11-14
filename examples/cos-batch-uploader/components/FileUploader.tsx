@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
+import { formatFileSize } from '../lib/utils'
 
 interface FileWithProgress {
   file: File
@@ -93,13 +94,7 @@ export default function FileUploader() {
     setFiles([])
   }
 
-  const formatFileSize = (bytes: number) => {
-    if (bytes === 0) return '0 Bytes'
-    const k = 1024
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB']
-    const i = Math.min(Math.floor(Math.log(bytes) / Math.log(k)), sizes.length - 1)
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i]
-  }
+
 
   const getStatusColor = (status: string) => {
     switch (status) {
