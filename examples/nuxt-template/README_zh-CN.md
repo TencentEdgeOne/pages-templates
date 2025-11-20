@@ -1,6 +1,6 @@
-# Nuxt 3 最小化启动项目
+# Nuxt 4 最小化启动项目
 
-查看 [Nuxt 3 文档](https://nuxt.com/docs/getting-started/introduction) 了解更多信息。
+查看 [Nuxt 4 文档](https://nuxt.com/docs/4.x/getting-started/introduction) 了解更多信息。
 
 ## 部署
 
@@ -75,5 +75,3 @@ yarn preview
 # bun
 bun run preview
 ```
-
-查看 [部署文档](https://nuxt.com/docs/getting-started/deployment) 以获取更多信息。
