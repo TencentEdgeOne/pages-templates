@@ -94,7 +94,7 @@ export default function LoginForm() {
                   Don't have an account yet?{" "}
                   <a
                     href="/signup"
-                    className="text-black focus:outline-none focus:underline focus:text-black dark:focus:border-indigo-800">
+                    className="text-indigo-600 dark:text-indigo-400 focus:outline-none focus:underline focus:text-indigo-700 dark:focus:text-indigo-300">
                     Sign up
                   </a>
                   .
