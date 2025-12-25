@@ -14,16 +14,17 @@ const CartItem = (props) => {
   const { updateCartData } = useContext(CartContext);
 
   const { image, alt, name, price, cartItem, quantity } = props;
+  const [updating, setUpdating] = useState(false);
   const removeItemFromCart = async (key) => {
     await removeFromCart(key);
-    updateCartData();
+    await updateCartData();
   }
   return (
     <div className={styles.root}>
       <div
         className={styles.imageContainer}
         role={'presentation'}
-        onClick={() => navigate('/product/sample')}
+        onClick={() => navigate(`/product/${cartItem.product.node.slug}`)}
       >
         <img src={image} alt={alt}></img>
       </div>
@@ -39,7 +40,19 @@ const CartItem = (props) => {
        
       </div>
       <div className={styles.adjustItemContainer}>
-        <AdjustItem value={quantity} onChange={props.onQuantityChange} />
+        <AdjustItem
+          value={quantity}
+          onChange={async (val) => {
+            try {
+              setUpdating(true);
+              await props.onQuantityChange(val);
+            } finally {
+              setUpdating(false);
+            }
+          }}
+          disabled={updating}
+        />
+        {updating && <span style={{ fontSize: 12, color: '#666', marginLeft: 8 }}>Updating…</span>}
       </div>
       <div className={styles.priceContainer}>
         <span>{price}</span>

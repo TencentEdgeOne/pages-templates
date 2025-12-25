@@ -4,13 +4,15 @@ import Icon from '../Icons/Icon';
 import * as styles from './AdjustItem.module.css';
 
 const AdjustItem = (props) => {
-  const { isTransparent } = props;
+  const { isTransparent, disabled } = props;
   const [qty, setQty] = useState(props.value ? props.value : 1);
 
   const handleOnChange = (e) => {
-    const num = parseInt(e.target.value);
-    props.onChange && props.onChange(num);
-    setQty(num);
+    if (disabled) return;
+    const num = parseInt(e.target.value, 10) || 0;
+    const next = num < 1 ? 1 : num;
+    setQty(next);
+    props.onChange && props.onChange(next);
   };
 
 
@@ -24,9 +26,10 @@ const AdjustItem = (props) => {
         className={styles.iconContainer}
         role={'presentation'}
         onClick={() => {
-          if (qty <= 1) return;
-          setQty(qty - 1);
-          props.onChange && props.onChange(qty);
+          if (disabled || qty <= 1) return;
+          const next = qty - 1;
+          setQty(next);
+          props.onChange && props.onChange(next);
         }}
       >
         <Icon symbol={'minus'}></Icon>
@@ -37,13 +40,16 @@ const AdjustItem = (props) => {
           onChange={(e) => handleOnChange(e)}
           type={'number'}
           value={qty}
+          disabled={disabled}
         ></input>
       </div>
       <div
         role={'presentation'}
         onClick={() => {
-          setQty(qty + 1);
-          props.onChange && props.onChange(qty);
+          if (disabled) return;
+          const next = qty + 1;
+          setQty(next);
+          props.onChange && props.onChange(next);
         }}
         className={styles.iconContainer}
       >

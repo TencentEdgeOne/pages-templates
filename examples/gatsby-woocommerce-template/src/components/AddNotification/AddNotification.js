@@ -24,7 +24,7 @@ const AddNotification = (props) => {
         <div className={styles.iconContainer}>
           <Icon symbol={'check'}></Icon>
         </div>
-        <span>Item added to bag</span>
+        <span className={styles.successTitle}>Item added to bag</span>
       </div>
 
       {cartProduct && <div className={styles.newItemContainer}>

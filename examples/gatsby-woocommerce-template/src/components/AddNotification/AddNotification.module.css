@@ -30,6 +30,11 @@
     line-height: 17px;
 }
 
+.successTitle {
+    color: #1f8a3d;
+    font-weight: 600;
+}
+
 .actionContainer {
     display: flex;
     flex-direction: column;

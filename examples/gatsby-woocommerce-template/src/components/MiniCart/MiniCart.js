@@ -24,6 +24,11 @@ const MiniCart = (props) => {
         <h4>My Bag</h4>
       </div>
       <div className={styles.cartItemsContainer}>
+        {cartItems.length === 0 && (
+          <div style={{ padding: '16px 0', textAlign: 'center', color: '#666' }}>
+            Your bag is empty.
+          </div>
+        )}
         {cartItems.map((cartItem) => {
           const product = cartItem.product.node;
           const { quantity} = cartItem;

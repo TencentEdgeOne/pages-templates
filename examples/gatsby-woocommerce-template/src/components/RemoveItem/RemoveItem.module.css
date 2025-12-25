@@ -1,4 +1,10 @@
 .root {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.iconBtn {
     width: 22px;
     height: 22px;
     background-color: var(--bg-close-icon);
@@ -10,12 +16,42 @@
     transition: all ease-in-out 0.3s;
 }
 
-.root svg {
+.iconBtn svg {
     width: 8px;
     height: 8px;
     color: var(--grey-crumb);
 }
 
-.root:hover {
+.iconBtn:hover {
     background-color: var(--grey-chip);
+}
+
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.loadingWrap {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.spinner {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #ccc;
+    border-top-color: #999;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+.loadingText {
+    font-size: 12px;
+    color: #666;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
 }

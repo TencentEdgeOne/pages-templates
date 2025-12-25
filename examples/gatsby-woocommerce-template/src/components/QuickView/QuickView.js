@@ -24,6 +24,14 @@ const QuickView = (props) => {
   
   const [attributes, setAttributes] = useState(null);
   const { updateCartData } = useContext(CartContext);
+  const [adding, setAdding] = useState(false);
+  const [errorToast, setErrorToast] = useState('');
+
+  const formatError = (err) => {
+    const raw = (err && err.message) ? err.message : String(err || 'Failed to add to cart');
+    const clean = raw.replace(/\s+/g, ' ').trim();
+    return clean.length > 160 ? `${clean.slice(0, 160)}...` : clean;
+  };
 
   useEffect(() => {
     const initAttrs = product.attributes?.nodes.map(node => {
@@ -37,13 +45,22 @@ const QuickView = (props) => {
   }, [product])
 
   const handleAddToBag = async () => {
-    const res = await addToCart(product.productId, 1, attributes, variation?.databaseId);
-
-    await updateCartData();
-    const cartInfo = res.data.addToCart;
-    close();
-    showNotification(cartInfo);
-
+    if (adding) return;
+    setAdding(true);
+    try {
+      const res = await addToCart(product.productId, 1, attributes, variation?.databaseId);
+      await updateCartData();
+      const cartInfo = res.data.addToCart;
+      close();
+      showNotification(cartInfo);
+      setErrorToast('');
+    } catch (e) {
+      const msg = formatError(e);
+      setErrorToast(msg);
+      setTimeout(() => setErrorToast(''), 2500);
+    } finally {
+      setAdding(false);
+    }
   };
   const handeAttributeChange = (newAttrs) => {
     setAttributes(newAttrs);
@@ -99,9 +116,18 @@ const QuickView = (props) => {
           })
         }
 
-        <Button onClick={() => handleAddToBag()} fullWidth level={'primary'}>
-          {buttonTitle}
+        <Button onClick={() => handleAddToBag()} disabled={adding} fullWidth level={'primary'}>
+          {adding ? 'Adding...' : buttonTitle}
         </Button>
+        {errorToast && (
+          <div style={{
+            position: 'fixed', top: 20, right: 20, background: '#fff', color: '#c00',
+            padding: '12px 16px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', borderRadius: 6,
+            border: '1px solid #f2c8c8', zIndex: 1000, maxWidth: 360, wordBreak: 'break-word'
+          }}>
+            {errorToast}
+          </div>
+        )}
       </div>
     </div>
   );
