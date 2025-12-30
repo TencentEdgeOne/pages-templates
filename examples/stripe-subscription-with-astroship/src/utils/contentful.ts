@@ -1,16 +1,26 @@
-
 import * as contentful from "contentful";
 import type { EntryFieldTypes } from "contentful";
 
-// console.log('import.meta.env.PUBLIC_CONTENTFUL_SPACE_ID', import.meta.env.PUBLIC_CONTENTFUL_SPACE_ID)
-// console.log('import.meta.env.PUBLIC_CONTENTFUL_DELIVERY_TOKEN', import.meta.env.PUBLIC_CONTENTFUL_DELIVERY_TOKEN)
-export const contentfulClient = contentful.createClient({
-  space: import.meta.env.PUBLIC_CONTENTFUL_SPACE_ID,
-  accessToken: import.meta.env.DEV
-    ? import.meta.env.PUBLIC_CONTENTFUL_PREVIEW_TOKEN
-    : import.meta.env.PUBLIC_CONTENTFUL_DELIVERY_TOKEN,
-  host: import.meta.env.DEV ? "preview.contentful.com" : "cdn.contentful.com",
-});
+// Check if Contentful is properly configured
+const spaceId = import.meta.env.PUBLIC_CONTENTFUL_SPACE_ID;
+const deliveryToken = import.meta.env.PUBLIC_CONTENTFUL_DELIVERY_TOKEN;
+const previewToken = import.meta.env.PUBLIC_CONTENTFUL_PREVIEW_TOKEN;
+
+// Only create Contentful client if environment variables are properly configured (not placeholders)
+const isContentfulConfigured = spaceId &&
+  spaceId !== "space_id" &&
+  deliveryToken &&
+  deliveryToken !== "delivery_token";
+
+export const contentfulClient = isContentfulConfigured
+  ? contentful.createClient({
+      space: spaceId,
+      accessToken: import.meta.env.DEV
+        ? previewToken || deliveryToken
+        : deliveryToken,
+      host: import.meta.env.DEV ? "preview.contentful.com" : "cdn.contentful.com",
+    })
+  : null;
 
 export interface Blog {
   contentTypeId: "blog";

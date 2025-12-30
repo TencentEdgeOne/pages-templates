@@ -7,36 +7,53 @@ import Sectionhead from "@components/sectionhead.astro";
 import { contentfulClient } from "../utils/contentful";
 import type { Blog } from "../utils/contentful";
 
-// Filter blog entries with 'draft: false' & date before current date
-const publishedBlogEntries = await getCollection("blog", ({ data }) => {
-  return !data.draft && data.publishDate < new Date();
-});
+// Use Contentful if configured, otherwise use local static data
+let posts: any[] = [];
 
-// Sort content entries by publication date
-publishedBlogEntries.sort(function (a, b) {
-  return b.data.publishDate.valueOf() - a.data.publishDate.valueOf();
-});
+if (contentfulClient) {
+  const entries = await contentfulClient.getEntries<Blog>({
+    content_type: "blog",
+  });
+  posts = entries.items.map((item) => {
+    const { title, date, description, slug, featuredImage, category, author } = item.fields;
+    return {
+      title,
+      slug,
+      description,
+      date: new Date(date).toLocaleDateString(),
+      featuredImage: {
+        src: featuredImage.fields.file.url,
+        alt: featuredImage.fields.file.description || "alt",
+      },
+      category,
+      author,
+    };
+  });
+} else {
+  // Use local static data from src/content/blog
+  const publishedBlogEntries = await getCollection("blog", ({ data }) => {
+    return !data.draft && data.publishDate < new Date();
+  });
 
-const entries = await contentfulClient.getEntries<Blog>({
-  content_type: "blog",
-});
-const posts = entries.items.map((item) => {
-  const { title, date, description, slug, featuredImage, category, author } =
-    item.fields;
-  return {
-    title,
-    slug,
-    description,
-    date: new Date(date).toLocaleDateString(),
-    featuredImage: {
-      src: featuredImage.fields.file.url,
-      alt: featuredImage.fields.file.description || "alt",
-    },
-    category,
-    author,
-  };
-});
-console.log("entries", entries.items[0].metadata.tags);
+  // Sort content entries by publication date
+  publishedBlogEntries.sort(function (a, b) {
+    return b.data.publishDate.valueOf() - a.data.publishDate.valueOf();
+  });
+
+  posts = publishedBlogEntries.map((entry) => {
+    const { title, publishDate, description, category, author, image } = entry.data;
+    const { slug } = entry;
+    return {
+      title,
+      slug,
+      description,
+      date: new Date(publishDate).toLocaleDateString(),
+      featuredImage: image || { src: "", alt: description || "" },
+      category,
+      author,
+    };
+  });
+}
 ---
 
 <Layout title="Blog">
@@ -54,16 +71,20 @@ console.log("entries", entries.items[0].metadata.tags);
             <li>
               <a href={`/blog/${blogPostEntry.slug}`}>
                 <div class="grid md:grid-cols-2 gap-5 md:gap-10 items-center">
-                  <Picture
-                    src={blogPostEntry.featuredImage.src}
-                    alt={blogPostEntry.featuredImage.alt}
-                    sizes="(max-width: 800px) 100vw, 800px"
-                    width={800}
-                    height={600}
-                    loading={index <= 2 ? "eager" : "lazy"}
-                    decoding={index <= 2 ? "sync" : "async"}
-                    class="w-full rounded-md object-cover object-center bg-white"
-                  />
+                  {blogPostEntry.featuredImage.src ? (
+                    <Picture
+                      src={blogPostEntry.featuredImage.src}
+                      alt={blogPostEntry.featuredImage.alt}
+                      sizes="(max-width: 800px) 100vw, 800px"
+                      width={800}
+                      height={600}
+                      loading={index <= 2 ? "eager" : "lazy"}
+                      decoding={index <= 2 ? "sync" : "async"}
+                      class="w-full rounded-md object-cover object-center bg-white"
+                    />
+                  ) : (
+                    <div class="w-full aspect-[4/3] rounded-md bg-gray-200" />
+                  )}
                   <div>
                     <span class="text-blue-400 uppercase tracking-wider text-sm font-medium">
                       {blogPostEntry.category}
