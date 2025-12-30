@@ -1,6 +1,6 @@
 # Deepseek Playground
 
-Generate small apps with one prompt. Powered by the DeepSeek API.
+Generate small apps with one prompt. Powered by [EdgeOne Pages Edge AI](https://pages.edgeone.ai/document/edge-ai).
 
 ## Deploy
 
@@ -10,17 +10,35 @@ More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
 ## Tech stack
 
-- [DeepSeek API](https://platform.deepseek.com/docs) for code generation using DeepSeek-Coder models
+- [EdgeOne Pages Edge AI](https://pages.edgeone.ai/document/edge-ai) for code generation using DeepSeek models deployed on global edge nodes
 - [Sandpack](https://sandpack.codesandbox.io/) for the code sandbox
 - Next.js app router with Tailwind
 
-You can also experiment with DeepSeek models on the [DeepSeek Platform](https://platform.deepseek.com/).
+## Free Daily Quota
+
+Edge AI provides free daily API calls:
+
+| Model | Daily Limit |
+| :--- | :--- |
+| `@tx/deepseek-ai/deepseek-v32` | 50 |
+| `@tx/deepseek-ai/deepseek-v3-0324` | 50 |
+| `@tx/deepseek-ai/deepseek-r1-0528` | 20 |
+
+Learn more about Edge AI: [EdgeOne Pages Edge AI Documentation](https://pages.edgeone.ai/document/edge-ai)
+
+## Using Your Own DeepSeek API Key
+
+If you need unlimited API calls, you can use your own DeepSeek API key:
+
+1. Get an API key from [DeepSeek Platform](https://platform.deepseek.com/)
+2. Set the `DEEPSEEK_API_KEY` environment variable in your EdgeOne Pages project settings
+
+When `DEEPSEEK_API_KEY` is set, the app will use the DeepSeek API directly instead of Edge AI.
 
 ## Cloning & running
 
 1. Clone the repo: `git clone https://github.com/YOUR_USERNAME/deepseek-coder`
-2. Create a `.env` file and add your [DeepSeek API key](https://platform.deepseek.com/api-keys): `DEEPSEEK_API_KEY=`
-3. Run `npm install` and `npm run dev` to install dependencies and run locally
+2. Run `npm install` and `npm run dev` to install dependencies and run locally
 
 ## Credit
 
