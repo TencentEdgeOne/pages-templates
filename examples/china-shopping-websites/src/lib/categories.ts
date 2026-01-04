@@ -34,13 +34,6 @@ export const categories: Category[] = [
         image: '/icons/temu.png',
       },
       {
-        name: 'LightInTheBox',
-        description:
-          'Global online retail store offering a wide range of products from apparel to electronics and home goods',
-        url: 'https://www.lightinthebox.com/',
-        image: '/icons/lightinthebox.png',
-      },
-      {
         name: 'Banggood',
         description:
           'Global e-commerce platform specializing in electronics, gadgets, clothing, and home products',
@@ -120,7 +113,7 @@ export const categories: Category[] = [
         name: 'NetEase Yanxuan',
         description:
           'High-quality lifestyle e-commerce platform under NetEase, offering selected home, digital, and food products',
-        url: 'https://www.youpin.mi.com/',
+        url: 'https://you.163.com/',
         image: '/icons/163.png',
       },
     ],
@@ -135,13 +128,6 @@ export const categories: Category[] = [
           'Fast-fashion retailer specializing in trendy clothing and accessories at competitive prices',
         url: 'https://www.shein.com/',
         image: '/icons/shein.webp',
-      },
-      {
-        name: 'Zaful',
-        description:
-          'Zaful is a leading global online fashion retailer offering a wide range of trendy and fashionable clothing for women',
-        url: 'https://www.zaful.com/',
-        image: '/icons/zaful.jpg',
       },
       {
         name: 'Dewu',
@@ -284,7 +270,7 @@ export const categories: Category[] = [
         name: 'Xianyu',
         description:
           'Popular second-hand transaction platform under Alibaba where users can buy and sell various second-hand items',
-        url: 'https://www.xianyu.com/',
+        url: 'https://www.goofish.com/',
         image: '/icons/xianyu.png',
       },
       {
