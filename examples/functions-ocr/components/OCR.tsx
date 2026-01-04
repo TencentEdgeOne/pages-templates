@@ -73,6 +73,7 @@ export const OCR = () => {
       });
 
       const res = await response.json();
+      if (res.error) return res.error;
       return res.data.text;
     } catch (error) {
       console.error('Error:', error);
@@ -136,9 +137,9 @@ export const OCR = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-1">
+      <div className="flex flex-1 min-h-0">
         {/* Left Panel */}
-        <div className="w-1/2 p-6 border-r border-gray-700">
+        <div className="w-1/2 p-6 border-r border-gray-700 bg-gray-900">
           <div className="flex flex-col h-full">
             <div className="flex justify-between mb-4">
               <h2 className="text-xl font-bold">Image Upload</h2>
@@ -196,9 +197,9 @@ export const OCR = () => {
         </div>
 
         {/* Right Panel */}
-        <div className="w-1/2 p-6">
-          <h2 className="mb-4 text-xl font-bold">OCR Result</h2>
-          <div className="h-[calc(100%-2rem)] bg-gray-800 rounded-lg p-4 overflow-auto">
+        <div className="w-1/2 p-6 bg-gray-900 flex flex-col min-h-0">
+          <h2 className="mb-4 text-xl font-bold flex-shrink-0">OCR Result</h2>
+          <div className="flex-1 bg-gray-800 rounded-lg p-4 overflow-auto min-h-0">
             {state.isLoading ? (
               <div className="flex items-center justify-center h-full">
                 <div className="w-12 h-12 border-4 border-gray-600 rounded-full animate-spin border-t-blue-500" />
