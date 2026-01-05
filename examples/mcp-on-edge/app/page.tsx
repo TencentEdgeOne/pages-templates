@@ -279,6 +279,8 @@ export default function Home() {
     let buffer = '';
     let content = '';
     let thinking = '';
+    let statusUpdates: string[] = [];
+    let streamComplete = false;
 
     try {
       while (true) {
@@ -287,64 +289,118 @@ export default function Home() {
 
         buffer += decoder.decode(value, { stream: true });
         
-        // Try to parse complete JSON objects
-        let boundary = buffer.indexOf('\n');
-        while (boundary !== -1) {
-          const line = buffer.substring(0, boundary).trim();
-          buffer = buffer.substring(boundary + 1);
+        // Handle event-stream format (event: type\ndata: {...}\n\n)
+        let eventStart = 0;
+        let eventEnd = buffer.indexOf('\n\n');
+        
+        while (eventEnd !== -1) {
+          const eventBlock = buffer.substring(eventStart, eventEnd);
+          const eventLines = eventBlock.split('\n');
+          let eventType = '';
+          let eventData = '';
           
-          if (line) {
-            try {
-              const data = JSON.parse(line);
-              
-              if (data.content !== undefined) {
-                content = data.content;
-              }
-              
-              if (data.thinking !== undefined) {
-                thinking = data.thinking;
-              }
-              
-              // Update message content
-              updateMessage({ 
-                content: content, 
-                think: thinking 
-              });
-            } catch (e) {
-              console.error('解析JSON出错:', e, line);
+          for (const line of eventLines) {
+            if (line.startsWith('event:')) {
+              eventType = line.slice(6).trim();
+            } else if (line.startsWith('data:')) {
+              eventData = line.slice(5).trim();
             }
           }
           
-          boundary = buffer.indexOf('\n');
+          if (eventType && eventData) {
+            try {
+              const data = JSON.parse(eventData);
+              
+              switch (eventType) {
+                case 'message':
+                  if (data.role === 'assistant' && data.content) {
+                    content = data.content;
+                    updateMessage({ content, think: formatThinking(statusUpdates) });
+                  }
+                  break;
+                  
+                case 'status':
+                  if (data.message) {
+                    statusUpdates.push(`**${data.phase || '状态'}**: ${data.message}`);
+                    updateMessage({ content, think: formatThinking(statusUpdates) });
+                  }
+                  break;
+                  
+                case 'ping':
+                  break;
+
+                case 'error':
+                  statusUpdates.push(
+                    `**错误信息**: [${data.code || '错误'}] ${data.message || '未知错误'}`
+                  );
+                  updateMessage({ content, think: formatThinking(statusUpdates) });
+                  break;
+                  
+                case 'done':
+                  if (!data.success) {
+                    statusUpdates.push('**处理完成**: 处理过程中遇到了一些问题');
+                  } else {
+                    statusUpdates.push('**处理完成**: 网页已成功部署');
+                  }
+                  updateMessage({ content, think: formatThinking(statusUpdates) });
+                  streamComplete = true;
+                  return;
+                  
+                default:
+                  if (data.content !== undefined) {
+                    content = data.content;
+                  }
+                  if (data.thinking !== undefined) {
+                    thinking = data.thinking;
+                    updateMessage({ content, think: thinking });
+                  } else {
+                    updateMessage({ content, think: formatThinking(statusUpdates) });
+                  }
+              }
+            } catch (e) {
+              console.error('解析事件数据出错:', e, eventData);
+            }
+          }
+          
+          eventStart = eventEnd + 2;
+          eventEnd = buffer.indexOf('\n\n', eventStart);
         }
+        
+        buffer = buffer.substring(eventStart);
       }
       
-      // Handle data that may remain in the buffer
+      // Handle any data remaining in the buffer
       if (buffer.trim()) {
         try {
-          const data = JSON.parse(buffer.trim());
-          
-          if (data.content !== undefined) {
-            content = data.content;
+          const matches = buffer.match(/data:\s*({.*})/);
+          if (matches && matches[1]) {
+            const data = JSON.parse(matches[1]);
+            
+            if (data.content !== undefined) {
+              content = data.content;
+            }
+            
+            if (data.thinking !== undefined) {
+              thinking = data.thinking;
+              updateMessage({ content, think: thinking });
+            } else {
+              updateMessage({ content, think: formatThinking(statusUpdates) });
+            }
           }
-          
-          if (data.thinking !== undefined) {
-            thinking = data.thinking;
-          }
-          
-          // Update final message content
-          updateMessage({ 
-            content: content, 
-            think: thinking 
-          });
         } catch (e) {
-          console.error('解析最终JSON出错:', e);
+          console.error('解析最终数据出错:', e);
         }
       }
     } catch (error) {
-      console.error('处理流响应出错:', error);
-      throw error;
+      if (!streamComplete) {
+        console.error('处理流响应出错:', error);
+        throw error;
+      }
     }
+  };
+
+  const formatThinking = (statusUpdates: string[]): string => {
+    return statusUpdates.join('\n\n');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -387,6 +443,7 @@ export default function Home() {
         },
         body: JSON.stringify({
           messages: [{ role: 'user', content: currentInput }],
+          stream: true,
         }),
       });
 
@@ -396,16 +453,23 @@ export default function Home() {
 
       // Handle streaming response
       if (res.headers.get('content-type')?.includes('text/event-stream')) {
-        await processStreamResponse(res, (messageContent) => {
-          debouncedUpdateMessage((prevMessages) => [
-            prevMessages[0],
-            {
-              role: 'assistant',
-              content: messageContent.content || '',
-              think: messageContent.think || '',
-            },
-          ]);
-        });
+        try {
+          await processStreamResponse(res, (messageContent) => {
+            debouncedUpdateMessage((prevMessages) => [
+              prevMessages[0],
+              {
+                role: 'assistant',
+                content: messageContent.content || '',
+                think: messageContent.think || '',
+              },
+            ]);
+          });
+        } catch (streamError) {
+          if (!messages[1]?.content) {
+            throw streamError;
+          }
+          console.warn('Stream closed with error, but message was received:', streamError);
+        }
       } else {
         // Handle regular JSON response
         const data = await res.json();
