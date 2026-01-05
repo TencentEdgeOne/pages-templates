@@ -11,6 +11,8 @@ import React, {
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import debounce from 'lodash/debounce';
+import LanguageSwitch from '@/components/LanguageSwitch';
+import { Language, getTranslations, DEFAULT_LANGUAGE, languages } from '@/lib/i18n';
 
 // Custom function to escape underscores in URLs
 const escapeUnderscoresInLinks = (content: string) => {
@@ -39,53 +41,56 @@ interface Message {
 }
 
 export default function Home() {
+  const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
   const [userInput, setUserInput] = useState('');
   const [showKeywords, setShowKeywords] = useState(true);
   const [isClient, setIsClient] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const messageRef = useRef<HTMLDivElement>(null);
   const placeholderIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const placeholderRef = useRef<string>('帮我生成一个表白网页');
+  const placeholderRef = useRef<string>('');
   const showCursorRef = useRef<boolean>(true);
   
+  // Get translations for current language
+  const t = getTranslations(language);
+  
+  // Language persistence
   useLayoutEffect(() => {
     setIsClient(true);
+    // Read saved language settings from localStorage
+    const savedLanguage = localStorage.getItem('mcp-language') as Language;
+    if (savedLanguage && savedLanguage in languages) {
+      setLanguage(savedLanguage);
+    }
+  }, []);
+
+  // Save language settings to localStorage
+  const handleLanguageChange = useCallback((newLanguage: Language) => {
+    setLanguage(newLanguage);
+    localStorage.setItem('mcp-language', newLanguage);
   }, []);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // 快捷提示数组
+  // Quick suggestion prompts array
   const promptSuggestions = [
-    { title: '表白网页', prompt: '生成一个表白网页，并部署' },
-    { title: '个人简历', prompt: '生成一个漂亮的个人简历，并部署' },
-    { title: '博客站点', prompt: '生成一个简约风格的博客站点，并部署' },
-    { title: '作品集', prompt: '生成一个展示作品的网站，并部署' },
+    { title: t.suggestions.confession.title, prompt: t.suggestions.confession.prompt },
+    { title: t.suggestions.resume.title, prompt: t.suggestions.resume.prompt },
+    { title: t.suggestions.blog.title, prompt: t.suggestions.blog.prompt },
+    { title: t.suggestions.portfolio.title, prompt: t.suggestions.portfolio.prompt },
   ];
 
-  // 使用useMemo包装占位符数组，避免每次渲染重新创建
-  const placeholderVariants = useMemo(() => [
-    '表白网页',
-    '个人简历',
-    '博客站点',
-    '商城应用',
-    '作品集',
-    '电子相册',
-    '在线简历',
-    '婚礼邀请函',
-    '落地页',
-    '产品展示页',
-    '个人主页',
-    '旅行博客',
-  ], []);
+  // Use useMemo to wrap placeholder array, avoiding recreation on each render
+  const placeholderVariants = useMemo(() => t.placeholderVariants, [t.placeholderVariants]);
 
-  // 先定义setupCursorBlinking函数，再在useEffect中使用它
-  // 提取光标闪烁逻辑为单独函数，方便重用
+  // Define setupCursorBlinking function first, then use it in useEffect
+  // Extract cursor blinking logic as a separate function for reusability
   const setupCursorBlinking = useCallback(() => {
     const cursorInterval = setInterval(() => {
       showCursorRef.current = !showCursorRef.current;
-      // 只在textarea没有焦点时更新placeholder光标
+      // Only update placeholder cursor when textarea is not focused
       if (textareaRef.current && document.activeElement !== textareaRef.current && showKeywords) {
         const currentPlaceholder = textareaRef.current.getAttribute('placeholder') || '';
         if (currentPlaceholder.endsWith('|')) {
@@ -94,41 +99,41 @@ export default function Home() {
           textareaRef.current.setAttribute('placeholder', currentPlaceholder + '|');
         }
       }
-    }, 600); // 光标闪烁间隔
+    }, 600); // Cursor blinking interval
     
     placeholderIntervalRef.current = cursorInterval;
     return cursorInterval;
   }, [showKeywords]);
 
-  // 移除自动聚焦到输入框的效果，简化focus/blur处理
+  // Remove auto-focus to input box effect, simplify focus/blur handling
   useEffect(() => {
-    // 页面加载后不再自动聚焦到输入框
+    // No longer auto-focus to input box after page load
     if (!textareaRef.current) return;
     
     const textarea = textareaRef.current;
     
-    // 聚焦时完全清除placeholder
+    // Clear placeholder completely on focus
     const handleFocus = () => {
       textarea.setAttribute('data-placeholder', textarea.getAttribute('placeholder') || '');
       textarea.setAttribute('placeholder', '');
-      // 停止所有placeholder相关的动画
+      // Stop all placeholder-related animations
       if (placeholderIntervalRef.current) {
         clearInterval(placeholderIntervalRef.current);
         placeholderIntervalRef.current = null;
       }
     };
     
-    // 失焦时恢复placeholder，但只在没有输入内容且聊天未开始时
+    // Restore placeholder on blur, but only when no input content and chat not started
     const handleBlur = () => {
       if (!textarea.value.trim() && showKeywords) {
         const savedPlaceholder = textarea.getAttribute('data-placeholder');
         if (savedPlaceholder) {
-          // 先恢复原始placeholder
+          // First restore original placeholder
           textarea.setAttribute('placeholder', savedPlaceholder.endsWith('|') 
-            ? savedPlaceholder.slice(0, -1) // 移除末尾可能存在的光标
+            ? savedPlaceholder.slice(0, -1) // Remove possible trailing cursor
             : savedPlaceholder);
             
-          // 重新启动光标闪烁动画和placeholder动画
+          // Restart cursor blinking animation and placeholder animation
           if (!placeholderIntervalRef.current) {
             setupCursorBlinking();
           }
@@ -145,7 +150,7 @@ export default function Home() {
     };
   }, [isClient, showKeywords, setupCursorBlinking]);
 
-  // 优化光标闪烁效果 - 使用ref而不是state
+  // Optimize cursor blinking effect - use ref instead of state
   useEffect(() => {
     const cursorInterval = setupCursorBlinking();
     
@@ -156,27 +161,27 @@ export default function Home() {
     };
   }, [isClient, showKeywords, setupCursorBlinking]);
 
-  // 优化后的动态placeholder实现
+  // Optimized dynamic placeholder implementation
   useEffect(() => {
     if (!isClient || !textareaRef.current) return;
     
-    // 聊天开始后不再显示placeholder动画
+    // No longer show placeholder animation after chat starts
     if (!showKeywords) return;
     
-    // 移除前缀，直接显示变化部分
+    // Remove prefix, directly show changing part
     let variantIndex = 0;
     let charIndex = 0;
     let direction: 'typing' | 'deleting' = 'typing';
     let currentVariant = placeholderVariants[variantIndex];
     let pauseCounter = 0;
-    const typingPause = 60; // 打字完成后的停顿帧数增加
-    const deletingPause = 30; // 删除完成后的停顿帧数
-    const completeShowPause = 150; // 完整显示后的停顿帧数，大约5秒
+    const typingPause = 60; // Increased pause frames after typing completion
+    const deletingPause = 30; // Pause frames after deletion completion
+    const completeShowPause = 150; // Pause frames after complete display, about 5 seconds
     
     const updatePlaceholder = () => {
       if (!textareaRef.current) return;
       
-      // 只在textarea没有焦点且聊天未开始时更新placeholder内容
+      // Only update placeholder content when textarea is not focused and chat not started
       if (document.activeElement === textareaRef.current || !showKeywords) {
         return;
       }
@@ -187,23 +192,23 @@ export default function Home() {
             pauseCounter--;
           } else {
             charIndex++;
-            // 增加随机停顿，模拟真实打字效果
+            // Add random pauses to simulate real typing effect
             if (Math.random() < 0.2 && charIndex < currentVariant.length) {
               pauseCounter = Math.floor(Math.random() * 5) + 1;
             }
           }
           const variantText = currentVariant.substring(0, charIndex);
-          // 直接修改DOM属性，不触发重新渲染
+          // Directly modify DOM attributes without triggering re-render
           const cursorChar = showCursorRef.current ? '|' : '';
-          textareaRef.current.setAttribute('placeholder', `帮我生成一个${variantText}${cursorChar}`);
+          textareaRef.current.setAttribute('placeholder', `${t.placeholder.split('表白网页')[0]}${variantText}${cursorChar}`);
         } else {
-          // 完整显示后长时间停顿，增强可读性
+          // Long pause after complete display for better readability
           if (pauseCounter < completeShowPause) {
             pauseCounter++;
-            // 在等待期间仍然更新光标
+            // Still update cursor during waiting period
             const variantText = currentVariant.substring(0, charIndex);
             const cursorChar = showCursorRef.current ? '|' : '';
-            textareaRef.current.setAttribute('placeholder', `帮我生成一个${variantText}${cursorChar}`);
+            textareaRef.current.setAttribute('placeholder', `${t.placeholder.split('表白网页')[0]}${variantText}${cursorChar}`);
           } else {
             pauseCounter = 0;
             direction = 'deleting';
@@ -215,27 +220,27 @@ export default function Home() {
             pauseCounter--;
           } else {
             charIndex--;
-            // 删除时偶尔停顿，看起来更自然
+            // Occasional pause during deletion for more natural look
             if (Math.random() < 0.1) {
               pauseCounter = Math.floor(Math.random() * 3) + 1;
             }
           }
           const variantText = currentVariant.substring(0, charIndex);
-          // 直接修改DOM属性，不触发重新渲染
+          // Directly modify DOM attributes without triggering re-render
           const cursorChar = showCursorRef.current ? '|' : '';
-          textareaRef.current.setAttribute('placeholder', `帮我生成一个${variantText}${cursorChar}`);
+          textareaRef.current.setAttribute('placeholder', `${t.placeholder.split('表白网页')[0]}${variantText}${cursorChar}`);
         } else {
-          // 完成删除后短暂停顿再切换到下一个占位符
+          // Short pause after deletion completion before switching to next placeholder
           if (pauseCounter < deletingPause) {
             pauseCounter++;
-            // 在等待期间仍然更新光标
+            // Still update cursor during waiting period
             const variantText = currentVariant.substring(0, charIndex);
             const cursorChar = showCursorRef.current ? '|' : '';
-            textareaRef.current.setAttribute('placeholder', `帮我生成一个${variantText}${cursorChar}`);
+            textareaRef.current.setAttribute('placeholder', `${t.placeholder.split('表白网页')[0]}${variantText}${cursorChar}`);
           } else {
             pauseCounter = 0;
             direction = 'typing';
-            // 随机选择下一个占位符，避免重复
+            // Randomly select next placeholder, avoid repetition
             const prevIndex = variantIndex;
             while (variantIndex === prevIndex) {
               variantIndex = Math.floor(Math.random() * placeholderVariants.length);
@@ -246,10 +251,10 @@ export default function Home() {
       }
     };
     
-    // 使用较短的时间间隔使动画更流畅
+    // Use shorter time intervals to make animation smoother
     const timeoutId = setInterval(() => {
       updatePlaceholder();
-    }, 30); // 使用固定的较短间隔，通过内部逻辑控制速度变化
+    }, 30); // Use fixed shorter interval, control speed changes through internal logic
     
     return () => clearInterval(timeoutId);
   }, [isClient, placeholderVariants, showKeywords]);
@@ -282,7 +287,7 @@ export default function Home() {
 
         buffer += decoder.decode(value, { stream: true });
         
-        // 尝试解析完整的JSON对象
+        // Try to parse complete JSON objects
         let boundary = buffer.indexOf('\n');
         while (boundary !== -1) {
           const line = buffer.substring(0, boundary).trim();
@@ -300,7 +305,7 @@ export default function Home() {
                 thinking = data.thinking;
               }
               
-              // 更新消息内容
+              // Update message content
               updateMessage({ 
                 content: content, 
                 think: thinking 
@@ -314,7 +319,7 @@ export default function Home() {
         }
       }
       
-      // 处理可能剩余在缓冲区的数据
+      // Handle data that may remain in the buffer
       if (buffer.trim()) {
         try {
           const data = JSON.parse(buffer.trim());
@@ -327,7 +332,7 @@ export default function Home() {
             thinking = data.thinking;
           }
           
-          // 更新最终消息内容
+          // Update final message content
           updateMessage({ 
             content: content, 
             think: thinking 
@@ -346,10 +351,10 @@ export default function Home() {
     e.preventDefault();
     if (!userInput.trim() || isLoading) return;
 
-    // 聊天开始时立即设置showKeywords为false
+    // Immediately set showKeywords to false when chat starts
     setShowKeywords(false);
     
-    // 聊天开始后，清除placeholder并不再显示
+    // After chat starts, clear placeholder and no longer display
     if (textareaRef.current) {
       textareaRef.current.setAttribute('placeholder', '');
     }
@@ -389,7 +394,7 @@ export default function Home() {
         throw new Error(`HTTP error: ${res.status}`);
       }
 
-      // 处理流式响应
+      // Handle streaming response
       if (res.headers.get('content-type')?.includes('text/event-stream')) {
         await processStreamResponse(res, (messageContent) => {
           debouncedUpdateMessage((prevMessages) => [
@@ -402,7 +407,7 @@ export default function Home() {
           ]);
         });
       } else {
-        // 处理常规JSON响应
+        // Handle regular JSON response
         const data = await res.json();
         setMessages([
           { role: 'user', content: currentInput },
@@ -415,7 +420,7 @@ export default function Home() {
       }
     } catch (error) {
       console.error('请求错误:', error);
-      // 如果已经设置了错误消息，就不再重复设置
+      // If error message is already set, don't set it again
       if (
         messages.length < 2 ||
         messages[1].role !== 'assistant' ||
@@ -428,7 +433,7 @@ export default function Home() {
             content:
               error instanceof Error
                 ? error.message
-                : '抱歉，出现了错误。请重试。',
+                : t.error,
           },
         ]);
       }
@@ -446,12 +451,12 @@ export default function Home() {
     }
   };
 
-  // 处理快捷提示的点击
+  // Handle quick suggestion clicks
   const handleSuggestionClick = (prompt: string) => {
     setUserInput(prompt);
     if (textareaRef.current) {
       textareaRef.current.focus();
-      // 自动调整高度
+      // Auto adjust height
       textareaRef.current.style.height = 'auto';
       textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
     }
@@ -481,7 +486,7 @@ export default function Home() {
               clipRule="evenodd"
             />
           </svg>
-          思考过程
+          {t.thinking}
         </button>
         {isOpen && (
           <div className="p-4 text-sm text-zinc-400 bg-zinc-800 border border-t-0 border-zinc-700 rounded-b-lg shadow-sm">
@@ -498,36 +503,21 @@ export default function Home() {
     if (!isSearching) return null;
 
     return (
-      <div className="flex items-center justify-center py-3 animate-pulse">
-        <svg
-          className="w-5 h-5 mr-3 animate-spin text-blue-500"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            className="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            strokeWidth="4"
-          ></circle>
-          <path
-            className="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          ></path>
-        </svg>
-        <span className="text-zinc-300">边缘函数运行中，请稍后...</span>
+      <div className="flex items-center justify-center py-3">
+      <div className="flex space-x-1 mr-3">
+        <div className="w-2 h-2 bg-blue-500 rounded-full animate-[bounce_1s_infinite_0s]"></div>
+        <div className="w-2 h-2 bg-blue-500 rounded-full animate-[bounce_1s_infinite_0.2s]"></div>
+        <div className="w-2 h-2 bg-blue-500 rounded-full animate-[bounce_1s_infinite_0.3s]"></div>
       </div>
+      <span className="text-zinc-300">{t.searching}</span>
+    </div>
     );
   };
 
   return (
     isClient && (
       <div className="flex flex-col h-screen bg-deep-gradient">
-        {/* Header - 与背景融为一体 */}
+        {/* Header - Blends with background */}
         <header className="sticky top-0 z-50 flex items-center px-6 py-3">
           <div className="flex items-center">
             <a 
@@ -542,26 +532,32 @@ export default function Home() {
             </a>
           </div>
           <div className="flex-grow" />
-          <a
-            href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/mcp-on-edge/README_zh-CN.md"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-800"
-            aria-label="GitHub repository"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              viewBox="0 0 24 24"
-              fill="currentColor"
+          <div className="flex items-center space-x-3">
+            <LanguageSwitch 
+              currentLanguage={language} 
+              onLanguageChange={handleLanguageChange} 
+            />
+            <a
+              href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/mcp-on-edge/README_zh-CN.md"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-800"
+              aria-label="GitHub repository"
             >
-              <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.489.5.092.682-.217.682-.48 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.918.678 1.85 0 1.338-.012 2.416-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
-            </svg>
-          </a>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.489.5.092.682-.217.682-.48 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.918.678 1.85 0 1.338-.012 2.416-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+              </svg>
+            </a>
+          </div>
         </header>
 
-        {/* 主内容区 */}
+        {/* Main content area */}
         <div className="flex-1 flex flex-col min-h-0">
           {showKeywords ? (
             <WelcomeMessage 
@@ -574,6 +570,7 @@ export default function Home() {
               textareaRef={textareaRef}
               isLoading={isLoading}
               promptSuggestions={promptSuggestions}
+              t={t}
             />
           ) : (
             <>
@@ -655,7 +652,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Input section - 简化的输入框 */}
+              {/* Input section - Simplified input box */}
               <div className="py-4 px-4 z-10">
                 <div className="max-w-3xl mx-auto">
                   <form onSubmit={handleSubmit}>
@@ -665,7 +662,7 @@ export default function Home() {
                           ref={textareaRef}
                           value={userInput}
                           onChange={handleTextareaChange}
-                          placeholder="帮我生成一个表白网页"
+                          placeholder={t.placeholder}
                           disabled={isLoading}
                           className={`w-full bg-transparent text-slate-200 px-5 py-4 focus:outline-none resize-none min-h-[120px] placeholder:text-zinc-500 border-none ${
                             isLoading ? 'cursor-not-allowed opacity-50' : ''
@@ -693,7 +690,7 @@ export default function Home() {
                               ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50'
                               : 'bg-blue-600 text-white hover:shadow-md hover:shadow-blue-600/25'
                           }`}
-                          aria-label="发送"
+                          aria-label={t.sendButton}
                         >
                           {isLoading ? (
                             <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
@@ -726,7 +723,7 @@ export default function Home() {
                     </div>
                   </form>
                   
-                  {/* 快捷提示标签 - 更加精致的样式 */}
+                  {/* Quick suggestion tags - More refined styling */}
                   <div className="mt-5 flex flex-wrap gap-3 justify-center">
                     {promptSuggestions.map((suggestion, index) => (
                       <button
@@ -748,7 +745,7 @@ export default function Home() {
           )}
         </div>
             
-        {/* 页脚 - MCP服务信息，始终显示在底部 */}
+        {/* Footer - MCP service info, always displayed at bottom */}
         <footer className="py-3 px-4 border-t border-zinc-800/50 w-full">
           <div className="max-w-3xl mx-auto flex justify-center">
             <a 
@@ -757,7 +754,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="text-zinc-400 text-sm transition-colors"
             >
-              Powered by EdgeOne Pages MCP Server
+              {t.poweredBy}
             </a>
           </div>
         </footer>
@@ -766,7 +763,7 @@ export default function Home() {
   );
 }
 
-// WelcomeMessage组件，从父组件接收props
+// WelcomeMessage component, receives props from parent component
 interface WelcomeMessageProps {
   show: boolean;
   userInput: string;
@@ -777,6 +774,7 @@ interface WelcomeMessageProps {
   textareaRef: React.RefObject<HTMLTextAreaElement>;
   isLoading: boolean;
   promptSuggestions: { title: string; prompt: string }[];
+  t: ReturnType<typeof getTranslations>;
 }
 
 const WelcomeMessage = ({ 
@@ -788,25 +786,26 @@ const WelcomeMessage = ({
   handleSuggestionClick, 
   textareaRef, 
   isLoading, 
-  promptSuggestions 
+  promptSuggestions,
+  t
 }: WelcomeMessageProps) => {
   if (!show) return null;
 
   return (
     <div className="flex flex-col items-center justify-center flex-grow animate-fade-in px-4">
       <div className="relative max-w-3xl w-full flex flex-col items-center">
-        {/* 主标题和副标题 - 增加间距 */}
+        {/* Main title and subtitle - Increased spacing */}
         <h1 className="text-5xl font-bold text-center mb-5 gradient-text-blue-purple">
-          网页版 MCP
+          {t.title}
         </h1>
         <h2 className="text-2xl font-medium text-center mb-6 text-white">
-          一句话生成一个全球加速站点
+          {t.subtitle}
         </h2>
         <p className="text-base text-zinc-300 text-center mb-16 w-full px-4">
-          基于 EdgeOne 边缘函数实现的 MCP Client 与 MCP Server
+          {t.description}
         </p>
 
-        {/* 输入框部分 */}
+        {/* Input section */}
         <div className="w-full relative">
           <form onSubmit={handleSubmit} className="w-full">
             <div className="input-gradient-border">
@@ -815,7 +814,7 @@ const WelcomeMessage = ({
                   ref={textareaRef}
                   value={userInput}
                   onChange={handleTextareaChange}
-                  placeholder="帮我生成一个表白网页"
+                  placeholder={t.placeholder}
                   disabled={isLoading}
                   rows={3}
                   className="w-full bg-transparent text-slate-200 px-5 py-4 focus:outline-none resize-none min-h-[120px] placeholder:text-zinc-500 border-none"
@@ -842,7 +841,7 @@ const WelcomeMessage = ({
                       ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50'
                       : 'bg-blue-600 text-white hover:shadow-md hover:shadow-blue-600/25'
                   }`}
-                  aria-label="发送"
+                  aria-label={t.sendButton}
                 >
                   {isLoading ? (
                     <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
@@ -875,7 +874,7 @@ const WelcomeMessage = ({
             </div>
           </form>
           
-          {/* 添加快捷提示按钮在欢迎页面上 - 更加精致的样式 */}
+          {/* Add quick suggestion buttons on welcome page - More refined styling */}
           <div className="mt-5 flex flex-wrap gap-3 justify-center">
             {promptSuggestions.map((suggestion, index) => (
               <button
