@@ -14,7 +14,7 @@ body {
   color: rgb(var(--foreground-rgb));
 }
 
-/* Custom scrollbar */
+/* 自定义滚动条 */
 .scrollbar-thin::-webkit-scrollbar {
   width: 4px;
   height: 4px;
@@ -33,7 +33,7 @@ body {
   background: rgba(100, 116, 139, 0.8);
 }
 
-/* Background gradient and light source effects */
+/* 背景渐变和光源效果 */
 .bg-deep-gradient {
   background: 
     linear-gradient(to bottom right, rgba(13, 17, 23, 0.99), rgba(22, 28, 36, 0.95), rgba(17, 24, 39, 0.98)),
@@ -47,18 +47,18 @@ body {
   min-height: 100vh;
 }
 
-/* Top-left light source effect - Reference Bolt site screenshot effect */
+/* 左上角光源效果 - 参考Bolt站点截图中的效果 */
 .bg-deep-gradient::before {
   content: "";
   position: absolute;
-  top: -350px; /* Closer to top and corner */
-  left: 200px; /* Starting from left edge of screen */
-  width: 1000px; /* Increase light source size */
-  height: 900px; /* Increase light source size */
+  top: -350px; /* 更靠近顶部和顶角 */
+  left: 200px; /* 以屏幕左边为起点 */
+  width: 1000px; /* 增大光源尺寸 */
+  height: 900px; /* 增大光源尺寸 */
   background: radial-gradient(
     circle at 20% 35%,
-    rgba(28, 102, 229, 0.8) 0%, /* Higher brightness */
-    rgba(28, 102, 229, 0.5) 15%, /* Enhanced brightness */
+    rgba(28, 102, 229, 0.8) 0%, /* 更高亮度 */
+    rgba(28, 102, 229, 0.5) 15%, /* 增强亮度 */
     rgba(28, 102, 229, 0.3) 30%,
     rgba(28, 102, 229, 0.2) 50%,
     rgba(28, 102, 229, 0.1) 70%,
@@ -66,12 +66,12 @@ body {
   );
   pointer-events: none;
   z-index: 0;
-  filter: blur(70px); /* Add blur effect */
+  filter: blur(70px); /* 增加模糊效果 */
   opacity: 0.85;
   transform-origin: top left;
 }
 
-/* Add subtle noise texture overlay effect */
+/* 添加微妙的噪点纹理叠加效果 */
 .bg-deep-gradient::after {
   content: "";
   position: absolute;
@@ -85,7 +85,7 @@ body {
   z-index: 0;
 }
 
-/* Input box effects */
+/* 输入框特效 */
 .minimal-input {
   background: rgba(15, 17, 26, 0.8);
   backdrop-filter: blur(12px);
@@ -98,17 +98,17 @@ body {
   border-radius: 0.75rem;
   background: linear-gradient(
     135deg,
-    rgba(var(--primary), 0.9) 0%, /* Enhanced color */
-    rgba(var(--primary), 0.6) 25%,
-    rgba(80, 70, 180, 0.4) 50%,
-    rgba(var(--primary), 0.6) 75%,
-    rgba(var(--primary), 0.9) 100% /* Enhanced color */
+    rgba(255, 255, 255, 0.6) 0%,
+    rgba(var(--primary), 0.8) 20%, 
+    rgba(var(--primary), 0.6) 40%,
+    rgba(80, 70, 180, 0.4) 60%,
+    rgba(var(--primary), 0.6) 80%,
+    rgba(255, 255, 255, 0.6) 100%
   );
   overflow: hidden;
-  box-shadow: 0 0 20px -5px rgba(var(--primary), 0.4);
 }
 
-/* Enhanced button disabled state styling */
+/* 按钮禁用状态样式增强 */
 button:disabled {
   opacity: 0.4 !important;
   cursor: not-allowed !important;
@@ -117,7 +117,7 @@ button:disabled {
   transition: all 0.2s ease;
 }
 
-/* Chat bubbles */
+/* 聊天气泡 */
 .chat-bubble-user {
   border-radius: 18px 18px 0 18px;
   max-width: 90%;
@@ -133,13 +133,13 @@ button:disabled {
   filter: drop-shadow(0 0 8px rgba(var(--primary), 0.5));
 }
 
-/* Gradient text */
+/* 渐变文字 - 提高亮度但无光晕 */
 .gradient-text-blue-purple {
   background: linear-gradient(
     120deg,
-    rgba(var(--primary), 1) 0%,
-    rgb(90, 90, 240) 50%,
-    rgb(90, 70, 210) 100%
+    rgba(var(--primary-light), 1) 0%,
+    rgb(120, 120, 255) 50%,
+    rgb(130, 100, 240) 100%
   );
   -webkit-background-clip: text;
   background-clip: text;
@@ -147,7 +147,7 @@ button:disabled {
   display: inline-block;
 }
 
-/* Animations */
+/* 动画 */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -163,7 +163,7 @@ button:disabled {
   animation: fadeIn 0.3s ease-out forwards;
 }
 
-/* Input box placeholder animation */
+/* 输入框占位符动画 */
 @keyframes typewriter {
   from { width: 0; }
   to { width: 100%; }
@@ -184,15 +184,16 @@ button:disabled {
     blinkCursor 0.75s step-end infinite;
 }
 
-/* Gradient text */
+/* 渐变文本 */
 .gradient-text {
-  background: linear-gradient(90deg, #5182F8 0%, #8D5CF7 100%);
-  -webkit-background-clip: text;
+  background: linear-gradient(to right, #FFFFFF, #EAEAEA);
   background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  color: transparent;
+  font-weight: bold;
 }
 
-/* Glow effects */
+/* 发光效果 */
 .glow {
   box-shadow: 0 0 20px rgba(28, 102, 229, 0.25);
 }
@@ -201,7 +202,7 @@ button:disabled {
   box-shadow: 0 0 0 1px rgba(28, 102, 229, 0.3), 0 0 15px rgba(28, 102, 229, 0.15);
 }
 
-/* Gradient rainbow background */
+/* 渐变彩虹背景 */
 @keyframes gradientBackground {
   0% {
     background-position: 0% 50%;
@@ -220,13 +221,43 @@ button:disabled {
   animation: gradientBackground 15s ease infinite;
 }
 
-/* Glassmorphism effect */
+/* 毛玻璃效果 */
 .backdrop-blur-card {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
 }
 
-/* Ensure placeholder has smooth transition effects */
+/* 确保placeholder具有平滑的过渡效果 */
 ::placeholder {
   transition: opacity 0.2s ease;
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* 为聚焦时的输入框placeholder添加样式 */
+textarea:focus::placeholder {
+  color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* 限制输入框高度并添加内部滚动条 */
+textarea.resize-none {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+/* 定制输入框内部滚动条样式 */
+textarea.resize-none::-webkit-scrollbar {
+  width: 4px;
+}
+
+textarea.resize-none::-webkit-scrollbar-track {
+  background: rgba(15, 15, 25, 0.1);
+}
+
+textarea.resize-none::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.5);
+  border-radius: 2px;
+}
+
+textarea.resize-none::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.8);
 }

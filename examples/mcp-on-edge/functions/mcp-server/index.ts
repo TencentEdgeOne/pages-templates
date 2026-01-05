@@ -2,7 +2,15 @@ const SESSION_ID_HEADER_NAME = 'mcp-session-id';
 
 export async function getBaseUrl(): Promise<string> {
   try {
-    const res = await fetch('https://mcp.edgeone.site/get_base_url');
+    const res = await (fetch as any)(`https://mcp.edgeone.site/get_base_url`, {
+      eo: {
+        timeoutSetting: {
+          connectTimeout: 30000,
+          readTimeout: 30000,
+          writeTimeout: 30000,
+        },
+      },
+    });
     if (!res.ok) {
       throw new Error(`HTTP error: ${res.status} ${res.statusText}`);
     }
@@ -15,8 +23,15 @@ export async function getBaseUrl(): Promise<string> {
 }
 
 export async function deployHtml(value: string, baseUrl: string) {
-  const res = await fetch(baseUrl, {
+  const res = await (fetch as any)(baseUrl, {
     method: 'POST',
+    eo: {
+      timeoutSetting: {
+        connectTimeout: 30000,
+        readTimeout: 30000,
+        writeTimeout: 30000,
+      },
+    },
     headers: {
       'Content-Type': 'application/json',
     },

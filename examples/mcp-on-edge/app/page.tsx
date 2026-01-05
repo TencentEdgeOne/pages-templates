@@ -11,8 +11,8 @@ import React, {
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import debounce from 'lodash/debounce';
-import LanguageSwitch from '@/components/LanguageSwitch';
-import { Language, getTranslations, DEFAULT_LANGUAGE, languages } from '@/lib/i18n';
+import { useLocale } from '../lib/useLocale';
+import { Locale } from '../lib/i18n';
 
 // Custom function to escape underscores in URLs
 const escapeUnderscoresInLinks = (content: string) => {
@@ -40,57 +40,78 @@ interface Message {
   source?: { title: string; url: string }[];
 }
 
+// Language Switch Component
+const LanguageSwitch = ({ 
+  locale, 
+  toggleLocale 
+}: { 
+  locale: Locale; 
+  toggleLocale: () => void;
+}) => {
+  return (
+    <button
+      onClick={toggleLocale}
+      className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-zinc-300 hover:text-white transition-colors rounded-lg hover:bg-zinc-800/50 border border-zinc-700/50"
+      aria-label="Switch language"
+    >
+      <svg 
+        xmlns="http://www.w3.org/2000/svg" 
+        width="16" 
+        height="16" 
+        viewBox="0 0 24 24" 
+        fill="none" 
+        stroke="currentColor" 
+        strokeWidth="2" 
+        strokeLinecap="round" 
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="12" r="10"/>
+        <path d="M2 12h20"/>
+        <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+      </svg>
+      <span>{locale === 'zh' ? 'EN' : '中文'}</span>
+    </button>
+  );
+};
+
 export default function Home() {
-  const [language, setLanguage] = useState<Language>(DEFAULT_LANGUAGE);
+  const { locale, toggleLocale, t, isInitialized } = useLocale();
   const [userInput, setUserInput] = useState('');
   const [showKeywords, setShowKeywords] = useState(true);
   const [isClient, setIsClient] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const messageRef = useRef<HTMLDivElement>(null);
   const placeholderIntervalRef = useRef<NodeJS.Timeout | null>(null);
-  const placeholderRef = useRef<string>('');
+  const placeholderRef = useRef<string>(t.placeholderVariants[0]);
   const showCursorRef = useRef<boolean>(true);
   
-  // Get translations for current language
-  const t = getTranslations(language);
-  
-  // Language persistence
   useLayoutEffect(() => {
     setIsClient(true);
-    // Read saved language settings from localStorage
-    const savedLanguage = localStorage.getItem('mcp-language') as Language;
-    if (savedLanguage && savedLanguage in languages) {
-      setLanguage(savedLanguage);
-    }
   }, []);
 
-  // Save language settings to localStorage
-  const handleLanguageChange = useCallback((newLanguage: Language) => {
-    setLanguage(newLanguage);
-    localStorage.setItem('mcp-language', newLanguage);
-  }, []);
+  // Update html lang attribute when locale changes
+  useEffect(() => {
+    if (isInitialized && typeof document !== 'undefined') {
+      document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';
+    }
+  }, [locale, isInitialized]);
 
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Quick suggestion prompts array
-  const promptSuggestions = [
-    { title: t.suggestions.confession.title, prompt: t.suggestions.confession.prompt },
-    { title: t.suggestions.resume.title, prompt: t.suggestions.resume.prompt },
-    { title: t.suggestions.blog.title, prompt: t.suggestions.blog.prompt },
-    { title: t.suggestions.portfolio.title, prompt: t.suggestions.portfolio.prompt },
-  ];
+  // 快捷提示数组 - 使用翻译
+  const promptSuggestions = t.promptSuggestions;
 
-  // Use useMemo to wrap placeholder array, avoiding recreation on each render
+  // 使用useMemo包装占位符数组，避免每次渲染重新创建
   const placeholderVariants = useMemo(() => t.placeholderVariants, [t.placeholderVariants]);
 
-  // Define setupCursorBlinking function first, then use it in useEffect
-  // Extract cursor blinking logic as a separate function for reusability
+  // 先定义setupCursorBlinking函数，再在useEffect中使用它
+  // 提取光标闪烁逻辑为单独函数，方便重用
   const setupCursorBlinking = useCallback(() => {
     const cursorInterval = setInterval(() => {
       showCursorRef.current = !showCursorRef.current;
-      // Only update placeholder cursor when textarea is not focused
+      // 只在textarea没有焦点时更新placeholder光标
       if (textareaRef.current && document.activeElement !== textareaRef.current && showKeywords) {
         const currentPlaceholder = textareaRef.current.getAttribute('placeholder') || '';
         if (currentPlaceholder.endsWith('|')) {
@@ -99,41 +120,41 @@ export default function Home() {
           textareaRef.current.setAttribute('placeholder', currentPlaceholder + '|');
         }
       }
-    }, 600); // Cursor blinking interval
+    }, 600); // 光标闪烁间隔
     
     placeholderIntervalRef.current = cursorInterval;
     return cursorInterval;
   }, [showKeywords]);
 
-  // Remove auto-focus to input box effect, simplify focus/blur handling
+  // 移除自动聚焦到输入框的效果，简化focus/blur处理
   useEffect(() => {
-    // No longer auto-focus to input box after page load
+    // 页面加载后不再自动聚焦到输入框
     if (!textareaRef.current) return;
     
     const textarea = textareaRef.current;
     
-    // Clear placeholder completely on focus
+    // 聚焦时完全清除placeholder
     const handleFocus = () => {
       textarea.setAttribute('data-placeholder', textarea.getAttribute('placeholder') || '');
       textarea.setAttribute('placeholder', '');
-      // Stop all placeholder-related animations
+      // 停止所有placeholder相关的动画
       if (placeholderIntervalRef.current) {
         clearInterval(placeholderIntervalRef.current);
         placeholderIntervalRef.current = null;
       }
     };
     
-    // Restore placeholder on blur, but only when no input content and chat not started
+    // 失焦时恢复placeholder，但只在没有输入内容且聊天未开始时
     const handleBlur = () => {
       if (!textarea.value.trim() && showKeywords) {
         const savedPlaceholder = textarea.getAttribute('data-placeholder');
         if (savedPlaceholder) {
-          // First restore original placeholder
+          // 先恢复原始placeholder
           textarea.setAttribute('placeholder', savedPlaceholder.endsWith('|') 
-            ? savedPlaceholder.slice(0, -1) // Remove possible trailing cursor
+            ? savedPlaceholder.slice(0, -1) // 移除末尾可能存在的光标
             : savedPlaceholder);
             
-          // Restart cursor blinking animation and placeholder animation
+          // 重新启动光标闪烁动画和placeholder动画
           if (!placeholderIntervalRef.current) {
             setupCursorBlinking();
           }
@@ -150,7 +171,7 @@ export default function Home() {
     };
   }, [isClient, showKeywords, setupCursorBlinking]);
 
-  // Optimize cursor blinking effect - use ref instead of state
+  // 优化光标闪烁效果 - 使用ref而不是state
   useEffect(() => {
     const cursorInterval = setupCursorBlinking();
     
@@ -161,27 +182,27 @@ export default function Home() {
     };
   }, [isClient, showKeywords, setupCursorBlinking]);
 
-  // Optimized dynamic placeholder implementation
+  // 优化后的动态placeholder实现
   useEffect(() => {
     if (!isClient || !textareaRef.current) return;
     
-    // No longer show placeholder animation after chat starts
+    // 聊天开始后不再显示placeholder动画
     if (!showKeywords) return;
     
-    // Remove prefix, directly show changing part
+    // 移除前缀，直接显示变化部分
     let variantIndex = 0;
     let charIndex = 0;
     let direction: 'typing' | 'deleting' = 'typing';
     let currentVariant = placeholderVariants[variantIndex];
     let pauseCounter = 0;
-    const typingPause = 60; // Increased pause frames after typing completion
-    const deletingPause = 30; // Pause frames after deletion completion
-    const completeShowPause = 150; // Pause frames after complete display, about 5 seconds
+    const typingPause = 60; // 打字完成后的停顿帧数增加
+    const deletingPause = 30; // 删除完成后的停顿帧数
+    const completeShowPause = 150; // 完整显示后的停顿帧数，大约5秒
     
     const updatePlaceholder = () => {
       if (!textareaRef.current) return;
       
-      // Only update placeholder content when textarea is not focused and chat not started
+      // 只在textarea没有焦点且聊天未开始时更新placeholder内容
       if (document.activeElement === textareaRef.current || !showKeywords) {
         return;
       }
@@ -192,23 +213,23 @@ export default function Home() {
             pauseCounter--;
           } else {
             charIndex++;
-            // Add random pauses to simulate real typing effect
+            // 增加随机停顿，模拟真实打字效果
             if (Math.random() < 0.2 && charIndex < currentVariant.length) {
               pauseCounter = Math.floor(Math.random() * 5) + 1;
             }
           }
           const variantText = currentVariant.substring(0, charIndex);
-          // Directly modify DOM attributes without triggering re-render
+          // 直接修改DOM属性，不触发重新渲染
           const cursorChar = showCursorRef.current ? '|' : '';
-          textareaRef.current.setAttribute('placeholder', `${t.placeholder.split('表白网页')[0]}${variantText}${cursorChar}`);
+          textareaRef.current.setAttribute('placeholder', `${t.welcome.placeholder}${variantText}${cursorChar}`);
         } else {
-          // Long pause after complete display for better readability
+          // 完整显示后长时间停顿，增强可读性
           if (pauseCounter < completeShowPause) {
             pauseCounter++;
-            // Still update cursor during waiting period
+            // 在等待期间仍然更新光标
             const variantText = currentVariant.substring(0, charIndex);
             const cursorChar = showCursorRef.current ? '|' : '';
-            textareaRef.current.setAttribute('placeholder', `${t.placeholder.split('表白网页')[0]}${variantText}${cursorChar}`);
+            textareaRef.current.setAttribute('placeholder', `${t.welcome.placeholder}${variantText}${cursorChar}`);
           } else {
             pauseCounter = 0;
             direction = 'deleting';
@@ -220,27 +241,27 @@ export default function Home() {
             pauseCounter--;
           } else {
             charIndex--;
-            // Occasional pause during deletion for more natural look
+            // 删除时偶尔停顿，看起来更自然
             if (Math.random() < 0.1) {
               pauseCounter = Math.floor(Math.random() * 3) + 1;
             }
           }
           const variantText = currentVariant.substring(0, charIndex);
-          // Directly modify DOM attributes without triggering re-render
+          // 直接修改DOM属性，不触发重新渲染
           const cursorChar = showCursorRef.current ? '|' : '';
-          textareaRef.current.setAttribute('placeholder', `${t.placeholder.split('表白网页')[0]}${variantText}${cursorChar}`);
+          textareaRef.current.setAttribute('placeholder', `${t.welcome.placeholder}${variantText}${cursorChar}`);
         } else {
-          // Short pause after deletion completion before switching to next placeholder
+          // 完成删除后短暂停顿再切换到下一个占位符
           if (pauseCounter < deletingPause) {
             pauseCounter++;
-            // Still update cursor during waiting period
+            // 在等待期间仍然更新光标
             const variantText = currentVariant.substring(0, charIndex);
             const cursorChar = showCursorRef.current ? '|' : '';
-            textareaRef.current.setAttribute('placeholder', `${t.placeholder.split('表白网页')[0]}${variantText}${cursorChar}`);
+            textareaRef.current.setAttribute('placeholder', `${t.welcome.placeholder}${variantText}${cursorChar}`);
           } else {
             pauseCounter = 0;
             direction = 'typing';
-            // Randomly select next placeholder, avoid repetition
+            // 随机选择下一个占位符，避免重复
             const prevIndex = variantIndex;
             while (variantIndex === prevIndex) {
               variantIndex = Math.floor(Math.random() * placeholderVariants.length);
@@ -251,27 +272,34 @@ export default function Home() {
       }
     };
     
-    // Use shorter time intervals to make animation smoother
+    // 使用较短的时间间隔使动画更流畅
     const timeoutId = setInterval(() => {
       updatePlaceholder();
-    }, 30); // Use fixed shorter interval, control speed changes through internal logic
+    }, 30); // 使用固定的较短间隔，通过内部逻辑控制速度变化
     
     return () => clearInterval(timeoutId);
-  }, [isClient, placeholderVariants, showKeywords]);
+  }, [isClient, placeholderVariants, showKeywords, t.welcome.placeholder]);
 
-  const debouncedUpdateMessage = useCallback(
-    debounce((updateFn: (prev: Message[]) => Message[]) => {
-      setMessages(updateFn);
-    }, 50),
-    []
+  const debouncedUpdateMessage = useMemo(
+    () =>
+      debounce((updateFn: (prev: Message[]) => Message[]) => {
+        setMessages(updateFn);
+      }, 50),
+    [setMessages]
   );
+
+  useEffect(() => {
+    return () => {
+      debouncedUpdateMessage.cancel();
+    };
+  }, [debouncedUpdateMessage]);
 
   const processStreamResponse = async (
     response: Response,
     updateMessage: (content: MessageContent) => void
   ) => {
     if (!response.ok || !response.body) {
-      throw new Error(`HTTP错误：${response.status}`);
+      throw new Error(`${t.messages.httpError}${response.status}`);
     }
 
     const reader = response.body.getReader();
@@ -280,7 +308,7 @@ export default function Home() {
     let content = '';
     let thinking = '';
     let statusUpdates: string[] = [];
-    let streamComplete = false;
+    let streamComplete = false; // Add a flag to track stream completion
 
     try {
       while (true) {
@@ -289,7 +317,7 @@ export default function Home() {
 
         buffer += decoder.decode(value, { stream: true });
         
-        // Handle event-stream format (event: type\ndata: {...}\n\n)
+        // 处理事件流格式 (event: type\ndata: {...}\n\n)
         let eventStart = 0;
         let eventEnd = buffer.indexOf('\n\n');
         
@@ -299,6 +327,7 @@ export default function Home() {
           let eventType = '';
           let eventData = '';
           
+          // 解析事件类型和数据
           for (const line of eventLines) {
             if (line.startsWith('event:')) {
               eventType = line.slice(6).trim();
@@ -311,6 +340,7 @@ export default function Home() {
             try {
               const data = JSON.parse(eventData);
               
+              // 根据事件类型处理不同的响应
               switch (eventType) {
                 case 'message':
                   if (data.role === 'assistant' && data.content) {
@@ -320,33 +350,38 @@ export default function Home() {
                   break;
                   
                 case 'status':
+                  // 更新状态信息作为思考过程
                   if (data.message) {
-                    statusUpdates.push(`**${data.phase || '状态'}**: ${data.message}`);
+                    // 将新状态添加到数组的末尾（最新的在后面）
+                    statusUpdates.push(`**${data.phase || (locale === 'zh' ? '状态' : 'Status')}**: ${data.message}`);
                     updateMessage({ content, think: formatThinking(statusUpdates) });
                   }
                   break;
                   
                 case 'ping':
+                  // Keep-alive from server, ignore.
                   break;
 
                 case 'error':
-                  statusUpdates.push(
-                    `**错误信息**: [${data.code || '错误'}] ${data.message || '未知错误'}`
-                  );
+                  // 将错误信息添加到思考过程中
+                  statusUpdates.push(`**${t.status.errorInfo}**: [${data.code || (locale === 'zh' ? '错误' : 'Error')}] ${data.message || (locale === 'zh' ? '未知错误' : 'Unknown error')}`);
                   updateMessage({ content, think: formatThinking(statusUpdates) });
                   break;
                   
                 case 'done':
+                  // 流完成，最终更新
                   if (!data.success) {
-                    statusUpdates.push('**处理完成**: 处理过程中遇到了一些问题');
+                    statusUpdates.push(`**${t.status.processing}**: ${t.status.failed}`);
                   } else {
-                    statusUpdates.push('**处理完成**: 网页已成功部署');
+                    statusUpdates.push(`**${t.status.processing}**: ${t.status.success}`);
                   }
                   updateMessage({ content, think: formatThinking(statusUpdates) });
-                  streamComplete = true;
-                  return;
+                  streamComplete = true; // Mark stream as complete
+                  return; // Immediately return when we get done event
+                  break;
                   
                 default:
+                  // 处理任何其他自定义事件或直接内容更新
                   if (data.content !== undefined) {
                     content = data.content;
                   }
@@ -362,16 +397,19 @@ export default function Home() {
             }
           }
           
+          // 移动到下一个事件
           eventStart = eventEnd + 2;
           eventEnd = buffer.indexOf('\n\n', eventStart);
         }
         
+        // 保留未完成的事件数据
         buffer = buffer.substring(eventStart);
       }
       
-      // Handle any data remaining in the buffer
+      // 处理可能剩余在缓冲区的数据
       if (buffer.trim()) {
         try {
+          // 尝试解析最后可能的JSON片段
           const matches = buffer.match(/data:\s*({.*})/);
           if (matches && matches[1]) {
             const data = JSON.parse(matches[1]);
@@ -392,6 +430,7 @@ export default function Home() {
         }
       }
     } catch (error) {
+      // Only throw if we haven't already completed successfully
       if (!streamComplete) {
         console.error('处理流响应出错:', error);
         throw error;
@@ -399,18 +438,21 @@ export default function Home() {
     }
   };
 
+  // 格式化思考过程，确保最新的状态在上面
   const formatThinking = (statusUpdates: string[]): string => {
     return statusUpdates.join('\n\n');
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!userInput.trim() || isLoading) return;
-
-    // Immediately set showKeywords to false when chat starts
+    
+    if (isLoading) return;
+    if (!userInput.trim()) return;
+    
+    // 聊天开始后，不再显示placeholder
     setShowKeywords(false);
     
-    // After chat starts, clear placeholder and no longer display
+    // 聊天开始后，清除placeholder并不再显示
     if (textareaRef.current) {
       textareaRef.current.setAttribute('placeholder', '');
     }
@@ -419,6 +461,11 @@ export default function Home() {
     setIsSearching(true);
     const currentInput = textareaRef.current?.value || '';
     setUserInput('');
+    
+    // 重置输入框高度到初始状态
+    if (textareaRef.current) {
+      textareaRef.current.style.height = '120px'; // 设置为min-h-[120px]的值
+    }
 
     // Clear previous messages and set only the current Q&A pair
     setMessages([
@@ -451,7 +498,7 @@ export default function Home() {
         throw new Error(`HTTP error: ${res.status}`);
       }
 
-      // Handle streaming response
+      // 处理流式响应
       if (res.headers.get('content-type')?.includes('text/event-stream')) {
         try {
           await processStreamResponse(res, (messageContent) => {
@@ -465,13 +512,14 @@ export default function Home() {
             ]);
           });
         } catch (streamError) {
+          // Only throw if there's an actual error with content
           if (!messages[1]?.content) {
             throw streamError;
           }
           console.warn('Stream closed with error, but message was received:', streamError);
         }
       } else {
-        // Handle regular JSON response
+        // 处理常规JSON响应
         const data = await res.json();
         setMessages([
           { role: 'user', content: currentInput },
@@ -484,11 +532,10 @@ export default function Home() {
       }
     } catch (error) {
       console.error('请求错误:', error);
-      // If error message is already set, don't set it again
+      // 只有在没有成功设置消息内容时才设置错误消息
       if (
         messages.length < 2 ||
-        messages[1].role !== 'assistant' ||
-        !messages[1].content
+        (messages[1].role === 'assistant' && !messages[1].content)
       ) {
         setMessages([
           { role: 'user', content: currentInput },
@@ -497,7 +544,7 @@ export default function Home() {
             content:
               error instanceof Error
                 ? error.message
-                : t.error,
+                : t.messages.error,
           },
         ]);
       }
@@ -510,19 +557,46 @@ export default function Home() {
   const handleTextareaChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setUserInput(e.target.value);
     if (textareaRef.current) {
+      // 保存当前滚动位置
+      const scrollTop = textareaRef.current.scrollTop;
+      
+      // 重置高度并计算新高度
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      
+      // 限制最大高度为300px
+      const newHeight = Math.min(textareaRef.current.scrollHeight, 300);
+      textareaRef.current.style.height = `${newHeight}px`;
+      
+      // 如果内容已经超过最大高度，恢复滚动位置
+      if (textareaRef.current.scrollHeight > 300) {
+        textareaRef.current.scrollTop = scrollTop;
+      }
     }
   };
 
-  // Handle quick suggestion clicks
+  // 处理快捷提示的点击
   const handleSuggestionClick = (prompt: string) => {
     setUserInput(prompt);
     if (textareaRef.current) {
       textareaRef.current.focus();
-      // Auto adjust height
+      // 自动调整高度，但限制最大高度
       textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+      const newHeight = Math.min(textareaRef.current.scrollHeight, 300);
+      textareaRef.current.style.height = `${newHeight}px`;
+    }
+  };
+
+  // 在组件中声明一个包装函数来处理键盘事件的提交
+  const handleKeyboardSubmit = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    const target = e.target as HTMLTextAreaElement;
+    const isComposing = target.dataset.composing === 'true';
+    if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
+      e.preventDefault();
+      // 创建一个合成事件
+      const syntheticEvent = {
+        preventDefault: () => {},
+      } as unknown as React.FormEvent<HTMLFormElement>;
+      handleSubmit(syntheticEvent);
     }
   };
 
@@ -550,7 +624,7 @@ export default function Home() {
               clipRule="evenodd"
             />
           </svg>
-          {t.thinking}
+          {t.messages.mcpProcess}
         </button>
         {isOpen && (
           <div className="p-4 text-sm text-zinc-400 bg-zinc-800 border border-t-0 border-zinc-700 rounded-b-lg shadow-sm">
@@ -567,21 +641,45 @@ export default function Home() {
     if (!isSearching) return null;
 
     return (
-      <div className="flex items-center justify-center py-3">
-      <div className="flex space-x-1 mr-3">
-        <div className="w-2 h-2 bg-blue-500 rounded-full animate-[bounce_1s_infinite_0s]"></div>
-        <div className="w-2 h-2 bg-blue-500 rounded-full animate-[bounce_1s_infinite_0.2s]"></div>
-        <div className="w-2 h-2 bg-blue-500 rounded-full animate-[bounce_1s_infinite_0.3s]"></div>
+      <div className="flex items-center justify-center py-3 animate-pulse">
+        <svg
+          className="w-5 h-5 mr-3 animate-spin text-blue-500"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+          ></path>
+        </svg>
+        <span className="text-zinc-300">{t.messages.searching}</span>
       </div>
-      <span className="text-zinc-300">{t.searching}</span>
-    </div>
     );
+  };
+
+  // 首先添加一个重置函数
+  const resetToWelcomeScreen = () => {
+    setShowKeywords(true);
+    setMessages([]);
+    setUserInput('');
+    setIsLoading(false);
+    setIsSearching(false);
   };
 
   return (
     isClient && (
       <div className="flex flex-col h-screen bg-deep-gradient">
-        {/* Header - Blends with background */}
+        {/* Header - 与背景融为一体 */}
         <header className="sticky top-0 z-50 flex items-center px-6 py-3">
           <div className="flex items-center">
             <a 
@@ -591,37 +689,46 @@ export default function Home() {
               className="text-slate-100 transition-colors"
             >
               <h1 className="text-base font-semibold">
-                EdgeOne Pages
+                {t.header.title}
               </h1>
             </a>
           </div>
           <div className="flex-grow" />
-          <div className="flex items-center space-x-3">
-            <LanguageSwitch 
-              currentLanguage={language} 
-              onLanguageChange={handleLanguageChange} 
+          {/* Language Switch Button */}
+          <LanguageSwitch locale={locale} toggleLocale={toggleLocale} />
+          <a
+            href="https://edgeone.ai/pages/templates/mcp-on-edge"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-3 cursor-pointer opacity-60 hover:opacity-100 transition-colors"
+            aria-label="Deploy to EdgeOne Pages"
+          >
+            <img
+              src="https://cdnstatic.tencentcs.com/edgeone/pages/deploy-black.svg"
+              alt="Deploy to EdgeOne Pages"
+              className="h-7"
             />
-            <a
-              href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/mcp-on-edge/README_zh-CN.md"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-800"
-              aria-label="GitHub repository"
+          </a>
+          <a
+            href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/mcp-on-edge/README.md"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-zinc-400 hover:text-white transition-colors p-2 rounded-full hover:bg-zinc-800"
+            aria-label="GitHub repository"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="currentColor"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-              >
-                <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.489.5.092.682-.217.682-.48 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.918.678 1.85 0 1.338-.012 2.416-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
-              </svg>
-            </a>
-          </div>
+              <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.489.5.092.682-.217.682-.48 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.918.678 1.85 0 1.338-.012 2.416-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+            </svg>
+          </a>
         </header>
 
-        {/* Main content area */}
+        {/* 主内容区 */}
         <div className="flex-1 flex flex-col min-h-0">
           {showKeywords ? (
             <WelcomeMessage 
@@ -643,7 +750,30 @@ export default function Home() {
                 ref={messageRef}
                 className="flex-1 px-4 py-6 overflow-y-auto md:px-6 scrollbar-thin"
               >
-                <div className="max-w-3xl mx-auto space-y-6">
+                <div className="max-w-3xl mx-auto space-y-6 relative">
+                  {/* 添加返回按钮在左上角，进一步提高位置并取消左边距 */}
+                  <button
+                    onClick={resetToWelcomeScreen}
+                    className="absolute left-0 -top-14 z-10 flex items-center text-zinc-300 hover:text-white py-1 rounded-lg transition-colors"
+                    aria-label={t.messages.back}
+                  >
+                    <svg 
+                      xmlns="http://www.w3.org/2000/svg" 
+                      width="18" 
+                      height="18" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                      className="mr-1"
+                    >
+                      <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    {t.messages.back}
+                  </button>
+                  
                   {messages.map((message, index) => (
                     <div
                       key={index}
@@ -655,7 +785,7 @@ export default function Home() {
                         className={`relative max-w-[90%] shadow-md ${
                           message.role === 'user'
                             ? 'bg-blue-600 text-white px-5 py-3 chat-bubble-user'
-                            : 'bg-slate-800/70 text-slate-100 border border-zinc-700 px-5 py-4 chat-bubble-assistant'
+                            : 'bg-white/15 text-white border border-white/20 px-5 py-4 chat-bubble-assistant backdrop-blur-sm'
                         }`}
                       >
                         {message.role === 'user' && (
@@ -716,7 +846,7 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Input section - Simplified input box */}
+              {/* Input section - 简化的输入框 */}
               <div className="py-4 px-4 z-10">
                 <div className="max-w-3xl mx-auto">
                   <form onSubmit={handleSubmit}>
@@ -726,9 +856,8 @@ export default function Home() {
                           ref={textareaRef}
                           value={userInput}
                           onChange={handleTextareaChange}
-                          placeholder={t.placeholder}
                           disabled={isLoading}
-                          className={`w-full bg-transparent text-slate-200 px-5 py-4 focus:outline-none resize-none min-h-[120px] placeholder:text-zinc-500 border-none ${
+                          className={`w-full bg-transparent text-slate-200 px-5 py-4 focus:outline-none resize-none min-h-[120px] border-none ${
                             isLoading ? 'cursor-not-allowed opacity-50' : ''
                           }`}
                           onCompositionStart={(e) => {
@@ -737,12 +866,16 @@ export default function Home() {
                           onCompositionEnd={(e) => {
                             (e.target as HTMLTextAreaElement).dataset.composing = 'false';
                           }}
-                          onKeyDown={(e) => {
+                          onKeyDown={(e: any) => {
                             const target = e.target as HTMLTextAreaElement;
                             const isComposing = target.dataset.composing === 'true';
                             if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
                               e.preventDefault();
-                              handleSubmit(e);
+                              // 创建一个合成事件
+                              const syntheticEvent = {
+                                preventDefault: () => {},
+                              } as unknown as React.FormEvent<HTMLFormElement>;
+                              handleSubmit(syntheticEvent);
                             }
                           }}
                         />
@@ -750,11 +883,13 @@ export default function Home() {
                           type="submit"
                           disabled={isLoading || !userInput.trim()}
                           className={`absolute right-3 bottom-3 flex items-center justify-center rounded-full h-10 w-10 transition-all duration-200 ${
-                            isLoading || !userInput.trim()
-                              ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50'
-                              : 'bg-blue-600 text-white hover:shadow-md hover:shadow-blue-600/25'
+                            isLoading 
+                              ? 'bg-white/30 text-white backdrop-blur-sm' 
+                              : !userInput.trim()
+                                ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50'
+                                : 'bg-blue-600 text-white hover:shadow-md hover:shadow-blue-600/25'
                           }`}
-                          aria-label={t.sendButton}
+                          aria-label={t.messages.send}
                         >
                           {isLoading ? (
                             <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
@@ -787,19 +922,16 @@ export default function Home() {
                     </div>
                   </form>
                   
-                  {/* Quick suggestion tags - More refined styling */}
+                  {/* 快捷提示标签 - 更加精致的样式 */}
                   <div className="mt-5 flex flex-wrap gap-3 justify-center">
                     {promptSuggestions.map((suggestion, index) => (
                       <button
                         key={index}
                         onClick={() => handleSuggestionClick(suggestion.prompt)}
                         disabled={isLoading}
-                        className="px-4 py-2 bg-transparent text-zinc-300 hover:text-blue-400 rounded-full text-sm transition-all border border-zinc-700/60 hover:border-blue-500 shadow-sm backdrop-blur-sm flex items-center group"
+                        className="px-4 py-2 bg-transparent text-white/50 hover:text-white/80 rounded-full text-xs transition-all border border-zinc-700/60 hover:border-white/60 shadow-sm backdrop-blur-sm"
                       >
                         <span>{suggestion.title}</span>
-                        <svg className="w-3.5 h-3.5 ml-1.5 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                        </svg>
                       </button>
                     ))}
                   </div>
@@ -809,16 +941,16 @@ export default function Home() {
           )}
         </div>
             
-        {/* Footer - MCP service info, always displayed at bottom */}
+        {/* 页脚 - MCP服务信息，始终显示在底部 */}
         <footer className="py-3 px-4 border-t border-zinc-800/50 w-full">
           <div className="max-w-3xl mx-auto flex justify-center">
             <a 
-              href="https://edgeone.cloud.tencent.com/pages/document/173172415568367616" 
+              href="https://edgeone.ai/zh/document/173173997276819456" 
               target="_blank" 
               rel="noopener noreferrer"
               className="text-zinc-400 text-sm transition-colors"
             >
-              {t.poweredBy}
+              {t.footer.learnMore}
             </a>
           </div>
         </footer>
@@ -827,18 +959,18 @@ export default function Home() {
   );
 }
 
-// WelcomeMessage component, receives props from parent component
+// WelcomeMessage组件，从父组件接收props
 interface WelcomeMessageProps {
   show: boolean;
   userInput: string;
   setUserInput: React.Dispatch<React.SetStateAction<string>>;
-  handleSubmit: (e: React.FormEvent) => Promise<void>;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
   handleTextareaChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   handleSuggestionClick: (prompt: string) => void;
   textareaRef: React.RefObject<HTMLTextAreaElement>;
   isLoading: boolean;
-  promptSuggestions: { title: string; prompt: string }[];
-  t: ReturnType<typeof getTranslations>;
+  promptSuggestions: ReadonlyArray<Readonly<{ title: string; prompt: string }>>;
+  t: ReturnType<typeof useLocale>['t'];
 }
 
 const WelcomeMessage = ({ 
@@ -858,18 +990,18 @@ const WelcomeMessage = ({
   return (
     <div className="flex flex-col items-center justify-center flex-grow animate-fade-in px-4">
       <div className="relative max-w-3xl w-full flex flex-col items-center">
-        {/* Main title and subtitle - Increased spacing */}
+        {/* 主标题和副标题 - 增加间距 */}
         <h1 className="text-5xl font-bold text-center mb-5 gradient-text-blue-purple">
-          {t.title}
+          {t.welcome.title}
         </h1>
         <h2 className="text-2xl font-medium text-center mb-6 text-white">
-          {t.subtitle}
+          {t.welcome.subtitle}
         </h2>
-        <p className="text-base text-zinc-300 text-center mb-16 w-full px-4">
-          {t.description}
+        <p className="text-base text-white/70 text-center mb-16 w-full px-4 backdrop-blur-sm">
+          {t.welcome.description}
         </p>
 
-        {/* Input section */}
+        {/* 输入框部分 */}
         <div className="w-full relative">
           <form onSubmit={handleSubmit} className="w-full">
             <div className="input-gradient-border">
@@ -878,22 +1010,26 @@ const WelcomeMessage = ({
                   ref={textareaRef}
                   value={userInput}
                   onChange={handleTextareaChange}
-                  placeholder={t.placeholder}
+                  placeholder={`${t.welcome.placeholder}${t.placeholderVariants[0]}`}
                   disabled={isLoading}
                   rows={3}
-                  className="w-full bg-transparent text-slate-200 px-5 py-4 focus:outline-none resize-none min-h-[120px] placeholder:text-zinc-500 border-none"
+                  className="w-full bg-transparent text-slate-200 px-5 py-4 focus:outline-none resize-none min-h-[120px] border-none"
                   onCompositionStart={(e) => {
                     (e.target as HTMLTextAreaElement).dataset.composing = 'true';
                   }}
                   onCompositionEnd={(e) => {
                     (e.target as HTMLTextAreaElement).dataset.composing = 'false';
                   }}
-                  onKeyDown={(e) => {
+                  onKeyDown={(e: any) => {
                     const target = e.target as HTMLTextAreaElement;
                     const isComposing = target.dataset.composing === 'true';
                     if (e.key === 'Enter' && !e.shiftKey && !isComposing) {
                       e.preventDefault();
-                      handleSubmit(e);
+                      // 创建一个合成事件
+                      const syntheticEvent = {
+                        preventDefault: () => {},
+                      } as unknown as React.FormEvent<HTMLFormElement>;
+                      handleSubmit(syntheticEvent);
                     }
                   }}
                 />
@@ -901,11 +1037,13 @@ const WelcomeMessage = ({
                   type="submit"
                   disabled={isLoading || !userInput.trim()}
                   className={`absolute right-3 bottom-3 flex items-center justify-center rounded-full h-10 w-10 transition-all duration-200 ${
-                    isLoading || !userInput.trim()
-                      ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50'
-                      : 'bg-blue-600 text-white hover:shadow-md hover:shadow-blue-600/25'
+                    isLoading 
+                      ? 'bg-white/30 text-white backdrop-blur-sm' 
+                      : !userInput.trim()
+                        ? 'bg-zinc-800 text-zinc-500 cursor-not-allowed opacity-50'
+                        : 'bg-blue-600 text-white hover:shadow-md hover:shadow-blue-600/25'
                   }`}
-                  aria-label={t.sendButton}
+                  aria-label={t.messages.send}
                 >
                   {isLoading ? (
                     <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
@@ -938,19 +1076,16 @@ const WelcomeMessage = ({
             </div>
           </form>
           
-          {/* Add quick suggestion buttons on welcome page - More refined styling */}
+          {/* 添加快捷提示按钮在欢迎页面上 - 更加精致的样式 */}
           <div className="mt-5 flex flex-wrap gap-3 justify-center">
             {promptSuggestions.map((suggestion, index) => (
               <button
                 key={index}
                 onClick={() => handleSuggestionClick(suggestion.prompt)}
                 disabled={isLoading}
-                className="px-4 py-2 bg-transparent text-zinc-300 hover:text-blue-400 rounded-full text-sm transition-all border border-zinc-700/60 hover:border-blue-500 shadow-sm backdrop-blur-sm flex items-center group"
+                className="px-4 py-2 bg-transparent text-white/50 hover:text-white/80 rounded-full text-xs transition-all border border-zinc-700/60 hover:border-white/60 shadow-sm backdrop-blur-sm"
               >
                 <span>{suggestion.title}</span>
-                <svg className="w-3.5 h-3.5 ml-1.5 transition-transform group-hover:translate-x-1" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
               </button>
             ))}
           </div>
