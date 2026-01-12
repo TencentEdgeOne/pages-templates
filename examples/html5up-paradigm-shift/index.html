@@ -128,8 +128,8 @@
 						<div class="content">
 							<p><strong>Proin tempus feugiat</strong> sed varius enim lorem ullamcorper dolore aliquam aenean ornare velit lacus, ac varius enim lorem ullamcorper dolore.</p>
 							<ul class="actions">
-								<li><a href="#" class="button primary large">Get Started</a></li>
-								<li><a href="#" class="button large">Learn More</a></li>
+								<li><a href="javascript:void(0)" class="button primary large">Get Started</a></li>
+								<li><a href="javascript:void(0)" class="button large">Learn More</a></li>
 							</ul>
 						</div>
 					</section>
@@ -409,7 +409,7 @@ print 'Sorted in ' + i + ' iterations.';</code></pre>
 						</header>
 						<div class="content">
 							<p><strong>Auctor commodo</strong> interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis.</p>
-							<form>
+							<form id="contact-form" method="post">
 								<div class="fields">
 									<div class="field half">
 										<input type="text" name="name" id="name" placeholder="Name" />
@@ -430,11 +430,11 @@ print 'Sorted in ' + i + ' iterations.';</code></pre>
 							<ul class="items">
 								<li>
 									<h3>Email</h3>
-									<a href="#">information@untitled.ext</a>
+									<a href="javascript:void(0)">information@untitled.ext</a>
 								</li>
 								<li>
 									<h3>Phone</h3>
-									<a href="#">(000) 000-0000</a>
+									<a href="javascript:void(0)">(000) 000-0000</a>
 								</li>
 								<li>
 									<h3>Address</h3>
@@ -443,12 +443,12 @@ print 'Sorted in ' + i + ' iterations.';</code></pre>
 								<li>
 									<h3>Elsewhere</h3>
 									<ul class="icons">
-										<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-										<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-										<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-										<li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li>
-										<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-										<li><a href="#" class="icon brands fa-codepen"><span class="label">Codepen</span></a></li>
+										<li><a href="https://x.com/TencentCloudEO?s_url=https%3A%2F%2Fedgeone.ai" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+										<!-- <li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li> -->
+										<!-- <li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li> -->
+										<!-- <li><a href="#" class="icon brands fa-linkedin-in"><span class="label">LinkedIn</span></a></li> -->
+										<li><a href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/html5up-paradigm-shift" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+										<!-- <li><a href="#" class="icon brands fa-codepen"><span class="label">Codepen</span></a></li> -->
 									</ul>
 								</li>
 							</ul>
@@ -467,6 +467,30 @@ print 'Sorted in ' + i + ' iterations.';</code></pre>
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="config.js"></script>
 
 	</body>
+	<script>
+		// Initialize form with dynamic action URL from config
+		function initializeForm() {
+			// Check if ENV config is loaded
+			if (window.ENV && window.ENV.NEXT_PUBLIC_FORM) {
+				const formId = window.ENV.NEXT_PUBLIC_FORM;
+				const form = document.getElementById('contact-form');
+				
+				if (form && formId) {
+					form.action = `https://formspree.io/f/${formId}`;
+					console.log('Form action set to:', form.action);
+				}
+			} else {
+				console.warn('Environment configuration not found. Please ensure config.js is loaded.');
+			}
+		}
+
+		// Initialize when DOM is loaded
+		document.addEventListener('DOMContentLoaded', function() {
+			// Small delay to ensure config.js is loaded
+			setTimeout(initializeForm, 100);
+		});
+	</script>
 </html>
