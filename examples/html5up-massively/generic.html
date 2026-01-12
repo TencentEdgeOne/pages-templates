@@ -31,10 +31,10 @@
 							<li><a href="elements.html">Elements Reference</a></li>
 						</ul>
 						<ul class="icons">
-							<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-							<li><a href="#" class="icon brands fa-facebook-f"><span class="label">Facebook</span></a></li>
-							<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-							<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+							<li><a href="https://x.com/TencentCloudEO?s_url=https%3A%2F%2Fedgeone.ai" class="icon brands alt fa-twitter"><span
+										class="label">Twitter</span></a></li>
+							<li><a href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/html5up-massively"
+									class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
 						</ul>
 					</nav>
 
@@ -61,19 +61,19 @@
 				<!-- Footer -->
 					<footer id="footer">
 						<section>
-							<form method="post" action="#">
+							<form id="contact-form" method="post">
 								<div class="fields">
 									<div class="field">
 										<label for="name">Name</label>
-										<input type="text" name="name" id="name" />
+										<input type="text" name="name" id="name" required />
 									</div>
 									<div class="field">
 										<label for="email">Email</label>
-										<input type="text" name="email" id="email" />
+										<input type="email" name="email" id="email" required />
 									</div>
 									<div class="field">
 										<label for="message">Message</label>
-										<textarea name="message" id="message" rows="3"></textarea>
+										<textarea name="message" id="message" rows="3" required></textarea>
 									</div>
 								</div>
 								<ul class="actions">
@@ -89,19 +89,19 @@
 							</section>
 							<section>
 								<h3>Phone</h3>
-								<p><a href="#">(000) 000-0000</a></p>
+								<p><a href="javascript:void(0)">(000) 000-0000</a></p>
 							</section>
 							<section>
 								<h3>Email</h3>
-								<p><a href="#">info@untitled.tld</a></p>
+								<p><a href="javascript:void(0)">info@untitled.tld</a></p>
 							</section>
 							<section>
 								<h3>Social</h3>
 								<ul class="icons alt">
-									<li><a href="#" class="icon brands alt fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands alt fa-facebook-f"><span class="label">Facebook</span></a></li>
-									<li><a href="#" class="icon brands alt fa-instagram"><span class="label">Instagram</span></a></li>
-									<li><a href="#" class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
+									<li><a href="https://x.com/TencentCloudEO?s_url=https%3A%2F%2Fedgeone.ai" class="icon brands alt fa-twitter"><span
+												class="label">Twitter</span></a></li>
+									<li><a href="https://github.com/TencentEdgeOne/pages-templates/tree/main/examples/html5up-massively"
+											class="icon brands alt fa-github"><span class="label">GitHub</span></a></li>
 								</ul>
 							</section>
 						</section>
@@ -122,6 +122,30 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="config.js"></script>
 
 	</body>
+	<script>
+		// Initialize form with dynamic action URL from config
+		function initializeForm() {
+			// Check if ENV config is loaded
+			if (window.ENV && window.ENV.NEXT_PUBLIC_FORM) {
+				const formId = window.ENV.NEXT_PUBLIC_FORM;
+				const form = document.getElementById('contact-form');
+
+				if (form && formId) {
+					form.action = `https://formspree.io/f/${formId}`;
+					console.log('Form action set to:', form.action);
+				}
+			} else {
+				console.warn('Environment configuration not found. Please ensure config.js is loaded and NEXT_PUBLIC_FORM is set.');
+			}
+		}
+
+		// Initialize when DOM is ready
+		document.addEventListener('DOMContentLoaded', initializeForm);
+		
+		// Fallback: Initialize after a short delay if config wasn't ready
+		setTimeout(initializeForm, 100);
+	</script>
 </html>
