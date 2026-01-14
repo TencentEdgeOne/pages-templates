@@ -104,7 +104,7 @@ export default function Index() {
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
               <a
-                href="https://remix.run/start/quickstart"
+                href="https://v2.remix.run/docs/start/quickstart/"
                 target="_blank"
                 rel="noreferrer"
                 className="relative flex flex-col h-full bg-white/80 backdrop-blur-sm rounded-2xl p-6 lg:p-8 border border-white/30 hover:bg-white/90 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
@@ -129,7 +129,7 @@ export default function Index() {
             <div className="group relative h-full">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur opacity-25 group-hover:opacity-40 transition-opacity"></div>
               <a
-                href="https://remix.run/start/tutorial"
+                href="https://v2.remix.run/docs/start/tutorial"
                 target="_blank"
                 rel="noreferrer"
                 className="relative flex flex-col h-full bg-white/80 backdrop-blur-sm rounded-2xl p-6 lg:p-8 border border-white/30 hover:bg-white/90 transition-all duration-300 hover:scale-105 hover:shadow-2xl"
