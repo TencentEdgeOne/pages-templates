@@ -32,6 +32,21 @@ Credits:
 		Scrollex (github.com/ajlkn/jquery.scrollex)
 		Responsive Tools (github.com/ajlkn/responsive-tools)
 
+## Form Configuration
+
+This template includes a dynamic contact form powered by [Formspree](https://formspree.io). To set up the form:
+
+1. Register at [Formspree](https://formspree.io)
+2. Create a new form and copy the form ID (e.g., `xabcdefg`)
+3. Edit the `config.js` file and update your form ID:
+   ```javascript
+   window.ENV = {
+       "NEXT_PUBLIC_FORM": "xabcdefg"
+   };
+   ```
+
+The form will automatically use your Formspree endpoint (https://formspree.io/f/) for submissions.
+
 ## Deploy
 
 [![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?from=github&template=html5up-massively)
