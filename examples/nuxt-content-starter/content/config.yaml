@@ -1,0 +1,92 @@
+title: "Project Configuration"
+description: "This is a YAML format example page showing project configuration and team information."
+date: "2025-01-08"
+type: "configuration"
+
+# Project Settings
+project:
+  name: "Nuxt Content Starter"
+  version: "1.0.0"
+  environment: "development"
+  debug: true
+
+# Database Configuration
+database:
+  host: "localhost"
+  port: 5432
+  name: "nuxt_content_db"
+  ssl: false
+  pool:
+    min: 2
+    max: 10
+
+# API Configuration
+api:
+  base_url: "https://api.example.com"
+  timeout: 30000
+  retry_attempts: 3
+  endpoints:
+    - name: "users"
+      path: "/api/users"
+      methods: ["GET", "POST", "PUT", "DELETE"]
+    - name: "posts"
+      path: "/api/posts"
+      methods: ["GET", "POST"]
+    - name: "comments"
+      path: "/api/comments"
+      methods: ["GET", "POST", "DELETE"]
+
+# Team Members
+team:
+  - name: "Alice Johnson"
+    role: "Frontend Developer"
+    email: "alice@example.com"
+    skills: ["Vue.js", "Nuxt.js", "TypeScript", "CSS"]
+    active: true
+  - name: "Bob Smith"
+    role: "Backend Developer"
+    email: "bob@example.com"
+    skills: ["Node.js", "Python", "PostgreSQL", "Docker"]
+    active: true
+  - name: "Carol Wilson"
+    role: "UI/UX Designer"
+    email: "carol@example.com"
+    skills: ["Figma", "Adobe XD", "Sketch", "Prototyping"]
+    active: false
+
+# Feature Flags
+features:
+  dark_mode: true
+  notifications: true
+  analytics: false
+  beta_features: true
+  maintenance_mode: false
+
+# Deployment Settings
+deployment:
+  platform: "Vercel"
+  auto_deploy: true
+  branch: "main"
+  build_command: "npm run build"
+  output_directory: ".output"
+  environment_variables:
+    NODE_ENV: "production"
+    API_URL: "https://api.production.com"
+    ANALYTICS_ID: "GA-XXXXXXXXX"
+
+# Monitoring
+monitoring:
+  error_tracking: "Sentry"
+  performance: "New Relic"
+  uptime: "Pingdom"
+  logs: "LogRocket"
+
+# Security
+security:
+  cors_enabled: true
+  rate_limiting: true
+  ssl_required: true
+  allowed_origins:
+    - "https://example.com"
+    - "https://www.example.com"
+    - "https://app.example.com"

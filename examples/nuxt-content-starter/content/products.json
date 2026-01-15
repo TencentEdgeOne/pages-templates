@@ -1,0 +1,227 @@
+{
+  "title": "Product Catalog",
+  "description": "This is a JSON format example page showing product catalog and API data structure.",
+  "date": "2025-01-08",
+  "type": "data",
+  "metadata": {
+    "version": "2.1.0",
+    "last_updated": "2025-01-08T10:30:00Z",
+    "total_products": 5,
+    "categories": ["Electronics", "Books", "Clothing", "Home & Garden"],
+    "currency": "USD"
+  },
+  "products": [
+    {
+      "id": "prod_001",
+      "name": "Wireless Bluetooth Headphones",
+      "category": "Electronics",
+      "price": 89.99,
+      "currency": "USD",
+      "in_stock": true,
+      "stock_quantity": 150,
+      "description": "High-quality wireless headphones with noise cancellation and 30-hour battery life.",
+      "specifications": {
+        "brand": "TechSound",
+        "model": "TS-WH300",
+        "color": "Black",
+        "weight": "250g",
+        "battery_life": "30 hours",
+        "connectivity": ["Bluetooth 5.0", "USB-C", "3.5mm Jack"],
+        "features": ["Noise Cancellation", "Quick Charge", "Voice Assistant"]
+      },
+      "images": [
+        "https://example.com/images/headphones-1.jpg",
+        "https://example.com/images/headphones-2.jpg"
+      ],
+      "reviews": {
+        "average_rating": 4.5,
+        "total_reviews": 324,
+        "rating_distribution": {
+          "5_star": 198,
+          "4_star": 89,
+          "3_star": 25,
+          "2_star": 8,
+          "1_star": 4
+        }
+      },
+      "tags": ["wireless", "bluetooth", "noise-cancelling", "premium"]
+    },
+    {
+      "id": "prod_002",
+      "name": "JavaScript: The Definitive Guide",
+      "category": "Books",
+      "price": 49.99,
+      "currency": "USD",
+      "in_stock": true,
+      "stock_quantity": 75,
+      "description": "Comprehensive guide to JavaScript programming for beginners and advanced developers.",
+      "specifications": {
+        "author": "David Flanagan",
+        "publisher": "O'Reilly Media",
+        "isbn": "978-1491952023",
+        "pages": 1096,
+        "language": "English",
+        "edition": "7th Edition",
+        "publication_date": "2020-05-14",
+        "format": ["Paperback", "Kindle", "PDF"]
+      },
+      "images": [
+        "https://example.com/images/js-book-cover.jpg"
+      ],
+      "reviews": {
+        "average_rating": 4.7,
+        "total_reviews": 892,
+        "rating_distribution": {
+          "5_star": 634,
+          "4_star": 178,
+          "3_star": 56,
+          "2_star": 15,
+          "1_star": 9
+        }
+      },
+      "tags": ["javascript", "programming", "web-development", "reference"]
+    },
+    {
+      "id": "prod_003",
+      "name": "Organic Cotton T-Shirt",
+      "category": "Clothing",
+      "price": 24.99,
+      "currency": "USD",
+      "in_stock": true,
+      "stock_quantity": 200,
+      "description": "Comfortable organic cotton t-shirt available in multiple colors and sizes.",
+      "specifications": {
+        "brand": "EcoWear",
+        "material": "100% Organic Cotton",
+        "care_instructions": "Machine wash cold, tumble dry low",
+        "origin": "Made in USA",
+        "certifications": ["GOTS Certified", "Fair Trade"],
+        "available_sizes": ["XS", "S", "M", "L", "XL", "XXL"],
+        "available_colors": ["White", "Black", "Navy", "Gray", "Green"]
+      },
+      "images": [
+        "https://example.com/images/tshirt-white.jpg",
+        "https://example.com/images/tshirt-black.jpg",
+        "https://example.com/images/tshirt-navy.jpg"
+      ],
+      "reviews": {
+        "average_rating": 4.3,
+        "total_reviews": 156,
+        "rating_distribution": {
+          "5_star": 89,
+          "4_star": 45,
+          "3_star": 15,
+          "2_star": 5,
+          "1_star": 2
+        }
+      },
+      "tags": ["organic", "cotton", "eco-friendly", "casual"]
+    },
+    {
+      "id": "prod_004",
+      "name": "Smart Home Security Camera",
+      "category": "Electronics",
+      "price": 129.99,
+      "currency": "USD",
+      "in_stock": false,
+      "stock_quantity": 0,
+      "expected_restock": "2025-01-15",
+      "description": "WiFi-enabled security camera with 4K recording, night vision, and mobile app control.",
+      "specifications": {
+        "brand": "SecureHome",
+        "model": "SH-CAM4K",
+        "resolution": "4K (3840x2160)",
+        "field_of_view": "110 degrees",
+        "night_vision": true,
+        "storage": ["Cloud", "Local SD Card"],
+        "connectivity": ["WiFi", "Ethernet"],
+        "power": "AC Adapter or Battery",
+        "weather_resistance": "IP65"
+      },
+      "images": [
+        "https://example.com/images/security-camera-1.jpg",
+        "https://example.com/images/security-camera-2.jpg"
+      ],
+      "reviews": {
+        "average_rating": 4.6,
+        "total_reviews": 278,
+        "rating_distribution": {
+          "5_star": 189,
+          "4_star": 67,
+          "3_star": 15,
+          "2_star": 4,
+          "1_star": 3
+        }
+      },
+      "tags": ["security", "camera", "smart-home", "4k", "wifi"]
+    },
+    {
+      "id": "prod_005",
+      "name": "Indoor Plant Care Kit",
+      "category": "Home & Garden",
+      "price": 34.99,
+      "currency": "USD",
+      "in_stock": true,
+      "stock_quantity": 89,
+      "description": "Complete kit for indoor plant care including tools, fertilizer, and care guide.",
+      "specifications": {
+        "brand": "GreenThumb",
+        "kit_contents": [
+          "Watering can (1L)",
+          "Pruning shears",
+          "Soil moisture meter",
+          "Organic fertilizer (500ml)",
+          "Plant care guide book",
+          "Decorative plant markers (5 pieces)"
+        ],
+        "suitable_for": ["Houseplants", "Herbs", "Small vegetables"],
+        "organic": true,
+        "beginner_friendly": true
+      },
+      "images": [
+        "https://example.com/images/plant-kit-1.jpg",
+        "https://example.com/images/plant-kit-contents.jpg"
+      ],
+      "reviews": {
+        "average_rating": 4.4,
+        "total_reviews": 127,
+        "rating_distribution": {
+          "5_star": 78,
+          "4_star": 32,
+          "3_star": 12,
+          "2_star": 3,
+          "1_star": 2
+        }
+      },
+      "tags": ["plants", "gardening", "indoor", "organic", "beginner"]
+    }
+  ],
+  "shipping": {
+    "free_shipping_threshold": 50.00,
+    "standard_shipping": {
+      "cost": 5.99,
+      "delivery_time": "3-5 business days"
+    },
+    "express_shipping": {
+      "cost": 12.99,
+      "delivery_time": "1-2 business days"
+    },
+    "international_shipping": {
+      "available": true,
+      "cost_calculation": "based_on_weight_and_destination"
+    }
+  },
+  "payment_methods": [
+    "Credit Card",
+    "PayPal",
+    "Apple Pay",
+    "Google Pay",
+    "Bank Transfer"
+  ],
+  "return_policy": {
+    "return_window": "30 days",
+    "condition": "unused_with_original_packaging",
+    "refund_processing": "5-7 business days",
+    "return_shipping": "customer_responsibility"
+  }
+}
