@@ -1,0 +1,208 @@
+---
+title: Configuration
+description: Customize your Fumadocs documentation site.
+---
+
+# Configuration
+
+Learn how to customize your Fumadocs documentation site.
+
+## Layout Configuration
+
+Configure the shared layout options in `lib/layout.shared.tsx`:
+
+```typescript
+import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+
+export function baseOptions(): BaseLayoutProps {
+  return {
+    nav: {
+      title: 'My Documentation',
+      transparentMode: 'top',
+    },
+    links: [
+      {
+        text: 'Documentation',
+        url: '/docs',
+        active: 'nested-url',
+      },
+      {
+        text: 'GitHub',
+        url: 'https://github.com/your-repo',
+        external: true,
+      },
+    ],
+  };
+}
+```
+
+### Navigation Options
+
+| Option | Type | Description |
+|--------|------|-------------|
+| `nav.title` | `string` | Site title shown in navigation |
+| `nav.transparentMode` | `'top' \| 'always' \| 'none'` | Navbar transparency behavior |
+| `links` | `LinkItem[]` | Navigation links |
+
+## MDX Configuration
+
+Customize MDX processing in `source.config.ts`:
+
+```typescript
+import { defineDocs, defineConfig } from 'fumadocs-mdx/config';
+import rehypeKatex from 'rehype-katex';
+import remarkMath from 'remark-math';
+
+export const docs = defineDocs({
+  dir: 'content/docs',
+});
+
+export default defineConfig({
+  mdxOptions: {
+    remarkPlugins: [remarkMath],
+    rehypePlugins: (v) => [rehypeKatex, ...v],
+  },
+});
+```
+
+### Adding Custom Plugins
+
+You can add custom remark/rehype plugins:
+
+```typescript
+import { myRemarkPlugin } from './my-plugin';
+
+export default defineConfig({
+  mdxOptions: {
+    remarkPlugins: [myRemarkPlugin],
+    rehypePlugins: (v) => [...v, myRehypePlugin],
+  },
+});
+```
+
+## Content Structure
+
+### Frontmatter
+
+Organize your content using frontmatter:
+
+```markdown
+---
+title: Page Title
+description: Page description for SEO
+order: 3
+---
+
+# Page Content
+
+Your documentation content here.
+```
+
+### Page Ordering
+
+Control the order of pages using the `order` field in frontmatter:
+
+```markdown
+---
+title: Introduction
+order: 1
+---
+```
+
+Lower numbers appear first in the navigation.
+
+### Directory Structure
+
+Create nested directories for organized navigation:
+
+```
+content/docs/
+├── index.mdx              # Introduction (order: 1)
+├── quick-start.mdx        # Quick Start (order: 2)
+├── configuration.mdx      # Configuration (order: 3)
+├── components.mdx         # Components (order: 4)
+├── deploying.mdx          # Deploying (order: 5)
+├── getting-started/
+│   ├── index.mdx          # Getting Started overview
+│   └── installation.mdx   # Installation guide
+└── guides/
+    ├── index.mdx          # Guides overview
+    └── advanced.mdx       # Advanced topics
+```
+
+## Theming
+
+### CSS Configuration
+
+Fumadocs uses Tailwind CSS for styling. Customize the theme in `app/globals.css`:
+
+```css
+@import 'tailwindcss';
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+@source '../node_modules/fumadocs-ui/dist/**/*.js';
+```
+
+### Theme Options
+
+Available theme presets:
+
+- `fumadocs-ui/css/neutral.css` - Neutral color scheme
+- `fumadocs-ui/css/shadcn.css` - Shadcn UI compatible theme
+
+### Custom Colors
+
+Override CSS variables for custom theming:
+
+```css
+:root {
+  --fd-primary: 220 90% 50%;
+  --fd-primary-foreground: 0 0% 100%;
+}
+```
+
+## Custom Components
+
+### Registering Components
+
+Add custom components in `mdx-components.tsx`:
+
+```typescript
+import defaultMdxComponents from 'fumadocs-ui/mdx';
+import type { MDXComponents } from 'mdx/types';
+import { MyCustomComponent } from './components/my-component';
+
+export function useMDXComponents(components: MDXComponents): MDXComponents {
+  return {
+    ...defaultMdxComponents,
+    MyCustomComponent,
+    ...components,
+  };
+}
+```
+
+### Using Components in MDX
+
+Once registered, use components in your MDX files:
+
+```mdx
+<MyCustomComponent prop="value">
+  Content here
+</MyCustomComponent>
+```
+
+## Search Configuration
+
+Search is automatically configured. Customize search behavior in `app/api/search/route.ts`:
+
+```typescript
+import { source } from '@/lib/source';
+import { createFromSource } from 'fumadocs-core/search/server';
+
+export const { GET } = createFromSource(source);
+```
+
+## Next Steps
+
+- Explore available [Components](/docs/components) for building rich documentation
+- Deploy your site to [EdgeOne Pages](/docs/deploying)

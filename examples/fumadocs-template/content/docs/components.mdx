@@ -1,0 +1,229 @@
+---
+title: Components
+description: Built-in components for your documentation.
+---
+
+# Components
+
+Fumadocs provides a rich set of built-in components for your documentation.
+
+## Callout
+
+Use callouts to highlight important information:
+
+<Callout type="info">
+  This is an informational callout.
+</Callout>
+
+<Callout type="warn">
+  This is a warning callout.
+</Callout>
+
+<Callout type="error">
+  This is an error callout.
+</Callout>
+
+### Usage
+
+<Callout type="info">
+  This is an informational callout.
+</Callout>
+
+<Callout type="warn">
+  This is a warning callout.
+</Callout>
+
+<Callout type="error">
+  This is an error callout.
+</Callout>
+
+### Props
+
+| Prop | Type | Description |
+|------|------|-------------|
+| `type` | `'info' \| 'warn' \| 'error'` | Callout style variant |
+
+## Code Block
+
+Fenced code blocks with syntax highlighting:
+
+```typescript
+function greet(name: string): string {
+  return `Hello, ${name}!`;
+}
+
+console.log(greet('World'));
+```
+
+With a title:
+
+```typescript title="utils.ts"
+export function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US');
+}
+```
+
+### Usage
+
+Use triple backticks with language:
+
+```typescript
+function greet(name: string): string {
+  return `Hello, ${name}!`;
+}
+```
+
+```typescript title="utils.ts"
+export function formatDate(date: Date): string {
+  return date.toLocaleDateString('en-US');
+}
+```
+
+## Tabs
+
+Organize content with tabs:
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab value="pnpm">pnpm install fumadocs-ui</Tab>
+  <Tab value="npm">npm install fumadocs-ui</Tab>
+  <Tab value="yarn">yarn add fumadocs-ui</Tab>
+</Tabs>
+
+### Usage
+
+<Tabs items={['pnpm', 'npm', 'yarn']}>
+  <Tab value="pnpm">pnpm install fumadocs-ui</Tab>
+  <Tab value="npm">npm install fumadocs-ui</Tab>
+  <Tab value="yarn">yarn add fumadocs-ui</Tab>
+</Tabs>
+
+### Props
+
+**Tabs:**
+| Prop | Type | Description |
+|------|------|-------------|
+| `items` | `string[]` | Tab labels |
+
+**Tab:**
+| Prop | Type | Description |
+|------|------|-------------|
+| `value` | `string` | Unique tab identifier |
+
+## Steps
+
+Create step-by-step guides:
+
+<Steps>
+  <Step>Install dependencies with your package manager</Step>
+  <Step>Configure your documentation source</Step>
+  <Step>Start the development server</Step>
+</Steps>
+
+### Usage
+
+<Steps>
+  <Step>First step description</Step>
+  <Step>Second step description</Step>
+  <Step>Third step description</Step>
+</Steps>
+
+## Cards
+
+Display content in card format:
+
+<CardGroup>
+  <Card title="Quick Start" href="/docs/quick-start">
+    Get started with Fumadocs in minutes.
+  </Card>
+  <Card title="Configuration" href="/docs/configuration">
+    Customize your documentation site.
+  </Card>
+  <Card title="Deploying" href="/docs/deploying">
+    Deploy to production with EdgeOne Pages.
+  </Card>
+</CardGroup>
+
+### Usage
+
+<CardGroup>
+  <Card title="Getting Started" href="/docs/quick-start">
+    Get started with Fumadocs in minutes.
+  </Card>
+  <Card title="Configuration" href="/docs/configuration">
+    Customize your documentation site.
+  </Card>
+</CardGroup>
+
+### Props
+
+**Card:**
+| Prop | Type | Description |
+|------|------|-------------|
+| `title` | `string` | Card title |
+| `href` | `string` | Link URL (optional) |
+| `description` | `string` | Card description |
+| `external` | `boolean` | Whether link is external |
+
+## File Tree
+
+Display file structures:
+
+<FileTree>
+  <FileTree.Folder name="app" defaultOpen>
+    <FileTree.File name="layout.tsx" />
+    <FileTree.File name="page.tsx" />
+    <FileTree.Folder name="docs">
+      <FileTree.File name="layout.tsx" />
+      <FileTree.File name="page.tsx" />
+    </FileTree.Folder>
+  </FileTree.Folder>
+  <FileTree.File name="package.json" />
+  <FileTree.File name="tsconfig.json" />
+</FileTree>
+
+### Usage
+
+<FileTree>
+  <FileTree.Folder name="app" defaultOpen>
+    <FileTree.File name="layout.tsx" />
+    <FileTree.File name="page.tsx" />
+  </FileTree.Folder>
+  <FileTree.File name="package.json" />
+</FileTree>
+
+### Props
+
+**FileTree.Folder:**
+| Prop | Type | Description |
+|------|------|-------------|
+| `name` | `string` | Folder name |
+| `defaultOpen` | `boolean` | Open by default |
+
+**FileTree.File:**
+| Prop | Type | Description |
+|------|------|-------------|
+| `name` | `string` | File name |
+
+## Type Table
+
+Display TypeScript types:
+
+<TypeTable
+  type={{
+    name: {
+      description: 'The name of the component',
+      type: 'string',
+      default: 'Button',
+    },
+    disabled: {
+      description: 'Whether the button is disabled',
+      type: 'boolean',
+      default: 'false',
+    },
+  }}
+/>
+
+## Next Steps
+
+- [Deploy](/docs/deploying) your documentation to production
+- Review [Configuration](/docs/configuration) options

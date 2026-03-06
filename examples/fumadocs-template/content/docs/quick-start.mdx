@@ -1,0 +1,160 @@
+---
+title: Quick Start
+description: Get started with Fumadocs in minutes.
+---
+
+# Quick Start
+
+This guide will help you get started with Fumadocs quickly.
+
+## Prerequisites
+
+Before you begin, ensure you have:
+
+- **Node.js** 18 or later
+- **pnpm** (recommended) or npm/yarn
+
+## Create a New Project
+
+### Option 1: Use This Template (Recommended)
+
+The fastest way to get started is using this template:
+
+```bash
+# Clone the repository
+git clone https://github.com/TencentEdgeOne/pages-templates.git
+
+# Navigate to the template
+cd pages-templates/fumadocs-template
+
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+```
+
+### Option 2: Create from Scratch
+
+You can also create a new project using the official Fumadocs CLI:
+
+```bash
+npm create fumadocs-app
+```
+
+Or manually set up in an existing Next.js project.
+
+## Manual Setup
+
+If you prefer to set up manually in an existing project:
+
+### 1. Install Dependencies
+
+```bash
+pnpm add fumadocs-core fumadocs-mdx fumadocs-ui
+```
+
+### 2. Configure MDX
+
+Create `source.config.ts`:
+
+```typescript
+import { defineDocs, defineConfig } from 'fumadocs-mdx/config';
+
+export const docs = defineDocs({
+  dir: 'content/docs',
+});
+
+export default defineConfig();
+```
+
+### 3. Update next.config.mjs
+
+```javascript
+import { createMDX } from 'fumadocs-mdx/next';
+
+const config = {
+  reactStrictMode: true,
+};
+
+const withMDX = createMDX();
+export default withMDX(config);
+```
+
+### 4. Create Content
+
+Create your first documentation file at `content/docs/index.mdx`:
+
+```markdown
+---
+title: Hello World
+description: My first documentation page.
+---
+
+# Hello World
+
+Welcome to my documentation!
+```
+
+### 5. Start Development
+
+```bash
+pnpm dev
+```
+
+Visit `http://localhost:3000/docs` to see your documentation.
+
+## Project Structure
+
+After setup, your project structure will look like this:
+
+```
+my-project/
+├── content/
+│   └── docs/              # Documentation files
+│       ├── index.mdx      # Introduction page
+│       └── quick-start.mdx
+├── app/
+│   ├── docs/              # Docs layout and pages
+│   │   ├── layout.tsx
+│   │   └── [[...slug]]/
+│   └── page.tsx           # Home page
+├── lib/
+│   ├── source.ts          # Content source configuration
+│   └── layout.shared.tsx  # Shared layout options
+├── mdx-components.tsx     # MDX component registry
+├── source.config.ts       # MDX compilation config
+└── next.config.mjs
+```
+
+## Development Workflow
+
+### Adding New Pages
+
+1. Create a new `.mdx` file in `content/docs/`
+2. Add frontmatter with title and description
+3. Write your content using Markdown and MDX components
+
+Example:
+
+```markdown
+---
+title: My New Page
+description: Description of my new page.
+order: 3
+---
+
+# My New Page
+
+Your content here...
+```
+
+### Using Components
+
+Fumadocs provides built-in components for rich documentation. See the [Components](/docs/components) page for all available components and usage examples.
+
+## Next Steps
+
+- Learn about [Configuration](/docs/configuration) options
+- Explore available [Components](/docs/components)
+- Deploy to [EdgeOne Pages](/docs/deploying)

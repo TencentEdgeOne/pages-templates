@@ -1,0 +1,223 @@
+---
+title: Deploying
+description: Deploy your Fumadocs documentation to EdgeOne Pages.
+---
+
+# Deploying
+
+Learn how to deploy your Fumadocs documentation site to production.
+
+## EdgeOne Pages (Recommended)
+
+This template is optimized for [Tencent EdgeOne Pages](https://edgeone.ai), a high-performance edge computing platform.
+
+### Quick Deploy
+
+1. Push your code to a Git repository (GitHub, GitLab, etc.)
+2. Log in to [EdgeOne Pages Console](https://console.edgeone.ai/pages)
+3. Click "Create Project" and import your repository
+4. EdgeOne Pages will automatically detect the Next.js configuration
+
+### Build Settings
+
+EdgeOne Pages automatically detects Next.js projects. Use these settings:
+
+| Setting | Value |
+|---------|-------|
+| **Build Command** | `pnpm build` |
+| **Output Directory** | `.next` |
+| **Node Version** | 18 or later |
+
+### Environment Variables
+
+Set any required environment variables in the EdgeOne dashboard:
+
+1. Navigate to your project settings
+2. Go to "Environment Variables"
+3. Add your variables
+4. Redeploy for changes to take effect
+
+### Edge Caching
+
+EdgeOne Pages automatically provides:
+
+- **Global CDN** - Content served from edge locations worldwide
+- **Auto Caching** - Static assets cached at the edge
+- **HTTP/2 & HTTP/3** - Modern protocol support
+- **DDoS Protection** - Built-in security
+
+## Static Export
+
+For static hosting or other platforms, configure static export in `next.config.mjs`:
+
+```javascript
+import { createMDX } from 'fumadocs-mdx/next';
+
+const config = {
+  reactStrictMode: true,
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+};
+
+const withMDX = createMDX();
+export default withMDX(config);
+```
+
+Then build:
+
+```bash
+pnpm build
+```
+
+The static files will be in the `out` directory.
+
+## Other Platforms
+
+### Vercel
+
+Deploy to Vercel with zero configuration:
+
+```bash
+npx vercel
+```
+
+Or connect your Git repository to Vercel for automatic deployments.
+
+### Netlify
+
+Create `netlify.toml` in your project root:
+
+```toml
+[build]
+  command = "pnpm build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "18"
+```
+
+Then deploy:
+
+```bash
+npx netlify deploy
+```
+
+### Docker
+
+Build a Docker image for self-hosting:
+
+```dockerfile
+FROM node:18-alpine AS base
+
+# Install dependencies
+FROM base AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+COPY package.json pnpm-lock.yaml ./
+RUN npm install -g pnpm && pnpm install --frozen-lockfile
+
+# Build application
+FROM base AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+RUN npm install -g pnpm && pnpm build
+
+# Production image
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+EXPOSE 3000
+ENV PORT=3000
+ENV HOSTNAME="0.0.0.0"
+CMD ["node", "server.js"]
+```
+
+Build and run:
+
+```bash
+docker build -t my-docs .
+docker run -p 3000:3000 my-docs
+```
+
+## Pre-Deployment Checklist
+
+Before deploying to production:
+
+- [ ] Update `siteUrl` in your configuration
+- [ ] Add analytics (optional)
+- [ ] Configure custom domain (optional)
+- [ ] Set up environment variables
+- [ ] Test build locally: `pnpm build`
+- [ ] Verify all links work correctly
+- [ ] Check dark mode appearance
+- [ ] Test on mobile devices
+
+## Performance Optimization
+
+### Build Optimization
+
+```bash
+# Analyze bundle size
+pnpm analyze
+
+# Build with source maps for debugging
+pnpm build --debug
+```
+
+### Image Optimization
+
+Use Next.js Image component for automatic optimization:
+
+```tsx
+import Image from 'next/image';
+
+<Image
+  src="/docs-screenshot.png"
+  alt="Documentation Screenshot"
+  width={800}
+  height={600}
+/>
+```
+
+### SEO
+
+Add metadata to your pages:
+
+```tsx
+export const metadata = {
+  title: 'My Documentation',
+  description: 'Documentation for my project',
+  openGraph: {
+    title: 'My Documentation',
+    description: 'Documentation for my project',
+  },
+};
+```
+
+## Troubleshooting
+
+### Build Failures
+
+If your build fails:
+
+1. Check Node.js version (18+ required)
+2. Clear cache: `rm -rf .next node_modules && pnpm install`
+3. Check for TypeScript errors: `pnpm typecheck`
+
+### 404 Errors
+
+If you get 404 errors after deployment:
+
+1. Verify `baseUrl` in `lib/source.ts` matches your deployment URL
+2. Check that all MDX files have valid frontmatter
+3. Ensure `output: 'export'` is set for static hosting
+
+## Next Steps
+
+Your documentation is now deployed! 🎉
