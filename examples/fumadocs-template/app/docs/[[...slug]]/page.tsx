@@ -27,10 +27,11 @@ export default async function Page(props: {
         enabled: true,
         style: 'clerk',
       }}
-
+      // Disable breadcrumb
+      breadcrumb={{
+        enabled: false,
+      }}
     >
-      <DocsTitle>{page.data.title}</DocsTitle>
-      <DocsDescription>{page.data.description}</DocsDescription>
       <DocsBody>
         <MDX components={components} />
       </DocsBody>

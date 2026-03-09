@@ -11,17 +11,7 @@ export function baseOptions(): BaseLayoutProps {
       // Enable transparent mode for modern look
       transparentMode: 'top',
     },
-    links: [
-      {
-        text: 'Documentation',
-        url: '/docs',
-        active: 'nested-url',
-      },
-      {
-        text: 'GitHub',
-        url: 'https://github.com/TencentEdgeOne/pages-templates',
-        external: true,
-      },
-    ],
+    // 不设置 links，只展示分组标题
+    links: [],
   };
 }

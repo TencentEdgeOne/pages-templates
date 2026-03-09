@@ -1,9 +1,9 @@
 {
+  "title": "Documentation",
   "pages": [
     "index",
-    "quick-start",
-    "configuration",
+    "getting-started",
     "components",
-    "deploying"
+    "deployment"
   ]
 }
