@@ -10,7 +10,14 @@ More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
 
 ## Getting Started
 
-First, run the development server:
+Please configure the environment variables: copy the `.env.example` file, rename it to `.env`, and then fill in your Supabase details.
+
+```
+SUPABASE_URL=https://your-supabase-url
+SUPABASE_KEY=your-supabase-key
+```
+
+Run the development server:
 
 ```bash
 npm run dev
