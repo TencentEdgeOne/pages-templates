@@ -20,6 +20,8 @@ SUPABASE_KEY=your-supabase-key
 Run the development server:
 
 ```bash
+edgeone pages dev
+# or
 npm run dev
 # or
 yarn dev
