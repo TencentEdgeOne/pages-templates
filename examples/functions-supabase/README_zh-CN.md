@@ -8,9 +8,18 @@
 
 ## 快速开始
 
-首先，运行开发服务器：
+请配置环境变量：复制 `.env.example` 文件并重命名为 `.env`，然后填入您的 Supabase 相关信息。
+
+```
+SUPABASE_URL=https://your-supabase-url
+SUPABASE_KEY=your-supabase-key
+```
+
+运行开发服务器：
 
 ```bash
+edgeone pages dev
+# 或
 npm run dev
 # 或
 yarn dev
