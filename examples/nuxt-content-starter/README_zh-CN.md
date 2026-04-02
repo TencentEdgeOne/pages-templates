@@ -190,7 +190,7 @@ bun run preview
 
 ## 📄 许可证
 
-此项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
+此项目采用 MIT 许可证 - 查看 [LICENSE](https://github.com/github/choosealicense.com/blob/gh-pages/_licenses/mit.txt) 文件了解详情。
 
 ## 🙏 致谢
 
