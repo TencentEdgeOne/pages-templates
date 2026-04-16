@@ -1,0 +1,279 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   APP THEME VARIABLES
+   Default theme: warm magazine (terracotta editorial)
+   Overridden by [data-theme="dark"], [data-theme="cool"], [data-theme="minimal"]
+───────────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Next.js scaffold vars (kept for compatibility) */
+  --max-width: 1100px;
+  --border-radius: 12px;
+  --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
+    "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
+    "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
+  --foreground-rgb: 44, 44, 44;
+  --background-start-rgb: 246, 243, 238;
+  --background-end-rgb: 255, 254, 250;
+
+  /* ── Warm magazine (default light theme) ── */
+  --color-primary:        #c8754a;   /* terracotta */
+  --color-primary-dark:   #b5633a;   /* hover state */
+  --color-primary-tint:   #fdf0e8;   /* light wash */
+
+  --color-surface:        #fffefa;   /* main panel background */
+  --color-bg:             #f6f3ee;   /* subtle background / input area */
+  --color-border:         #e8e3db;   /* dividing lines */
+  --color-divider:        #d8d2ca;   /* scrollbar thumb, heavier separator */
+
+  --color-text:           #2c2c2c;   /* primary text */
+  --color-text-strong:    #1a1a1a;   /* active/selected item text */
+  --color-text-secondary: #5a5550;   /* secondary labels */
+  --color-text-muted:     #9e9690;   /* disabled / helper text */
+  --color-text-faint:     #b0a99f;   /* timestamps, placeholders */
+  --color-icon-muted:     #d4cec6;   /* placeholder icons */
+
+  --color-error:          #e05252;   /* destructive / error */
+  --color-error-dark:     #c0422a;   /* error hover */
+  --color-error-tint:     #fef2f2;   /* error background wash */
+}
+
+/* ── Dark mode ── */
+[data-theme="dark"] {
+  --color-primary:        #e8956a;   /* brighter terracotta for dark bg */
+  --color-primary-dark:   #d98a62;
+  --color-primary-tint:   #2a1a0f;
+
+  --color-surface:        #1c1c1c;
+  --color-bg:             #252525;
+  --color-border:         #424242;
+  --color-divider:        #363636;
+
+  --color-text:           #f0ece6;   /* bright cream, ~12:1 on surface */
+  --color-text-strong:    #ffffff;   /* pure white for headings/active */
+  --color-text-secondary: #c8c0b4;   /* warm light gray, ~7:1 */
+  --color-text-muted:     #9a9088;   /* medium gray, ~4.5:1 */
+  --color-text-faint:     #706860;   /* timestamps etc, ~3:1 */
+  --color-icon-muted:     #4a4542;
+
+  --color-error:          #f07070;
+  --color-error-dark:     #e05252;
+  --color-error-tint:     #2a1212;
+
+}
+
+/* ── Dark mode: Tailwind Typography (prose) override ──────────────────────────
+   Must target [data-theme="dark"] .prose directly because the prose class
+   re-declares --tw-prose-* on the element itself, overriding html-level vars.
+───────────────────────────────────────────────────────────────────────────── */
+[data-theme="dark"] .prose {
+  --tw-prose-body:          #f0ece6;
+  --tw-prose-headings:      #ffffff;
+  --tw-prose-lead:          #c8c0b4;
+  --tw-prose-links:         #e8956a;
+  --tw-prose-bold:          #ffffff;
+  --tw-prose-counters:      #c8c0b4;
+  --tw-prose-bullets:       #9a9088;
+  --tw-prose-hr:            #424242;
+  --tw-prose-quotes:        #f0ece6;
+  --tw-prose-quote-borders: #424242;
+  --tw-prose-captions:      #9a9088;
+  --tw-prose-code:          #f5c6a0;
+  --tw-prose-pre-code:      #f0ece6;
+  --tw-prose-pre-bg:        #1a1a1a;
+  --tw-prose-th-borders:    #424242;
+  --tw-prose-td-borders:    #363636;
+  color: #f0ece6;
+}
+
+/* ── Dark mode: markdown-body override ────────────────────────────────────────
+   markdown.scss hardcodes color: #101828 and light-only CSS variables.
+   These overrides ensure AI response text is readable in dark mode.
+───────────────────────────────────────────────────────────────────────────── */
+[data-theme="dark"] .markdown-body {
+  color: #f0ece6;
+
+  /* GitHub Flavored Markdown fg/canvas variables — dark values */
+  --color-fg-default:    #f0ece6;
+  --color-fg-muted:      #c8c0b4;
+  --color-fg-subtle:     #9a9088;
+  --color-canvas-default: transparent;
+  --color-canvas-subtle: #2a2a2a;
+  --color-border-default: #424242;
+  --color-border-muted:   #363636;
+  --color-neutral-muted:  rgba(110, 118, 129, 0.2);
+  --color-accent-fg:      #e8956a;
+  --color-accent-emphasis: #e8956a;
+  --color-attention-subtle: #3a2e00;
+  --color-danger-fg:      #f07070;
+
+  /* Syntax highlight — dark values */
+  --color-prettylights-syntax-comment:                  #8b949e;
+  --color-prettylights-syntax-constant:                 #79c0ff;
+  --color-prettylights-syntax-entity:                   #d2a8ff;
+  --color-prettylights-syntax-storage-modifier-import:  #c9d1d9;
+  --color-prettylights-syntax-entity-tag:               #7ee787;
+  --color-prettylights-syntax-keyword:                  #ff7b72;
+  --color-prettylights-syntax-string:                   #a5d6ff;
+  --color-prettylights-syntax-variable:                 #ffa657;
+  --color-prettylights-syntax-brackethighlighter-unmatched: #f85149;
+  --color-prettylights-syntax-invalid-illegal-text:     #f0f6fc;
+  --color-prettylights-syntax-invalid-illegal-bg:       #8e1519;
+  --color-prettylights-syntax-carriage-return-text:     #f0f6fc;
+  --color-prettylights-syntax-carriage-return-bg:       #b62324;
+  --color-prettylights-syntax-string-regexp:            #7ee787;
+  --color-prettylights-syntax-markup-list:              #f2cc60;
+  --color-prettylights-syntax-markup-heading:           #1f6feb;
+  --color-prettylights-syntax-markup-italic:            #c9d1d9;
+  --color-prettylights-syntax-markup-bold:              #c9d1d9;
+  --color-prettylights-syntax-markup-deleted-text:      #ffdcd7;
+  --color-prettylights-syntax-markup-deleted-bg:        #67060c;
+  --color-prettylights-syntax-markup-inserted-text:     #aff5b4;
+  --color-prettylights-syntax-markup-inserted-bg:       #033a16;
+  --color-prettylights-syntax-markup-changed-text:      #ffdfb6;
+  --color-prettylights-syntax-markup-changed-bg:        #5a1e02;
+  --color-prettylights-syntax-markup-ignored-text:      #c9d1d9;
+  --color-prettylights-syntax-markup-ignored-bg:        #1158c7;
+  --color-prettylights-syntax-meta-diff-range:          #d2a8ff;
+  --color-prettylights-syntax-brackethighlighter-angle: #8b949e;
+  --color-prettylights-syntax-sublimelinter-gutter-mark: #484f58;
+  --color-prettylights-syntax-constant-other-reference-link: #a5d6ff;
+}
+
+/* pre / code blocks inside markdown-body in dark mode */
+[data-theme="dark"] .markdown-body .highlight pre,
+[data-theme="dark"] .markdown-body pre {
+  background: #1e1e1e;
+  color: #f0ece6;
+}
+
+/* ── Cool tech theme ── */
+[data-theme="cool"] {
+  --color-primary:        #2563eb;   /* electric blue */
+  --color-primary-dark:   #1d4ed8;
+  --color-primary-tint:   #eff6ff;
+
+  --color-surface:        #ffffff;
+  --color-bg:             #f1f5f9;
+  --color-border:         #e2e8f0;
+  --color-divider:        #cbd5e1;
+
+  --color-text:           #0f172a;
+  --color-text-strong:    #020617;
+  --color-text-secondary: #334155;
+  --color-text-muted:     #94a3b8;
+  --color-text-faint:     #cbd5e1;
+  --color-icon-muted:     #e2e8f0;
+
+  --color-error:          #ef4444;
+  --color-error-dark:     #dc2626;
+  --color-error-tint:     #fef2f2;
+}
+
+/* ── Minimal black & white theme ── */
+[data-theme="minimal"] {
+  --color-primary:        #111111;
+  --color-primary-dark:   #000000;
+  --color-primary-tint:   #f5f5f5;
+
+  --color-surface:        #ffffff;
+  --color-bg:             #f9f9f9;
+  --color-border:         #e5e5e5;
+  --color-divider:        #d4d4d4;
+
+  --color-text:           #171717;
+  --color-text-strong:    #000000;
+  --color-text-secondary: #404040;
+  --color-text-muted:     #a3a3a3;
+  --color-text-faint:     #d4d4d4;
+  --color-icon-muted:     #e5e5e5;
+
+  --color-error:          #dc2626;
+  --color-error-dark:     #b91c1c;
+  --color-error-tint:     #fef2f2;
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   THEME TOGGLE BUTTON
+───────────────────────────────────────────────────────────────────────────── */
+
+.themeToggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: 24px;
+  padding: 6px 14px;
+  font-size: 12px;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.themeToggle:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   GLOBAL RESETS
+───────────────────────────────────────────────────────────────────────────── */
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  color: var(--color-text);
+  background: var(--color-bg);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* CSS Utils */
+.h1 {
+  padding-bottom: 1.5rem;
+  line-height: 1.5;
+  font-size: 1.125rem;
+  color: #111928;
+}
+
+.h2 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #111928;
+  line-height: 1.5;
+}
+
+.link {
+  @apply text-blue-600 cursor-pointer hover:opacity-80 transition-opacity duration-200 ease-in-out;
+}
+
+.text-gradient {
+  background: linear-gradient(91.58deg, #2250F2 -29.55%, #0EBCF3 75.22%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}

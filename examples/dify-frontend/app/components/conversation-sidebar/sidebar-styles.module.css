@@ -1,0 +1,164 @@
+/* =============================================
+   CONVERSATION SIDEBAR
+   Matches cool-text-generation design language.
+   ============================================= */
+
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: 'DM Sans', -apple-system, sans-serif;
+  overflow: hidden;
+}
+
+/* ── Sidebar header ── */
+.sidebarHeader {
+  padding: 20px 16px 14px;
+  border-bottom: 1px solid var(--color-border);
+  flex-shrink: 0;
+}
+.sidebarTitle {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 10px;
+}
+.newChatButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.newChatButton:hover {
+  background: var(--color-primary-dark);
+}
+
+/* ── List ── */
+.conversationList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-divider) transparent;
+}
+.conversationList::-webkit-scrollbar { width: 4px; }
+.conversationList::-webkit-scrollbar-track { background: transparent; }
+.conversationList::-webkit-scrollbar-thumb { background: var(--color-divider); border-radius: 4px; }
+
+.conversationItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  transition: background 0.12s;
+  position: relative;
+  margin-bottom: 2px;
+}
+.conversationItem:hover {
+  background: var(--color-bg);
+}
+.conversationItemActive {
+  background: var(--color-bg);
+  color: var(--color-text-strong);
+  font-weight: 500;
+}
+.conversationItemActive::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 3px;
+  background: var(--color-primary);
+  border-radius: 0 2px 2px 0;
+}
+
+.convName {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.convTime {
+  font-size: 10px;
+  color: var(--color-text-faint);
+  flex-shrink: 0;
+}
+
+/* ── Inline rename input ── */
+.renameInput {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 13px;
+  color: var(--color-text-strong);
+  font-family: inherit;
+  padding: 0;
+}
+
+/* ── Action buttons (rename / delete) ── */
+.actionButtons {
+  display: none;
+  gap: 2px;
+}
+.conversationItem:hover .actionButtons,
+.conversationItemActive .actionButtons {
+  display: flex;
+}
+.actionBtn {
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  transition: background 0.12s, color 0.12s;
+  flex-shrink: 0;
+}
+.actionBtn:hover {
+  background: var(--color-border);
+  color: var(--color-text-secondary);
+}
+.actionBtnDanger:hover {
+  background: var(--color-error-tint);
+  color: var(--color-error-dark);
+}
+
+/* ── Empty state ── */
+.emptyList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  gap: 8px;
+  text-align: center;
+  color: var(--color-text-faint);
+  font-size: 12px;
+}
