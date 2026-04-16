@@ -12,7 +12,7 @@
     "test:coverage": "jest --coverage",
     "lint": "eslint .",
     "fix": "eslint . --fix",
-    "prepare": "husky install"
+    "prepare": "[ -d .git ] && husky install || true"
   },
   "dependencies": {
     "@floating-ui/react": "^0.26.2",
