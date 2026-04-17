@@ -4,27 +4,27 @@ import { getInfo, setSession } from '@/app/api/utils/common'
 import { API_KEY, API_URL } from '@/config'
 
 /**
- * 停止工作流执行
+ * Stop workflow execution
  *
  * @route POST /api/workflows/:taskId/stop
  * @dify  POST /v1/workflows/{task_id}/stop
  *
- * @description 停止一个正在执行中的 Workflow 任务。
- *              前端在用户点击"停止"按钮时调用，同时配合客户端 AbortController 中断 SSE 连接。
- *              仅对 streaming 模式下的任务有效。
+ * @description Stop a Workflow task in progress.
+ *              Called when the user clicks the "Stop" button, combined with client-side AbortController to abort the SSE connection.
+ *              Only effective for tasks in streaming mode.
  *
- * @pathParam taskId {string} 必填 — 任务 ID（从 SSE 事件 workflow_started 中的 task_id 字段获取）
+ * @pathParam taskId {string} Required — Task ID (obtained from the task_id field in the workflow_started SSE event)
  *
- * @requestBody 无需请求体（user 信息由服务端自动填充）
+ * @requestBody No body required (user info is auto-populated by the server)
  *
- * @cookie session_id {string} 可选 — 用户会话标识
+ * @cookie session_id {string} Optional — User session identifier
  *
  * @returns {object} JSON
- *   - result {string} "success" 表示停止成功
+ *   - result {string} "success" indicates the task was stopped
  *
  * @errorResponse
- *   - 404 — task_id 不存在或任务已完成
- *   - 500 — 服务端内部错误
+ *   - 404 — task_id does not exist or task is already completed
+ *   - 500 — Internal server error
  *
  * @example
  *   POST /api/workflows/d9e8f7a6-5b4c-3d2e-1f0a-9b8c7d6e5f4a/stop

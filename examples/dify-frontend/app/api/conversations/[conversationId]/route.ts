@@ -7,7 +7,7 @@ import { getInfo } from '@/app/api/utils/common'
 const chatClient = new ChatClient(API_KEY, API_URL || undefined)
 
 /**
- * 删除对话
+ * Delete a conversation
  *
  * @route DELETE /api/conversations/[conversationId]
  * @dify  DELETE /v1/conversations/{conversation_id}

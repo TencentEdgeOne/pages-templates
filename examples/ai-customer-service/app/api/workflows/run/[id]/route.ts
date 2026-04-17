@@ -4,35 +4,35 @@ import { getInfo, setSession } from '@/app/api/utils/common'
 import { API_KEY, API_URL } from '@/config'
 
 /**
- * 获取工作流运行详情
+ * Get workflow run details
  *
  * @route GET /api/workflows/run/:id
  * @dify  GET /v1/workflows/run/{id}
  *
- * @description 获取某次工作流执行的完整详情，包括输入参数、输出结果、
- *              各节点执行状态、耗时、Token 用量等。
- *              用于 History 面板中点击某条记录后展示详细信息。
+ * @description Get full details of a workflow execution, including input parameters, output results,
+ *              node execution statuses, elapsed time, token usage, etc.
+ *              Used to display detailed info when clicking a record in the History panel.
  *
- * @pathParam id {string} 必填 — 工作流运行 ID（workflow_run_id，从日志列表或 SSE 事件中获取）
+ * @pathParam id {string} Required — Workflow run ID (workflow_run_id, from log list or SSE events)
  *
- * @cookie session_id {string} 可选 — 用户会话标识
+ * @cookie session_id {string} Optional — User session identifier
  *
- * @returns {object} JSON — 工作流运行详情
- *   - id             {string}  运行 ID
- *   - workflow_id    {string}  工作流 ID
- *   - status         {string}  运行状态（succeeded / failed / stopped / running）
- *   - inputs         {object}  输入参数
- *   - outputs        {object}  输出结果
- *   - error          {string}  错误信息（仅失败时存在）
- *   - total_steps    {number}  总执行步骤数
- *   - total_tokens   {number}  总 Token 消耗
- *   - elapsed_time   {number}  总耗时（秒）
- *   - created_at     {number}  创建时间戳（秒）
- *   - finished_at    {number}  完成时间戳（秒）
+ * @returns {object} JSON — Workflow run details
+ *   - id             {string}  Run ID
+ *   - workflow_id    {string}  Workflow ID
+ *   - status         {string}  Run status (succeeded / failed / stopped / running)
+ *   - inputs         {object}  Input parameters
+ *   - outputs        {object}  Output results
+ *   - error          {string}  Error message (only present on failure)
+ *   - total_steps    {number}  Total execution steps
+ *   - total_tokens   {number}  Total token consumption
+ *   - elapsed_time   {number}  Total elapsed time (seconds)
+ *   - created_at     {number}  Creation timestamp (seconds)
+ *   - finished_at    {number}  Completion timestamp (seconds)
  *
  * @errorResponse
- *   - 404 — 运行记录不存在
- *   - 500 — 服务端内部错误
+ *   - 404 — Run record does not exist
+ *   - 500 — Internal server error
  *
  * @example
  *   GET /api/workflows/run/wfr-abc123-def456

@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import { client, getInfo, setSession } from '@/app/api/utils/common'
 
 /**
- * 获取对话列表
+ * Get conversation list
  *
  * @route GET /api/conversations
  * @dify  GET /v1/conversations

@@ -1,9 +1,9 @@
 /* ─────────────────────────────────────────────────────────────
    Product Demo Page Styles
-   设计规范：暖白主色 #FFFEFA，主色调 #C8754A，文字 #1A1A1A / #5C564E
+   Design spec: warm white #FFFEFA, primary #C8754A, text #1A1A1A / #5C564E
    ───────────────────────────────────────────────────────────── */
 
-/* ── 通用 ── */
+/* ── General ── */
 .sectionInner {
   max-width: 1140px;
   margin: 0 auto;
@@ -28,7 +28,7 @@
   color: #5C564E;
 }
 
-/* ── 通用按钮 ── */
+/* ── Common buttons ── */
 .btnPrimary {
   display: inline-flex;
   align-items: center;
@@ -188,7 +188,7 @@
   flex-shrink: 0;
 }
 
-/* ── Hero 右侧视觉卡片 ── */
+/* ── Hero right visual card ── */
 .heroVisual {
   position: relative;
 }
@@ -305,7 +305,7 @@
   30% { opacity: 1; transform: translateY(-3px); }
 }
 
-/* 装饰浮卡 */
+/* Decorative floating cards */
 .floatCard1,
 .floatCard2 {
   position: absolute;
@@ -352,7 +352,7 @@
   color: #1A1A1A;
 }
 
-/* ── 功能卡片区 ── */
+/* ── Feature cards section ── */
 .featuresSection {
   padding: 80px 0;
   background: #fff;
@@ -408,7 +408,7 @@
   color: #5C564E;
 }
 
-/* ── 规格 + FAQ 区 ── */
+/* ── Specs + FAQ section ── */
 .specFaqSection {
   padding: 80px 0;
   background: #FAF8F5;
@@ -428,7 +428,7 @@
   }
 }
 
-/* 规格表 */
+/* Spec table */
 .specTable {
   border: 1.5px solid #F0EDE8;
   border-radius: 12px;
@@ -524,7 +524,7 @@
   color: #5C564E;
 }
 
-/* ── CTA 区 ── */
+/* ── CTA section ── */
 .ctaSection {
   padding: 80px 0;
   background: #fff;

@@ -4,12 +4,12 @@ import { API_KEY, API_URL } from '@/config'
 import { getInfo, setSession } from '@/app/api/utils/common'
 
 /**
- * 获取建议问题
+ * Get suggested questions
  *
  * @route GET /api/messages/[messageId]/suggested
  * @dify  GET /v1/messages/{message_id}/suggested
  *
- * @description 基于上一条消息，返回 Dify 推荐的跟进问题列表。
+ * @description Based on the previous message, return a list of follow-up questions recommended by Dify.
  */
 export async function GET(
   request: NextRequest,

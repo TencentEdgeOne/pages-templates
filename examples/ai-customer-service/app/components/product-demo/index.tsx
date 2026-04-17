@@ -9,10 +9,10 @@ import styles from './product-demo.module.css'
 /**
  * ProductDemoPage
  *
- * 商品 Demo 演示页主组件，模拟一个真实的 SaaS 产品落地页，
- * 展示"把 AI 客服模板部署到自己网站后是什么效果"。
+ * Main component for the product demo page, simulating a real SaaS product landing page
+ * to demonstrate "what it looks like after deploying the AI customer service template to your own website".
  *
- * 该组件仅负责页面内容布局，浮窗由父层 DemoHomePage 叠加。
+ * This component only handles the page content layout; the floating widget is overlaid by the parent DemoHomePage.
  */
 const ProductDemoPage: React.FC = () => {
   const { t } = useTranslation()

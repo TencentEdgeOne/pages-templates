@@ -4,22 +4,22 @@ import { getInfo, setSession } from '@/app/api/utils/common'
 import { API_KEY, API_URL } from '@/config'
 
 /**
- * 获取应用元信息
+ * Get application meta information
  *
  * @route GET /api/meta
  * @dify  GET /v1/meta
  *
- * @description 获取 Dify 应用的元数据信息，包括工具图标等。
- *              用于在前端自动填充应用名称、图标，减少硬编码配置。
+ * @description Get the Dify application's metadata, including tool icons.
+ *              Used on the frontend to auto-populate the app name and icon, reducing hardcoded configuration.
  *
- * @cookie session_id {string} 可选 — 用户会话标识
+ * @cookie session_id {string} Optional — User session identifier
  *
  * @returns {object} JSON
- *   - tool_icons {Record<string, string | object>} 应用中使用的工具图标映射
+ *   - tool_icons {Record<string, string | object>} Tool icon mapping used in the application
  *
  * @errorResponse
- *   - 401 — API Key 无效或未配置
- *   - 500 — 服务端内部错误
+ *   - 401 — Invalid or unconfigured API Key
+ *   - 500 — Internal server error
  *
  * @example
  *   GET /api/meta

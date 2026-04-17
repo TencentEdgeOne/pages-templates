@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════
-   客服壳 — 完整页 / 嵌入小窗 统一样式
-   色彩变量继承自 globals.css / Tailwind，
-   局部覆盖用 CSS 自定义属性。
+   Customer Service Shell — Full page / Embed widget unified styles
+   Color variables inherited from globals.css / Tailwind,
+   local overrides use CSS custom properties.
 
    NOTE: Global child-component classes (.msg-*, .composer*,
    .sidebar*, .wf-*) live in customer-service-global.css,
@@ -10,7 +10,7 @@
    in CSS Modules files.
 ═══════════════════════════════════════════════════ */
 
-/* ── 壳容器 ──────────────────────────────────────── */
+/* ── Shell container ──────────────────────────────── */
 .shell {
   display: flex;
   flex-direction: column;
@@ -22,14 +22,14 @@
   position: relative;
 }
 
-/* 完整页布局：侧栏 + 主区横向排列 */
+/* Full page layout: sidebar + main area side by side */
 .shell__body {
   display: flex;
   flex: 1;
   overflow: hidden;
 }
 
-/* 主内容区 */
+/* Main content area */
 .shell__main {
   flex: 1;
   display: flex;
@@ -38,7 +38,7 @@
   min-width: 0;
 }
 
-/* ── 头部 ──────────────────────────────────────── */
+/* ── Header ──────────────────────────────────────── */
 .shell__header {
   display: flex;
   align-items: center;
@@ -108,15 +108,15 @@
   height: 18px;
 }
 
-/* ── 嵌入小窗专属 ──────────────────────────────── */
+/* ── Embed widget specific ──────────────────────────────── */
 .shell--embed {
   border-radius: 12px;
   box-shadow: 0 8px 40px rgba(0,0,0,0.18);
   height: 100%;
 }
 
-/* ── 响应式：窄容器 ───────────────────────────── */
-/* narrow 模式下，侧栏不常驻（由 drawer 控制） */
+/* ── Responsive: narrow container ───────────────────────────── */
+/* narrow mode: sidebar not permanent (controlled by drawer) */
 .shell--narrow :global(.sidebar) {
   display: none;
 }
@@ -124,7 +124,7 @@
   display: flex;
 }
 
-/* ── 无障碍：减少动画 ────────────────────────────── */
+/* ── Accessibility: reduced motion ────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .shell--narrow :global(.sidebar-drawer) {
     transition: none;

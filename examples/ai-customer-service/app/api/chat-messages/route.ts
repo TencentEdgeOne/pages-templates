@@ -7,25 +7,25 @@ import { getInfo, setSession } from '@/app/api/utils/common'
 const chatClient = new ChatClient(API_KEY, API_URL || undefined)
 
 /**
- * 发送对话消息（Chat Message）
+ * Send a chat message (Chat Message)
  *
  * @route POST /api/chat-messages
  * @dify  POST /v1/chat-messages
  *
- * @description 向 Dify Chat / Agent 类型应用发送消息并获取流式响应（SSE）。
- *              支持多轮对话 —— 传入 conversation_id 即可保持上下文。
+ * @description Send a message to a Dify Chat / Agent app and receive a streaming response (SSE).
+ *              Supports multi-turn conversations — pass conversation_id to maintain context.
  *
  * @requestBody {object} JSON
- *   - query           {string}              必填 — 用户消息内容
- *   - inputs          {Record<string,any>}  可选 — 额外变量
- *   - conversation_id {string}              可选 — 对话 ID（续接历史对话）
- *   - files           {Array<VisionFile>}   可选 — 多模态文件
+ *   - query           {string}              Required — User message content
+ *   - inputs          {Record<string,any>}  Optional — Extra variables
+ *   - conversation_id {string}              Optional — Conversation ID (to continue a previous conversation)
+ *   - files           {Array<VisionFile>}   Optional — Multimodal files
  *
- * @returns {ReadableStream} SSE 事件流
- *   - event: message        — 逐段生成的文本
- *   - event: agent_message  — Agent 模式下的逐段文本
- *   - event: agent_thought  — Agent 思考过程
- *   - event: message_end    — 生成结束（含 conversation_id）
+ * @returns {ReadableStream} SSE event stream
+ *   - event: message        — Incrementally generated text
+ *   - event: agent_message  — Incremental text in Agent mode
+ *   - event: agent_thought  — Agent reasoning process
+ *   - event: message_end    — Generation finished (contains conversation_id)
  */
 export async function POST(request: NextRequest) {
   const { sessionId, user } = getInfo(request)

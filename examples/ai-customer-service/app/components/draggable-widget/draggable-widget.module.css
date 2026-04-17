@@ -1,19 +1,19 @@
 /* ─────────────────────────────────────────────────────────────
    DraggableWidget Styles
-   可拖动客服浮窗样式：悬浮按钮 + 展开面板 + 拖动手柄
+   Draggable customer service floating widget: trigger button + expanded panel + drag handle
    ───────────────────────────────────────────────────────────── */
 
-/* ── 浮窗根容器（position:fixed 由 JS 动态注入 style） ── */
+/* ── Widget root container (position:fixed injected dynamically via JS) ── */
 .widgetRoot {
   position: fixed;
   z-index: 9999;
   user-select: none;
-  /* 右下角默认位置，JS 会接管 transform */
+  /* Default bottom-right position; JS will take over transform */
   right: 24px;
   bottom: 24px;
 }
 
-/* ── 悬浮触发按钮 ── */
+/* ── Floating trigger button ── */
 .triggerBtn {
   width: 56px;
   height: 56px;
@@ -57,7 +57,7 @@
   stroke-linejoin: round;
 }
 
-/* ── 聊天面板 ── */
+/* ── Chat panel ── */
 .panel {
   width: 400px;
   height: 560px;
@@ -83,7 +83,7 @@
   }
 }
 
-/* 关闭动画（通过 class 切换） */
+/* Close animation (toggled via class) */
 .panelClosing {
   animation: panelClose 0.2s ease forwards;
 }
@@ -99,7 +99,7 @@
   }
 }
 
-/* ── 面板头部（拖动手柄） ── */
+/* ── Panel header (drag handle) ── */
 .panelHeader {
   display: flex;
   align-items: center;
@@ -109,7 +109,7 @@
   border-bottom: 1px solid #F0EDE8;
   cursor: grab;
   flex-shrink: 0;
-  touch-action: none; /* 阻止移动端默认滚动，允许拖动 */
+  touch-action: none; /* Prevent default mobile scrolling; allow dragging */
 }
 
 .panelHeader:active {
@@ -162,14 +162,14 @@
   color: #1A1A1A;
 }
 
-/* ── 面板内容区 ── */
+/* ── Panel content area ── */
 .panelBody {
   flex: 1;
   overflow: hidden;
   position: relative;
 }
 
-/* ── 移动端全屏适配 ── */
+/* ── Mobile full-screen adaptation ── */
 @media (max-width: 480px) {
   .widgetRoot {
     right: 0 !important;

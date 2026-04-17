@@ -13,13 +13,13 @@ export interface ResolvedApp {
 }
 
 /**
- * 统一 appType 获取入口：
+ * Unified appType resolution entry:
  *
- * 1. 读取 NEXT_PUBLIC_APP_TYPE 环境变量。
- * 2. 若值合法（chat / agent / workflow / completion），直接采用，跳过 detectAppType() 推断。
- * 3. 否则发起 /api/parameters + /api/meta 并通过 detectAppType() 动态推断。
+ * 1. Read the NEXT_PUBLIC_APP_TYPE environment variable.
+ * 2. If the value is valid (chat / agent / workflow / completion), use it directly, skipping detectAppType() inference.
+ * 3. Otherwise, call /api/parameters + /api/meta and infer dynamically via detectAppType().
  *
- * 无论哪条路径，appParams 和 appMeta 始终会被请求，因为客服壳依赖它们初始化 UI。
+ * Regardless of the path taken, appParams and appMeta are always fetched because the customer-service shell depends on them to initialize the UI.
  */
 export async function resolveAppType(): Promise<ResolvedApp> {
   const envType = process.env.NEXT_PUBLIC_APP_TYPE

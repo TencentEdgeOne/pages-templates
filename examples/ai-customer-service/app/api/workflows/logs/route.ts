@@ -4,32 +4,32 @@ import { getInfo, setSession } from '@/app/api/utils/common'
 import { API_KEY, API_URL } from '@/config'
 
 /**
- * 获取工作流执行日志
+ * Get workflow execution logs
  *
  * @route GET /api/workflows/logs
  * @dify  GET /v1/workflows/logs
  *
- * @description 分页获取工作流的历史执行记录。
- *              用于 History 面板展示每次运行的状态、耗时、Token 用量等摘要信息。
+ * @description Paginated retrieval of workflow execution history.
+ *              Used in the History panel to display summary info for each run (status, duration, token usage, etc.).
  *
- * @queryParam page    {string} 可选 — 页码，默认 "1"
- * @queryParam limit   {string} 可选 — 每页条数，默认 "20"
- * @queryParam status  {string} 可选 — 按状态筛选（succeeded / failed / stopped）
- * @queryParam keyword {string} 可选 — 搜索关键词
+ * @queryParam page    {string} Optional — Page number, default "1"
+ * @queryParam limit   {string} Optional — Items per page, default "20"
+ * @queryParam status  {string} Optional — Filter by status (succeeded / failed / stopped)
+ * @queryParam keyword {string} Optional — Search keyword
  *
- * @cookie session_id {string} 可选 — 用户会话标识
+ * @cookie session_id {string} Optional — User session identifier
  *
  * @returns {object} JSON
- *   - data      {Array<WorkflowLogItem>} 日志列表
- *     - id              {string} 日志 ID
- *     - workflow_run     {object} 运行详情（id, status, elapsed_time, total_tokens, total_steps 等）
- *     - created_at      {number} 创建时间戳（秒）
- *   - has_more  {boolean}                是否还有更多数据
- *   - total     {number}                 总记录数
+ *   - data      {Array<WorkflowLogItem>} Log list
+ *     - id              {string} Log ID
+ *     - workflow_run     {object} Run details (id, status, elapsed_time, total_tokens, total_steps, etc.)
+ *     - created_at      {number} Creation timestamp (seconds)
+ *   - has_more  {boolean}                Whether more data is available
+ *   - total     {number}                 Total record count
  *
  * @errorResponse
- *   - 401 — API Key 无效
- *   - 500 — 服务端内部错误
+ *   - 401 — Invalid API Key
+ *   - 500 — Internal server error
  *
  * @example
  *   GET /api/workflows/logs?page=1&limit=10

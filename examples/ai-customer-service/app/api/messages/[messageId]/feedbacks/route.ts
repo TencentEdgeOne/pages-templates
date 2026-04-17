@@ -3,26 +3,26 @@ import { NextResponse } from 'next/server'
 import { client, getInfo } from '@/app/api/utils/common'
 
 /**
- * 消息反馈（点赞/踩）
+ * Message feedback (like/dislike)
  *
  * @route POST /api/messages/:messageId/feedbacks
  * @dify  POST /v1/messages/{message_id}/feedbacks
  *
- * @description 对生成结果进行反馈评价（点赞或踩）。
- *              反馈数据会发送到 Dify 平台，用于模型优化和质量追踪。
+ * @description Provide feedback (like or dislike) on a generated result.
+ *              Feedback data is sent to the Dify platform for model optimization and quality tracking.
  *
- * @pathParam messageId {string} 必填 — 消息 ID（Completion 返回的 message_id 或 Workflow 的 workflow_run_id）
+ * @pathParam messageId {string} Required — Message ID (message_id from Completion or workflow_run_id from Workflow)
  *
  * @requestBody {object} JSON
- *   - rating {string | null} 必填 — 评分值
- *     - "like"    — 点赞（正面反馈）
- *     - "dislike" — 踩（负面反馈）
- *     - null      — 撤销之前的反馈
+ *   - rating {string | null} Required — Rating value
+ *     - "like"    — Like (positive feedback)
+ *     - "dislike" — Dislike (negative feedback)
+ *     - null      — Revoke previous feedback
  *
- * @cookie session_id {string} 可选 — 用户会话标识
+ * @cookie session_id {string} Optional — User session identifier
  *
- * @returns {object} JSON — Dify 返回的反馈结果
- *   - result {string} "success" 表示反馈成功
+ * @returns {object} JSON — Feedback result from Dify
+ *   - result {string} "success" indicates feedback was recorded
  *
  * @example
  *   POST /api/messages/abc-123/feedbacks

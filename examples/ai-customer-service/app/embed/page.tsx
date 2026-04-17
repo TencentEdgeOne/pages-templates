@@ -1,10 +1,10 @@
 /**
- * /embed 嵌入专用入口
+ * /embed — Dedicated embed entry point
  *
- * 第三方网站通过 <iframe src="/embed"> 接入，稳定 URL，
- * 默认以紧凑模式渲染（isEmbed=true）。
+ * Third-party websites integrate via <iframe src="/embed">, providing a stable URL.
+ * Renders in compact mode by default (isEmbed=true).
  *
- * 用法示例：
+ * Usage example:
  *   <iframe src="https://your-domain.com/embed" width="400" height="600" />
  */
 'use client'

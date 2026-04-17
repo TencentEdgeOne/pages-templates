@@ -47,7 +47,7 @@ export const WorkflowEventCard: React.FC<Props> = ({ event }) => {
 
   return (
     <div className="wf-card">
-      {/* 顶部状态条 */}
+      {/* Top status bar */}
       <div className={`wf-card__header wf-card__header--${event.status}`}>
         <span className="wf-card__status-icon">
           {isSuccess && <CheckCircleIcon aria-hidden="true" className="wf-icon wf-icon--success" />}
@@ -63,17 +63,17 @@ export const WorkflowEventCard: React.FC<Props> = ({ event }) => {
             type="button"
             className="wf-card__toggle"
             onClick={() => setExpanded(v => !v)}
-            aria-label={expanded ? '收起节点详情' : '展开节点详情'}
+            aria-label={expanded ? 'Collapse node details' : 'Expand node details'}
           >
             {expanded
               ? <ChevronDownIcon aria-hidden="true" className="wf-icon" />
               : <ChevronRightIcon aria-hidden="true" className="wf-icon" />}
-            <span>{event.nodes.length} 个节点</span>
+            <span>{event.nodes.length} node(s)</span>
           </button>
         )}
       </div>
 
-      {/* 节点时间线 */}
+      {/* Node timeline */}
       {expanded && event.nodes.length > 0 && (
         <div className="wf-card__timeline">
           {event.nodes.map((node) => (
@@ -94,7 +94,7 @@ export const WorkflowEventCard: React.FC<Props> = ({ event }) => {
         </div>
       )}
 
-      {/* 错误详情 */}
+      {/* Error details */}
       {isFailed && event.error && (
         <div className="wf-card__error-detail">
           <p>{event.error}</p>

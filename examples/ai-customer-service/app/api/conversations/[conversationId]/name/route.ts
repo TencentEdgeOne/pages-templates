@@ -7,14 +7,14 @@ import { getInfo } from '@/app/api/utils/common'
 const chatClient = new ChatClient(API_KEY, API_URL || undefined)
 
 /**
- * 重命名 / 自动命名对话
+ * Rename / auto-name a conversation
  *
  * @route POST /api/conversations/[conversationId]/name
  * @dify  POST /v1/conversations/{conversation_id}/name
  *
  * @requestBody {object} JSON
- *   - name          {string}  可选 — 自定义名称（与 auto_generate 二选一）
- *   - auto_generate {boolean} 可选 — 由 Dify 自动生成名称
+ *   - name          {string}  Optional — Custom name (mutually exclusive with auto_generate)
+ *   - auto_generate {boolean} Optional — Let Dify auto-generate a name
  */
 export async function POST(
   request: NextRequest,

@@ -7,7 +7,7 @@ import { getInfo, setSession } from '@/app/api/utils/common'
 const chatClient = new ChatClient(API_KEY, API_URL || undefined)
 
 /**
- * 获取对话列表
+ * Get conversation list
  *
  * @route GET /api/conversations
  * @dify  GET /v1/conversations

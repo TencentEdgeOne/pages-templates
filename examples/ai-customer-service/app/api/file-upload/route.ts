@@ -2,20 +2,20 @@ import { type NextRequest } from 'next/server'
 import { client, getInfo } from '@/app/api/utils/common'
 
 /**
- * 文件上传
+ * File upload
  *
  * @route POST /api/file-upload
  * @dify  POST /v1/files/upload
  *
- * @description 上传文件到 Dify，用于多模态输入场景（如图片识别）。
- *              上传成功后返回文件 ID，后续在发送消息时通过 files 参数引用。
+ * @description Upload a file to Dify for multimodal input scenarios (e.g., image recognition).
+ *              Returns a file ID on success, which can be referenced via the files parameter when sending messages.
  *
  * @requestBody {FormData} multipart/form-data
- *   - file {File} 必填 — 要上传的文件（支持图片、文档等，具体格式取决于应用配置）
+ *   - file {File} Required — The file to upload (supports images, documents, etc., depending on app configuration)
  *
- * @cookie session_id {string} 可选 — 用户会话标识
+ * @cookie session_id {string} Optional — User session identifier
  *
- * @returns {string} 上传成功后返回的文件 ID（upload_file_id）
+ * @returns {string} The uploaded file ID (upload_file_id)
  *
  * @example
  *   POST /api/file-upload

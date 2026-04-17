@@ -4,7 +4,7 @@ import { API_KEY, API_URL } from '@/config'
 import { getInfo } from '@/app/api/utils/common'
 
 /**
- * 停止对话消息生成
+ * Stop chat message generation
  *
  * @route POST /api/chat-messages/[taskId]/stop
  * @dify  POST /v1/chat-messages/{task_id}/stop

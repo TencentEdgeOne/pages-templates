@@ -5,7 +5,7 @@
    possible for plain CSS — imported in globals.css.
 ══════════════════════════════════════════════════ */
 
-/* ── 消息列表 ──────────────────────────────────── */
+/* ── Message list ──────────────────────────────────── */
 .msg-list {
   flex: 1;
   overflow-y: auto;
@@ -25,7 +25,7 @@
   font-size: 14px;
 }
 
-/* 消息行 */
+/* Message row */
 .msg-row {
   display: flex;
   gap: 10px;
@@ -44,7 +44,7 @@
   /* shared bubble base — modifiers add colors and shapes */
 }
 
-/* 用户气泡 */
+/* User bubble */
 .msg-bubble--user {
   background: #C8754A;
   color: #fff;
@@ -61,7 +61,7 @@
   white-space: pre-wrap;
 }
 
-/* AI 气泡 */
+/* AI bubble */
 .msg-bubble--assistant {
   flex: 1;
   max-width: calc(100% - 48px);
@@ -88,7 +88,7 @@
   overflow-x: auto;
 }
 
-/* 流式光标 */
+/* Streaming cursor */
 .msg-cursor {
   display: inline-block;
   width: 2px;
@@ -127,7 +127,7 @@
   color: #B0A89E;
 }
 
-/* 操作按钮 */
+/* Action buttons */
 .msg-actions {
   display: flex;
   gap: 6px;
@@ -161,7 +161,7 @@
 
 .msg-action-icon { width: 14px; height: 14px; }
 
-/* 附件 */
+/* Attachments */
 .msg-attachments {
   display: flex;
   flex-wrap: wrap;
@@ -183,7 +183,7 @@
   font-size: 12px;
 }
 
-/* 头像 */
+/* Avatar */
 .msg-avatar {
   width: 32px;
   height: 32px;
@@ -214,7 +214,7 @@
   border-radius: 8px;
 }
 
-/* ── workflow 卡 ──────────────────────────────── */
+/* ── Workflow card ──────────────────────────────── */
 .wf-card {
   background: #FAF8F5;
   border: 1px solid #F0EDE8;
@@ -331,7 +331,7 @@
   background: #FFF0EE;
 }
 
-/* ── 输入区（Composer）──────────────────────────── */
+/* ── Input area (Composer) ──────────────────────────── */
 .composer {
   border-top: 1px solid #F0EDE8;
   padding: 12px 16px;
@@ -499,7 +499,7 @@
 .composer__icon { width: 18px; height: 18px; }
 .composer__icon--sm { width: 12px; height: 12px; }
 
-/* ── 侧栏 ──────────────────────────────────────── */
+/* ── Sidebar ──────────────────────────────────────── */
 .sidebar {
   width: 240px;
   flex-shrink: 0;
@@ -609,7 +609,7 @@
   color: #B0A89E;
 }
 
-/* 抽屉遮罩 */
+/* Drawer overlay */
 .sidebar-overlay {
   position: absolute;
   inset: 0;
@@ -617,7 +617,7 @@
   z-index: 10;
 }
 
-/* 抽屉容器 */
+/* Drawer container */
 .sidebar-drawer {
   position: absolute;
   top: 0;
@@ -633,7 +633,7 @@
   transform: translateX(0);
 }
 
-/* ── 无障碍：减少动画 ────────────────────────────── */
+/* ── Accessibility: reduced motion ────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .msg-cursor { animation: none; }
   .wf-spin { animation: none; }

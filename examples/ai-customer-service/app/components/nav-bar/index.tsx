@@ -9,7 +9,7 @@ import styles from './nav-bar.module.css'
 
 const LOCALES: { value: Locale; label: string }[] = [
   { value: 'en',      label: 'EN' },
-  { value: 'zh-Hans', label: '中' },
+  { value: 'zh-Hans', label: 'ZH' },
 ]
 
 const NavBar = () => {
