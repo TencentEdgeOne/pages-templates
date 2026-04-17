@@ -1,0 +1,132 @@
+/* ═══════════════════════════════════════════════════
+   Customer Service Shell — Full page / Embed widget unified styles
+   Color variables inherited from globals.css / Tailwind,
+   local overrides use CSS custom properties.
+
+   NOTE: Global child-component classes (.msg-*, .composer*,
+   .sidebar*, .wf-*) live in customer-service-global.css,
+   which is imported via app/styles/globals.css.
+   Turbopack does not support bare :global { } blocks
+   in CSS Modules files.
+═══════════════════════════════════════════════════ */
+
+/* ── Shell container ──────────────────────────────── */
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  background: #FFFEFA;
+  font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Full page layout: sidebar + main area side by side */
+.shell__body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* Main content area */
+.shell__main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* ── Header ──────────────────────────────────────── */
+.shell__header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: #FFFEFA;
+  border-bottom: 1px solid #F0EDE8;
+  flex-shrink: 0;
+}
+
+.shell__header--compact {
+  padding: 10px 16px;
+}
+
+.shell__app-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.shell__app-icon-placeholder {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #C8754A;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.shell__app-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1A1A1A;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.shell__header-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: #5C564E;
+  transition: background 0.15s;
+}
+
+.shell__header-btn:hover {
+  background: #F6F3EE;
+  color: #1A1A1A;
+}
+
+.shell__header-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* ── Embed widget specific ──────────────────────────────── */
+.shell--embed {
+  border-radius: 12px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+  height: 100%;
+}
+
+/* ── Responsive: narrow container ───────────────────────────── */
+/* narrow mode: sidebar not permanent (controlled by drawer) */
+.shell--narrow :global(.sidebar) {
+  display: none;
+}
+.shell--narrow :global(.sidebar-drawer) :global(.sidebar) {
+  display: flex;
+}
+
+/* ── Accessibility: reduced motion ────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .shell--narrow :global(.sidebar-drawer) {
+    transition: none;
+  }
+}

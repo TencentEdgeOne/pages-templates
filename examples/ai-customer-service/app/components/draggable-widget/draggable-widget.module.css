@@ -1,0 +1,187 @@
+/* ─────────────────────────────────────────────────────────────
+   DraggableWidget Styles
+   Draggable customer service floating widget: trigger button + expanded panel + drag handle
+   ───────────────────────────────────────────────────────────── */
+
+/* ── Widget root container (position:fixed injected dynamically via JS) ── */
+.widgetRoot {
+  position: fixed;
+  z-index: 9999;
+  user-select: none;
+  /* Default bottom-right position; JS will take over transform */
+  right: 24px;
+  bottom: 24px;
+}
+
+/* ── Floating trigger button ── */
+.triggerBtn {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #C8754A;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(200, 117, 74, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+  animation: breathe 2s ease-in-out infinite;
+  outline: none;
+}
+
+.triggerBtn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 6px 28px rgba(200, 117, 74, 0.55);
+  animation: none;
+}
+
+.triggerBtn:focus-visible {
+  outline: 2px solid #C8754A;
+  outline-offset: 3px;
+}
+
+@keyframes breathe {
+  0%, 100% { box-shadow: 0 4px 20px rgba(200, 117, 74, 0.4); }
+  50%       { box-shadow: 0 6px 32px rgba(200, 117, 74, 0.65); }
+}
+
+.triggerIcon {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: #fff;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* ── Chat panel ── */
+.panel {
+  width: 400px;
+  height: 560px;
+  background: #FFFEFA;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08), 0 8px 32px rgba(0, 0, 0, 0.14);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transform-origin: bottom right;
+  animation: panelOpen 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1px solid #F0EDE8;
+}
+
+@keyframes panelOpen {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Close animation (toggled via class) */
+.panelClosing {
+  animation: panelClose 0.2s ease forwards;
+}
+
+@keyframes panelClose {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+}
+
+/* ── Panel header (drag handle) ── */
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px 12px 16px;
+  background: #FAF8F5;
+  border-bottom: 1px solid #F0EDE8;
+  cursor: grab;
+  flex-shrink: 0;
+  touch-action: none; /* Prevent default mobile scrolling; allow dragging */
+}
+
+.panelHeader:active {
+  cursor: grabbing;
+}
+
+.panelHeaderLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.panelHeaderDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #C8754A;
+}
+
+.panelTitle {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.panelHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.headerBtn {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8C7E72;
+  font-size: 14px;
+  line-height: 1;
+  transition: background 0.15s, color 0.15s;
+}
+
+.headerBtn:hover {
+  background: #F0EDE8;
+  color: #1A1A1A;
+}
+
+/* ── Panel content area ── */
+.panelBody {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Mobile full-screen adaptation ── */
+@media (max-width: 480px) {
+  .widgetRoot {
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    transform: none !important;
+  }
+
+  .panel {
+    width: 100vw;
+    height: 90vh;
+    border-radius: 20px 20px 0 0;
+    transform-origin: bottom center;
+  }
+}

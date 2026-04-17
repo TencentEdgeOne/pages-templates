@@ -1,0 +1,113 @@
+/* app/components/nav-bar/nav-bar.module.css */
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding: 0 20px;
+  background: #FFFEFA;
+  border-bottom: 1px solid #F0EDE8;
+  flex-shrink: 0;
+}
+
+/* Left: logo + brand name */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.brandIcon {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.brandName {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1A1A1A;
+  letter-spacing: -0.2px;
+}
+
+/* Right: nav links + language switcher */
+.right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #5C564E;
+  padding: 6px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.link:hover {
+  background: #F6F3EE;
+  color: #1A1A1A;
+}
+
+.link:focus-visible {
+  outline: 2px solid #C8754A;
+  outline-offset: 2px;
+}
+
+.linkActive,
+.linkActive:hover {
+  color: #C8754A;
+  background: #F1E2D8;
+}
+
+/* Language switcher */
+.langSwitcher {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px;
+  background: #F0EDE8;
+  border-radius: 8px;
+}
+
+.langBtn {
+  padding: 3px 9px;
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  color: #8C7E72;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  line-height: 1.4;
+}
+
+.langBtn:hover {
+  color: #1A1A1A;
+}
+
+.langBtnActive {
+  background: #FFFEFA;
+  color: #1A1A1A;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.langBtn:focus-visible {
+  outline: 2px solid #C8754A;
+  outline-offset: 2px;
+}

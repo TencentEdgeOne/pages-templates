@@ -1,0 +1,607 @@
+/* =============================================
+   CHAT GENERATION — Editorial / Magazine UI
+   Matches cool-text-generation design language.
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+
+/* ── Layout ── */
+.chatContainer {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--color-text);
+  background: var(--color-bg);
+  overflow: hidden;
+}
+
+/* ── Message list area ── */
+.messageList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 40px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-divider) transparent;
+}
+.messageList::-webkit-scrollbar { width: 5px; }
+.messageList::-webkit-scrollbar-track { background: transparent; }
+.messageList::-webkit-scrollbar-thumb { background: var(--color-divider); border-radius: 4px; }
+
+/* ── Empty state ── */
+.emptyState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+.emptyStateIcon {
+  width: 48px;
+  height: 48px;
+  color: var(--color-icon-muted);
+}
+.emptyStateTitle {
+  font-family: 'Instrument Serif', Georgia, serif;
+  font-size: 20px;
+  color: var(--color-text-secondary);
+}
+.emptyStateDesc {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+/* ── Message bubbles ── */
+.messageRow {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  align-items: flex-start;
+}
+.messageRowUser {
+  flex-direction: row-reverse;
+}
+.messageRowAssistant {
+  flex-direction: row;
+}
+
+.messageBody {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  max-width: 100%;
+}
+.messageRowUser .messageBody {
+  align-items: flex-end;
+}
+.messageRowAssistant .messageBody {
+  align-items: flex-start;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+.avatarUser {
+  background: var(--color-primary);
+  color: #fff;
+}
+.avatarAssistant {
+  background: var(--color-border);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-divider);
+}
+
+.bubble {
+  width: fit-content;
+  max-width: 100%;
+  min-width: 44px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  line-height: 1.6;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+.bubbleUser {
+  background: var(--color-primary);
+  color: #fff;
+  border-radius: 12px 2px 12px 12px;
+}
+.bubbleAssistant {
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 2px 12px 12px 12px;
+}
+
+/* streaming cursor */
+.cursor::after {
+  content: '▋';
+  display: inline-block;
+  animation: blink 0.8s step-end infinite;
+  margin-left: 1px;
+  color: var(--color-primary);
+  font-size: 12px;
+}
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.messageTime {
+  font-size: 10px;
+  color: var(--color-text-faint);
+  margin-top: 4px;
+  text-align: right;
+}
+.messageRowAssistant .messageTime {
+  text-align: left;
+}
+
+/* ── Agent thoughts ── */
+.agentThought {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+.agentThoughtLabel {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 4px;
+}
+
+/* ── Suggested questions ── */
+.suggestedList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 4px 0;
+}
+.suggestedItem {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.suggestedItem:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* ── Input area ── */
+.inputArea {
+  border-top: 1px solid var(--color-border);
+  background: var(--color-surface);
+  padding: 10px 40px 20px;
+  flex-shrink: 0;
+}
+
+/* ── Input toolbar (above the textarea) ── */
+.inputToolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.suggestToggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  border: 1.5px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.suggestToggle:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.suggestToggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.suggestToggleActive {
+  border-color: var(--color-primary);
+  background: var(--color-primary-tint);
+  color: var(--color-primary);
+}
+.inputWrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  background: var(--color-bg);
+  border: 1.5px solid var(--color-border);
+  border-radius: 12px;
+  padding: 10px 12px;
+  transition: border-color 0.2s;
+}
+.inputWrapper:focus-within {
+  border-color: var(--color-primary);
+}
+.inputTextarea {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  resize: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  color: var(--color-text);
+  line-height: 1.5;
+  max-height: 120px;
+  min-height: 22px;
+  scrollbar-width: thin;
+}
+.inputTextarea::placeholder {
+  color: var(--color-text-faint);
+}
+.sendButton {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: none;
+  background: var(--color-primary);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.sendButton:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+}
+.sendButton:disabled {
+  background: var(--color-divider);
+  cursor: not-allowed;
+}
+.stopButton {
+  flex-shrink: 0;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s;
+}
+.stopButton:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.inputHint {
+  font-size: 11px;
+  color: var(--color-text-faint);
+  margin-top: 6px;
+  text-align: right;
+}
+
+.loadingEllipsis {
+  font-size: 10px;
+}
+
+/* ── Multimodal buttons (mic, speak, attach) ── */
+
+/* Shared base for icon-only square buttons */
+.iconButton {
+  flex-shrink: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+}
+.iconButton:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.iconButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.micButton {
+  composes: iconButton;
+}
+.micButtonActive {
+  border-color: var(--color-error);
+  background: var(--color-error-tint);
+  color: var(--color-error);
+  animation: micPulse 1.2s ease-in-out infinite;
+}
+@keyframes micPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(224, 82, 82, 0.25); }
+  50%       { box-shadow: 0 0 0 6px rgba(224, 82, 82, 0); }
+}
+
+.attachButton {
+  composes: iconButton;
+}
+
+/* TTS speak button — appears inline below assistant bubble */
+.speakButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 11px;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 4px;
+}
+.speakButton:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+.speakButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.speakButtonActive {
+  border-color: var(--color-primary);
+  background: var(--color-primary-tint);
+  color: var(--color-primary);
+}
+
+/* ── File preview area ── */
+
+.filePreviewArea {
+  padding: 8px 0 4px;
+}
+
+.filePreviewList {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-divider) transparent;
+}
+.filePreviewList::-webkit-scrollbar { height: 4px; }
+.filePreviewList::-webkit-scrollbar-thumb { background: var(--color-divider); border-radius: 2px; }
+
+.filePreviewItem {
+  position: relative;
+  flex-shrink: 0;
+  width: 72px;
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  gap: 4px;
+}
+.filePreviewItemError {
+  border-color: var(--color-error);
+  background: var(--color-error-tint);
+}
+
+.filePreviewThumb {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 4px;
+  display: block;
+}
+
+.filePreviewIcon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-border);
+  border-radius: 6px;
+  color: var(--color-text-secondary);
+}
+
+.filePreviewName {
+  font-size: 10px;
+  color: var(--color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 60px;
+  text-align: center;
+}
+
+/* Progress bar */
+.fileProgressBar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: var(--color-primary);
+  transition: width 0.2s;
+  border-radius: 0 0 0 0;
+}
+.fileProgressBarError {
+  background: var(--color-error);
+  width: 100% !important;
+}
+
+/* Remove button */
+.fileRemoveBtn {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(44, 44, 44, 0.55);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  line-height: 1;
+  padding: 0;
+  transition: background 0.15s;
+}
+.fileRemoveBtn:hover {
+  background: var(--color-error);
+}
+
+/* Drag-over highlight on the input wrapper */
+.inputWrapperDragOver {
+  border-color: var(--color-primary) !important;
+  background: var(--color-primary-tint) !important;
+}
+
+/* ── Feedback actions (like / dislike) — shown on hover below assistant bubble ── */
+
+/* Wrapper sitting just below the bubble, initially invisible */
+.messageActions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s;
+}
+
+/* Show when the parent messageBody is hovered */
+.messageBody:hover .messageActions {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Also keep visible when a button inside is active (rated) */
+.messageActions:has(.feedbackBtnActive) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.feedbackBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  padding: 0;
+}
+.feedbackBtn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background: var(--color-primary-tint);
+}
+.feedbackBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* Active state — user already rated */
+.feedbackBtnActive {
+  border-color: var(--color-primary);
+  background: var(--color-primary-tint);
+  color: var(--color-primary);
+}
+.feedbackBtnActiveDislike {
+  border-color: var(--color-error);
+  background: var(--color-error-tint);
+  color: var(--color-error);
+}
+
+/* ── Message attachments (shown above user bubble) ── */
+.msgAttachmentList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+  justify-content: flex-end;
+}
+
+.msgAttachmentImg {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1.5px solid rgba(255,255,255,0.25);
+  display: block;
+}
+
+.msgAttachmentDoc {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.15);
+  border: 1.5px solid rgba(255,255,255,0.25);
+  font-size: 11px;
+  color: rgba(255,255,255,0.9);
+  max-width: 180px;
+}
+
+.msgAttachmentDocName {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
