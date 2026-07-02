@@ -6,11 +6,11 @@
 
 [![使用 EdgeOne Pages 部署](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://console.cloud.tencent.com/edgeone/pages/new?from=github&template=wordpress-gatsby)
 
-完成下面准备工作，填入您的的 WordPress 站点地址作为环境变量，即可部署，例如：https://xxx.com/graphql
+完成下面准备工作，填入您的的 WordPress 站点地址作为环境变量，即可部署，例如：https://example.com/graphql
 
 ## 准备工作
 
-架设 WordPress 服务，登录到控制台 http://xxx.com/wp-admin
+架设 WordPress 服务，登录到控制台 http://example.com/wp-admin
 
 安装插件并启用：
 
@@ -21,7 +21,7 @@
 
 ```sh
 # 添加.env 文件，写入环境变量
-GATSBY_WORDPRESS_URL=http://xxx.com/graphql
+GATSBY_WORDPRESS_URL=http://example.com/graphql
 ```
 
 ```sh
