@@ -8,7 +8,7 @@ This example demonstrates how to deploy a WordPress site to EdgeOne Pages to enh
 
 Complete the following preparations, fill in your WordPress site address as an environment variable, and you can deploy, for example: https://example.com/graphql
 
-More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
+More Templates: [EdgeOne Makers](https://pages.edgeone.ai/templates)
 
 ## Preparations
 
