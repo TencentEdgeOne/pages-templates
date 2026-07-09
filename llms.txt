@@ -1,0 +1,72 @@
+# EdgeOne Pages Templates
+
+> A collection of ready-to-use web application templates for [Tencent EdgeOne Pages](https://edgeone.ai/products/pages) — deploy stunning websites to the edge in minutes.
+
+## Docs
+
+- [README](README.md): Project overview, features, benefits, and usage guide
+
+## Templates
+
+- [AI Customer Service](examples/ai-customer-service/README.md): AI Customer Service — Dify Web Template
+- [Angular](examples/angular-template/README.md): Angular starter template
+- [Anime List](examples/anime-list/README.md): Anime list app built with ReactJS
+- [Animene](examples/animene/README.md): Anime & Manga browsing site
+- [Astro](examples/astro-template/README.md): Astro starter kit
+- [Blog with Retypeset and Contentful](examples/blog-with-retypeset-and-contentful/README.md): Static blog theme based on AstroJS and Contentful
+- [China Shopping Websites](examples/china-shopping-websites/README.md): Chinese online shopping websites directory
+- [Chrome AI](examples/chrome-ai/README.md): Device model demo using Chrome AI Gemini Nano
+- [Clerk Authentication Starter](examples/clerk-authentication-starter/README.md): Authentication starter with Clerk
+- [CLI MCP Client](examples/cli-mcp-client/README.md): MCP client command-line interface
+- [COS Batch Uploader](examples/cos-batch-uploader/README.md): Tencent Cloud COS batch file uploader
+- [Custom Rules](examples/custom-rules/README.md): EdgeOne Pages custom rules demo
+- [DeepSeek](examples/deepseek/README.md): DeepSeek playground
+- [DeepSeek R1 Edge](examples/deepseek-r1-edge/README.md): DeepSeek R1 running at the edge with EdgeOne Pages AI
+- [DeepSeek R1 with Network](examples/deepseek-r1-with-network/README.md): DeepSeek R1 enhanced with network search capabilities
+- [Dify Frontend](examples/dify-frontend/README.md): Dify web text generator frontend
+- [Directory Site](examples/directory/README.md): Directory site template using Indie Developers' Toolbox as an example
+- [Docusaurus](examples/docusaurus-template/README.md): Docusaurus documentation site
+- [Edge AI Gateway](examples/edge-ai-gateway/README.md): AI gateway deployed at the edge
+- [Excalidraw](examples/excalidraw/README.md): Excalidraw online whiteboard
+- [Free Deep Research](examples/free-deep-research/README.md): EdgeOne Pages AI free deep research tool
+- [Free for Dev](examples/free-for-dev/README.md): Free-for-dev resources mind map
+- [Fumadocs](examples/fumadocs-template/README.md): Fumadocs documentation template
+- [Functions: Custom Fetch](examples/functions-fetch/README.md): EdgeOne Pages Functions custom fetch example
+- [Functions: Geolocation](examples/functions-geolocation/README.md): EdgeOne Pages Functions geolocation example
+- [Functions: KV Store](examples/functions-kv/README.md): EdgeOne Pages Functions KV store example
+- [Functions: AI OCR](examples/functions-ocr/README.md): EdgeOne Pages Functions AI OCR example
+- [Functions: Supabase](examples/functions-supabase/README.md): EdgeOne Pages Functions with Supabase database
+- [Gatsby](examples/gatsby-template/README.md): Gatsby starter template
+- [Gatsby WooCommerce](examples/gatsby-woocommerce-template/README.md): Gatsby e-commerce for WordPress headless CMS
+- [Hexo](examples/hexo-template/README.md): Hexo blog boilerplate
+- [Hono](examples/hono/README.md): EdgeOne Pages Hono application
+- [HTML5UP Massively](examples/html5up-massively/README.md): Massively theme by HTML5 UP
+- [HTML5UP Paradigm Shift](examples/html5up-paradigm-shift/README.md): Paradigm Shift theme by HTML5 UP
+- [MCP Geo](examples/mcp-geo/README.md): MCP with Pages Functions geolocation demo
+- [MCP on Edge](examples/mcp-on-edge/README.md): MCP client and server implementation with EdgeOne Pages Functions
+- [MCP Open](examples/mcp-open/README.md): EdgeOne Pages MCP
+- [Next.js + Formspree](examples/next-formspree-template/README.md): Next.js template with Formspree form handling
+- [Next.js](examples/nextjs-template/README.md): Next.js starter template
+- [Nextra Docs](examples/nextra-docs-template/README.md): Nextra documentation template
+- [Nuxt Content Starter](examples/nuxt-content-starter/README.md): Nuxt content starter
+- [Nuxt](examples/nuxt-template/README.md): Nuxt 4 minimal starter
+- [Portfolio with Sanity](examples/portfolio-with-sanity/README.md): Portfolio site with Sanity CMS
+- [Qwik](examples/qwik-template/README.md): Qwik City application
+- [React ESR](examples/react-esr/README.md): React edge-side rendering template
+- [React Router v7](examples/react-router-v7/README.md): React Router v7 template
+- [React.js](examples/reactjs-template/README.md): Create React App starter
+- [Remix](examples/remix-template/README.md): Remix starter template
+- [S3 Batch Uploader](examples/s3-batch-uploader/README.md): S3-compatible batch file uploader
+- [Solid](examples/solid-template/README.md): SolidJS starter template
+- [Stripe Subscription with Astroship](examples/stripe-subscription-with-astroship/README.md): SaaS site template with Supabase and Stripe
+- [Stripe Subscription Starter](examples/subscription-starter/README.md): Stripe subscription starter
+- [Supabase Auth Starter](examples/supabase-auth-starter/README.md): Supabase authentication starter
+- [Svelte](examples/svelte-template/README.md): SvelteKit starter template
+- [Technical Resume](examples/technical-resume/README.md): Free web developer resume templates
+- [TRTC AR](examples/trtc-ar/README.md): Web beauty/AR template using TRTC
+- [Vite + React](examples/vite-react/README.md): React + TypeScript + Vite template
+- [Vite + Vue 3](examples/vite-vue3/README.md): Vue 3 + Vite template
+- [VitePress](examples/vitepress-template/README.md): VitePress documentation template
+- [Vue](examples/vue-template/README.md): Vue.js starter template
+- [WordPress + Gatsby](examples/wordpress-gatsby/README.md): Boost WordPress site speed with EdgeOne Pages using Gatsby
+- [WordPress + Hexo](examples/wordpress-hexo-template/README.md): Boost WordPress site speed with EdgeOne Pages using Hexo
