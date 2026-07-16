@@ -1,8 +1,8 @@
-# EdgeOne Pages: MCP Client and Server Implementation with Functions
+# EdgeOne Makers: MCP Client and Server Implementation with Functions
 
 ## Project Overview
 
-This project showcases an intelligent chat application built with EdgeOne Pages Functions technology. It interacts with backend functions through a web interface, implementing a complete Model Context Protocol (MCP) workflow.
+This project showcases an intelligent chat application built with EdgeOne Makers Functions technology. It interacts with backend functions through a web interface, implementing a complete Model Context Protocol (MCP) workflow.
 
 The system architecture consists of the following core components:
 
@@ -15,7 +15,7 @@ Through this architecture, users can access powerful MCP tool capabilities in th
 ## Core Features
 
 - **Interactive Chat Interface:** Modern, responsive web interface built with Next.js and React
-- **High-Performance Edge Functions:** Critical business logic deployed on highly scalable EdgeOne Pages Functions
+- **High-Performance Edge Functions:** Critical business logic deployed on highly scalable EdgeOne Makers Functions
 - **Complete MCP Implementation:** Model Context Protocol implementation based on the latest specifications, providing powerful context management and request routing capabilities
 - **OpenAI Format Compatible:** Backend API fully supports OpenAI-formatted request and response handling
 
@@ -26,7 +26,7 @@ Configure remote MCP services in applications that support `Streamable HTTP MCP 
 ```json
 {
   "mcpServers": {
-    "edgeone-pages-mcp-server": {
+    "edgeone-makers-mcp-server": {
       "url": "https://mcp-on-edge.edgeone.site/mcp-server"
     }
   }
@@ -35,9 +35,19 @@ Configure remote MCP services in applications that support `Streamable HTTP MCP 
 
 ## Deploy
 
-[![Deploy with EdgeOne Pages](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/pages/new?template=mcp-on-edge)
+[![Deploy with EdgeOne Makers](https://cdnstatic.tencentcs.com/edgeone/pages/deploy.svg)](https://edgeone.ai/makers/new?template=mcp-on-edge)
 
-More Templates: [EdgeOne Pages](https://edgeone.ai/pages/templates)
+More Templates: [EdgeOne Makers](https://pages.edgeone.ai/templates)
+
+## Environment Variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `AI_GATEWAY_BASE_URL` | Yes | Gateway base URL. For Makers Models, use `https://ai-gateway.edgeone.link/v1`. |
+| `AI_GATEWAY_API_KEY` | Yes | Model gateway API key. Use your Makers Models API Key, or any OpenAI-compatible provider key. |
+| `AI_GATEWAY_MODEL` | No | Model ID. Defaults to `@makers/hy3` (a built-in Makers model). |
+
+[About Changing Model Invocations](https://pages.edgeone.ai/document/agents-quick-start#038ab1c2-6bd9-4380-a1ee-191262c5d0ec)
 
 ## Local Development
 
@@ -74,5 +84,5 @@ After starting, visit [http://localhost:3000](http://localhost:3000) in your bro
 Learn more about related technologies:
 
 - [Next.js Documentation](https://nextjs.org/docs) - Next.js framework features and API
-- [EdgeOne Pages Functions Documentation](https://pages.edgeone.ai/document/pages-functions-overview) - Detailed explanation of EdgeOne serverless functions
+- [EdgeOne Makers Functions Documentation](https://pages.edgeone.ai/document/pages-functions-overview) - Detailed explanation of EdgeOne serverless functions
 - [Model Context Protocol (MCP)](https://modelcontextprotocol.io/specification/2025-03-26/changelog) - Implemented based on the 2025-03-26 version of Streamable HTTP transport

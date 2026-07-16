@@ -14,6 +14,75 @@ const messageSchema = z
   })
   .passthrough();
 
+type ChatCompletionMessage = {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+};
+
+type ChatCompletionRequestBodyOptions = {
+  model: string;
+  messages: ChatCompletionMessage[];
+  temperature?: number;
+  stream?: boolean;
+  maxTokens: number;
+};
+
+export const isDeepSeekModel = (model: string) => model.toLowerCase().includes('deepseek');
+
+export const buildChatCompletionRequestBody = ({
+  model,
+  messages,
+  temperature = 0.7,
+  stream = true,
+  maxTokens,
+}: ChatCompletionRequestBodyOptions) => {
+  const body: Record<string, unknown> = {
+    model,
+    messages,
+    temperature,
+    stream,
+    max_tokens: maxTokens,
+  };
+
+  if (isDeepSeekModel(model)) {
+    body.thinking = { type: 'disabled' };
+  }
+
+  return body;
+};
+
+const throwForUnsupportedFinishReason = (finishReason: string | null | undefined) => {
+  if (!finishReason || finishReason === 'stop') return;
+
+  const errorByReason: Record<string, { code: string; message: string }> = {
+    length: {
+      code: 'AI_RESPONSE_LENGTH_EXCEEDED',
+      message: 'AI服务返回内容被截断，请调大 max_tokens 或缩短输入内容后重试',
+    },
+    content_filter: {
+      code: 'AI_RESPONSE_CONTENT_FILTERED',
+      message: 'AI服务返回内容被安全策略拦截，请调整输入内容后重试',
+    },
+    insufficient_system_resource: {
+      code: 'AI_RESPONSE_INSUFFICIENT_RESOURCE',
+      message: 'AI服务推理资源不足，请稍后重试',
+    },
+    tool_calls: {
+      code: 'AI_RESPONSE_UNEXPECTED_TOOL_CALL',
+      message: 'AI服务返回了未预期的工具调用，请更换模型或调整提示词后重试',
+    },
+  };
+
+  const fallback = {
+    code: 'AI_RESPONSE_UNEXPECTED_FINISH_REASON',
+    message: `AI服务返回了未预期的结束原因: ${finishReason}`,
+  };
+  const { code, message } = errorByReason[finishReason] || fallback;
+  const error = new Error(message);
+  (error as any).code = code;
+  throw error;
+};
+
 /**
  * Handle API errors with more detailed error codes
  */
@@ -77,10 +146,16 @@ const sendSSE = (controller: ReadableStreamDefaultController, event: string, dat
 
 /**
  * Read chat completion content from either JSON or SSE stream response.
+ *
+ * Some reasoning models (e.g. deep-thinking variants) stream their internal
+ * "thinking" process via a separate `reasoning_content` field before emitting
+ * the final answer in `content`. We surface `reasoningDelta` to the caller
+ * (via `onDelta`'s 3rd argument) so it can notify the client that the model
+ * is still thinking, instead of leaving it looking stalled.
  */
-const readChatCompletionContent = async (
+export const readChatCompletionContent = async (
   response: Response,
-  onDelta?: (delta: string, full: string) => void
+  onDelta?: (delta: string, full: string, reasoningDelta?: string) => void
 ): Promise<string> => {
   const contentType = response.headers.get('content-type') || '';
   if (contentType.includes('text/event-stream')) {
@@ -116,17 +191,22 @@ const readChatCompletionContent = async (
           }
           try {
             const parsed = JSON.parse(data);
-            const delta =
-              parsed.choices?.[0]?.delta?.content ??
-              parsed.choices?.[0]?.message?.content ??
-              '';
+            const choice = parsed.choices?.[0];
+            const delta = choice?.delta?.content ?? choice?.message?.content ?? '';
+            const reasoningDelta =
+              choice?.delta?.reasoning_content ?? choice?.message?.reasoning_content ?? '';
+
             if (delta) {
               full += delta;
             }
             if (onDelta) {
-              onDelta(delta, full);
+              onDelta(delta, full, reasoningDelta);
             }
-          } catch {
+            throwForUnsupportedFinishReason(choice?.finish_reason);
+          } catch (error) {
+            if ((error as any)?.code) {
+              throw error;
+            }
             // Ignore malformed SSE payloads.
           }
         }
@@ -139,7 +219,9 @@ const readChatCompletionContent = async (
   }
 
   const data = await response.json();
-  return data.choices?.[0]?.message?.content || '';
+  const choice = data.choices?.[0];
+  throwForUnsupportedFinishReason(choice?.finish_reason);
+  return choice?.message?.content || '';
 };
 
 /**
@@ -161,7 +243,7 @@ const handleOptionsRequest = () => {
 async function generateHTMLContent(
   query: string,
   openaiConfig: any,
-  onStreamDelta?: (delta: string, full: string) => void
+  onStreamDelta?: (delta: string, full: string, reasoningDelta?: string) => void
 ) {
   const { apiKey, baseUrl, model } = openaiConfig;
 
@@ -210,21 +292,22 @@ Your HTML must be valid, complete, and ready to deploy as-is.`;
           writeTimeout: 600000,
         },
       },
-      body: JSON.stringify({
-        model: model,
-        messages: [
-          {
-            role: 'system',
-            content: systemPrompt,
-          },
-          {
-            role: 'user',
-            content: `Create a complete HTML web page based on this request: ${query}`,
-          },
-        ],
-        temperature: 0.7,
-        stream: true,
-      }),
+      body: JSON.stringify(
+        buildChatCompletionRequestBody({
+          model,
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt,
+            },
+            {
+              role: 'user',
+              content: `Create a complete HTML web page based on this request: ${query}`,
+            },
+          ],
+          maxTokens: 8192,
+        })
+      ),
     });
 
     if (!response.ok) {
@@ -252,6 +335,8 @@ Your HTML must be valid, complete, and ready to deploy as-is.`;
     
     if (!(err as any).code) {
       (err as any).code = 'HTML_GENERATION_ERROR';
+    }
+    if (!(err as any).phase) {
       (err as any).phase = 'html_generation';
     }
     
@@ -317,7 +402,11 @@ export async function onRequest({ request, env }: any) {
     return handleOptionsRequest();
   }
 
-  const { BASE_URL, API_KEY, MODEL } = env;
+  const {
+    AI_GATEWAY_BASE_URL: BASE_URL,
+    AI_GATEWAY_API_KEY: API_KEY,
+    AI_GATEWAY_MODEL: MODEL = "@makers/hy3",
+  } = env;
 
   // Remove encoding header to avoid compression issues
   request.headers.delete('accept-encoding');
@@ -387,6 +476,47 @@ export async function onRequest({ request, env }: any) {
               }
             }
           };
+
+          /**
+           * Some models stream a "reasoning_content" field while thinking,
+           * before emitting the final `content`. Without this, the client
+           * only sees silent `ping` events and may look stalled. This
+           * notifies the client (throttled) that the model is still
+           * actively "thinking" for a given phase.
+           */
+          const createThinkingNotifier = (phase: string) => {
+            let hasNotifiedStart = false;
+            let lastNotifiedAt = 0;
+            const notifyIntervalMs = 5000;
+            return (reasoningDelta?: string) => {
+              if (!reasoningDelta) return;
+              const now = Date.now();
+              if (!hasNotifiedStart) {
+                hasNotifiedStart = true;
+                lastNotifiedAt = now;
+                try {
+                  sendSSE(controller, 'status', {
+                    phase,
+                    message: 'AI 正在深度思考中，请稍候...',
+                  });
+                } catch {
+                  // Ignore errors if the stream is already closed.
+                }
+                return;
+              }
+              if (now - lastNotifiedAt >= notifyIntervalMs) {
+                lastNotifiedAt = now;
+                try {
+                  sendSSE(controller, 'status', {
+                    phase,
+                    message: 'AI 仍在深度思考中，请再耐心等待...',
+                  });
+                } catch {
+                  // Ignore errors if the stream is already closed.
+                }
+              }
+            };
+          };
           try {
             // Step 1: Send initial message
             sendSSE(controller, 'message', { 
@@ -409,12 +539,14 @@ export async function onRequest({ request, env }: any) {
             // Step 3: Generate HTML content
             try {
               sendSSE(controller, 'status', { phase: 'html_generation', message: '正在生成网页内容...' });
+              const notifyHtmlThinking = createThinkingNotifier('html_generation');
               const htmlContent = await generateHTMLContent(userQuery, {
                 apiKey: API_KEY,
                 baseUrl: BASE_URL,
                 model: MODEL,
-              }, () => {
+              }, (_delta, _full, reasoningDelta) => {
                 maybePing();
+                notifyHtmlThinking(reasoningDelta);
               });
               sendSSE(controller, 'status', { phase: 'html_generation', message: '网页内容生成成功' });
 
@@ -429,12 +561,14 @@ export async function onRequest({ request, env }: any) {
                 // Step 5: Generate AI response
                 try {
                   sendSSE(controller, 'status', { phase: 'response_generation', message: '正在生成回复...' });
+                  const notifyResponseThinking = createThinkingNotifier('response_generation');
                   const aiResponse = await generateAIResponse(deploymentResult, {
                     apiKey: API_KEY,
                     baseUrl: BASE_URL,
                     model: MODEL,
-                  }, () => {
+                  }, (_delta, _full, reasoningDelta) => {
                     maybePing();
+                    notifyResponseThinking(reasoningDelta);
                   });
                   
                   // Step 6: Send final message
@@ -616,7 +750,7 @@ export async function onRequest({ request, env }: any) {
 async function generateAIResponse(
   deploymentResult: string,
   openaiConfig: any,
-  onStreamDelta?: (delta: string, full: string) => void
+  onStreamDelta?: (delta: string, full: string, reasoningDelta?: string) => void
 ): Promise<string> {
   const { apiKey, baseUrl, model } = openaiConfig;
 
@@ -639,21 +773,22 @@ async function generateAIResponse(
           writeTimeout: 300000,
         },
       },
-      body: JSON.stringify({
-        model: model,
-        messages: [
-          {
-            role: 'system',
-            content: systemPrompt,
-          },
-          {
-            role: 'user',
-            content: `这是网页部署的结果，请根据结果生成一个友好的回复：${deploymentResult}`,
-          },
-        ],
-        temperature: 0.7,
-        stream: true,
-      }),
+      body: JSON.stringify(
+        buildChatCompletionRequestBody({
+          model,
+          messages: [
+            {
+              role: 'system',
+              content: systemPrompt,
+            },
+            {
+              role: 'user',
+              content: `这是网页部署的结果，请根据结果生成一个友好的回复：${deploymentResult}`,
+            },
+          ],
+          maxTokens: 1024,
+        })
+      ),
     });
 
     if (!response.ok) {
@@ -680,6 +815,8 @@ async function generateAIResponse(
     
     if (!(err as any).code) {
       (err as any).code = 'RESPONSE_GENERATION_ERROR';
+    }
+    if (!(err as any).phase) {
       (err as any).phase = 'response_generation';
     }
     

@@ -12,7 +12,7 @@ export const translations = {
   zh: {
     // Header
     header: {
-      title: 'EdgeOne Pages',
+      title: 'EdgeOne Makers',
     },
     // Welcome page
     welcome: {
@@ -81,7 +81,7 @@ export const translations = {
   en: {
     // Header
     header: {
-      title: 'EdgeOne Pages',
+      title: 'EdgeOne Makers',
     },
     // Welcome page
     welcome: {

@@ -88,7 +88,7 @@ const handleToolsList = (id: string) => {
         {
           name: 'deploy-html',
           description:
-            'Deploy HTML content to EdgeOne Pages, return the public URL',
+            'Deploy HTML content to EdgeOne Makers, return the public URL',
           inputSchema: {
             type: 'object',
             properties: {

@@ -683,7 +683,7 @@ export default function Home() {
         <header className="sticky top-0 z-50 flex items-center px-6 py-3">
           <div className="flex items-center">
             <a 
-              href="https://edgeone.ai/zh/products/pages" 
+              href="https://pages.edgeone.ai"
               target="_blank" 
               rel="noopener noreferrer"
               className="text-slate-100 transition-colors"
@@ -697,15 +697,15 @@ export default function Home() {
           {/* Language Switch Button */}
           <LanguageSwitch locale={locale} toggleLocale={toggleLocale} />
           <a
-            href="https://edgeone.ai/pages/templates/mcp-on-edge"
+            href="https://pages.edgeone.ai/templates/mcp-on-edge"
             target="_blank"
             rel="noopener noreferrer"
             className="ml-3 cursor-pointer opacity-60 hover:opacity-100 transition-colors"
-            aria-label="Deploy to EdgeOne Pages"
+            aria-label="Deploy to EdgeOne Makers"
           >
             <img
               src="https://cdnstatic.tencentcs.com/edgeone/pages/deploy-black.svg"
-              alt="Deploy to EdgeOne Pages"
+              alt="Deploy to EdgeOne Makers"
               className="h-7"
             />
           </a>
