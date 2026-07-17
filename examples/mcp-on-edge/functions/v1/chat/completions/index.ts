@@ -405,7 +405,7 @@ export async function onRequest({ request, env }: any) {
   const {
     AI_GATEWAY_BASE_URL: BASE_URL,
     AI_GATEWAY_API_KEY: API_KEY,
-    AI_GATEWAY_MODEL: MODEL = "@makers/hy3",
+    AI_GATEWAY_MODEL: MODEL = "@makers/deepseek-v4-flash",
   } = env;
 
   // Remove encoding header to avoid compression issues
