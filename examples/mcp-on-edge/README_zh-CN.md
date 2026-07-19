@@ -47,7 +47,7 @@
 |----------|----------|-------------|
 | `AI_GATEWAY_BASE_URL` | 是 | 网关 Base URL。使用 Makers Models 时填写 `https://ai-gateway.edgeone.link/v1`。 |
 | `AI_GATEWAY_API_KEY` | 是 | 模型网关 API Key。使用 Makers Models API Key，或任意 OpenAI 兼容供应商的 Key。 |
-| `AI_GATEWAY_MODEL` | 否 | 模型 ID。默认值为 @makers/minimax-m2.7（Makers 内置模型）。 |
+| `AI_GATEWAY_MODEL` | 否 | 模型 ID。默认值为 @makers/deepseek-v4-flash（Makers 内置模型）。 |
 
 [关于更换模型调用](https://pages.edgeone.ai/zh/document/agents-quick-start#038ab1c2-6bd9-4380-a1ee-191262c5d0ec)
 

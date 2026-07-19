@@ -45,7 +45,7 @@ More Templates: [EdgeOne Makers](https://pages.edgeone.ai/templates)
 |----------|----------|-------------|
 | `AI_GATEWAY_BASE_URL` | Yes | Gateway base URL. For Makers Models, use `https://ai-gateway.edgeone.link/v1`. |
 | `AI_GATEWAY_API_KEY` | Yes | Model gateway API key. Use your Makers Models API Key, or any OpenAI-compatible provider key. |
-| `AI_GATEWAY_MODEL` | No | Model ID. Defaults to `@makers/hy3` (a built-in Makers model). |
+| `AI_GATEWAY_MODEL` | No | Model ID. Defaults to `@makers/deepseek-v4-flash` (a built-in Makers model). |
 
 [About Changing Model Invocations](https://pages.edgeone.ai/document/agents-quick-start#038ab1c2-6bd9-4380-a1ee-191262c5d0ec)
 
