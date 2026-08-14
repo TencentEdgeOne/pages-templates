@@ -2,8 +2,11 @@ import { defineConfig } from 'vitepress'
 
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
-  title: "vitepress-template",
-  description: "A starter template for VitePress",
+  title: "vitepress-template | EdgeOne Makers",
+  description: "A starter template for VitePress · Demo only · EdgeOne Makers",
+  head: [
+    ['meta', { name: 'keywords', content: 'EdgeOne Makers, Demo only' }],
+  ],
   srcDir: 'pages',
   outDir: 'dist',
   ignoreDeadLinks: true,

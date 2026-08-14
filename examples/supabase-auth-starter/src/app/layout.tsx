@@ -2,8 +2,9 @@ import type { Metadata } from 'next';
 import '../styles/globals.css';
 
 export const metadata: Metadata = {
-  title: 'Supabase Auth Starter',
-  description: 'A Next.js app with Supabase authentication',
+  title: 'Supabase Auth Starter | EdgeOne Makers',
+  description: 'A Next.js app with Supabase authentication · Demo only · EdgeOne Makers',
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({

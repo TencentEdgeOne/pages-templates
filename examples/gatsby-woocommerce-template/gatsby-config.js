@@ -4,7 +4,9 @@ require("dotenv").config({
 // console.log process.env)
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Sydney Ecommerce Theme`,
+    description: "Demo only · EdgeOne Makers",
+    keywords: "EdgeOne Makers, Demo only",
+    title: `Gatsby Sydney Ecommerce Theme | EdgeOne Makers`,
     siteUrl: `https://jamm.matter.design`,
   },
   plugins: [

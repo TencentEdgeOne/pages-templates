@@ -5,10 +5,10 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: '网页版 MCP 一句话生成一个全球加速站点',
+  title: '网页版 MCP 一句话生成一个全球加速站点 | EdgeOne Makers',
   description:
-    '基于 EdgeOne 边缘函数实现的 MCP Client 与 MCP Server。',
-  keywords: 'EdgeOne Makers, MCP, 模型上下文协议, 边缘函数, 智能聊天, Next.js',
+    '基于 EdgeOne 边缘函数实现的 MCP Client 与 MCP Server。 · Demo only · EdgeOne Makers',
+  keywords: 'EdgeOne Makers, Demo only, MCP, 模型上下文协议, 边缘函数, 智能聊天, Next.js',
   authors: [{ name: 'EdgeOne Makers' }],
   creator: 'EdgeOne Makers',
   publisher: 'EdgeOne Makers',

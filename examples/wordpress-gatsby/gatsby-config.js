@@ -9,6 +9,11 @@
 require("dotenv").config()
 
 module.exports = {
+  siteMetadata: {
+    title: "WordPress with EdgeOne Pages | EdgeOne Makers",
+    description: "Demo only · EdgeOne Makers",
+    keywords: "EdgeOne Makers, Demo only",
+  },
   /**
    * Adding plugins to this array adds them to your Gatsby site.
    *

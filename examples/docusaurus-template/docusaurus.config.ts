@@ -3,8 +3,8 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
 const config: Config = {
-  title: 'My Site',
-  tagline: 'Dinosaurs are cool',
+  title: 'My Site | EdgeOne Makers',
+  tagline: 'Dinosaurs are cool · Demo only · EdgeOne Makers',
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
@@ -55,6 +55,7 @@ const config: Config = {
   ],
 
   themeConfig: {
+    metadata: [{name: "keywords", content: "EdgeOne Makers, Demo only"}, {name: "description", content: "Demo only · EdgeOne Makers"}],
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {

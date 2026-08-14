@@ -5,8 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'EdgeOne Pages MCP Deploy',
-  description: 'EdgeOne Pages MCP Deploy',
+  title: 'EdgeOne Pages MCP Deploy | EdgeOne Makers',
+  description: 'EdgeOne Pages MCP Deploy · Demo only · EdgeOne Makers',
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({

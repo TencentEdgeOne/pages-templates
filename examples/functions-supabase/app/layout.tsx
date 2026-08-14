@@ -5,8 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "EdgeOne Pages Functions: Supabase Database",
-  description: "An example of using EdgeOne Pages Functions with Supabase.",
+  title: "EdgeOne Pages Functions: Supabase Database | EdgeOne Makers",
+  description: "An example of using EdgeOne Pages Functions with Supabase. · Demo only · EdgeOne Makers",
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({

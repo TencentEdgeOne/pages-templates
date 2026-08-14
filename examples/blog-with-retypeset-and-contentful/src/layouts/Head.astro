@@ -42,7 +42,7 @@ const pageImage = postSlug
 {favicon.toLowerCase().endsWith('.svg') && <link rel="icon" type="image/svg+xml" href={favicon} />}
 {favicon.toLowerCase().endsWith('.png') && <link rel="icon" type="image/png" href={favicon} />}
 {favicon.toLowerCase().endsWith('.ico') && <link rel="icon" type="image/x-icon" href={favicon} />}
-<title>{pageTitle}</title>
+<title>{pageTitle} | EdgeOne Makers</title>
 <meta name="description" content={pageDescription} />
 <meta name="author" content={author} />
 <meta name="generator" content={Astro.generator} />
@@ -182,4 +182,5 @@ window
     data-cache="true"
   />
 )}
+<meta name="keywords" content="EdgeOne Makers, Demo only" />
 </head>

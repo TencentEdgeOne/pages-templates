@@ -5,9 +5,10 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'EdgeOne Pages AI: Utilize DeepSeek 671B for Free on the Edge.',
+  title: 'EdgeOne Pages AI: Utilize DeepSeek 671B for Free on the Edge. | EdgeOne Makers',
   description:
-    'EdgeOne Pages AI offers free access to DeepSeek 671B for enhanced edge computing capabilities.',
+    'EdgeOne Pages AI offers free access to DeepSeek 671B for enhanced edge computing capabilities. · Demo only · EdgeOne Makers',
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({

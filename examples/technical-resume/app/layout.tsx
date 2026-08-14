@@ -5,8 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Free web developer resume templates",
-  description: "Premium web developer resume templates",
+  title: "Free web developer resume templates | EdgeOne Makers",
+  description: "Premium web developer resume templates · Demo only · EdgeOne Makers",
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({

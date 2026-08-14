@@ -6,8 +6,8 @@ import { getTranslations, type Language } from "../utils/i18n";
 export const meta: MetaFunction = () => {
   const t = getTranslations('en'); // Default to English
   return [
-    { title: t.title },
-    { name: "description", content: t.description },
+    { title: `${t.title} | EdgeOne Makers` },
+    { name: "description", content: `${t.description} · Demo only · EdgeOne Makers` },
   ];
 };
 

@@ -5,8 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "EdgeOne Pages Functions: Geolocation",
-  description: "An example of using EdgeOne Pages Functions with Geolocation.",
+  title: "EdgeOne Pages Functions: Geolocation | EdgeOne Makers",
+  description: "An example of using EdgeOne Pages Functions with Geolocation. · Demo only · EdgeOne Makers",
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({

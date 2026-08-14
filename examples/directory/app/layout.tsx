@@ -9,9 +9,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "独立开发者出海工具箱 | Indie Hacker Tools",
-  description: "灵感、设计、开发、增长、变现、工具、资源等各类资源",
-  keywords: ["独立开发者", "出海工具", "indie hacker", "tools"],
+  title: "独立开发者出海工具箱 | Indie Hacker Tools | EdgeOne Makers",
+  description: "灵感、设计、开发、增长、变现、工具、资源等各类资源 · Demo only · EdgeOne Makers",
+  keywords: ["EdgeOne Makers", "Demo only", "独立开发者", "出海工具", "indie hacker", "tools"],
   authors: [{ name: "Indie Hacker Tools" }],
   creator: "Indie Hacker Tools",
 };

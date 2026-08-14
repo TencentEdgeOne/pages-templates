@@ -9,7 +9,7 @@ export async function onRequest({ request, params, env }) {
   <html>
     <head>
       <meta charset="UTF-8">
-      <title>React SSR with EdgeOne Pages</title>
+      <title>React SSR with EdgeOne Pages | EdgeOne Makers</title>
       <link rel="icon" href="/favicon.ico" type="image/x-icon">
       <style>
         html, body {
@@ -17,7 +17,9 @@ export async function onRequest({ request, params, env }) {
           padding: 0;
         }
       </style>
-    </head>
+        <meta name="description" content="Demo only · EdgeOne Makers" />
+    <meta name="keywords" content="EdgeOne Makers, Demo only" />
+</head>
     <body>
       <div id="root">${body}</div>
       <script src="/bundle.js"></script>

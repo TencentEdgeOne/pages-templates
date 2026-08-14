@@ -13,8 +13,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Trtc Beauty AR Template',
-  description: 'Created by Edgeone Pages',
+  title: 'Trtc Beauty AR Template | EdgeOne Makers',
+  description: 'Created by Edgeone Pages · Demo only · EdgeOne Makers',
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({

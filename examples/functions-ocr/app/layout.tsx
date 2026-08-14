@@ -5,8 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "EdgeOne Pages Functions：AI OCR",
-  description: "EdgeOne Pages Functions：AI OCR",
+  title: "EdgeOne Pages Functions：AI OCR | EdgeOne Makers",
+  description: "EdgeOne Pages Functions：AI OCR · Demo only · EdgeOne Makers",
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({

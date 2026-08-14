@@ -5,8 +5,9 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'EdgeOne Pages AI: Free Deep Research',
-  description: `A web-based efficient deep research tool that leverages EdgeOne Pages' edge AI capabilities to provide users with a free experience of DeepSeek R1. This tool implements smooth web search functionality through searxng, making the research process more convenient.`,
+  title: 'EdgeOne Pages AI: Free Deep Research | EdgeOne Makers',
+  description: `A web-based efficient deep research tool that leverages EdgeOne Pages' edge AI capabilities to provide users with a free experience of DeepSeek R1. This tool implements smooth web search functionality through searxng, making the research process more convenient. · Demo only · EdgeOne Makers`,
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({

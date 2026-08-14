@@ -20,8 +20,8 @@ const resolvedImageWithDomain = new URL(
 const { title } = Astro.props;
 
 const makeTitle = title
-  ? title + " | " + "Example"
-  : "Example - Starter Template for Astro with Tailwind CSS";
+  ? title + " | " + "Example | EdgeOne Makers"
+  : "Example - Starter Template for Astro with Tailwind CSS | EdgeOne Makers";
 ---
 
 <!doctype html>
@@ -35,7 +35,7 @@ const makeTitle = title
     <!-- <link rel="preload" as="image" href={src} alt="Hero" /> -->
     <SEO
       title={makeTitle}
-      description="Astroship is a starter website template for Astro built with TailwindCSS. This template is deployed on Edgeone Pages"
+      description="Astroship is a starter website template for Astro built with TailwindCSS. This template is deployed on Edgeone Pages · Demo only · EdgeOne Makers"
       canonical={canonicalURL}
       openGraph={{
         basic: {
@@ -49,6 +49,7 @@ const makeTitle = title
         },
       }}
     />
+    <meta name="keywords" content="EdgeOne Makers, Demo only" />
   </head>
   <body>
     <Navbar />

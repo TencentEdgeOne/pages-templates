@@ -9,10 +9,12 @@ import Script from 'next/script';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Chrome AI - Built-in Gemini Nano',
+  title: 'Chrome AI - Built-in Gemini Nano | EdgeOne Makers',
   description:
-    'Run Chrome built-in large language model AI locally in your browser.',
+    'Run Chrome built-in large language model AI locally in your browser. · Demo only · EdgeOne Makers',
   keywords: [
+    'EdgeOne Makers',
+    'Demo only',
     'chrome',
     'built-in',
     'chrome built-in',

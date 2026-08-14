@@ -5,8 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Edge AI Gateway",
-  description: "Forward AI model requests via Edge Functions with SSE streaming responses.",
+  title: "Edge AI Gateway | EdgeOne Makers",
+  description: "Forward AI model requests via Edge Functions with SSE streaming responses. · Demo only · EdgeOne Makers",
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({

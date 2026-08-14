@@ -3,6 +3,12 @@ import type { ReactNode } from 'react';
 import 'katex/dist/katex.css';
 import './globals.css';
 
+export const metadata = {
+  title: "Fumadocs Template | EdgeOne Makers",
+  description: "Demo only · EdgeOne Makers",
+  keywords: "EdgeOne Makers, Demo only",
+};
+
 export default function RootLayout({
   children,
 }: {

@@ -1,13 +1,14 @@
 baseURL = '/'
 languageCode = 'en-us'
-title = 'Hugo Template'
+title = 'Hugo Template | EdgeOne Makers'
 theme = 'ananke'
 
 # Theme parameters
 [params]
+  keywords = "EdgeOne Makers, Demo only"
   featured_image = "/images/gohugo-default-sample-hero-image.jpg"
   site_logo = ""
-  description = "The last theme you'll ever need"
+  description = "The last theme you'll ever need · Demo only · EdgeOne Makers"
   body_classes = "avenir bg-near-white"
 
 # Menu Configuration

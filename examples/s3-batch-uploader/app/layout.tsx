@@ -2,9 +2,9 @@ import type { Metadata } from 'next'
 import '../styles/globals.css'
 
 export const metadata: Metadata = {
-  title: 'S3 Batch Uploader - File Upload Tool',
-  description: 'Professional S3 batch file upload tool with drag-and-drop interface, progress tracking, and storage management',
-  keywords: 'S3, file upload, batch upload, AWS, cloud storage, file management',
+  title: 'S3 Batch Uploader - File Upload Tool | EdgeOne Makers',
+  description: 'Professional S3 batch file upload tool with drag-and-drop interface, progress tracking, and storage management · Demo only · EdgeOne Makers',
+  keywords: 'EdgeOne Makers, Demo only, S3, file upload, batch upload, AWS, cloud storage, file management',
   authors: [{ name: 'S3 Batch Uploader' }],
   openGraph: {
     title: 'S3 Batch Uploader',

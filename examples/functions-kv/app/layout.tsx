@@ -5,8 +5,9 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "EdgeOne Pages Functions: KV Store",
-  description: "An example of using EdgeOne Pages Functions with KV Store.",
+  title: "EdgeOne Pages Functions: KV Store | EdgeOne Makers",
+  description: "An example of using EdgeOne Pages Functions with KV Store. · Demo only · EdgeOne Makers",
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({

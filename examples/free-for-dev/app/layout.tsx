@@ -5,10 +5,12 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Free Developer Resources Mind Map | Tools, Services & Platforms',
+  title: 'Free Developer Resources Mind Map | Tools, Services & Platforms | EdgeOne Makers',
   description:
-    'Explore our comprehensive mind map of free developer resources, including SaaS, PaaS, IaaS, and more. Discover tools and services with free tiers for developers, startups, and indie hackers. Visualize and compare options for cloud computing, databases, APIs, testing, and development tools.',
+    'Explore our comprehensive mind map of free developer resources, including SaaS, PaaS, IaaS, and more. Discover tools and services with free tiers for developers, startups, and indie hackers. Visualize and compare options for cloud computing, databases, APIs, testing, and development tools. · Demo only · EdgeOne Makers',
   keywords: [
+    'EdgeOne Makers',
+    'Demo only',
     'free developer resources',
     'developer tools',
     'free tier',

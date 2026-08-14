@@ -2,7 +2,9 @@ import type { GatsbyConfig } from "gatsby";
 
 const config: GatsbyConfig = {
   siteMetadata: {
-    title: `gatsby`,
+    description: "Demo only · EdgeOne Makers",
+    keywords: "EdgeOne Makers, Demo only",
+    title: `gatsby | EdgeOne Makers`,
     siteUrl: `https://www.yourdomain.tld`
   },
   // More easily incorporate content into your pages through automatic TypeScript type generation and better GraphQL IntelliSense.

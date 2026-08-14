@@ -5,9 +5,10 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Custom Rules',
+  title: 'Custom Rules | EdgeOne Makers',
   description:
-    'Trying Out Custom Settings like Headers, Redirects, and Rewrites',
+    'Trying Out Custom Settings like Headers, Redirects, and Rewrites · Demo only · EdgeOne Makers',
+  keywords: "EdgeOne Makers, Demo only",
 };
 
 export default function RootLayout({
