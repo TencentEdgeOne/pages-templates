@@ -1,5 +1,7 @@
-export function onRequest({ request }: { request: any }) {
-  const geo = request.eo.geo;
+import type { CloudFunctionContext } from '@edgeone/types';
+
+export function onRequest({ request }: CloudFunctionContext) {
+  const geo = request!.eo.geo;
   const res = JSON.stringify({
     geo: geo,
   });

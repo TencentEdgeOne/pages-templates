@@ -1,7 +1,8 @@
+import type { CloudFunctionContext } from '@edgeone/types';
 import { z } from 'zod';
 import { searxngSearch } from '../v1/chat/completions/index';
 
-export async function onRequest({ request, params, env }: any) {
+export async function onRequest({ request, params, env }: CloudFunctionContext) {
   if (request.method === 'OPTIONS') {
     return new Response(null, {
       headers: {

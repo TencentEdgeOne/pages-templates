@@ -1,3 +1,4 @@
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequest({ request, env }) {
   // Handle CORS preflight
   if (request.method === 'OPTIONS') {

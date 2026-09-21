@@ -1,3 +1,5 @@
+import type { CloudFunctionContext } from '@edgeone/types';
+
 interface SearchResult {
   query: string;
   results: {
@@ -14,17 +16,6 @@ interface TavilyApiResponse {
     content: string;
     [key: string]: any;
   }>;
-}
-
-interface RequestEnvironment {
-  TAVILY_KEY: string;
-  [key: string]: any;
-}
-
-interface RequestParams {
-  request: Request;
-  params: any;
-  env: RequestEnvironment;
 }
 
 /**
@@ -90,7 +81,7 @@ export async function onRequest({
   request,
   params,
   env,
-}: RequestParams): Promise<Response> {
+}: CloudFunctionContext): Promise<Response> {
   // Validate request method
   if (request.method !== 'GET') {
     return new Response('Method not allowed', { status: 405 });

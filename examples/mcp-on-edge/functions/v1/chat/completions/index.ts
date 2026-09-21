@@ -1,3 +1,4 @@
+import type { CloudFunctionContext } from '@edgeone/types';
 import { z } from 'zod';
 import { MCPClient } from '../../../mcp-client';
 
@@ -396,7 +397,7 @@ const MCPUtils = {
   }
 };
 
-export async function onRequest({ request, env }: any) {
+export async function onRequest({ request, env }: CloudFunctionContext) {
   // Handle preflight requests
   if (request.method === 'OPTIONS') {
     return handleOptionsRequest();

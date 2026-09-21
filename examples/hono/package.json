@@ -12,6 +12,7 @@
     "marked-highlight": "^2.2.1"
   },
   "devDependencies": {
+    "@edgeone/types": "^1.0.1",
     "@edgeone/ef-types": "^1.0.5",
     "edgeone": "^1.0.21"
   }

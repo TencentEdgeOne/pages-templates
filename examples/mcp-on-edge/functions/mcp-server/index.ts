@@ -1,3 +1,5 @@
+import type { CloudFunctionContext } from '@edgeone/types';
+
 const SESSION_ID_HEADER_NAME = 'mcp-session-id';
 
 export async function getBaseUrl(): Promise<string> {
@@ -203,7 +205,7 @@ const processJsonRpcRequest = async (body: any) => {
   return handleUnknownMethod(body.id);
 };
 
-export const onRequest = async ({ request }: { request: any }) => {
+export const onRequest = async ({ request }: CloudFunctionContext) => {
   const sessionId = request.headers.get(SESSION_ID_HEADER_NAME);
   if (!sessionId) {
     // Perform standard header validation, allowing all requests to pass through

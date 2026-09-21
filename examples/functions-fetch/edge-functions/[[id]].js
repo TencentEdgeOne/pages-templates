@@ -10,6 +10,7 @@
  * - Only HTML routes (without file extensions) return index.html
  */
 
+/** @param {import('@edgeone/types').EdgeFunctionContext} context */
 export async function onRequest(context) {
   const { request } = context;
   

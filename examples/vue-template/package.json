@@ -17,6 +17,7 @@
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
+    "@edgeone/types": "^1.0.1",
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/node": "^20.14.5",

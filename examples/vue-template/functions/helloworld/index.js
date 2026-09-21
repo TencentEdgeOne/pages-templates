@@ -7,6 +7,7 @@ const html = `
 `;
 
 
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export function onRequest(context) {
   return new Response(html, {
     headers: {

@@ -1,3 +1,4 @@
+import type { EdgeFunctionContext } from '@edgeone/types';
 import { z } from 'zod';
 
 const ERRORS = {
@@ -6,7 +7,7 @@ const ERRORS = {
   LLM_FAILED: 'An error occurred while calling the BASE_URL.',
 };
 
-export async function onRequest({ request, env }: any) {
+export async function onRequest({ request, env }: EdgeFunctionContext) {
   request.headers.delete('accept-encoding');
 
   if (request.method === 'OPTIONS') {

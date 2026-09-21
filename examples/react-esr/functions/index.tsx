@@ -1,8 +1,9 @@
+import type { CloudFunctionContext } from '@edgeone/types';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import App from '../src/App';
 
-export async function onRequest({ request, params, env }) {
+export async function onRequest({ request, params, env }: CloudFunctionContext) {
   const body = renderToString(<App />);
   const html = `
   <!DOCTYPE html>

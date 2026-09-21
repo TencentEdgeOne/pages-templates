@@ -40,6 +40,7 @@
     "react-slick": "^0.30.2"
   },
   "devDependencies": {
+    "@edgeone/types": "^1.0.1",
     "null-loader": "^4.0.1",
     "plop": "^3.0.5",
     "prettier": "^3.2.5"

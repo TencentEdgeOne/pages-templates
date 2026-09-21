@@ -1,5 +1,6 @@
 import { createSupabaseClient } from "../libs/supabase";
 
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequestGet(context) {
   const { request, env } = context;
 

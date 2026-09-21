@@ -1,3 +1,4 @@
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequestPost(context) {
   console.log('logout');
   const response = new Response(JSON.stringify({

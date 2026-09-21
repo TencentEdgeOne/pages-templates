@@ -1,3 +1,4 @@
+import type { CloudFunctionContext } from '@edgeone/types';
 import { Context, Hono } from 'hono';
 // import { ipRestriction } from 'hono/ip-restriction';
 import type { KVNamespace } from './env';
@@ -173,10 +174,6 @@ app.onError((err, c) => {
 });
 
 // EdgeOne Functions export
-export function onRequest(context: {
-  request: Request;
-  params: Record<string, string>;
-  env: Record<string, any>;
-}): Response | Promise<Response> {
-  return app.fetch(context.request, context.env);
+export function onRequest(context: CloudFunctionContext): Response | Promise<Response> {
+  return app.fetch(context.request! as Request, context.env);
 }

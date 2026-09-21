@@ -4,6 +4,7 @@ import { createSupabaseAdminClient } from '../libs/supabase-admin';
 import { getURL } from '../libs/utils';
 
 
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequestGet(context) {
   const { request, env } = context;
   // get plan id

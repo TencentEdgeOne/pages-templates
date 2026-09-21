@@ -5,6 +5,7 @@ import { checkRateLimit, createRateLimitResponse } from './rate_limit.js';
 
 
 
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequest({ request, params, env }) {
   try {
     const eo = request.eo;

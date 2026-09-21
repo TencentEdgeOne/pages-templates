@@ -23,6 +23,7 @@ const relevantEvents = new Set([
   'customer.subscription.deleted'
 ]);
 
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequestPost(context) {
   const { request, env } = context;
   const body = await request.text();

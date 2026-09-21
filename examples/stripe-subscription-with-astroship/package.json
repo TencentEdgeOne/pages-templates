@@ -35,5 +35,8 @@
     "sharp": "^0.33.4",
     "stripe": "^17.7.0",
     "tailwindcss": "^4.0.9"
+  },
+  "devDependencies": {
+    "@edgeone/types": "^1.0.1"
   }
 }

@@ -1,3 +1,4 @@
+import type { CloudFunctionContext } from '@edgeone/types';
 import { z } from 'zod';
 
 const chatCompletionSchema = z.object({
@@ -45,7 +46,7 @@ function createStreamResponse(stream: any) {
   });
 }
 
-export async function onRequest({ request }: any) {
+export async function onRequest({ request }: CloudFunctionContext) {
   request.headers.delete('accept-encoding');
 
   if (request.method === 'OPTIONS') {

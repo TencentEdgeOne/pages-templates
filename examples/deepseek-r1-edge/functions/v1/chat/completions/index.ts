@@ -1,3 +1,4 @@
+import type { CloudFunctionContext } from '@edgeone/types';
 import { z } from 'zod';
 
 // Type definitions
@@ -171,7 +172,7 @@ function handleOptionsRequest(): Response {
   });
 }
 
-export async function onRequest({ request, env }: any) {
+export async function onRequest({ request, env }: CloudFunctionContext) {
   // Handle preflight requests
   if (request.method === 'OPTIONS') {
     return handleOptionsRequest();

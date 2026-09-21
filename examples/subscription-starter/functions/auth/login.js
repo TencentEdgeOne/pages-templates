@@ -25,6 +25,7 @@ function getSetCookie(cookie) {
   return cookieArr.join("; ");
 }
 
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequestPost(context) {
   try {
     const { request, env } = context;

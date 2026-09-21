@@ -1,3 +1,4 @@
+import type { CloudFunctionContext } from '@edgeone/types';
 import { z } from 'zod';
 
 const ERRORS = {
@@ -46,7 +47,7 @@ Snippet: ${snippet}`);
   return formatted.join('\n\n');
 }
 
-export async function onRequest({ request, params, env }: any) {
+export async function onRequest({ request, params, env }: CloudFunctionContext) {
   request.headers.delete('accept-encoding');
 
   if (request.method === 'OPTIONS') {

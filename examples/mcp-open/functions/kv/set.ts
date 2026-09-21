@@ -1,3 +1,4 @@
+import type { CloudFunctionContext } from '@edgeone/types';
 import { nanoid } from 'nanoid';
 
 export function validateHtml(value: string): {
@@ -41,13 +42,9 @@ export function createResponse(data: ResponseData, status = 200): Response {
   });
 }
 
-interface RequestContext {
-  request: Request;
-}
-
 export async function onRequest({
   request,
-}: RequestContext): Promise<Response> {
+}: CloudFunctionContext): Promise<Response> {
   if (request.method !== 'POST') {
     return createResponse({ error: 'Method not allowed' }, 405);
   }

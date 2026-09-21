@@ -1,3 +1,4 @@
+import type { CloudFunctionContext } from "@edgeone/types";
 import { z } from "zod";
 import dedent from "dedent";
 import shadcnDocs from "../../utils/shadcn-docs";
@@ -10,7 +11,7 @@ declare const AI: {
   }): Promise<ReadableStream>;
 };
 
-export async function onRequest({ request, env }: any) {
+export async function onRequest({ request, env }: CloudFunctionContext) {
   if (request.method === "OPTIONS") {
     return new Response(null, {
       headers: {

@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequest({ request, params, env }) {
   const supabase = createClient(env.SUPABASE_URL, env.SUPABASE_KEY);
 

@@ -1,6 +1,7 @@
 import { register } from "../common/graphql";
 
 
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequestPost(context) {
   const { request, env } = context;
   const { email, password } = await request.json();

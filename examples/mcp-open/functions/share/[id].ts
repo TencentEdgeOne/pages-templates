@@ -1,3 +1,5 @@
+import type { CloudFunctionContext } from '@edgeone/types';
+
 export function createResponse(data: { [key: string]: string }, status = 200) {
   return new Response(JSON.stringify(data), {
     status,
@@ -8,11 +10,7 @@ export function createResponse(data: { [key: string]: string }, status = 200) {
   });
 }
 
-type RequestContext = {
-  request: Request;
-};
-
-export async function onRequest({ request }: RequestContext) {
+export async function onRequest({ request }: CloudFunctionContext) {
   if (request.method !== 'GET') {
     return createResponse({ error: 'Method not allowed' }, 405);
   }

@@ -3,6 +3,7 @@ import { createStripe } from '../libs/stripe';
 import { createSupabaseAdminClient } from '../libs/supabase-admin';
 
 
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequestGet(context) {
   const { request, env } = context;
   // get plan id

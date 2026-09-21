@@ -2,6 +2,7 @@ import { dispatchGraphql } from "../common/graphql";
 import { CommonResponseHeaders } from "../common/header";
 
 
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequest(context) {
   const { request, params, env } = context;
 

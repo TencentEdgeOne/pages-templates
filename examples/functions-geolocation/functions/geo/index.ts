@@ -1,25 +1,7 @@
-interface EORequest extends Request {
-  eo: {
-    geo: {
-      asn: number;
-      countryName: string;
-      countryCodeAlpha2: string;
-      countryCodeAlpha3: string;
-      countryCodeNumeric: string;
-      regionName: string;
-      regionCode: string;
-      cityName: string;
-      latitude: number;
-      longitude: number;
-      cisp: string;
-    };
-    uuid: string;
-    clientIp: string;
-  };
-}
+import type { CloudFunctionContext } from '@edgeone/types';
 
-export function onRequest({ request }: { request: EORequest }) {
-  const eo = request.eo;
+export function onRequest({ request }: CloudFunctionContext) {
+  const eo = request!.eo;
 
   return new Response(
     JSON.stringify({

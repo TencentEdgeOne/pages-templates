@@ -6,6 +6,7 @@
  * by [[id]].js.
  */
 
+/** @param {import('@edgeone/types').EdgeFunctionContext} context */
 export async function onRequest(context) {
   const { request } = context;
   

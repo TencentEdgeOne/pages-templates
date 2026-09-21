@@ -1,3 +1,4 @@
+/** @param {import('@edgeone/types').CloudFunctionContext} context */
 export async function onRequest({ request, params, env }) {
   if (request.method === 'OPTIONS') {
     return new Response(null, {
